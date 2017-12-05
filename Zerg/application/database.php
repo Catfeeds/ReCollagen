@@ -13,13 +13,13 @@ return [
     // 数据库类型
     'type'            => 'mysql',
     // 服务器地址
-    'hostname'        => '101.200.236.82',
+    'hostname'        => '127.0.0.1',
     // 数据库名
-    'database'        => 'terran',
+    'database'        => 'recollagen',
     // 用户名
     'username'        => 'root',
     // 密码
-    'password'        => '19851118',
+    'password'        => 'root',
     // 端口
     'hostport'        => '3306',
     // 连接dsn
