@@ -18,7 +18,7 @@ class OrderBackend extends AdminBase{
 	
 	protected function _initialize(){
 		parent::_initialize();
-		$this->assign('breadcrumb1','订单');
+		$this->assign('breadcrumb1','会员');
 		$this->assign('breadcrumb2','订单');
 	}
 	

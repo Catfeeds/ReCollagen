@@ -137,6 +137,14 @@
 				</script>
 				
 				<ul class="nav nav-list">
+					<li class="hover">
+						<a target="_blank" href="{$Request.root.true}">
+							<i class="menu-icon fa fa fa-home fa-lg"></i>
+							<span class="menu-text">前台 </span>
+							<b class="arrow fa fa-angle-down"></b>
+						</a>
+						<b class="arrow"></b>
+					</li>
 					
 					{volist name="admin_menu" id="m"}					
 					<li class="hover {if condition='isset($breadcrumb1) AND ($breadcrumb1 eq $m["title"])'} active open {/if}">

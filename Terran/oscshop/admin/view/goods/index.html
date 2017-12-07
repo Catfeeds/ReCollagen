@@ -94,10 +94,10 @@
 							</td>
 							
 							<td>
-								<input name="price" type="text" size="5" class="price" goods_id='{$v.goods_id}' value="{$v.price}" />
+								<input name="price" type="text" size="6" class="price" goods_id='{$v.goods_id}' value="{$v.price}" />
 							</td>
 							<td>							
-								<input name="quantity" type="text" size="5" class="quantity" goods_id='{$v.goods_id}' value="{$v.quantity}" />
+								<input name="quantity" type="text" size="3" class="quantity" goods_id='{$v.goods_id}' value="{$v.quantity}" />
 							</td>
 							<td>
 								<input name="sort" type="text" size="2" class="sort" goods_id='{$v.goods_id}' value="{$v.sort_order}" />								
@@ -112,16 +112,17 @@
 								
 								
 								<div class="btn-group">
-									<button class="btn btn-xs btn-info" data-toggle="dropdown" aria-expanded="false">
+									<button class="btn btn-xs btn-info">
 										<i class="fa fa-edit bigger-120"></i>
 									</button>
 									<button class="btn btn-info btn-xs dropdown-toggle no-radius" data-toggle="dropdown" aria-expanded="false">
 										<span class="bigger-110 ace-icon fa fa-caret-down icon-only"></span>
 									</button>
-									<ul class="dropdown-menu dropdown-info dropdown-menu-right">
+									<ul class="dropdown-menu dropdown-info dropdown-menu-right">																
 										<li>
 											<a href='{:url("Goods/edit_general",array("id"=>$v["goods_id"]))}'>基本信息</a>
-										</li>											
+										</li>									
+																		
 										<li>
 											<a href='{:url("Goods/edit_links",array("id"=>$v["goods_id"]))}'>关联</a>
 										</li>

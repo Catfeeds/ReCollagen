@@ -146,20 +146,24 @@ class Order{
 		
 		$data=$this->get_order_data($order_data);
 		
-		$order['uid']                  =$data['uid'];			
-		$order['order_num_alias']      =$data['order_num_alias'];
-		$order['name']                 =$data['name'];
-		$order['tel']                  =$data['tel'];
-		$order['shipping_name']        =$data['shipping_name'];		
+		$order['uid']=$data['uid'];			
+		$order['order_num_alias']=$data['order_num_alias'];
+		$order['name']=$data['name'];
 		
-		$order['shipping_city_id']     =$data['shipping_city_id'];		
-		$order['shipping_country_id']  =$data['shipping_country_id'];
-		$order['shipping_province_id'] =$data['shipping_province_id'];
-		$order['shipping_tel']         =$data['shipping_tel'];	
-		$order['shipping_method']      =$data['shipping_method'];
-		$order['address_id']           =$data['address_id'];
+		$order['email']=$data['email'];
+		$order['tel']=$data['tel'];
 		
-		$order['comment']              =$data['comment'];		
+		$order['shipping_name']=$data['shipping_name'];		
+		
+		$order['shipping_city_id']=$data['shipping_city_id'];		
+		$order['shipping_country_id']=$data['shipping_country_id'];
+		$order['shipping_province_id']=$data['shipping_province_id'];
+		$order['shipping_tel']=$data['shipping_tel'];	
+		$order['shipping_method']=$data['shipping_method'];
+		$order['address_id']=$data['address_id'];
+		
+		
+		$order['comment']=$data['comment'];		
 		
 		if(isset($data['pay_type'])&&$data['pay_type']=='points'){//积分兑换订单
 			$order['order_status_id']=config('paid_order_status_id');
@@ -171,8 +175,11 @@ class Order{
 			$order['order_status_id']=config('default_order_status_id');
 		}
 		
+		$order['ip']=get_client_ip();
+		
 		$order['date_added'] =time();
 		$order['total'] =$data['total'];
+		$order['user_agent']=$data['user_agent'];
 		
 		
 		$order['payment_code']=$payment_code;
@@ -283,20 +290,22 @@ class Order{
 		
 		$data['uid']=$payment['uid'];
 		$data['name']=$payment['username'];
+		$data['email']=$payment['email'];
 		$data['tel']=$payment['telephone'];		
 		
 		//此处为了支持免配送商品
-		$data['shipping_name']        =empty($shipping['name'])?'':$shipping['name'];	
-		$data['shipping_tel']         =empty($shipping['telephone'])?'':$shipping['telephone'];	
-		$data['shipping_province_id'] =empty($shipping['province_id'])?'':$shipping['province_id'];	
-		$data['shipping_city_id']     =empty($shipping['city_id'])?'':$shipping['city_id'];
-		$data['shipping_country_id']  =empty($shipping['country_id'])?'':$shipping['country_id'];			
-		$data['address_id']           =empty($shipping_address_id)?'':$shipping_address_id;		
-		$data['shipping_method']      =empty($shipping_method)?'':$shipping_method;		
+		$data['shipping_name']=empty($shipping['name'])?'':$shipping['name'];	
+		$data['shipping_tel']=empty($shipping['telephone'])?'':$shipping['telephone'];	
+		$data['shipping_province_id']=empty($shipping['province_id'])?'':$shipping['province_id'];	
+		$data['shipping_city_id']=empty($shipping['city_id'])?'':$shipping['city_id'];
+		$data['shipping_country_id']=empty($shipping['country_id'])?'':$shipping['country_id'];			
+		$data['address_id']=empty($shipping_address_id)?'':$shipping_address_id;		
+		$data['shipping_method']=empty($shipping_method)?'':$shipping_method;		
 		
-		$data['payment_method']       =$payment_method;
-		
-		$data['date_added']           =time();		
+		$data['payment_method']=$payment_method;
+
+		$data['user_agent']=$_SERVER['HTTP_USER_AGENT'];
+		$data['date_added']=time();		
 
 		$data['comment']=empty($comment)?'':$comment;
 				

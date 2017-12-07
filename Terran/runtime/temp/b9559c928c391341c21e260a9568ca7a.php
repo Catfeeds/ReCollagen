@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:39:"./oscshop/admin\view\goods\general.html";i:1512525352;s:37:"./oscshop/admin\view\public\base.html";i:1512537585;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:39:"./oscshop/admin\view\goods\general.html";i:1512552775;s:37:"./oscshop/admin\view\public\base.html";i:1512552775;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -138,6 +138,14 @@
 				</script>
 				
 				<ul class="nav nav-list">
+					<li class="hover">
+						<a target="_blank" href="<?php echo \think\Request::instance()->root(true); ?>">
+							<i class="menu-icon fa fa fa-home fa-lg"></i>
+							<span class="menu-text">前台 </span>
+							<b class="arrow fa fa-angle-down"></b>
+						</a>
+						<b class="arrow"></b>
+					</li>
 					
 					<?php if(is_array($admin_menu) || $admin_menu instanceof \think\Collection || $admin_menu instanceof \think\Paginator): $i = 0; $__LIST__ = $admin_menu;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$m): $mod = ($i % 2 );++$i;?>					
 					<li class="hover <?php if(isset($breadcrumb1) AND ($breadcrumb1 == $m["title"])): ?> active open <?php endif; ?>">

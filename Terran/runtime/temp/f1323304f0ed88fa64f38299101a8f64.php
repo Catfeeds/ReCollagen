@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:37:"./oscshop/admin\view\goods\index.html";i:1512546406;s:37:"./oscshop/admin\view\public\base.html";i:1512537585;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:37:"./oscshop/admin\view\goods\index.html";i:1512623322;s:37:"./oscshop/admin\view\public\base.html";i:1512552775;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -138,6 +138,14 @@
 				</script>
 				
 				<ul class="nav nav-list">
+					<li class="hover">
+						<a target="_blank" href="<?php echo \think\Request::instance()->root(true); ?>">
+							<i class="menu-icon fa fa fa-home fa-lg"></i>
+							<span class="menu-text">前台 </span>
+							<b class="arrow fa fa-angle-down"></b>
+						</a>
+						<b class="arrow"></b>
+					</li>
 					
 					<?php if(is_array($admin_menu) || $admin_menu instanceof \think\Collection || $admin_menu instanceof \think\Paginator): $i = 0; $__LIST__ = $admin_menu;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$m): $mod = ($i % 2 );++$i;?>					
 					<li class="hover <?php if(isset($breadcrumb1) AND ($breadcrumb1 == $m["title"])): ?> active open <?php endif; ?>">
@@ -287,10 +295,10 @@
 							</td>
 							
 							<td>
-								<input name="price" type="text" size="5" class="price" goods_id='<?php echo $v['goods_id']; ?>' value="<?php echo $v['price']; ?>" />
+								<input name="price" type="text" size="6" class="price" goods_id='<?php echo $v['goods_id']; ?>' value="<?php echo $v['price']; ?>" />
 							</td>
 							<td>							
-								<input name="quantity" type="text" size="5" class="quantity" goods_id='<?php echo $v['goods_id']; ?>' value="<?php echo $v['quantity']; ?>" />
+								<input name="quantity" type="text" size="3" class="quantity" goods_id='<?php echo $v['goods_id']; ?>' value="<?php echo $v['quantity']; ?>" />
 							</td>
 							<td>
 								<input name="sort" type="text" size="2" class="sort" goods_id='<?php echo $v['goods_id']; ?>' value="<?php echo $v['sort_order']; ?>" />								
@@ -302,16 +310,17 @@
 								
 								
 								<div class="btn-group">
-									<button class="btn btn-xs btn-info" data-toggle="dropdown" aria-expanded="false">
+									<button class="btn btn-xs btn-info">
 										<i class="fa fa-edit bigger-120"></i>
 									</button>
 									<button class="btn btn-info btn-xs dropdown-toggle no-radius" data-toggle="dropdown" aria-expanded="false">
 										<span class="bigger-110 ace-icon fa fa-caret-down icon-only"></span>
 									</button>
-									<ul class="dropdown-menu dropdown-info dropdown-menu-right">
+									<ul class="dropdown-menu dropdown-info dropdown-menu-right">																
 										<li>
 											<a href='<?php echo url("Goods/edit_general",array("id"=>$v["goods_id"])); ?>'>基本信息</a>
-										</li>											
+										</li>									
+																		
 										<li>
 											<a href='<?php echo url("Goods/edit_links",array("id"=>$v["goods_id"])); ?>'>关联</a>
 										</li>

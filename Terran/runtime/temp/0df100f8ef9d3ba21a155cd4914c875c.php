@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:48:"./oscshop/mobile\view\order\ajax_order_list.html";i:1512525352;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:48:"./oscshop/mobile\view\order\ajax_order_list.html";i:1512552775;}*/ ?>
 <?php use think\Db; if(is_array($order) || $order instanceof \think\Collection || $order instanceof \think\Paginator): $i = 0; $__LIST__ = $order;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$orders): $mod = ($i % 2 );++$i;?>
     <div class="uc-orderitem" id="orderitem<?php echo $orders['order']['order_id']; ?>">
         <div class="uc-seral clearfix">

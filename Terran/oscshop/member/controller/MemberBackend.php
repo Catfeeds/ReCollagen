@@ -1,17 +1,4 @@
 <?php
-/**
- * oscshop2 B2C电子商务系统
- *
- * ==========================================================================
- * @link      http://www.oscshop.cn/
- * @copyright Copyright (c) 2015-2016 oscshop.cn. 
- * @license   http://www.oscshop.cn/license.html License
- * ==========================================================================
- *
- * @author    李梓钿
- *
- */
- 
 namespace osc\member\controller;
 use osc\common\controller\AdminBase;
 use think\Db;
@@ -48,13 +35,13 @@ class MemberBackend extends AdminBase{
 		
     	return $this->fetch();
 	 }
-	 public function add(){
-	 	
+	 public function add(){	 	
 		if(request()->isPost()){
 			$date=input('post.');
-			$result = $this->validate($date,'Member');			
+			$date['password'] = $date['pwd'];
+			$result = $this->validate($date,'Member');	
+
 			if($result!==true){
-			
 				return ['error'=>$result];
 			}
 			$member['username']=$date['username'];

@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:37:"./oscshop/mobile\view\cart\index.html";i:1512545289;s:38:"./oscshop/mobile\view\public\base.html";i:1512525352;s:41:"./oscshop/mobile\view\public\top-nav.html";i:1512525352;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:3:{s:37:"./oscshop/mobile\view\cart\index.html";i:1512552775;s:38:"./oscshop/mobile\view\public\base.html";i:1512552775;s:41:"./oscshop/mobile\view\public\top-nav.html";i:1512552775;}*/ ?>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -43,7 +43,7 @@
 <input type="hidden" id="address_id" value="<?php echo (isset($address['address_id']) && ($address['address_id'] !== '')?$address['address_id']:''); ?>" />
 
 <!-- 收货地址 start -->
-<?php if(!empty($goods)): ?>
+<?php if(!empty($goods)): if($shipping): ?>
 		<div id="shipping_box">
 			<div id="addrPick"></div>
 			<header class="Thead">收货信息</header>
@@ -71,7 +71,7 @@
 			<?php endif; ?>
 			</div>
 		</div>
-<?php endif; ?>	
+	<?php endif; endif; ?>	
 <!-- 收货地址 end -->
 
 <header class="Thead">订单信息</header>
