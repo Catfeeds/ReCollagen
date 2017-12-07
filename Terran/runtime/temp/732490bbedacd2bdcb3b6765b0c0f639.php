@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./oscshop/member\view\member_backend\index.html";i:1512552775;s:37:"./oscshop/admin/view/public/base.html";i:1512552775;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:47:"./oscshop/member\view\member_backend\index.html";i:1512639294;s:37:"./oscshop/admin/view/public/base.html";i:1512552775;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -220,7 +220,7 @@
 <table class="table table-striped table-bordered table-hover search-form">
 	<thead>
 		
-		<th><input name="user_name" type="text" placeholder="输入会员用户名" value="<?php echo input('param.user_name'); ?>" /></th>		
+		<th><input name="condition" type="text" placeholder="请输入微信openId/昵称" value="<?php echo input('param.condition'); ?>" /></th>		
 		
 		<th>
 			<a class="btn btn-primary" href="javascript:;" id="search" url="<?php echo url('MemberBackend/index'); ?>">查询</a>
@@ -235,45 +235,42 @@
 				<thead>
 					<tr>											
 						<th>ID</th>
-						<th>客户端</th> 
-						<th>用户名</th> 
-						<th>用户组</th>
+						<th>微信openId</th> 
+						<th>昵称</th> 
 						<th>登录次数</th> 						
 						<th>创建时间</th>							
-						<th>最后登录</th>		
-					
+						<th>最后登录</th>	
+						<th>主账户金额（元）</th>		
+						<th>辅账户金额（元）</th>		
+						<th>状态</th> 	
 						<th>操作</th>	
 					</tr>
 				</thead>
 				<tbody>
-						<?php if(is_array($list) || $list instanceof \think\Collection || $list instanceof \think\Paginator): $i = 0; $__LIST__ = $list;if( count($__LIST__)==0 ) : echo "$empty" ;else: foreach($__LIST__ as $key=>$v): $mod = ($i % 2 );++$i;?>
-						<tr>						
-							<td><?php echo $v['uid']; ?></td>
-							<td><?php echo $v['reg_type']; ?></td>
-							<td>
-								<?php if($v['reg_type'] != 'weixin'): ?>
-									<?php echo $v['username']; else: ?>
-									<?php echo $v['nickname']; endif; ?>
-							</td>
-							<td>
-								<?php echo $v['title']; ?>
-							</td>
-							<td><?php echo $v['loginnum']; ?></td>
-							<td><?php if($v['regdate'] != 0): ?><?php echo date("Y-m-d",$v['regdate']); else: ?>无<?php endif; ?></td>
-							<td>
-								<?php if($v['lastdate'] != 0): ?><?php echo date("Y-m-d",$v['lastdate']); else: ?>无<?php endif; ?>							
-							</td>
-							<td>
-								<a  class="btn btn-xs btn-info" href='<?php echo url("MemberBackend/edit",array("id"=>$v["uid"])); ?>'>
-									<i class="fa fa-edit bigger-120"></i>
-								</a> 
-							</td>
-						</tr>
-						<?php endforeach; endif; else: echo "$empty" ;endif; ?>	
-						
-						<tr>
-							<td colspan="20" class="page"><?php echo $list->render(); ?></td>
-						</tr>
+					<?php if(is_array($list) || $list instanceof \think\Collection || $list instanceof \think\Paginator): $i = 0; $__LIST__ = $list;if( count($__LIST__)==0 ) : echo "$empty" ;else: foreach($__LIST__ as $key=>$v): $mod = ($i % 2 );++$i;?>
+					<tr>						
+						<td><?php echo $v['uid']; ?></td>
+						<td><?php echo $v['openId']; ?></td>
+						<td><?php echo $v['username']; ?></td>
+						<td><?php echo $v['loginnum']; ?></td>
+						<td><?php if($v['regdate'] != 0): ?><?php echo date("Y-m-d",$v['regdate']); else: ?>无<?php endif; ?></td>
+						<td><?php if($v['lastdate'] != 0): ?><?php echo date("Y-m-d",$v['lastdate']); else: ?>无<?php endif; ?></td>
+						<td><input name="mainAccount" type="text" size="8" class="account" uid='<?php echo $v['uid']; ?>' value="<?php echo $v['mainAccount']; ?>" /></td>
+						<td><input name="secondAccount" type="text" size="8" class="account" uid='<?php echo $v['uid']; ?>' value="<?php echo $v['secondAccount']; ?>" /></td>
+						<td>							
+							<?php switch($v['checked']): case "1": ?><a href='<?php echo url("MemberBackend/set_status",array("uid"=>$v["uid"],"checked"=>0)); ?>'><span class="btn btn-xs btn-success"><i class="fa fa-check bigger-120"></i></span></a><?php break; case "0": ?><a href='<?php echo url("MemberBackend/set_status",array("uid"=>$v["uid"],"checked"=>1)); ?>'><span class="btn btn-xs btn-danger"><i class="fa fa-remove bigger-120"></i></span></a><?php break; endswitch; ?>
+						</td>
+						<td>
+							<a class="btn btn-xs btn-info" href='<?php echo url("MemberBackend/edit",array("id"=>$v["uid"])); ?>'>
+								<i class="fa fa-edit bigger-120"></i>
+							</a> 
+						</td>
+					</tr>
+					<?php endforeach; endif; else: echo "$empty" ;endif; ?>	
+					
+					<tr>
+						<td colspan="20" class="page"><?php echo $list->render(); ?></td>
+					</tr>
 				</tbody>
 				
 			</table>
@@ -335,6 +332,18 @@ $(function(){
         }
         window.location.href = url;
     });	
+    //修改用户账户金额
+    $('.account').blur(function(){
+		$.post(
+			"<?php echo url('MemberBackend/updateAccount'); ?>",
+			{accountMoney:$(this).val(),accountName:$(this).attr('name'),uid:$(this).attr('uid')},
+			function(data){
+				if(data){
+					window.location.reload();
+				}
+			}
+		);
+	});
 });
 </script>
 

@@ -26,65 +26,31 @@
 				    <td>ID</td>
 				    <td>{$data.info.uid}</td>
 				</tr>
-	
 				<tr>
-					<td>用户名</td>
-					<td>
-					{if condition="$data['info']['reg_type'] NEQ 'weixin'"}
-						{$data.info.username}
-					{else/}
-						{$data.info.nickname}
-					{/if}
-									
-					</td>
-				</tr>
-				
-				{if condition="$data['info']['wechat_openid']"}
-				<tr>
-					<td>微信openid</td>
+					<td>微信openId</td>
 					<td>				
-					{$data.info.wechat_openid}					
+					{$data.info.openId}					
 					</td>
 				</tr>
-				{/if}
-				
 				<tr>
-					<td>密码</td>
-					<td><input id="pwd" name="password" type="text" style="width:400px;" value="<?php echo think_ucenter_decrypt($data['info']['password'],config('PWD_KEY')); ?>" /></td>
+					<td>昵称</td>
+					<td>{$data.info.username}</td>
 				</tr>
 				<tr>
-				    <td>电子邮件</td>
-				    <td><input name="email" type="text" style="width:400px;" value="{$data.info.email|default=''}" /></td>
-				    
-				</tr>
-				
-				<tr>
-				    <td>联系电话</td>
-				    <td><input name="telephone" type="text" style="width:400px;" value="{$data.info.telephone|default=''}" /></td>
-				  
+				    <td>主账户金额（元）</td>
+				    <td><input name="mainAccount" type="text" style="width:200px;" value="{$data.info.mainAccount}" /></td>
 				</tr> 
-					
-				<tr>
-					<td>用户组</td>
-					<td><select class="form-control" name="groupid">							
-						{volist name="group" id="group" }
-							<option {if condition="$data['info']['groupid'] EQ $group['id'] "} selected="selected"{/if} value="{$group.id}">{$group.title}</option>
-						{/volist}				
-						</select>	
-					</td>
-				</tr>
-					
-				<tr>
-					<td>登录IP地址</td>
-					<td>{$data.info.lastip}</td>
-				</tr>  
+ 				<tr>
+				    <td>辅账户金额（元）</td>
+				    <td><input name="secondAccount" type="text" style="width:200px;" value="{$data.info.secondAccount}" /></td>
+				</tr> 
 				<tr>
 					<td>登录次数</td>
 					<td>{$data.info.loginnum}</td>
 				</tr>
 				<tr>
 					<td>创建时间</td>
-					<td>{$data.info.regdate|date="Y-m-d",###}</td>
+					<td>{$data.info.regdate|date="Y-m-d H:i:s",###}</td>
 				</tr>
 				<tr>
 					<td>最近登录时间</td>
@@ -92,17 +58,17 @@
 						{if condition="empty($data['info']['lastdate'])"}
 							无
 						{else/}
-							{$data.info.lastdate|date="Y-m-d",###}
+							{$data.info.lastdate|date="Y-m-d H:i:s",###}
 						{/if}
 					</td>
 				</tr>
 				<tr>
 					<td>状态</td>
 					<td>	
-							<label class="radio-inline">
-							<input type="radio" checked="checked" value="1" name="checked">审核通过</label>
-							<label class="radio-inline">
-							<input type="radio" value="0" name="checked">未通过审核</label>
+						<label class="radio-inline">
+						<input type="radio" checked="checked" value="1" name="checked">审核通过</label>
+						<label class="radio-inline">
+						<input type="radio" value="0" name="checked">未通过审核</label>
 					</td>
 				</tr>
 				</table>
@@ -146,18 +112,7 @@ $(function(){
 	{if condition="$Request.param.id"}
 			Oscshop.setValue("checked", {$data.info.checked|default=1});		
 	{/if}
-	
-	$('.btn').click(function(){		
-		
-		if($('#pwd').val()==''){
-			alert('密码必填');
-			return false;
-		}
-		if($('#pwd').val().length<6){
-			alert('密码长度必须大于等于6位！！');
-			return false;
-		}
-	});		
+
 });
 </script>							
 {/block}

@@ -96,7 +96,7 @@
     <script type="text/javascript">    
         	setTimeout(function(){
 				location.href = '<?php echo($url);?>';
-			},3000);    
+			},500);    
     </script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:37:"./oscshop/admin\view\goods\index.html";i:1512623322;s:37:"./oscshop/admin\view\public\base.html";i:1512552775;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:37:"./oscshop/admin\view\goods\index.html";i:1512632875;s:37:"./oscshop/admin\view\public\base.html";i:1512552775;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -293,7 +293,6 @@
 								<span class="warning">不减库存</span> 								
 								<?php endif; ?>
 							</td>
-							
 							<td>
 								<input name="price" type="text" size="6" class="price" goods_id='<?php echo $v['goods_id']; ?>' value="<?php echo $v['price']; ?>" />
 							</td>
@@ -301,7 +300,7 @@
 								<input name="quantity" type="text" size="3" class="quantity" goods_id='<?php echo $v['goods_id']; ?>' value="<?php echo $v['quantity']; ?>" />
 							</td>
 							<td>
-								<input name="sort" type="text" size="2" class="sort" goods_id='<?php echo $v['goods_id']; ?>' value="<?php echo $v['sort_order']; ?>" />								
+								<input name="sort" type="text" size="2" class="sort" goods_id='<?php echo $v['goods_id']; ?>' value="<?php echo $v['sort_order']; ?>" />		
 							</td>
 							<td>
 								<?php switch($v['status']): case "1": ?><a href='<?php echo url("Goods/set_status",array("id"=>$v["goods_id"],"status"=>2)); ?>'><span class="btn btn-xs btn-info"><i class="fa fa-unlock bigger-120"></i></span></a><?php break; case "2": ?><a href='<?php echo url("Goods/set_status",array("id"=>$v["goods_id"],"status"=>1)); ?>'><span class="btn btn-xs btn-danger"><i class="fa fa-lock bigger-120"></i></span></a><?php break; endswitch; ?>
@@ -310,7 +309,7 @@
 								
 								
 								<div class="btn-group">
-									<button class="btn btn-xs btn-info">
+									<button class="btn btn-xs btn-info" data-toggle="dropdown" aria-expanded="false">
 										<i class="fa fa-edit bigger-120"></i>
 									</button>
 									<button class="btn btn-info btn-xs dropdown-toggle no-radius" data-toggle="dropdown" aria-expanded="false">
@@ -410,7 +409,6 @@
 $(function(){
 
 	$('.price').blur(function(){
-		
 		$.post(
 			"<?php echo url('Goods/update_price'); ?>",
 			{price:$(this).val(),goods_id:$(this).attr('goods_id')},

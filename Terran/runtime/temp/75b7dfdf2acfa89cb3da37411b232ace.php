@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:40:"./oscshop/common/view/public/success.tpl";i:1512552775;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:40:"./oscshop/common/view/public/success.tpl";i:1512636821;}*/ ?>
 <!doctype html>
 <html>
 <head>
@@ -97,7 +97,7 @@
     <script type="text/javascript">    
         	setTimeout(function(){
 				location.href = '<?php echo($url);?>';
-			},3000);    
+			},500);    
     </script>
 </body>
 </html>

@@ -16,7 +16,7 @@
 <table class="table table-striped table-bordered table-hover search-form">
 	<thead>
 		
-		<th><input name="user_name" type="text" placeholder="输入会员用户名" value="{:input('param.user_name')}" /></th>		
+		<th><input name="condition" type="text" placeholder="请输入微信openId/昵称" value="{:input('param.condition')}" /></th>		
 		
 		<th>
 			<a class="btn btn-primary" href="javascript:;" id="search" url="{:url('MemberBackend/index')}">查询</a>
@@ -31,47 +31,45 @@
 				<thead>
 					<tr>											
 						<th>ID</th>
-						<th>客户端</th> 
-						<th>用户名</th> 
-						<th>用户组</th>
+						<th>微信openId</th> 
+						<th>昵称</th> 
 						<th>登录次数</th> 						
 						<th>创建时间</th>							
-						<th>最后登录</th>		
-					
+						<th>最后登录</th>	
+						<th>主账户金额（元）</th>		
+						<th>辅账户金额（元）</th>		
+						<th>状态</th> 	
 						<th>操作</th>	
 					</tr>
 				</thead>
 				<tbody>
-						{volist name="list" id="v" empty="$empty"}
-						<tr>						
-							<td>{$v.uid}</td>
-							<td>{$v.reg_type}</td>
-							<td>
-								{if condition="$v['reg_type'] NEQ 'weixin'"}
-									{$v.username}
-								{else/}
-									{$v.nickname}
-								{/if}
-							</td>
-							<td>
-								{$v.title}
-							</td>
-							<td>{$v.loginnum}</td>
-							<td>{if condition="$v['regdate'] neq 0"}{$v.regdate|date="Y-m-d",###}{else/}无{/if}</td>
-							<td>
-								{if condition="$v['lastdate'] neq 0"}{$v.lastdate|date="Y-m-d",###}{else/}无{/if}							
-							</td>
-							<td>
-								<a  class="btn btn-xs btn-info" href='{:url("MemberBackend/edit",array("id"=>$v["uid"]))}'>
-									<i class="fa fa-edit bigger-120"></i>
-								</a> 
-							</td>
-						</tr>
-						{/volist}	
-						
-						<tr>
-							<td colspan="20" class="page">{$list->render()}</td>
-						</tr>
+					{volist name="list" id="v" empty="$empty"}
+					<tr>						
+						<td>{$v.uid}</td>
+						<td>{$v.openId}</td>
+						<td>{$v.username}</td>
+						<td>{$v.loginnum}</td>
+						<td>{if condition="$v['regdate'] neq 0"}{$v.regdate|date="Y-m-d",###}{else/}无{/if}</td>
+						<td>{if condition="$v['lastdate'] neq 0"}{$v.lastdate|date="Y-m-d",###}{else/}无{/if}</td>
+						<td><input name="mainAccount" type="text" size="8" class="account" uid='{$v.uid}' value="{$v.mainAccount}" /></td>
+						<td><input name="secondAccount" type="text" size="8" class="account" uid='{$v.uid}' value="{$v.secondAccount}" /></td>
+						<td>							
+							{switch name="v.checked"}
+								{case value="1"}<a href='{:url("MemberBackend/set_status",array("uid"=>$v["uid"],"checked"=>0))}'><span class="btn btn-xs btn-success"><i class="fa fa-check bigger-120"></i></span></a>{/case}
+								{case value="0"}<a href='{:url("MemberBackend/set_status",array("uid"=>$v["uid"],"checked"=>1))}'><span class="btn btn-xs btn-danger"><i class="fa fa-remove bigger-120"></i></span></a>{/case}
+							{/switch}
+						</td>
+						<td>
+							<a class="btn btn-xs btn-info" href='{:url("MemberBackend/edit",array("id"=>$v["uid"]))}'>
+								<i class="fa fa-edit bigger-120"></i>
+							</a> 
+						</td>
+					</tr>
+					{/volist}	
+					
+					<tr>
+						<td colspan="20" class="page">{$list->render()}</td>
+					</tr>
 				</tbody>
 				
 			</table>
@@ -94,6 +92,18 @@ $(function(){
         }
         window.location.href = url;
     });	
+    //修改用户账户金额
+    $('.account').blur(function(){
+		$.post(
+			"{:url('MemberBackend/updateAccount')}",
+			{accountMoney:$(this).val(),accountName:$(this).attr('name'),uid:$(this).attr('uid')},
+			function(data){
+				if(data){
+					window.location.reload();
+				}
+			}
+		);
+	});
 });
 </script>
 {/block}

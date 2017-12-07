@@ -1,16 +1,4 @@
 <?php
-/**
- * oscshop2 B2C电子商务系统
- *
- * ==========================================================================
- * @link      http://www.oscshop.cn/
- * @copyright Copyright (c) 2015-2016 oscshop.cn. 
- * @license   http://www.oscshop.cn/license.html License
- * ==========================================================================
- *
- * @author    李梓钿
- *
- */
 namespace wechat;
 use wechat\Wechat;
 use wechat\Curl;
@@ -297,10 +285,10 @@ final class OscshopWechat extends Wechat
 		}		
 		
 		//已经注册
-		if($user=Db::name('member')->where('wechat_openid',$openid)->find()){
+		if($user=Db::name('member')->where('openId',$openid)->find()){
 			
 			$user_info['uid']=$user['uid'];
-			$user_info['openid']=$user['wechat_openid'];
+			$user_info['openid']=$user['openId'];
 			$user_info['username']=$user['nickname'];
 			$user_info['sex']=$user['sex'];
 			$user_info['userpic']=$user['userpic'];
@@ -342,7 +330,7 @@ final class OscshopWechat extends Wechat
 		if($user_info){
 						
 			$uid=Db::name('member')->insert([
-				'wechat_openid'=>$user_info['openid'],
+				'openId'=>$user_info['openid'],
 				'reg_type'=>'weixin',
 				'nickname'=>$user_info['nickname'],
 				'sex'=>$user_info['sex'],
