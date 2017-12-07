@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:46:"./oscshop/member\view\order_backend\order.html";i:1512552775;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:1:{s:46:"./oscshop/member\view\order_backend\order.html";i:1512624781;}*/ ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/strict.dtd">
 <html>
 <head>
@@ -24,17 +24,15 @@
     </thead>
     <tbody>
       <tr>
-        <td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;"><b>订单号</b> <?php echo $order['order']['order_num_alias']; ?><br />
-          <b>付款时间</b> <?php if($order['order']['pay_time']){echo date('Y-m-d H:i:s',$order['order']['pay_time']);}else{echo '无';} ?><br />
-          <b>支付方式</b> 
-          <?php switch($order['order']['payment_code']): case "alipay": ?>支付宝<?php break; case "weixin": ?>微信支付<?php break; endswitch; ?>
-				<br />
-          <?php if ($order['order']['shipping_method']) { ?>
-          <b>货运方式</b> <?php echo get_shipping_name($order['order']['shipping_method']); } ?></td>
-          <td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;"><b>邮箱</b> <?php echo $order['order']['email']; ?><br />
-          <b>收货人联系号码</b><?php echo $order['order']['shipping_tel']; ?><br />
-          <b>收货人</b> <?php echo $order['order']['shipping_name']; ?><br />
-          <b>订单状态</b> <?php echo $order['order']['name']; ?><br /></td>
+        <td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">
+            <b>订单号</b> <?php echo $order['order']['order_num_alias']; ?><br />
+            <b>付款时间</b> <?php if($order['order']['pay_time']){echo date('Y-m-d H:i:s',$order['order']['pay_time']);}else{echo '无';} ?><br />
+          <b>货运方式</b> <?php echo get_shipping_name($order['order']['shipping_method']); ?>
+        </td>
+        <td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">
+            <b>收货人联系号码</b><?php echo $order['order']['shipping_tel']; ?><br />
+            <b>收货人</b> <?php echo $order['order']['shipping_name']; ?><br />
+        </td>
       </tr>
     </tbody>
   </table>

@@ -1,4 +1,4 @@
-<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:46:"./oscshop/member\view\order_backend\index.html";i:1512552775;s:37:"./oscshop/admin/view/public/base.html";i:1512552775;}*/ ?>
+<?php if (!defined('THINK_PATH')) exit(); /*a:2:{s:46:"./oscshop/member\view\order_backend\index.html";i:1512624415;s:37:"./oscshop/admin/view/public/base.html";i:1512552775;}*/ ?>
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -265,13 +265,13 @@
 									<i class="fa fa-eye bigger-120"></i>
 								</a> 
 								<?php if($v['shipping_method']): ?>
-								<a  class="btn btn-xs btn-info" href='<?php echo url("OrderBackend/print_order",array("id"=>$v["order_id"])); ?>'>
+								<a  class="btn btn-xs btn-info" href='<?php echo url("OrderBackend/print_order",array("id"=>$v["order_id"])); ?>' target="_blank">
 									<i class="fa fa-print bigger-120"></i>
 								</a> 
 								<?php endif; ?>
-								<!-- <a class="delete btn btn-xs btn-danger" href='<?php echo url("OrderBackend/del",array("id"=>$v["order_id"])); ?>' >
+								<a class="delete btn btn-xs btn-danger" href='<?php echo url("OrderBackend/del",array("id"=>$v["order_id"])); ?>' >
 									<i class="fa fa-trash bigger-120"></i>
-								</a> -->
+								</a>
 							</td>
 						</tr>
 						<?php endforeach; endif; else: echo "$empty" ;endif; ?>	

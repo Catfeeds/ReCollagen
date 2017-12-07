@@ -64,13 +64,13 @@
 									<i class="fa fa-eye bigger-120"></i>
 								</a> 
 								{if condition="$v['shipping_method']"}
-								<a  class="btn btn-xs btn-info" href='{:url("OrderBackend/print_order",array("id"=>$v["order_id"]))}'>
+								<a  class="btn btn-xs btn-info" href='{:url("OrderBackend/print_order",array("id"=>$v["order_id"]))}' target="_blank">
 									<i class="fa fa-print bigger-120"></i>
 								</a> 
 								{/if}
-								<!-- <a class="delete btn btn-xs btn-danger" href='{:url("OrderBackend/del",array("id"=>$v["order_id"]))}' >
+								<a class="delete btn btn-xs btn-danger" href='{:url("OrderBackend/del",array("id"=>$v["order_id"]))}' >
 									<i class="fa fa-trash bigger-120"></i>
-								</a> -->
+								</a>
 							</td>
 						</tr>
 						{/volist}	

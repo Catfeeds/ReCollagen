@@ -23,21 +23,15 @@
     </thead>
     <tbody>
       <tr>
-        <td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;"><b>订单号</b> <?php echo $order['order']['order_num_alias']; ?><br />
-          <b>付款时间</b> <?php if($order['order']['pay_time']){echo date('Y-m-d H:i:s',$order['order']['pay_time']);}else{echo '无';} ?><br />
-          <b>支付方式</b> 
-          {switch name="order.order.payment_code"}   
-					{case value="alipay"}支付宝{/case}    
-					{case value="weixin"}微信支付{/case}
-				{/switch}
-				<br />
-          <?php if ($order['order']['shipping_method']) { ?>
+        <td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">
+            <b>订单号</b> <?php echo $order['order']['order_num_alias']; ?><br />
+            <b>付款时间</b> <?php if($order['order']['pay_time']){echo date('Y-m-d H:i:s',$order['order']['pay_time']);}else{echo '无';} ?><br />
           <b>货运方式</b> <?php echo get_shipping_name($order['order']['shipping_method']); ?>
-          <?php } ?></td>
-          <td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;"><b>邮箱</b> <?php echo $order['order']['email']; ?><br />
-          <b>收货人联系号码</b><?php echo $order['order']['shipping_tel']; ?><br />
-          <b>收货人</b> <?php echo $order['order']['shipping_name']; ?><br />
-          <b>订单状态</b> <?php echo $order['order']['name']; ?><br /></td>
+        </td>
+        <td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">
+            <b>收货人联系号码</b><?php echo $order['order']['shipping_tel']; ?><br />
+            <b>收货人</b> <?php echo $order['order']['shipping_name']; ?><br />
+        </td>
       </tr>
     </tbody>
   </table>
