@@ -108,51 +108,31 @@
 							<thead>
 							<tr>
 							<td>订单号</td>
-							<td>支付方式</td>
-							<th>客户端</th> 
-							<td>客户名称</td>
+							<td>会员微信openId</td>
+							<td>会员昵称</td>
+							<td>下单时间</td>
+							<td>主账户消费</td>
+							<td>辅账户消费</td>
+							<td>总计</td>
 							<td>状态</td>
-							<td>生成日期</td>
-							<td>金额</td>
 							<td>操作</td>
 							</tr>
 							</thead>
 							<tbody>								
 								{volist name="order_list" id="v" empty="$empty"}
 								<tr>
+									<td>{$v.order_num_alias}</td>
+									<td>{$v.openId}</td>
+									<td>{$v.username}</td>
+									<td>{$v.date_added|date='Y-m-d H:i:s',###}</td>
+									<td>&yen;{$v.mainPay}</td>
+									<td>&yen;{$v.secondPay}</td>
+									<td>&yen;{$v.total}</td>
+									<td>{$v.name}</td>
 									<td>
-										{$v.order_num_alias}
-									</td>
-									<td>
-										{$v.payment_code}
-									</td>
-									<td>
-										{$v.reg_type}
-									</td>
-									<td>
-										{if condition="$v['reg_type'] NEQ 'weixin'"}
-											{$v.username}
-										{else/}
-											{$v.nickname}
-										{/if}
-									</td>
-									<td>
-										{$v.name}
-									</td>
-									<td>
-										{$v.date_added|date='Y-m-d H:i:s',###}
-									</td>
-									<td>
-										{if condition="$v['points_order'] EQ 1 "}
-											积分 {$v.pay_points}
-										{else/}
-											&yen; {$v.total}
-										{/if}										
-									</td>
-									<td>
-										<a  class="btn btn-info" href='{:url("member/OrderBackend/show_order",array("id"=>$v["order_id"]))}'>
-											<i class="fa-eye fa"></i>
-										</a> 
+										<a class="btn btn-xs btn-info" href='{:url("member/OrderBackend/show_order",array("id"=>$v["order_id"]))}'><i class="fa-eye fa"></i></a> 
+										<a class="btn btn-xs btn-info" href='{:url("OrderBackend/print_order",array("id"=>$v["order_id"]))}' target="_blank"><i class="fa fa-print bigger-120"></i></a> 
+										<a class="delete btn btn-xs btn-danger" href='{:url("OrderBackend/del",array("id"=>$v["order_id"]))}' ><i class="fa fa-trash bigger-120"></i></a>
 									</td>
 								</tr>
 								{/volist}	

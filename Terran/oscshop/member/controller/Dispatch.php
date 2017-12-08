@@ -1,16 +1,16 @@
 <?php
 /**
- * 物流管理控制器
+ * 货仓管理控制器
  */
 namespace osc\member\controller;
 use osc\common\controller\AdminBase;
 use think\Db;
-class Transport extends AdminBase{
+class Dispatch extends AdminBase{
 
 	protected function _initialize(){
 		parent::_initialize();
-		$this->assign('breadcrumb1','物流');
-		$this->assign('breadcrumb2','运费模板');
+		$this->assign('breadcrumb1','货仓');
+		$this->assign('breadcrumb2','货仓模板');
 	}
 	
 	function index(){		

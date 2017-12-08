@@ -84,7 +84,7 @@ class Order{
 			->join('__MEMBER__ m','o.uid = m.uid','left')			
 			->join('__ORDER_STATUS__ os','o.order_status_id = os.order_status_id','left')
 			->join('__ADDRESS__ a','o.address_id = a.address_id','left')
-			->field('o.*,m.username,a.*')
+			->field('o.*,m.username,m.openId,a.*')
 			->where($map)
 			->find();
 		
@@ -103,7 +103,9 @@ class Order{
 		);	
 			
 	}
-	//订单列表
+	/**
+	 * 获取后台所有订单列表
+	 */
 	public function order_list($param=array(),$page_num=20,$uid=null){
 		
 		$query=[];
@@ -128,16 +130,14 @@ class Order{
 		$map['Order.order_id']=['gt',0];
 	
 		return Db::view('Order','*')
-		->view('Member','username,reg_type,nickname','Order.uid=Member.uid')
+		->view('Member','openId,username','Order.uid=Member.uid')
 		->view('OrderStatus','order_status_id,name','Order.order_status_id=OrderStatus.order_status_id')
 		->where($map)
 		->order('Order.order_id desc')
 		->paginate($page_num,false,['query'=>$query]);
 	}
-		
-	
 	/**
-	 * 写人订单
+	 * 写入订单
 	 * @param $payment_code 支付方式
 	 * @param $order_data 订单数据
 	 * return array

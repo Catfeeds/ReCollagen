@@ -1,2 +1,9 @@
 # ReCollagen
-ThinkPHP5.0+小程序商城
+# Author: newbie91521@163.com
+
+ThinkPHP5.0 + Mini Program Mall
+
+Protoss	-- Mini Program Mall
+Terran	-- Admin System
+Zerg	-- API interface
+

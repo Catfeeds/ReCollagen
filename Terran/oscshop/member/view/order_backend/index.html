@@ -27,57 +27,43 @@
 					<tr>											
 						<th>ID</th>
 						<th>订单号</th> 
-						<th>支付方式</th> 
-						<th>总计</th> 						
-						<th>会员名</th>					
+						<th>会员微信openId</th>					
+						<th>会员昵称</th>	
+						<th>下单时间</th>	
+						<th>主账户消费</th> 		
+						<th>辅账户消费</th> 		
+						<th>总计</th> 	
 						<th>状态</th>	
-						<th>下单时间</th>					
 						<th>操作</th>	
 					</tr>
 				</thead>
 				<tbody>
-						{volist name="list" id="v" empty="$empty"}
-						<tr>						
-							<td>{$v.order_id}</td>
-							<td>{$v.order_num_alias}
-								{if condition="$v['shipping_method'] eq ''"}
-								<span style="border:1px solid red;color:#f60;">免运输</span>
-								{/if}
-							</td>	
-							<td>{$v.payment_code}</td>
-							<td>
-								￥{$v.total}
-							</td>						
-							<td>
-								{if condition="$v['reg_type'] NEQ 'weixin'"}
-									{$v.username}
-								{else/}
-									{$v.nickname}（微信用户）
-								{/if}
-							</td>
-							<td>{$v.name}</td>
-							<td>
-								<?php echo date('Y-m-d H:i:s',$v['date_added']); ?>
-							</td>
-							<td>
-								<a  class="btn btn-xs btn-info" href='{:url("OrderBackend/show_order",array("id"=>$v["order_id"]))}'>
-									<i class="fa fa-eye bigger-120"></i>
-								</a> 
-								{if condition="$v['shipping_method']"}
-								<a  class="btn btn-xs btn-info" href='{:url("OrderBackend/print_order",array("id"=>$v["order_id"]))}' target="_blank">
-									<i class="fa fa-print bigger-120"></i>
-								</a> 
-								{/if}
-								<a class="delete btn btn-xs btn-danger" href='{:url("OrderBackend/del",array("id"=>$v["order_id"]))}' >
-									<i class="fa fa-trash bigger-120"></i>
-								</a>
-							</td>
-						</tr>
-						{/volist}	
-						
-						<tr>
-							<td colspan="20" class="page">{$list->render()}</td>
-						</tr>
+					{volist name="list" id="v" empty="$empty"}
+					<tr>						
+						<td>{$v.order_id}</td>
+						<td>{$v.order_num_alias}
+							<span style="border:1px solid red;color:#f60;">菜鸟物流</span>
+						</td>	
+						<td>{$v.openId}</td>
+						<td>{$v.username}</td>
+						<td>
+							<?php echo date('Y-m-d H:i:s',$v['date_added']); ?>
+						</td>
+						<td>￥{$v.mainPay}</td>	
+						<td>￥{$v.secondPay}</td>				
+						<td>￥{$v.total}</td>	
+						<td>{$v.name}</td>
+						<td>
+							<a class="btn btn-xs btn-info" href='{:url("OrderBackend/show_order",array("id"=>$v["order_id"]))}'><i class="fa fa-eye bigger-120"></i></a>
+							<a class="btn btn-xs btn-info" href='{:url("OrderBackend/print_order",array("id"=>$v["order_id"]))}' target="_blank"><i class="fa fa-print bigger-120"></i></a> 
+							<a class="delete btn btn-xs btn-danger" href='{:url("OrderBackend/del",array("id"=>$v["order_id"]))}' ><i class="fa fa-trash bigger-120"></i></a>
+						</td>
+					</tr>
+					{/volist}	
+					
+					<tr>
+						<td colspan="20" class="page">{$list->render()}</td>
+					</tr>
 				</tbody>
 				
 			</table>
