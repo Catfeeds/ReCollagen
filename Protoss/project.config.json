@@ -10,7 +10,7 @@
 	"compileType": "miniprogram",
 	"libVersion": "1.6.6",
 	"appid": "touristappid",
-	"projectname": "wechatmall",
+	"projectname": "%E6%9C%AC%E5%9C%B0-%E6%97%A0appid",
 	"condition": {
 		"search": {
 			"current": -1,
