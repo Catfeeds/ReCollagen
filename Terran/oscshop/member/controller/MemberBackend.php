@@ -37,7 +37,6 @@ class MemberBackend extends AdminBase{
 			$date=input('post.');
 			$date['password'] = $date['pwd'];
 			$result = $this->validate($date,'Member');	
-
 			if($result!==true){
 				return ['error'=>$result];
 			}
@@ -70,19 +69,15 @@ class MemberBackend extends AdminBase{
 	  * 编辑会员
 	  */
  	public function edit(){
-	 	
 		if(request()->isPost()){
-		
-			$date = input('post.');			
-			$member['checked']     = $date['checked'];
-			$member['telephone']   = $date['telephone'];
-			$member['groupid']     = $date['groupid'];
-			$member['update_time'] = time();
+			$data = input('post.');	
+			$result = $this->validate($data,'Member.edit');	
+			if($result!==true){
+				$this->error($result);
+			}
+			$data['update_time'] = time();
 			
-			if(Db::name('member')->where('uid',$date['uid'])->update($member)){
-				
-				Db::name('member_auth_group_access')->where('uid',$date['uid'])->update(['group_id'=>$date['groupid']]);
-				
+			if(Db::name('member')->where('uid',$data['uid'])->update($data)){
 				storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'编辑了会员');
 				$this->success('编辑成功',url('MemberBackend/index'));
 			}else{
@@ -105,7 +100,6 @@ class MemberBackend extends AdminBase{
 		$data=input('post.');
 		$update['uid'] = (int)$data['uid'];
 		$update[$data['accountName']] = (float)$data['accountMoney'];
-		
 		if(Db::name('member')->update($update)){
 			storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'更新会员账户金额');
 			return true;
