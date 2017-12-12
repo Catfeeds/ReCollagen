@@ -221,7 +221,7 @@ class Goods{
 	public function get_goods_category(){
 			
 		if(!$home_goods_category= cache('home_goods_category')){
-			$home_goods_category=list_to_tree(Db::name('category')->field('id,pid,name')->order('sort_order asc')->select());
+			$home_goods_category=list_to_tree(Db::name('category')->field('id,pid,name')->order('sort asc')->select());
 			cache('home_goods_category', $home_goods_category);
 		}	
 			

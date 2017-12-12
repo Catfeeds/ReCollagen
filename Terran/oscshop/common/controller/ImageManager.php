@@ -1,15 +1,5 @@
 <?php
 /**
- * oscshop2 B2C电子商务系统
- *
- * ==========================================================================
- * @link      http://www.oscshop.cn/
- * @copyright Copyright (c) 2015-2016 oscshop.cn. 
- * @license   http://www.oscshop.cn/license.html License
- * ==========================================================================
- *
- * @author    李梓钿
- * 
  * 多用户图片管理器(只显示自己目录下的图片)
  * 
  * 图片只能一张张上传
@@ -128,7 +118,7 @@ class ImageManager extends Base{
 					$json['error'] = '文件名长度错误,必须大于3小于255';
 				}
 			
-				if(!preg_match('/^[A-Za-z0-9\-\_.]+$/', $filename)){
+				if(!preg_match('/^[A-Za-z0-9\-\@\_.]+$/', $filename)){
 					$json['error'] = '文件名,只允许包含字母、数字、下划线、破折号';
 				}
 				

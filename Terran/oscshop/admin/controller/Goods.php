@@ -71,6 +71,7 @@ class Goods extends AdminBase{
 		if(request()->isPost()){
 			
 			$data=input('post.');
+// halt($data);
 			
 			if(empty($data['name'])){
 		

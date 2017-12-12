@@ -103,8 +103,8 @@
 							</td>
 							<td>
 								{switch name="v.status"}
-									{case value="1"}<a href='{:url("Goods/set_status",array("id"=>$v["goods_id"],"status"=>2))}'><span class="btn btn-xs btn-info"><i class="fa fa-unlock bigger-120"></i></span></a>{/case}
-									{case value="2"}<a href='{:url("Goods/set_status",array("id"=>$v["goods_id"],"status"=>1))}'><span class="btn btn-xs btn-danger"><i class="fa fa-lock bigger-120"></i></span></a>{/case}
+									{case value="1"}<a href='{:url("Goods/set_status",array("id"=>$v["goods_id"],"status"=>2))}'><span class="btn btn-xs btn-success"><i class="fa fa-check bigger-120"></i></span></a>{/case}
+									{case value="2"}<a href='{:url("Goods/set_status",array("id"=>$v["goods_id"],"status"=>1))}'><span class="btn btn-xs btn-danger"><i class="fa fa-remove bigger-120"></i></span></a>{/case}
 								{/switch}
 							</td>
 							<td>
