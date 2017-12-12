@@ -4,193 +4,75 @@
  */
 namespace osc\member\controller;
 use osc\common\controller\AdminBase;
+use osc\member\model\Dispatch AS DispatchModel;
 use think\Db;
 class Dispatch extends AdminBase{
 
 	protected function _initialize(){
 		parent::_initialize();
 		$this->assign('breadcrumb1','货仓');
-		$this->assign('breadcrumb2','货仓模板');
+		$this->assign('breadcrumb2','货仓管理');
 	}
 	
-	function index(){		
-	
-		$model = osc_model('member','transport');
-	
-		$list=Db::name('transport')->select();
-
-		$extend=[];
-		
-		if ($list){
-			
-			$transport = array();
-			foreach ($list as $v) {
-				if (!array_key_exists($v['id'],$transport)){
-					$transport[$v['id']] = $v['title'];
-				}
-			}
-			$extend = $model->getExtendList(array('transport_id'=>array('in',array_keys($transport))));
-	
-            // 整理
-            if (!empty($extend)) {
-                $tmp_extend = array();
-                foreach ($extend as $val) {
-                    $tmp_extend[$val['transport_id']]['data'][] = $val;
-                    if ($val['is_default'] == 1) {
-                        $tmp_extend[$val['transport_id']]['price'] = $val['sprice'];
-                    }
-                }
-                $extend = $tmp_extend;
-            }
-		}
-
-		$data['list']=$list;
-	
-		$data['extend']=$extend;
-
-		$this->assign('output',$data);	
-
-		
+	public function index(){		
+		$list=Db::name('dispatch')->order('sort')->select();
+		$this->assign('list',$list);	
 		return $this->fetch();  
 	}
 	
-	function clone_data(){
-		
-		$id = (int)input('param.id');
-		$model = new \osc\member\model\Transport();
-		$transport = $model->getTransportInfo(array('id'=>$id));
-		unset($transport['id']);
-		$transport['title'] .= '的副本';
-		$transport['update_time'] = time();
-       
-        $insert = $model->addTransport($transport);
-        if ($insert) {
-    		$extend	= $model->getExtendList(array('transport_id'=>$id));
-    		foreach ($extend as $k=>$v) {
-    			foreach ($v as $key=>$value) {
-    				$extend[$k]['transport_id'] = $insert;
-    			}
-    			unset($extend[$k]['id']);
-    		}
-    		$model->addExtend($extend);
-        }
- 		storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'复制了运费模板');
-		
-		$this->redirect('Transport/index');
-        
-       
- 	}
-	
-	function add(){
-
+	public function add(){
 		$this->assign('crumbs','新增');
 		return $this->fetch('edit');
 	}
-	function edit(){
+	public function edit(){
+		$id = input('param.id/d');
+		$model = new DispatchModel();
+		$dispatch = $model->getDispatchInfo(array('id'=>$id));
 		
-		$id = (int)input('param.id');
-		$model = new \osc\member\model\Transport();
-		$transport = $model->getTransportInfo(array('id'=>$id));
-		$extend = $model->getExtendInfo(array('transport_id'=>$id));
-		
-		$data['transport']=$transport;
-		$data['extend']=$extend;
-		
-		
-		$this->assign('output',$data);
+		$this->assign('dispatch',$dispatch);
 		$this->assign('crumbs','修改');
-	
 		return $this->fetch('edit');
 	}
-	function save(){
+	/**
+	 * 保存货仓数据（新增&&编辑）
+	 */
+	public function save(){
 		if(request()->isPost()){		
+			$post=input('post.');
 		
-		$post=input('post.');
-	
-		$trans_info = array();
-		$trans_info['title'] 		= $post['title'];	
-		$trans_info['update_time'] 	= time();
+			$info = array();
+			$info['id'] 			= $post['id'];	
+			$info['dispatch_title'] = $post['title'];
+			$info['sort'] 			= $post['sort'];	
+			$info['update_time']    = time();
+			
+			$area = explode('|||', $post['areas']['kd'][1]);
+			$info['top_area_id'] 	= ','.$area[0].',';
+			$info['area_name'] 		= $area[1];
 
-		$model = new \osc\member\model\Transport();
+			$model = new DispatchModel();
 
-		if (is_numeric($post['transport_id'])){
-			//编辑时，删除所有附加表信息
-			$trans_info['id'] = intval($post['transport_id']);
-			$transport_id = intval($post['transport_id']);
-			$model->transUpdate($trans_info);
-			$model->delExtend($transport_id);
-		}else{
-			//新增
-			$transport_id = $model->addTransport($trans_info);
-		}
-		//保存默认运费
-		if (is_array($post['default']['kd'])){
-			$a = $post['default']['kd'];
-			$trans_list[0]['area_id'] = '';
-			$trans_list[0]['area_name'] = '全国';
-			$trans_list[0]['snum'] = $a['start'];
-			$trans_list[0]['sprice'] = $a['postage'];
-			$trans_list[0]['xnum'] = $a['plus'];
-			$trans_list[0]['xprice'] = $a['postageplus'];
-			$trans_list[0]['is_default'] = 1;
-			$trans_list[0]['transport_id'] = $transport_id;
-			$trans_list[0]['transport_title'] = $post['title'];
-			$trans_list[0]['top_area_id'] = '';
-		}
-		//保存自定义地区的运费设置
-		
-		$areas = isset($post['areas']['kd'])?$post['areas']['kd']:'';
-		$special = isset($post['special']['kd'])?$post['special']['kd']:'';
-		if (is_array($areas) && is_array($special)){
-			//$key需要加1，因为快递默认运费占了第一个下标
-			foreach ($special as $key=>$value) {
-			    if (empty($areas[$key])) continue;
-				$areas[$key] = explode('|||',$areas[$key]);
-				$trans_list[$key+1]['area_id'] = ','.$areas[$key][0].',';
-				$trans_list[$key+1]['area_name'] = $areas[$key][1];
-				$trans_list[$key+1]['snum'] = $value['start'];
-				$trans_list[$key+1]['sprice'] = $value['postage'];
-				$trans_list[$key+1]['xnum'] = $value['plus'];
-				$trans_list[$key+1]['xprice'] = $value['postageplus'];
-				$trans_list[$key+1]['is_default'] = 2;
-				$trans_list[$key+1]['transport_id'] = $transport_id;
-				$trans_list[$key+1]['transport_title'] = $post['title'];
-				//计算省份ID
-				$province = array();
-				$tmp = explode(',',$areas[$key][0]);
-				if (!empty($tmp) && is_array($tmp)){
-					$city = $this->getCity();
-					foreach ($tmp as $t) {
-						if(isset($city[$t])){
-							$pid = $city[$t];						
-							if (!in_array($pid,$province) && !empty($pid))
-							$province[] = $pid;
-						}
-						
-					}
-				}
-				if (count($province)>0){
-					$trans_list[$key+1]['top_area_id'] = ','.implode(',',$province).',';
-				}else{
-					$trans_list[$key+1]['top_area_id'] = '';
-				}
-				
+			if (is_numeric($post['id'])){
+				//编辑时，删除所有附加表信息
+				$model->updateDispatch($info);
+			}else{
+				//新增
+				$transport_id = $model->addDispatch($info);
 			}
 			
-		}
-		$model->addExtend($trans_list);
-		storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'更新了运费模板');
-		$this->success('保存成功',url('Transport/index'));
+			storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'更新了货仓管理');
+			$this->success('保存成功',url('Dispatch/index'));
 		
 		
 		}
 	}
-	function del(){
-		$id = (int)input('param.id');
-		$model = new \osc\member\model\Transport();
-		if($model->delTansport(array('id'=>$id))){
-			storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'删除了运费模板');
-		   $this->redirect('Transport/index');          
+	public function del(){
+		$id = input('param.id/d');
+
+		$model = new DispatchModel();
+		if($model->delDispatch(array('id'=>$id))){
+			storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'删除了货仓管理');
+		   $this->redirect('Dispatch/index');          
 		}else{
 			$this->error('操作失败');
 		}

@@ -13,7 +13,7 @@ class Transport extends AdminBase{
 		$this->assign('breadcrumb2','运费模板');
 	}
 	
-	function index(){		
+	public function index(){		
 	
 		$model = osc_model('member','transport');
 	
@@ -30,7 +30,6 @@ class Transport extends AdminBase{
 				}
 			}
 			$extend = $model->getExtendList(array('transport_id'=>array('in',array_keys($transport))));
-	
             // 整理
             if (!empty($extend)) {
                 $tmp_extend = array();
@@ -47,6 +46,7 @@ class Transport extends AdminBase{
 		$data['list']=$list;
 	
 		$data['extend']=$extend;
+	// halt($data);
 
 		$this->assign('output',$data);	
 
@@ -106,6 +106,7 @@ class Transport extends AdminBase{
 		if(request()->isPost()){		
 		
 		$post=input('post.');
+// halt($post);
 	
 		$trans_info = array();
 		$trans_info['title'] 		= $post['title'];	
