@@ -4,7 +4,6 @@ use think\Validate;
 class Goods extends Validate
 {
     protected $rule = [
-        'image'    =>  'require',
         'name'     =>  'require|min:2|unique:goods',  
         'cat_id'   =>  'require',
         'price'    =>  'require|float|between:0.01,9999999',  
@@ -13,12 +12,10 @@ class Goods extends Validate
         'length'   =>  'float|between:1,9999999',  
         'width'    =>  'float|between:1,9999999',  
         'height'   =>  'float|between:1,9999999',  
-
+        'image'    =>  'require',
     ];
 
     protected $message = [
-        'image.require'    =>  '请上传商品缩略图',
-
         'name.require'     =>  '商品名称必填',
         'name.min'         =>  '商品名称不能小于两个字',  
         'name.unique'      =>  '商品名称已经存在',     
@@ -40,7 +37,10 @@ class Goods extends Validate
         'width.float'      =>  '宽度必须是数字',
         'width.between'    =>  '宽度最低为1',
         'height.float'     =>  '高度必须是数字',
-        'height.between'   =>  '高度最低为1'
+        'height.between'   =>  '高度最低为1',
+        
+        'image.require'    =>  '请上传商品缩略图',
+
     ];
 	
 	 protected $scene = [

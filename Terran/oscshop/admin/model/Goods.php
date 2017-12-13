@@ -38,9 +38,11 @@ class Goods extends Model{
 	 * 新增商品
 	 */
 	public function add_goods($data){		
+// halt($data);
 			
 			$goods['name']     = $data['name'];
 			$goods['image']    = $data['image'];
+			$goods['cat_id']   = $data['cat_id'];
 			$goods['price']    = (float)$data['price'];
 			$goods['quantity'] = (int)$data['quantity'];
 			
@@ -54,53 +56,33 @@ class Goods extends Model{
 		
 			
 			$goods_id = $this->insert($goods,false,true);
-			
 			if($goods_id){
-				
 				try{
-
-					
+					//商品选项	
+					if(isset($data['goods_option'])){
+						foreach ($data['goods_option'] as $discount) {
+							Db::execute("INSERT INTO " . config('database.prefix'). "goods_option SET goods_id = '" . (int)$goods_id . "', quantity = '" . (int)$discount['quantity'] . "', sort = '" . (int)$discount['sort'] . "', option_name = '" . $discount['option_name'] . "', option_price=".(float)$discount['option_price']);
+						}
+					}
+					//折扣
+					if(isset($data['goods_discount'])){
+						foreach ($data['goods_discount'] as $discount) {
+							Db::execute("INSERT INTO " . config('database.prefix'). "goods_discount SET goods_id = '" . (int)$goods_id . "', quantity = '" . (int)$discount['quantity'] . "', price=".(float)$discount['price']);
+						}
+					}
+					//商品轮播图
 					if (isset($data['goods_image'])){
 						foreach ($data['goods_image'] as $image) {
 							Db::execute("INSERT INTO " . config('database.prefix'). "goods_image SET goods_id =" . (int)$goods_id . ",image = '" . $image['image']."',sort_order =" . (int)$image['sort_order']);
 						}
 					}
-					
+					//商品详情图
 					if (isset($data['mobile_image'])){
 						foreach ($data['mobile_image'] as $mobile_image) {
 							Db::execute("INSERT INTO " . config('database.prefix'). "goods_mobile_description_image SET goods_id =" . (int)$goods_id . ", image = '" . $mobile_image['image']."', description = '" . $mobile_image['description'] .  "', sort_order =" . (int)$mobile_image['sort_order']);
 						}
 					}
 					
-					if(isset($data['goods_discount'])){
-						foreach ($data['goods_discount'] as $discount) {
-							Db::execute("INSERT INTO " . config('database.prefix'). "goods_discount SET goods_id = '" . (int)$goods_id . "', quantity = '" . (int)$discount['quantity'] . "', price=".(float)$discount['price']);
-						}
-					}
-					//商品选项					
-					if (isset($data['goods_option'])) {
-						$quantity=0;
-						foreach ($data['goods_option'] as $goods_option) {
-						if ($goods_option['type'] == 'select' || $goods_option['type'] == 'radio' || $goods_option['type'] == 'checkbox') {							
-
-							$option_id=Db::name('goods_option')->insert(['goods_id'=>(int)$goods_id, 'option_id'=>(int)$goods_option['option_id'], 'required'=>(int)$goods_option['required'], 'option_name'=>$goods_option['name'],'type'=>$goods_option['type']],false,true);	
-																	
-							if (isset($goods_option['goods_option_value']) && count($goods_option['goods_option_value']) > 0 ) {
-									foreach ($goods_option['goods_option_value'] as $goods_option_value) {
-									
-										Db::execute("INSERT INTO ".config('database.prefix')."goods_option_value SET goods_option_id=".(int)$option_id.",goods_id=".(int)$goods_id.",option_id=".(int)$goods_option['option_id'].",image='".(isset($goods_option_value['option_value_image'])?$goods_option_value['option_value_image']:'')."',option_value_id=".(int)$goods_option_value['option_value_id'].",quantity=".(int)$goods_option_value['quantity'].",subtract=".(int)$goods_option_value['subtract'].",price='".(float)$goods_option_value['price']."',price_prefix='".$goods_option_value['price_prefix']."',weight='".(float)$goods_option_value['weight']."',weight_prefix='".$goods_option_value['weight_prefix']."'");	
-										$quantity+=$goods_option_value['quantity'];
-									} 
-								}
-								
-							}
-					
-						}
-					
-						Db::name('goods')->where('goods_id',$goods_id)->update(['quantity'=>$quantity]);
-
-					}	
-										
 				    return true;
 					
 				}catch(Exception $e){

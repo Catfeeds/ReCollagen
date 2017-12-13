@@ -34,38 +34,31 @@ class Goods extends AdminBase{
 		return $this->fetch();
 
 	 }
-	 //新增商品
+	/**
+	 * 新增商品
+	 */
 	 public function add(){
 		
 		if(request()->isPost()){
-			
-			$data=input('post.');
-			
-			$model=osc_model('admin','goods');  	
-			
-			$error=$model->validate($data);	
-	
-			if($error){					
-				$this->error($error['error']);	
+			$data     = input('post.');
+			$model    = osc_model('admin','goods');  	
+			$validate = $this->validate($data,'Goods');	
+			if($validate!==true){
+				return $this->error($validate);	
 			}
 			
-			$return=$model->add_goods($data);		
-			
-			if($return){
-												
+			$res = $model->add_goods($data);		
+			if($res){
 				storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'新增了商品');		
-			
 				$this->success('新增成功！',url('Goods/index'));			
 			}else{
 				$this->error('新增失败！');			
-			
 			}
-			
 		}
 		
 	 	$this->assign('crumbs', '新增');
 		$this->assign('action', url('Goods/add'));
-		
+		$this->assign('category', osc_goods()->get_category_tree());
 	 	return $this->fetch('edit');
 	 }
 	 /**
@@ -98,58 +91,19 @@ class Goods extends AdminBase{
 	 	return $this->fetch('general');
 	 }
 
-	 //商品选项
-	 public function edit_option(){
-	 	
-		if(request()->isPost()){
-				
-			$data=input('post.');
-			
-			if (isset($data['goods_option'])) {
-				foreach ($data['goods_option'] as $goods_option) {
-					
-					if(!isset($goods_option['goods_option_value'])){					
-						$this->error('选项值必填');
-					}
-								
-					foreach ($goods_option['goods_option_value'] as $k => $v) {
-						if((int)$v['quantity']<=0){
-							$this->error('数量必填');
-						}
-					}
-				}
-			}
-			$model=osc_model('admin','goods'); 
-			
-			$model->edit_option($data);
-			
-			storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'更新商品选项');	
-									
-			return $this->success('更新成功！',url('Goods/index'));
-
-		}		
-		
-		$goods_options=osc_goods()->get_goods_options(input('id'));
-		
-		$this->assign('goods_options',$goods_options);	
-
-		//选项值
-		$option_values=[];
-		foreach ($goods_options as $goods_option) {
-				$option_values[$goods_option['option_id']] = osc_goods()->get_option_values($goods_option['option_id']);
-		}		
-		
-		$this->assign('option_values',$option_values);	
-		
+	/**
+	  * 商品选项
+	  */
+	public function edit_option(){
+		$this->assign('goods_option',Db::name('goods_option')->where('goods_id',input('id/d'))->order('sort')->select());	
 		$this->assign('crumbs', '选项');	
 	 	return $this->fetch('option');
-	 }
+	}
 	 /**
 	  * 商品折扣
 	  */
 	 public function edit_discount(){		
-		
-		$this->assign('goods_discount',Db::name('goods_discount')->where('goods_id',input('id'))->order('quantity ASC')->select());	
+		$this->assign('goods_discount',Db::name('goods_discount')->where('goods_id',input('id/d'))->order('quantity ASC')->select());	
 		$this->assign('crumbs', '折扣');	
 	 	return $this->fetch('discount');
 	 }
@@ -157,24 +111,23 @@ class Goods extends AdminBase{
 	  * 商品相册
 	  */
 	 public function edit_image(){
-	 	$this->assign('goods_images',Db::name('goods_image')->where('goods_id',input('id'))->order('sort_order asc')->select());	
-		$this->assign('crumbs', '商品相册');	
+	 	$this->assign('goods_images',Db::name('goods_image')->where('goods_id',input('id/d'))->order('sort_order asc')->select());	
+		$this->assign('crumbs', '商品轮播图');	
 	 	return $this->fetch('image');
 	 }
 	 //商品手机端描述
 	 public function edit_mobile(){
 	 	$this->assign('mobile_images',Db::name('goods_mobile_description_image')->where('goods_id',input('id'))->order('sort_order asc')->select());	
-		$this->assign('crumbs', '手机端描述');	
+		$this->assign('crumbs', '详情描述');	
 	 	return $this->fetch('mobile');
 	 }
 	 
 	//编辑信息，新增，修改
 	public function ajax_eidt(){
 		if(request()->isPost()){
-			halt(input('post.'));
-			$data=input('post.');
-			
-			$table_name=$data['table'];
+
+			$data       = input('post.');
+			$table_name = $data['table'];
 			
 			if(isset($data[$table_name][$data['key']])){
 				$info=$data[$table_name][$data['key']];
@@ -200,7 +153,7 @@ class Goods extends AdminBase{
 				//新增
 				$info['goods_id']=(int)$data['goods_id'];
 		
-				$r=Db::name($table_name)->insert($info,false,true);
+				$r = Db::name($table_name)->insert($info,false,true);
 				if($r){
 					storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'更新商品'.$data['goods_id']);						
 					return ['success'=>'更新成功','id'=>$r];
@@ -211,7 +164,7 @@ class Goods extends AdminBase{
 		}
 	}
 	//用于编辑中删除
-	 function ajax_del(){
+	public function ajax_del(){
 		if(request()->isPost()){
 			$data=input('post.');		
 			
@@ -229,7 +182,7 @@ class Goods extends AdminBase{
 		}
 	}
 	//复制商品 
-	function copy_goods(){
+	public function copy_goods(){
 		$id =input('post.');
 
 		$model=osc_model('admin','goods'); 
