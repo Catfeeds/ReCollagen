@@ -22,7 +22,7 @@
     
           <ul class="nav nav-tabs">
           	<li class="active"><a href="#tab-data" data-toggle="tab">基本信息</a></li>
-            <li><a href="#tab-general" data-toggle="tab">商品描述</a></li>
+
             <li><a href="#tab-links" data-toggle="tab">关联</a></li>   
             <li><a href="#tab-option" data-toggle="tab">选项</a></li>  
             <li><a href="#tab-discount" data-toggle="tab">折扣</a></li>                    
@@ -137,18 +137,6 @@
 							<input id="input-meta-title2" class="form-control" type="text" placeholder="重量" value="" name="weight">
 						</div>
 					</div>
-
-					<div class="form-group">
-						<label class="col-sm-2 control-label" for="input-length-class">重量单位：</label>
-						<div class="col-sm-10">
-							
-							<select id="input-length-class" class="form-control" name="weight_class_id">
-								{volist name="weight_class" id="v"}
-									<option value="{$v.weight_class_id}"  >{$v.title}</option>
-								{/volist}
-							</select>
-						</div>
-					</div>
 		            
 		            <div class="form-group">
 						<label class="col-sm-2 control-label" for="input-length">尺寸(L x W x H)：</label>
@@ -166,75 +154,19 @@
 							</div>
 						</div>
 					</div>
-
-
-					<div class="form-group">
-						<label class="col-sm-2 control-label" for="input-length-class">尺寸单位：</label>
-						<div class="col-sm-10">
-							
-							<select id="input-length-class" class="form-control" name="length_class_id">
-								{volist name="length_class" id="v"}
-									<option value="{$v.length_class_id}">{$v.title}</option>
-								{/volist}
-							</select>
-						</div>
-					</div>
 		            
 		            <div class="form-group">
 						<label class="col-sm-2 control-label">商品状态：</label>
 						<div class="col-sm-10">
 							<label class="radio-inline">
-							<input type="radio" checked="checked" value="1" name="status">启用</label>
+							<input type="radio" checked="checked" value="1" name="status">上架</label>
 							<label class="radio-inline">
-							<input type="radio" value="2" name="status">停用</label>
-						</div>
-					</div>
-		            
-		            <div class="form-group required">
-						<label class="col-sm-2 control-label" for="input-meta-title2">排序：</label>
-						<div class="col-sm-10">
-							<input id="input-meta-title2" class="form-control" type="text" placeholder="排序" value="" name="sort_order">
+							<input type="radio" value="0" name="status">下架</label>
 						</div>
 					</div>
 		            
 	          	</div>
 	          	<!-- 基本信息 END -->
-	          	
-	          	<!-- 商品描述  START -->
-	          	<div class="tab-pane" id="tab-general">	          		
-					
-					<div class="form-group">
-	                    <label class="col-sm-2 control-label" for="input-description">商品简介：</label>
-	                    <div class="col-sm-10">
-	                      <textarea name="goods_description[summary]" class="form-control" rows="5"></textarea>	
-	                    </div>
-                  	</div>
-					
-					<div class="form-group">
-	                    <label class="col-sm-2 control-label" for="input-description">商品详情：</label>
-	                    <div class="col-sm-10">
-	                      <textarea name="goods_description[description]" id="description"></textarea>	
-	                    </div>
-                  	</div>
-		
-					
-					<div class="form-group">
-						<label class="col-sm-2 control-label" for="input-meta-description2">Meta标签描述：</label>
-						<div class="col-sm-10">
-							<textarea id="input-meta-description2" class="form-control" placeholder="Meta标签描述" rows="5" name="goods_description[meta_description]"></textarea>
-						</div>
-					</div>
-					<div class="form-group">
-						<label class="col-sm-2 control-label" for="input-meta-keyword2">Meta标签关键词：</label>
-						<div class="col-sm-10">
-							<textarea id="input-meta-keyword2" class="form-control" placeholder="Meta标签关键词" rows="5" name="goods_description[meta_keyword]"></textarea>
-						</div>
-					</div>
-					
-					
-					
-	          	</div>
-	          	<!-- 商品描述 END --> 	          	
 	          	
 	          	<!-- 关联 START -->
 	          	<div class="tab-pane" id="tab-links">

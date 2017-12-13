@@ -25,16 +25,16 @@
 				<option value="">全部分类</option>			
 				<?php $input_cid=input('category'); ?>				
 				{volist name="category" id="cat"}
-					<option {if condition="$input_cid eq $cat['id']"} selected="selected"{/if} value="{$cat.id}">{$cat.title_show}</option>
+					<option {if condition="$input_cid eq $cat['id']"} selected="selected"{/if} value="{$cat.id}">{$cat.name}</option>
 				{/volist}
 				
 			</select>
 		</th>	
 		<th>    				
 			<select name="status">
-				<option value="">全部状态</option>							
-				<option {if condition="input('status') eq 1"} selected="selected"{/if}value="1">启用</option>
-				<option {if condition="input('status') eq 2"} selected="selected"{/if} value="2">停用</option>
+				<option {if condition="$status eq null"} selected="selected"{/if}value="">全部状态</option>							
+				<option {if condition="$status eq 1"} selected="selected"{/if}value="1">上架商品</option>
+				<option {if condition="$status === 0"} selected="selected"{/if} value="0">下架商品</option>
 			</select>
 		</th>
 		<th>
@@ -59,7 +59,8 @@
 						</th>											
 						<th>ID</th> 
 						<th>图片</th> 
-						<th>商品名称</th> 			
+						<th>商品名称</th> 	
+						<th>商品分类</th> 			
 						<th>价格</th>
 						<th>数量</th>
 						<th>排序</th>
@@ -92,6 +93,7 @@
 								<span class="warning">不减库存</span> 								
 								{/if}
 							</td>
+							<td>{$v.cat_name}</td>
 							<td>
 								<input name="price" type="text" size="6" class="price" goods_id='{$v.goods_id}' value="{$v.price}" />
 							</td>
@@ -103,8 +105,8 @@
 							</td>
 							<td>
 								{switch name="v.status"}
-									{case value="1"}<a href='{:url("Goods/set_status",array("id"=>$v["goods_id"],"status"=>2))}'><span class="btn btn-xs btn-success"><i class="fa fa-check bigger-120"></i></span></a>{/case}
-									{case value="2"}<a href='{:url("Goods/set_status",array("id"=>$v["goods_id"],"status"=>1))}'><span class="btn btn-xs btn-danger"><i class="fa fa-remove bigger-120"></i></span></a>{/case}
+									{case value="1"}<a href='{:url("Goods/set_status",array("id"=>$v["goods_id"],"status"=>0))}'><span class="btn btn-xs btn-success"><i class="fa fa-check bigger-120"></i></span></a>{/case}
+									{case value="0"}<a href='{:url("Goods/set_status",array("id"=>$v["goods_id"],"status"=>1))}'><span class="btn btn-xs btn-danger"><i class="fa fa-remove bigger-120"></i></span></a>{/case}
 								{/switch}
 							</td>
 							<td>
@@ -117,33 +119,16 @@
 									<button class="btn btn-info btn-xs dropdown-toggle no-radius" data-toggle="dropdown" aria-expanded="false">
 										<span class="bigger-110 ace-icon fa fa-caret-down icon-only"></span>
 									</button>
-									<ul class="dropdown-menu dropdown-info dropdown-menu-right">																
-										<li>
-											<a href='{:url("Goods/edit_general",array("id"=>$v["goods_id"]))}'>基本信息</a>
-										</li>									
-																		
-										<li>
-											<a href='{:url("Goods/edit_links",array("id"=>$v["goods_id"]))}'>关联</a>
-										</li>
-										<li>
-											<a href='{:url("Goods/edit_option",array("id"=>$v["goods_id"]))}'>选项</a>
-										</li>
-										<li>
-											<a href='{:url("Goods/edit_discount",array("id"=>$v["goods_id"]))}'>折扣</a>
-										</li>
-										<li>
-											<a href='{:url("Goods/edit_image",array("id"=>$v["goods_id"]))}'>商品相册</a>
-										</li>
-										<li>
-											<a href='{:url("Goods/edit_mobile",array("id"=>$v["goods_id"]))}'>手机端描述</a>
-										</li>									
+									<ul class="dropdown-menu dropdown-info dropdown-menu-right">														
+										<li><a href='{:url("Goods/edit_general",array("id"=>$v["goods_id"]))}'>基本信息</a></li>			
+										<li><a href='{:url("Goods/edit_option",array("id"=>$v["goods_id"]))}'>选项</a></li>
+										<li><a href='{:url("Goods/edit_discount",array("id"=>$v["goods_id"]))}'>折扣</a></li>
+										<li><a href='{:url("Goods/edit_image",array("id"=>$v["goods_id"]))}'>商品相册</a></li>
+										<li><a href='{:url("Goods/edit_mobile",array("id"=>$v["goods_id"]))}'>手机端描述</a></li>						
 									</ul>
 								</div>
 								
-								<a class="delete btn btn-xs btn-danger" href='{:url("Goods/del",array("id"=>$v["goods_id"]))}' >
-									<i class="fa fa-trash bigger-120"></i>
-								</a>
-								
+								<a class="delete btn btn-xs btn-danger" href='{:url("Goods/del",array("id"=>$v["goods_id"]))}' ><i class="fa fa-trash bigger-120"></i></a>
 							</td>
 						</tr>
 						{/volist}

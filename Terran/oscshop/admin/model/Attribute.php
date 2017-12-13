@@ -1,16 +1,4 @@
 <?php
-/**
- * oscshop2 B2C电子商务系统
- *
- * ==========================================================================
- * @link      http://www.oscshop.cn/
- * @copyright Copyright (c) 2015-2016 oscshop.cn. 
- * @license   http://www.oscshop.cn/license.html License
- * ==========================================================================
- *
- * @author    李梓钿
- *
- */
 namespace osc\admin\model;
 use think\Db;
 class Attribute{
@@ -72,11 +60,10 @@ class Attribute{
 	}
 	public function edit_attribute($data){		
 			
-			$attribute['attribute_id']=$data['id'];
-			$attribute['name']=$data['name'];	
-
-			$attribute['update_time']=time();		
-			$attribute['value']='';	
+			$attribute['attribute_id'] =$data['id'];
+			$attribute['name']         =$data['name'];	
+			$attribute['update_time']  =time();		
+			$attribute['value']        ='';	
 			
 			foreach ($data['attribute_value'] as $k=> $v) {
 				if(!empty($v)){
@@ -96,11 +83,10 @@ class Attribute{
 					
 				foreach ($data['attribute_value'] as $k => $v) {						
 						if(!empty($v)){
-							
-							$value['attribute_id']=$data['id'];
-							$value['value_name']=$v['name'];						
-							$value['value_sort_order']=$v['sort_order'];						
-							$value['name']=$attribute['name'];	
+							$value['attribute_id']     =$data['id'];
+							$value['value_name']       =$v['name'];						
+							$value['value_sort_order'] =$v['sort_order'];						
+							$value['name']             =$attribute['name'];	
 							Db::name('attributeValue')->insert($value,false,true);
 						}
 					}

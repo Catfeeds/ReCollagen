@@ -9,22 +9,27 @@ class Goods extends AdminBase{
 		$this->assign('breadcrumb1','商品');
 		$this->assign('breadcrumb2','商品管理');
 	}
-	//商品列表
+	/**
+	 * 商品列表
+	 */
     public function index(){
 
 		$filter=input('param.');
         
 		if(isset($filter['type'])&&$filter['type']=='search'){
+			//查询列表
 			$list=osc_goods()->get_category_goods_list($filter,config('page_num'));
 		}else{
+			//默认列表
 			$list=osc_goods()->get_goods_list($filter,config('page_num'));
 		}		
 
-		$this->assign('empty','<tr><td colspan="20">没有数据~</td></tr>');
-		
-		$this->assign('category',osc_goods()->get_category_tree());
-		
-		$this->assign('list',$list);
+		$this->assign([
+			'list'     => $list,
+			'status'   => input('get.status/d'),
+			'category' => osc_goods()->get_category_tree(),
+			'empty'    => '<tr><td colspan="20">没有数据</td></tr>',
+		]);
 	
 		return $this->fetch();
 
@@ -58,80 +63,41 @@ class Goods extends AdminBase{
 			
 		}
 		
-		$this->assign('weight_class',Db::name('WeightClass')->select());
-		$this->assign('length_class',Db::name('LengthClass')->select());
 	 	$this->assign('crumbs', '新增');
 		$this->assign('action', url('Goods/add'));
 		
 	 	return $this->fetch('edit');
 	 }
-	 //商品基本信息
+	 /**
+	  * 编辑商品基本信息
+	  */
 	 public function edit_general(){
-	 	
 		if(request()->isPost()){
-			
-			$data=input('post.');
-// halt($data);
-			
-			if(empty($data['name'])){
-		
-				$this->error('商品名称必填！');	
+			$data = input('post.');	
+
+			$validate = $this->validate($data,'Goods');
+			if($validate!==true){
+				return $this->error($validate);	
 			}
 			
-			$description=$data['description'];
-			unset($data['description']);
-			
-			
-			try{
-				
-				Db::name('goods')->update($data,false,true);
-				Db::name('goods_description')->where('goods_id',$data['goods_id'])->update($description,false,true);
+			$res = Db::name('goods')->update($data,false,true);
+			if ($res) {
 				storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'更新商品基本信息');							
 				return $this->success('更新成功！',url('Goods/index'));
-				
-			}catch(Exception $e){
-				return $this->error('更新失败！'.$e);	
+			}else{
+				return $this->error('更新失败！');	
 			}
-			
 		}
-		
-		$this->assign('weight_class',Db::name('WeightClass')->select());
-		$this->assign('length_class',Db::name('LengthClass')->select());
-		$this->assign('description',Db::name('goods_description')->where('goods_id',(int)input('id'))->find());
-	 	$this->assign('goods',Db::name('Goods')->find((int)input('id')));
-		
-	 	$this->assign('crumbs', '编辑基本信息');	
+
+	 	$this->assign([
+	 		'crumbs' => '编辑基本信息',
+	 		'category' => osc_goods()->get_category_tree(),
+	 		'goods' => Db::name('Goods')->find((int)input('id')),
+	 	]);	
 		
 	 	return $this->fetch('general');
 	 }
-	 //商品关联项	
-	 public function edit_links(){
-	 	
-		if(request()->isPost()){				
-				
-				$resault=osc_model('admin','goods')->edit_links(input('post.'));					
-					
-				if($resault){
-					storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'更新商品分类');											
-					return $this->success('更新成功！',url('Goods/index'));
-				}else{
-					return $this->error('更新失败！');
-				}				
-		
-		}
-		
-		$link_data=osc_model('admin','goods')->get_link_data((int)input('param.id'));  
-		
-	 	$this->assign('goods_categories',$link_data['goods_categories']);
-		
-		$this->assign('goods_attribute',$link_data['goods_attribute']);
-		
-		$this->assign('goods_brand',$link_data['goods_brand']);
-		
-	 	$this->assign('crumbs', '关联');	
-		
-	 	return $this->fetch('links');
-	 }
+
 	 //商品选项
 	 public function edit_option(){
 	 	
@@ -178,14 +144,18 @@ class Goods extends AdminBase{
 		$this->assign('crumbs', '选项');	
 	 	return $this->fetch('option');
 	 }
-	 //商品折扣
+	 /**
+	  * 商品折扣
+	  */
 	 public function edit_discount(){		
 		
 		$this->assign('goods_discount',Db::name('goods_discount')->where('goods_id',input('id'))->order('quantity ASC')->select());	
 		$this->assign('crumbs', '折扣');	
 	 	return $this->fetch('discount');
 	 }
-	 //商品相册
+	/**
+	  * 商品相册
+	  */
 	 public function edit_image(){
 	 	$this->assign('goods_images',Db::name('goods_image')->where('goods_id',input('id'))->order('sort_order asc')->select());	
 		$this->assign('crumbs', '商品相册');	
@@ -199,9 +169,9 @@ class Goods extends AdminBase{
 	 }
 	 
 	//编辑信息，新增，修改
-	function ajax_eidt(){
+	public function ajax_eidt(){
 		if(request()->isPost()){
-			
+			halt(input('post.'));
 			$data=input('post.');
 			
 			$table_name=$data['table'];

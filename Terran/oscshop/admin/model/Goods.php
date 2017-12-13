@@ -1,106 +1,64 @@
 <?php
 namespace osc\admin\model;
+use think\Model;
 use think\Db;
-class Goods{
-	
-	public function validate($data){
 
-		$error=array();
-		if(empty($data['name'])){
-			$error['error']='产品名称必填';
-		}elseif(!isset($data['goods_category'])){
-			$error['error']='产品分类必填';
-		}
-		
-		if (isset($data['goods_option'])) {
-				foreach ($data['goods_option'] as $goods_option) {
-					
-					if(!isset($goods_option['goods_option_value'])){
-						$error['error']='选项值必填';
-					}					
-					
-					foreach ($goods_option['goods_option_value'] as $k => $v) {
-						if((int)$v['quantity']<=0){
-							$error['error']='选项数量必填';
-						}
-					}
-				}
-		}
-		
-		if($error){
-			return $error;				
-		}
-						
-	}
+class Goods extends Model{
 	
+	// public function validate($data){
+
+	// 	$error=array();
+	// 	if(empty($data['name'])){
+	// 		$error['error']='产品名称必填';
+	// 	}elseif(!isset($data['goods_category'])){
+	// 		$error['error']='产品分类必填';
+	// 	}
+		
+	// 	if (isset($data['goods_option'])) {
+	// 			foreach ($data['goods_option'] as $goods_option) {
+					
+	// 				if(!isset($goods_option['goods_option_value'])){
+	// 					$error['error']='选项值必填';
+	// 				}					
+					
+	// 				foreach ($goods_option['goods_option_value'] as $k => $v) {
+	// 					if((int)$v['quantity']<=0){
+	// 						$error['error']='选项数量必填';
+	// 					}
+	// 				}
+	// 			}
+	// 	}
+		
+	// 	if($error){
+	// 		return $error;				
+	// 	}
+						
+	// }
+	/**
+	 * 新增商品
+	 */
 	public function add_goods($data){		
 			
-			$goods['name']=$data['name'];
-			$goods['image']=$data['image'];
-			$goods['model']=$data['model'];
-			$goods['sku']=$data['sku'];
-			$goods['location']=$data['location'];
-			$goods['price']=(float)$data['price'];
-			$goods['quantity']=(int)$data['quantity'];
-			$goods['points']=$data['points'];
-			$goods['pay_points']=$data['pay_points'];
+			$goods['name']     = $data['name'];
+			$goods['image']    = $data['image'];
+			$goods['price']    = (float)$data['price'];
+			$goods['quantity'] = (int)$data['quantity'];
 			
-			if($goods['pay_points']>0){
-				$goods['is_points_goods']=1;
-			}else{
-				$goods['is_points_goods']=0;
-			}	
+			$goods['weight']   = (float)$data['weight'];			
+			$goods['length']   = $data['length'];
+			$goods['width']    = $data['width'];
+			$goods['height']   = $data['height'];
 			
-			$goods['minimum']=(int)$data['minimum'];
-			$goods['subtract']=$data['subtract'];
-			
-			$goods['shipping']=$data['shipping'];
-
-			$goods['weight_class_id']=$data['weight_class_id'];
-			$goods['weight']=(float)$data['weight'];			
-			
-			$goods['length']=$data['length'];
-			$goods['width']=$data['width'];
-			$goods['height']=$data['height'];
-			$goods['length_class_id']=$data['length_class_id'];
-			
-			$goods['status']=$data['status'];
-			$goods['sort_order']=(int)$data['sort_order'];
-			$goods['date_added']=date('Y-m-d H:i:s',time());
+			$goods['status']   = $data['status'];
+			$goods['add_time'] = date('Y-m-d H:i:s',time());
 		
 			
-			$goods_id=Db::name('goods')->insert($goods,false,true);
+			$goods_id = $this->insert($goods,false,true);
 			
 			if($goods_id){
 				
 				try{
-					$goods_description['goods_id']=$goods_id;
-				
-					$goods_description['summary']=$data['goods_description']['summary'];
-					$goods_description['description']=$data['goods_description']['description'];
-					$goods_description['meta_description']=$data['goods_description']['meta_description'];
-					$goods_description['meta_keyword']=$data['goods_description']['meta_keyword'];
-					
-					
-					Db::name('goods_description')->insert($goods_description);
-					
-					if (isset($data['goods_category'])) {
-						foreach ($data['goods_category'] as $category_id) {
-							Db::execute("INSERT INTO " . config('database.prefix'). "goods_to_category SET goods_id = '" . (int)$goods_id . "', category_id = '" . (int)$category_id . "'");
-						}
-					}
-					
-					if (isset($data['goods_attribute'])) {
-						foreach ($data['goods_attribute'] as $attribute_id) {
-							Db::execute("INSERT INTO " . config('database.prefix'). "goods_attribute SET goods_id = '" . (int)$goods_id . "', attribute_value_id =" . (int)$attribute_id);
-						}
-					}
 
-					if (isset($data['goods_brand'])) {
-						foreach ($data['goods_brand'] as $brand_id) {
-							Db::execute("INSERT INTO " . config('database.prefix'). "goods_brand SET goods_id = '" . (int)$goods_id . "', brand_id = " . $brand_id );
-						}
-					}
 					
 					if (isset($data['goods_image'])){
 						foreach ($data['goods_image'] as $image) {
@@ -240,46 +198,6 @@ class Goods{
 				Db::name('goods_option')->where('goods_id',$goods_id)->delete();
 				Db::name('goods_option_value')->where('goods_id',$goods_id)->delete();				
 				Db::name('goods_mobile_description_image')->where('goods_id',$goods_id)->delete();
-				
-				return true;
-			}catch(Exception $e){
-				return false;
-			}
-		}
-
-		public function get_link_data($id){
-			$goods_id=(int)$id;
-			return  [
-				'goods_categories'=>Db::query('SELECT gc.name,gtc.category_id FROM '.config('database.prefix').'goods_to_category gtc,'.config('database.prefix').'category gc WHERE gc.id=gtc.category_id AND gtc.goods_id='.$goods_id),
-				'goods_attribute'=>Db::query('SELECT av.attribute_value_id,av.value_name FROM '.config('database.prefix').'goods_attribute ga,'.config('database.prefix').'attribute_value av WHERE av.attribute_value_id=ga.attribute_value_id AND ga.goods_id='.$goods_id),
-				'goods_brand'=>Db::query('SELECT b.name,b.brand_id FROM '.config('database.prefix').'goods_brand gb,'.config('database.prefix').'brand b WHERE gb.brand_id=b.brand_id AND gb.goods_id='.$goods_id)
-			];
-		}
-		
-		public function edit_links($data){
-			try{
-				$goods_id=(int)$data['goods_id'];
-			
-				if (isset($data['goods_category'])) {
-					Db::name('goods_to_category')->where('goods_id',$goods_id)->delete();
-					foreach ($data['goods_category'] as $category_id) {						
-						Db::execute("INSERT INTO " . config('database.prefix'). "goods_to_category SET goods_id =".$goods_id.", category_id = " . (int)$category_id);
-					}
-				}
-				
-				if (isset($data['goods_attribute'])) {
-					Db::name('goods_attribute')->where('goods_id',$goods_id)->delete();
-					foreach ($data['goods_attribute'] as $attribute_id) {
-						Db::execute("INSERT INTO " . config('database.prefix'). "goods_attribute SET goods_id =".$goods_id.", attribute_value_id =" . (int)$attribute_id);
-					}
-				}
-
-				if (isset($data['goods_brand'])) {
-					Db::name('goods_brand')->where('goods_id',$goods_id)->delete();
-					foreach ($data['goods_brand'] as $brand_id) {
-						Db::execute("INSERT INTO " . config('database.prefix'). "goods_brand SET goods_id =".$goods_id.", brand_id = " . $brand_id );
-					}
-				}
 				
 				return true;
 			}catch(Exception $e){
