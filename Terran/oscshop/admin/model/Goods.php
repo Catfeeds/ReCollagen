@@ -13,7 +13,7 @@ class Goods extends Model{
 	 * 新增商品
 	 */
 	public function add_goods($data){		
-			
+
 		$goods['name']     = $data['name'];
 		$goods['image']    = $data['image'];
 		$goods['cat_id']   = $data['cat_id'];

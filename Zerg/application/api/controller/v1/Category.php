@@ -26,9 +26,10 @@ class Category extends BaseController
      * @return array of Categories
      * @throws MissException
      */
-    public function getAllCategories()
-    {
-        $categories = CategoryModel::all([], 'img');
+    public function getAllCategories(){
+        
+        $categories = CategoryModel::getAllCategories();
+
         if(empty($categories)){
            throw new MissException([
                'msg' => '还没有任何类目',

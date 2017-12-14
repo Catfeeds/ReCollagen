@@ -25,7 +25,7 @@ class Product extends Controller
     ];
     
     /**
-     * 根据类目ID获取该类目下所有商品(分页）
+     * 获取该类目下所有商品(分页）
      * @url /product?id=:category_id&page=:page&size=:page_size
      * @param int $id 商品id
      * @param int $page 分页页数（可选)
@@ -60,10 +60,10 @@ class Product extends Controller
 
 //        $collection = collection($pagingProducts->items());
         $data = $pagingProducts
-            ->hidden(['summary'])
+            ->hidden(['quantity','weight','length','width','height'])
             ->toArray();
         // 如果是简洁分页模式，直接序列化$pagingProducts这个Paginator对象会报错
-        //        $pagingProducts->data = $data;
+        //        $pagingProducts->data = $data;            
         return [
             'current_page' => $pagingProducts->currentPage(),
             'data' => $data
@@ -71,7 +71,7 @@ class Product extends Controller
     }
 
     /**
-     * 获取某分类下全部商品(不分页）
+     * 获取该分类下所有商品(不分页）
      * @url /product/all?id=:category_id
      * @param int $id 分类id号
      * @return \think\Paginator
@@ -87,8 +87,9 @@ class Product extends Controller
             throw new ThemeException();
         }
         $data = $products
-            ->hidden(['summary'])
+            ->hidden(['quantity','weight','length','width','height'])
             ->toArray();
+
         return $data;
     }
 
@@ -99,20 +100,28 @@ class Product extends Controller
      * @return mixed
      * @throws ParameterException
      */
-    public function getRecent($count = 15)
-    {
-        (new Count())->goCheck();
-        $products = ProductModel::getMostRecent($count);
-        if ($products->isEmpty())
-        {
+    public function getRecent($page = 1, $size = 30){
 
+        (new Count())->goCheck();
+        $pagingProducts = ProductModel::getMostRecent($page,$size);
+
+        if ($pagingProducts->isEmpty()){
+            return [
+                'current_page' => $pagingProducts->currentPage(),
+                'data' => []
+            ];
         }
-        $products = $products->hidden(
+        $data = $pagingProducts->hidden(
             [
-                'summary'
+                'cat_id','quantity','weight','length','width','height'
             ])
             ->toArray();
-        return $products;
+
+        return [
+            'current_page' => $pagingProducts->currentPage(),
+            'data' => $data
+        ];
+
     }
 
     /**

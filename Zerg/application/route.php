@@ -43,17 +43,17 @@ Route::group('api/:version/theme',function(){
 //Product
 Route::post('api/:version/product', 'api/:version.Product/createOne');
 Route::delete('api/:version/product/:id', 'api/:version.Product/deleteOne');
-Route::get('api/:version/product/by_category/paginate', 'api/:version.Product/getByCategory');
-Route::get('api/:version/product/by_category', 'api/:version.Product/getAllInCategory');
+Route::get('api/:version/product/by_category/paginate', 'api/:version.Product/getByCategory');  //获取该类目下所有商品(分页）
+Route::get('api/:version/product/by_category', 'api/:version.Product/getAllInCategory');        //获取该类目下所有商品(不分页）
 Route::get('api/:version/product/:id', 'api/:version.Product/getOne',[],['id'=>'\d+']);
-Route::get('api/:version/product/recent', 'api/:version.Product/getRecent');
+Route::get('api/:version/product/recent/paginate', 'api/:version.Product/getRecent');           //首页最新新品列表
 
 //Category
 Route::get('api/:version/category', 'api/:version.Category/getCategories'); 
 // 正则匹配区别id和all，注意d后面的+号，没有+号将只能匹配个位数
 //Route::get('api/:version/category/:id', 'api/:version.Category/getCategory',[], ['id'=>'\d+']);
 //Route::get('api/:version/category/:id/products', 'api/:version.Category/getCategory',[], ['id'=>'\d+']);
-Route::get('api/:version/category/all', 'api/:version.Category/getAllCategories');
+Route::get('api/:version/category/all', 'api/:version.Category/getAllCategories');      //获取所有商品分类
 
 //Token
 Route::post('api/:version/token/user', 'api/:version.Token/getToken');
