@@ -44,28 +44,5 @@ class Brand extends AdminBase{
 			}
 		}
 	}
-	
-	public function autocomplete(){
-				
-		$filter_name=input('filter_name');
-		
-		if (isset($filter_name)) {			
-			$sql='SELECT * FROM '.config('database.prefix')."brand where name LIKE'%".$filter_name."%' LIMIT 0,20";				
-		}else{
-			$sql='SELECT * FROM '.config('database.prefix')."brand  LIMIT 0,20";		
-		}		
-		
-		$results = Db::query($sql);
-		$json=[];
-		foreach ($results as $result) {
-				$json[] = array(					
-					'name'            => strip_tags(html_entity_decode($result['name'], ENT_QUOTES, 'UTF-8')),
-					'brand_id' => $result['brand_id']
-				);
-			}
-		
-
-		return 	$json;
-	}
 }
 ?>

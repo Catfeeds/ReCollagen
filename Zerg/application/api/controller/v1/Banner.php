@@ -25,17 +25,12 @@ class Banner extends BaseController
 
     /**
      * 获取Banner信息
-     * @url     /banner/:id
      * @http    get
-     * @param   int $id banner id
      * @return  array of banner item , code 200
      * @throws  MissException
      */
-    public function getBanner($id)
-    {
-        $validate = new IDMustBePositiveInt();
-        $validate->goCheck();
-        $banner = BannerModel::getBannerById($id);
+    public function getBanners(){
+        $banner = BannerModel::getBanners();
         if (!$banner ) {
             throw new MissException([
                 'msg' => '请求banner不存在',

@@ -19,7 +19,7 @@ Route::post('api/:version/sample/test3', 'api/:version.Sample/test3');
 //Route::miss('api/v1.Miss/miss');
 
 //Banner
-Route::get('api/:version/banner/:id', 'api/:version.Banner/getBanner');
+Route::get('api/:version/banner', 'api/:version.Banner/getBanners');
 
 //Theme
 // 如果要使用分组路由，建议使用闭包的方式，数组的方式不允许有同名的key

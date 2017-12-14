@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2017-12-14 15:44:08
+Date: 2017-12-14 17:45:33
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -3637,6 +3637,25 @@ INSERT INTO `osc_auth_rule` VALUES ('23', '3', '290', 'admin/index/logout');
 INSERT INTO `osc_auth_rule` VALUES ('24', '3', '321', '');
 
 -- ----------------------------
+-- Table structure for `osc_banner`
+-- ----------------------------
+DROP TABLE IF EXISTS `osc_banner`;
+CREATE TABLE `osc_banner` (
+  `banner_id` int(8) NOT NULL AUTO_INCREMENT,
+  `image` varchar(60) NOT NULL DEFAULT '' COMMENT '首页轮播图片',
+  `goods_id` int(11) NOT NULL DEFAULT '0' COMMENT '链接到的商品id',
+  `sort` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`banner_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='首页轮播图';
+
+-- ----------------------------
+-- Records of osc_banner
+-- ----------------------------
+INSERT INTO `osc_banner` VALUES ('2', 'images/osc1/2/d04.jpg', '7', '1');
+INSERT INTO `osc_banner` VALUES ('3', 'images/osc1/category/banner-3a.png', '11', '2');
+INSERT INTO `osc_banner` VALUES ('4', 'images/osc1/category/category-dryfruit.png', '12', '5');
+
+-- ----------------------------
 -- Table structure for `osc_brand`
 -- ----------------------------
 DROP TABLE IF EXISTS `osc_brand`;
@@ -4519,7 +4538,7 @@ INSERT INTO `osc_menu` VALUES ('131', 'member', '129', '会员权限（hidden）
 INSERT INTO `osc_menu` VALUES ('133', 'member', '129', '支付接口（hidden）', 'member/payment/index', '', '8', 'nav', '1');
 INSERT INTO `osc_menu` VALUES ('134', 'admin', '28', '商品属性', 'admin/attribute/index', '', '4', 'nav', '1');
 INSERT INTO `osc_menu` VALUES ('135', 'admin', '28', '长度单位', 'admin/length_class/index', '', '6', 'nav', '1');
-INSERT INTO `osc_menu` VALUES ('136', 'admin', '28', '商品品牌', 'admin/brand/index', '', '7', 'nav', '1');
+INSERT INTO `osc_menu` VALUES ('136', 'admin', '28', 'Banner管理', 'admin/banner/index', '', '7', 'nav', '1');
 INSERT INTO `osc_menu` VALUES ('137', 'member', '322', '运费模板', 'member/transport/index', '', '7', 'nav', '1');
 INSERT INTO `osc_menu` VALUES ('138', 'member', '321', '会员订单', 'member/order_backend/index', '', '3', 'nav', '1');
 INSERT INTO `osc_menu` VALUES ('139', 'member', '129', '会员管理', 'member/member_backend/index', '', '1', 'nav', '1');
@@ -4544,10 +4563,9 @@ INSERT INTO `osc_menu` VALUES ('158', 'admin', '134', '自动完成', 'admin/att
 INSERT INTO `osc_menu` VALUES ('159', 'admin', '135', '新增', 'admin/length_class/add', '', '0', 'auth', '1');
 INSERT INTO `osc_menu` VALUES ('160', 'admin', '135', '编辑', 'admin/length_class/edit', '', '0', 'auth', '1');
 INSERT INTO `osc_menu` VALUES ('161', 'admin', '135', '删除', 'admin/length_class/del', '', '0', 'auth', '1');
-INSERT INTO `osc_menu` VALUES ('162', 'admin', '136', '新增', 'admin/brand/add', '', '0', 'auth', '1');
-INSERT INTO `osc_menu` VALUES ('163', 'admin', '136', '编辑', 'admin/brand/edit', '', '0', 'auth', '1');
-INSERT INTO `osc_menu` VALUES ('164', 'admin', '136', '删除', 'admin/brand/del', '', '0', 'auth', '1');
-INSERT INTO `osc_menu` VALUES ('165', 'admin', '136', '自动完成', 'admin/brand/autocomplete', '', '0', 'auth', '1');
+INSERT INTO `osc_menu` VALUES ('162', 'admin', '136', '新增', 'admin/banner/add', '', '0', 'auth', '1');
+INSERT INTO `osc_menu` VALUES ('163', 'admin', '136', '编辑', 'admin/banner/edit', '', '0', 'auth', '1');
+INSERT INTO `osc_menu` VALUES ('164', 'admin', '136', '删除', 'admin/banner/del', '', '0', 'auth', '1');
 INSERT INTO `osc_menu` VALUES ('166', 'member', '130', '新增', 'member/menu_backend/add', '', '0', 'auth', '1');
 INSERT INTO `osc_menu` VALUES ('167', 'member', '130', '编辑', 'member/menu_backend/edit', '', '0', 'auth', '1');
 INSERT INTO `osc_menu` VALUES ('168', 'member', '130', '删除', 'member/menu_backend/del', '', '0', 'auth', '1');
@@ -4938,7 +4956,7 @@ CREATE TABLE `osc_user_action` (
   `info` varchar(255) DEFAULT NULL COMMENT '行为描述',
   `add_time` int(10) NOT NULL DEFAULT '0' COMMENT '加入时间',
   PRIMARY KEY (`ua_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=414 DEFAULT CHARSET=utf8 COMMENT='用户行为';
+) ENGINE=InnoDB AUTO_INCREMENT=421 DEFAULT CHARSET=utf8 COMMENT='用户行为';
 
 -- ----------------------------
 -- Records of osc_user_action
@@ -5168,6 +5186,13 @@ INSERT INTO `osc_user_action` VALUES ('410', '1', 'admin', '后台系统用户',
 INSERT INTO `osc_user_action` VALUES ('411', '1', 'admin', '后台系统用户', '新增了商品', '1513229437');
 INSERT INTO `osc_user_action` VALUES ('412', '1', 'admin', '后台系统用户', '删除商品', '1513229442');
 INSERT INTO `osc_user_action` VALUES ('413', '1', 'admin', '后台系统用户', '更新商品状态', '1513229449');
+INSERT INTO `osc_user_action` VALUES ('414', '1', 'admin', '后台系统用户', '添加了banner', '1513242494');
+INSERT INTO `osc_user_action` VALUES ('415', '1', 'admin', '后台系统用户', '添加了banner', '1513242605');
+INSERT INTO `osc_user_action` VALUES ('416', '1', 'admin', '后台系统用户', '更新了banner排序', '1513243015');
+INSERT INTO `osc_user_action` VALUES ('417', '1', 'admin', '后台系统用户', '更新了banner排序', '1513243028');
+INSERT INTO `osc_user_action` VALUES ('418', '1', 'admin', '后台系统用户', '修改了banner', '1513243086');
+INSERT INTO `osc_user_action` VALUES ('419', '1', 'admin', '后台系统用户', '添加了banner', '1513243379');
+INSERT INTO `osc_user_action` VALUES ('420', '1', 'admin', '后台系统用户', '删除了banner', '1513243384');
 
 -- ----------------------------
 -- Table structure for `osc_weight_class`

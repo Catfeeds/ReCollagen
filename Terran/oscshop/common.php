@@ -482,3 +482,9 @@ function create_tables($module)
 function write_to_file($path,$data=array()){
 	file_put_contents($path,var_export($data,true));
 }
+/**
+ * 通过id找到商品
+ */
+function getGoodsByGoodsId($goods_id){
+    return Db::name('goods')->where(['goods_id'=>$goods_id,'status'=>1])->find();
+}

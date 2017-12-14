@@ -20,7 +20,7 @@ class IDCollection extends BaseValidate
     ];
 
     protected $message = [
-        'ids' => 'ids参数必须为以逗号分隔的多个正整数,仔细看文档啊'
+        'ids' => 'ids参数必须为以逗号分隔的多个正整数'
     ];
 
     protected function checkIDs($value)
