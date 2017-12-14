@@ -1,13 +1,16 @@
 <?php
 namespace osc\admin\controller;
 use osc\common\controller\AdminBase;
+use osc\admin\model\Goods As GoodsModel;
 use think\Db;
+
 class Goods extends AdminBase{
 	
 	protected function _initialize(){
 		parent::_initialize();
 		$this->assign('breadcrumb1','商品');
 		$this->assign('breadcrumb2','商品管理');
+		$this->goodsModel = new GoodsModel();
 	}
 	/**
 	 * 商品列表
@@ -40,14 +43,13 @@ class Goods extends AdminBase{
 	 public function add(){
 		
 		if(request()->isPost()){
-			$data     = input('post.');
-			$model    = osc_model('admin','goods');  	
+			$data     = input('post.');	
 			$validate = $this->validate($data,'Goods');	
 			if($validate!==true){
 				return $this->error($validate);	
 			}
 			
-			$res = $model->add_goods($data);		
+			$res = $this->goodsModel->add_goods($data);		
 			if($res){
 				storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'新增了商品');		
 				$this->success('新增成功！',url('Goods/index'));			
@@ -65,6 +67,7 @@ class Goods extends AdminBase{
 	  * 编辑商品基本信息
 	  */
 	 public function edit_general(){
+
 		if(request()->isPost()){
 			$data = input('post.');	
 
@@ -72,8 +75,12 @@ class Goods extends AdminBase{
 			if($validate!==true){
 				return $this->error($validate);	
 			}
+			$data['weight'] = empty($data['weight'])? '100' : $data['weight'];
+			$data['length'] = empty($data['length'])? '10' : $data['length'];
+			$data['width']  = empty($data['width'])? '10' : $data['width'];
+			$data['height'] = empty($data['height'])? '10' : $data['height'];
 			
-			$res = Db::name('goods')->update($data,false,true);
+			$res = $this->goodsModel->update($data,false,true);
 			if ($res) {
 				storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'更新商品基本信息');							
 				return $this->success('更新成功！',url('Goods/index'));
@@ -185,11 +192,9 @@ class Goods extends AdminBase{
 	public function copy_goods(){
 		$id =input('post.');
 
-		$model=osc_model('admin','goods'); 
-		 	
 		if($id){		
 			foreach ($id['id'] as $k => $v) {						
-				$model->copy_goods((int)$v);
+				$this->goodsModel->copy_goods((int)$v);
 			}	
 			storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'复制商品');
 			
@@ -199,68 +204,62 @@ class Goods extends AdminBase{
 		}
 	}
 	//删除商品
-	function del(){
-		
-		$model=osc_model('admin','goods'); 
+	public function del(){
 			
-		$r=$model->del_goods((int)input('param.id'));	
+		$r = $this->goodsModel->del_goods((int)input('param.id'));	
 		
 		if($r){
-			
 			storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'删除商品'.input('get.id'));
-			
 			$this->redirect('Goods/index');
-			
 		}else{
-			
 			return $this->error('删除失败！',url('Goods/index'));
 		}		
 		
 	}
 	//更新状态
-	function set_status(){
+	public function set_status(){
 		$data=input('param.');
 		
 		$update['goods_id']=(int)$data['id'];
 		$update['status']=(int)$data['status'];
 		
-		if(Db::name('goods')->update($update)){
+		if($this->goodsModel->update($update)){
 			storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'更新商品状态');
 			$this->redirect('Goods/index');
 		}
 	}	
 	//更新价格
-	function update_price(){
+	public function update_price(){
 		$data=input('post.');
 		
 		$update['goods_id']=(int)$data['goods_id'];
 		$update['price']=(float)$data['price'];
 		
-		if(Db::name('goods')->update($update)){
+		if($this->goodsModel->update($update)){
 			storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'更新商品价格');
 			return true;
 		}		
 	}
 	//更新数量
-	function update_quantity(){
+	public function update_quantity(){
 		$data=input('post.');
 		
 		$update['goods_id']=(int)$data['goods_id'];
 		$update['quantity']=(int)$data['quantity'];
 		
-		if(Db::name('goods')->update($update)){
+		if($this->goodsModel->update($update)){
 			storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'更新商品数量');
 			return true;
 		}		
 	}
 	//更新排序
-	function update_sort(){
+	public function update_sort(){
 		$data=input('post.');
 		
 		$update['goods_id']=(int)$data['goods_id'];
 		$update['sort_order']=(int)$data['sort'];
 		
-		if(Db::name('goods')->update($update)){
+		if($this->goodsModel->update($update)){
 			storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'更新商品排序');
 			return true;
 		}		

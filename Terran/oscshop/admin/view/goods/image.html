@@ -116,15 +116,13 @@ $('.save').live('click', function() {
 		function(d){
 			
 			if(d.success){
-				
-				alert(d.success);
-				
+				alertMsg(d.success);
 				if(d.id){
 					$(id).find('input[name=\'id\']').val(d.id);
 				}
 				
 			}else if(d.error){
-				alert(d.error);
+				alertMsg(d.error);
 			}
 		}
 	);
@@ -144,11 +142,9 @@ $('.del').live('click', function() {
 		$(id+' input[type=\'hidden\']'),
 		function(d){
 			if(d.success){				
-				alert(d.success);
 				$(id).remove();
 			}else if(d.error){
-				alert(d.error);
-				$(id).remove();
+				alertMsg(d.error);
 			}
 		}
 	);

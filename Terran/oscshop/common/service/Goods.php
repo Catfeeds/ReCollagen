@@ -120,7 +120,7 @@ class Goods{
 		//数据量
 		$limit = ((int)$limit_num * (int)$page) . ",".(int)$limit_num;
 					
-		$sql='SELECT goods_id,image,price,name FROM '.config('database.prefix').'goods WHERE status=1 ORDER BY goods_id LIMIT '.$limit;
+		$sql='SELECT goods_id,image,price,name FROM '.config('database.prefix').'goods WHERE status=1 ORDER BY add_time desc LIMIT '.$limit;
 		
 		$list=Db::query($sql);				
 		
@@ -255,8 +255,7 @@ class Goods{
 	}
 	//商品详情信息
 	public function get_goods_info($goods_id){
-		
-		if(!$goods=Db::name('goods')->alias('g')->join('__GOODS_DESCRIPTION__ gd','g.goods_id = gd.goods_id')->where('g.goods_id',$goods_id)->find()){
+		if(!$goods=Db::name('goods')->alias('g')->join('__GOODS_DESCRIPTION__ gd','g.goods_id = gd.goods_id','left')->where('g.goods_id',$goods_id)->find()){
 			return false;
 		}
 		return [
