@@ -16,4 +16,11 @@ class ProductImage extends BaseModel{
     //     return $this->belongsTo('Image', 'img_id', 'id');
     // }
 
+    /**
+     * 修改图片路径
+     */
+    public function getImageAttr($value, $data){
+        return $this->prefixImgUrl($value, $data);
+    }
+
 }
