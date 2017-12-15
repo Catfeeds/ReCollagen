@@ -12,7 +12,7 @@ class OrderBackend extends AdminBase{
 	
      public function index(){     	
 		$this->assign('list',osc_order()->order_list(input('param.'),20));
-		$this->assign('empty','<tr><td colspan="20">没有数据~</td></tr>');
+		$this->assign('empty','<tr><td colspan="20">没有数据</td></tr>');
 		
     	return $this->fetch();
 	 }

@@ -6,8 +6,9 @@ use think\Model;
 
 class User extends BaseModel
 {
+    protected $table = 'osc_member';
     protected $autoWriteTimestamp = true;
-//    protected $createTime = ;
+    protected $createTime = 'regdate';
 
     public function orders()
     {
@@ -25,7 +26,7 @@ class User extends BaseModel
      */
     public static function getByOpenID($openid)
     {
-        $user = User::where('openid', '=', $openid)
+        $user = User::where('openId', '=', $openid)
             ->find();
         return $user;
     }
