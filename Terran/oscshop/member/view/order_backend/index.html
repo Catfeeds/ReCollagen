@@ -8,9 +8,11 @@
 			<select name="status">
 				<option value="">-选择状态-</option>
 				<?php $search_status=input('param.status'); ?>
-				{volist name="status" id="v" }
-					<option <?php if($search_status==$v['order_status_id']){echo ' selected="selected"';} ?> value="{$v.order_status_id}">{$v.name}</option>
-				{/volist}	
+				<option <?php if($search_status==1){echo ' selected="selected"';} ?> value="1">待付款</option>
+				<option <?php if($search_status==2){echo ' selected="selected"';} ?> value="2">待发货</option>
+				<option <?php if($search_status==3){echo ' selected="selected"';} ?> value="3">已发货</option>
+				<option <?php if($search_status==4){echo ' selected="selected"';} ?> value="4">已收货</option>
+				<option <?php if($search_status==5){echo ' selected="selected"';} ?> value="5">取消订单</option>
 			</select>
 		</th>
 		<th>
@@ -42,7 +44,8 @@
 					<tr>						
 						<td>{$v.order_id}</td>
 						<td>{$v.order_num_alias}
-							<span style="border:1px solid red;color:#f60;">菜鸟物流</span>
+							<span style="border:1px solid red;color:#f60;">{$v.shipping_method}</span>
+							<span style="border:1px solid red;color:#f60;">{$v.shipping_method}</span>
 						</td>	
 						<td>{$v.openId}</td>
 						<td>{$v.username}</td>
@@ -52,7 +55,7 @@
 						<td>￥{$v.mainPay}</td>	
 						<td>￥{$v.secondPay}</td>				
 						<td>￥{$v.total}</td>	
-						<td>{$v.name}</td>
+						<td>{$v.order_status|getOrderStatus}</td>
 						<td>
 							<a class="btn btn-xs btn-info" href='{:url("OrderBackend/show_order",array("id"=>$v["order_id"]))}'><i class="fa fa-eye bigger-120"></i></a>
 							<a class="btn btn-xs btn-info" href='{:url("OrderBackend/print_order",array("id"=>$v["order_id"]))}' target="_blank"><i class="fa fa-print bigger-120"></i></a> 

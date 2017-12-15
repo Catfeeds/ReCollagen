@@ -488,3 +488,29 @@ function write_to_file($path,$data=array()){
 function getGoodsByGoodsId($goods_id){
     return Db::name('goods')->where(['goods_id'=>$goods_id,'status'=>1])->find();
 }
+/**
+ * 通过order_status返回订单状态
+ */
+function getOrderStatus($order_status){
+    switch ($order_status) {
+        case '1':
+            return '待付款';
+            break;
+        case '2':
+            return '待发货';
+            break;
+        case '3':
+            return '已发货';
+            break;
+        case '4':
+            return '已收货';
+            break;
+        case '5':
+            return '取消订单';
+            break;
+        
+        default:
+            return '待付款';
+            break;
+    }
+}
