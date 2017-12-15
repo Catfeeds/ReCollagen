@@ -2,8 +2,8 @@
 <view class="container home-container" hidden="{{!loadingHidden}}">
     <swiper indicator-dots="true" autoplay="true" indicator-active-color="#00a1e9" indicator-color="#d6d0c7" class="swiper">
         <block wx:for="{{bannerArr}}">
-            <swiper-item class="banner-item" bindtap="onProductsItemTap" data-id="{{item.key_word}}">
-                <image class="item-image" src="{{item.img.url}}" mode="aspectFill" />
+            <swiper-item class="banner-item" bindtap="onProductsItemTap" data-id="{{item.goods_id}}">
+                <image class="item-image" src="{{item.image}}" mode="aspectFill" />
             </swiper-item>
         </block>
     </swiper>

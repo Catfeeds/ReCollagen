@@ -9,7 +9,7 @@
     <view class="category-main">
       <block wx:for="{{categoryInfo.procucts}}">
         <view class="category-goods-items {{index%3==1?'middle':''}}" data-id="{{item.id}}" bindtap="onProductsItemTap">
-          <image src="{{item.main_img_url}}" mode="aspectFill"></image>
+          <image src="{{item.image}}" mode="aspectFill"></image>
           <view>{{item.name}}</view>
         </view>
       </block>
