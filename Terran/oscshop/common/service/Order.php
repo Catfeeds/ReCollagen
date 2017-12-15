@@ -131,7 +131,6 @@ class Order{
 	
 		return Db::view('Order','*')
 		->view('Member','openId,username','Order.uid=Member.uid')
-		->view('OrderStatus','order_status_id,name','Order.order_status_id=OrderStatus.order_status_id')
 		->where($map)
 		->order('Order.order_id desc')
 		->paginate($page_num,false,['query'=>$query]);

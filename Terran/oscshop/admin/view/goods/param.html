@@ -39,8 +39,8 @@
                              <?php if(isset($goods_param)){ ?>
                                 <?php foreach ($goods_param as $param) { ?>
                                     <tr id="discount-row<?php echo $discount_row; ?>">
-                                    <td class="text-left"><input type="text" name="goods_option[<?php echo $discount_row; ?>][param_name]" value="<?php echo $param['param_name']; ?>" class="form-control" /></td>
-                                    <td class="text-left"><input type="text" name="goods_option[<?php echo $discount_row; ?>][param_value]" value="<?php echo $param['param_value']; ?>" class="form-control" /></td>
+                                    <td class="text-left"><input type="text" name="goods_param[<?php echo $discount_row; ?>][param_name]" value="<?php echo $param['param_name']; ?>" class="form-control" /></td>
+                                    <td class="text-left"><input type="text" name="goods_param[<?php echo $discount_row; ?>][param_value]" value="<?php echo $param['param_value']; ?>" class="form-control" /></td>
 
                                       <td class="text-left"> 
                                         <input type="hidden" name="table" value="goods_param" />

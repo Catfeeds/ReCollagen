@@ -136,6 +136,7 @@ class Product extends Controller
     {
         (new IDMustBePositiveInt())->goCheck();
         $product = ProductModel::getProductDetail($id);
+
         if (!$product)
         {
             throw new ProductException();
