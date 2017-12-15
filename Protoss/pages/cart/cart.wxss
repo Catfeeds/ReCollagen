@@ -102,7 +102,7 @@
 
 /*合计*/
 .all-accounts-box{
-    background-color:#AB956D;
+    background-color:#75bb0b;
     color: #fff;
 }
 .all-accounts-box>view{
@@ -114,8 +114,8 @@
     width: 40%;
 }
 .all-select image{
-    height: 48rpx;
-    width: 48rpx;
+    height: 42rpx;
+    width: 42rpx;
     margin:0 20rpx;
 }
 
@@ -134,7 +134,7 @@
 .accounts-btn{
     width: 50%;
     font-size: 28rpx;
-    border-right: 3rpx dotted #fff;
+    border-left: 3rpx dotted #fff;
 }
 
 .price-text{

@@ -1,34 +1,20 @@
 <import src="../tpls/category/category-tpl.wxml"/>
 <view class="container category-container">
   <view class="category-box">
-      <view class="left-box">
-        <block wx:for="{{categoryTypeArr}}">
-          <view class="menu-item {{currentMenuIndex==index?'selected':''}}" data-id="{{item.id}}" data-index="{{index}}" bindtap="changeCategory" data-title-name="{{item.name}}">
-            {{item.name}}
-          </view>
-        </block>
-    </view>
-    <view class="right-box {{transClassArr[currentMenuIndex]}}">
+    <scroll-view scroll-y="true" class="left-box">
+      <block wx:for="{{categoryTypeArr}}">
+        <view class="menu-item {{currentMenuIndex==index?'selected':''}}" data-id="{{item.id}}" data-index="{{index}}" bindtap="changeCategory" data-title-name="{{item.name}}">
+          {{item.name}}
+        </view>
+      </block>
+    </scroll-view>
 
-      <view class="foods-type-box">
-        <template is="categorydetail" data="{{categoryInfo:categoryInfo0}}"/>
-      </view>
-      <view class="foods-type-box">
-        <template is="categorydetail" data="{{categoryInfo:categoryInfo1}}"/>
-      </view>
-      <view class="foods-type-box">
-        <template is="categorydetail" data="{{categoryInfo:categoryInfo2}}"/>
-      </view>
-      <view class="foods-type-box">
-        <template is="categorydetail" data="{{categoryInfo:categoryInfo3}}"/>
-      </view>
-      <view class="foods-type-box">
-        <template is="categorydetail" data="{{categoryInfo:categoryInfo4}}"/>
-      </view>
-      <view class="foods-type-box">
-        <template is="categorydetail" data="{{categoryInfo:categoryInfo5}}"/>
-      </view>
-
+    <view class="right-box" style="transform:translate(0,-{{currentMenuIndex*100}}vh);">  
+     <block wx:for="{{categoryInfo}}">
+      <scroll-view scroll-y="true" class="foods-type-box">
+          <template is="categorydetail" data="{{categoryInfo:item}}"/>
+      </scroll-view>
+     </block>
     </view>
 
   </view>
