@@ -26,7 +26,7 @@
 }
 .fiexd-cart view{
   font-size: 24rpx;
-  background-color: #AB956D;
+  background-color: #75bb0b;
   color: white;
   position: absolute;
   right: 64rpx;
@@ -57,7 +57,7 @@
   height: 100rpx;
   margin: 30rpx auto;
   border-radius: 100rpx;
-  background-color: #AB956D;
+  background-color: #75bb0b;
   color: #fff;
   display: flex;
   align-items: center;
@@ -71,7 +71,7 @@
   justify-content: center;
 }
 .product-counts{
-  width: 50%;
+  width: 42%;
 }
 .add-cart-btn{
   position: relative;
@@ -82,6 +82,10 @@
 }
 .add-cart-btn.disabled{
   color: #D5D5DB;
+}
+.add-Collection-btn{
+  margin-left:20rpx;
+  flex: 0;
 }
 
 /*中间分割线*/
@@ -160,6 +164,19 @@
 .basic-info-box .price{
   font-size: 38rpx;
 }
+.basic-info-box .cuxiao{
+  font-size: 28rpx;
+  color: #fff;
+  padding: 4px 8px;
+  text-align: center;
+  background-color: #74bb0c;
+  border-radius: 100rpx;
+  vertical-align: 5rpx;
+}
+.basic-info-box .ycuxiao{
+  font-size: 34rpx;
+  color: #999;
+}
 
 /*商品详情*/
 .detail-bottom-box{
@@ -182,10 +199,8 @@
   border-bottom: 1rpx solid #D0D0D7;
 }
 .tabs-item.selected{
-  /*color: #AB956D;*/
-  color: rgba(171,149,109,.8);
-  /*border-bottom: 2px solid #AB956D;*/
-  border-bottom: 2px solid rgba(171,149,109,.8);
+  color: #00a0ea;
+  border-bottom: 2px solid #00a0ea;
 }
 .product-detail-box{
   padding-bottom: 20rpx;

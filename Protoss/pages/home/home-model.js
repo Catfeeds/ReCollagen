@@ -15,7 +15,6 @@ class Home extends Base{
         var that=this;
         var param={
             url: 'banner/1',
-
             sCallback:function(data){
                 data=data.items;
                 callback && callback(data);

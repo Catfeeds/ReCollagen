@@ -22,7 +22,7 @@
 .home-main-header{
   display: flex;
   height: 60rpx;
-  color: #AB956D;
+  color: #00a1e9;
   background-color: #fff;
   font-size: 32rpx;
   align-items: center;
@@ -30,9 +30,6 @@
   margin: 20rpx 0;
 }
 
-.home-main-theme{
-  /*margin: 20rpx 0;*/
-}
 .theme-box{
   display: flex;
   flex-wrap: wrap;

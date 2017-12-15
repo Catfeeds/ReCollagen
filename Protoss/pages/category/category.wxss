@@ -10,7 +10,6 @@
 }
 .left-box{
     flex: 0 0 150rpx;
-    border-right:1rpx solid #D8D8D8;
 }
 .menu-item{
     height: 50rpx;
@@ -22,8 +21,8 @@
     border-left: 6rpx solid #fff;
 }
 .menu-item.selected{
-    color: #AB956D;
-    border-left-color:#AB956D;
+    color: #00a1e9;
+    border-left-color:#00a1e9;
 }
 
 .right-box{

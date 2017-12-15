@@ -10,6 +10,9 @@
             <image src="{{product.main_img_url}}" mode="aspectFit"></image>
         </view>
         <view class="cart-box">
+            <view class="add-cart-btn add-Collection-btn" bindtap="onAddingToCollectionTap">
+                <image class="cart-icon" src="../../imgs/icon/Collection.png"></image>
+            </view>
             <view class="product-counts">
                 <picker class="{{product.stock==0?'disabled':''}}" bindchange="bindPickerChange" value="{{index}}" range="{{countsArray}}">
                     <!--因为picker对flex支持不好，所以加了一层view-->
@@ -32,7 +35,8 @@
             <view class="stock" wx:if="{{product.stock>0}}">有货</view>
             <view class="stock no" wx:else>缺货</view>
             <view class="name">{{product.name}}</view>
-            <view class="price">￥{{product.price}}</view>
+            <view class="price">￥{{product.price}} <text class='cuxiao'>促销</text></view>
+            <view class="ycuxiao">促销：{{product.price}}</view>
         </view>
     </view>
     <view class="detail-bottom-box">

@@ -2,9 +2,9 @@ import { Category } from 'category-model.js';
 var category=new Category();  //实例化 home 的推荐页面
 Page({
   data: {
-    transClassArr:['tanslate0','tanslate1','tanslate2','tanslate3','tanslate4','tanslate5'],
     currentMenuIndex:0,
     loadingHidden:false,
+    categoryInfo:[],
   },
   onLoad: function () {
     this._loadData();
@@ -14,21 +14,20 @@ Page({
   _loadData:function(callback){
     var that = this;
     category.getCategoryType((categoryData)=>{
-
       that.setData({
         categoryTypeArr: categoryData,
         loadingHidden: true
       });
-
       that.getProductsByCategory(categoryData[0].id,(data)=>{
-        var dataObj= {
+        var dataObj= [{
           procucts: data,
+          id: categoryData[0].id,
           topImgUrl: categoryData[0].img.url,
           title: categoryData[0].name
-        };
+        }];
         that.setData({
           loadingHidden: true,
-          categoryInfo0:dataObj
+          categoryInfo: dataObj
         });
         callback&& callback();
       });
@@ -40,42 +39,42 @@ Page({
     var index=category.getDataSet(event,'index'),
         id=category.getDataSet(event,'id')//获取data-set
     this.setData({
-      currentMenuIndex:index
+      currentMenuIndex: index
     });
 
     //如果数据是第一次请求
-    if(!this.isLoadedData(index)) {
+    if (!this.isLoadedData(id)) {
       var that=this;
       this.getProductsByCategory(id, (data)=> {
-        that.setData(that.getDataObjForBind(index,data));
+        var baseData = that.data.categoryTypeArr[index];
+        var dataObj = {
+          procucts: data,
+          id: baseData.id,
+          topImgUrl: baseData.img.url,
+          title: baseData.name
+        };
+        var prData = that.data.categoryInfo;
+        var classData = prData.concat(dataObj);
+        that.setData({
+          loadingHidden: true,
+          categoryInfo: classData
+        });
       });
     }
   },
 
-  isLoadedData:function(index){
-    if(this.data['categoryInfo'+index]){
-      return true;
-    }
-    return false;
-  },
-
-  getDataObjForBind:function(index,data){
-    var obj={},
-        arr=[0,1,2,3,4,5],
-        baseData=this.data.categoryTypeArr[index];
-    for(var item in arr){
-      if(item==arr[index]) {
-        obj['categoryInfo' + item]={
-          procucts:data,
-          topImgUrl:baseData.img.url,
-          title:baseData.name
-        };
-
-        return obj;
+  isLoadedData: function (id){
+    
+    var prData = this.data.categoryInfo;
+    var i = prData.length;
+    while (i--) {
+      if (prData[i].id === id) {
+        return true
       }
     }
+    return false
   },
-
+  
   getProductsByCategory:function(id,callback){
     category.getProductsByCategory(id,(data)=> {
       callback&&callback(data);
