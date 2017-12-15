@@ -21,7 +21,7 @@ class Category extends MobileBase
 		
 		$tree= new \oscshop\Tree();
 
-		$this->assign('category',$tree->toOdArray(Db::name('category')->field('id,pid,name')->order('sort_order asc')->select()));
+		$this->assign('category',$tree->toOdArray(Db::name('category')->field('id,pid,name')->order('sort asc')->select()));
 
 		$this->assign('SEO',['title'=>'分类-'.config('SITE_TITLE')]);
 		

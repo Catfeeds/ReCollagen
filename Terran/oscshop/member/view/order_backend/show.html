@@ -3,13 +3,7 @@
 <?php use think\Db; ?>
  
 	<div class="page-header">
-		<h1>
-			{$breadcrumb2}
-			<small>
-				<i class="ace-icon fa fa-angle-double-right"></i>
-				{$crumbs}
-			</small>
-		</h1>
+		<h1>{$breadcrumb2}<small><i class="ace-icon fa fa-angle-double-right"></i>{$crumbs}</small></h1>
 	</div>	
 	<ul class="nav nav-tabs">
 		
@@ -34,58 +28,13 @@
 					<td>{$data.order.order_num_alias}</td>
 				</tr>
 				 <tr>
-		            <td>支付方式</td>
-		            <td>
-		            	{switch name="data.order.payment_code"}    
-							{case value="alipay"}支付宝{/case}   
-							{case value="weixin"}微信支付{/case}
-							{case value="points"}积分兑换{/case}
-						{/switch}
-		            </td>
+		            <td>会员微信openId</td>
+		            <td>{$data.order.openId}</td>
 		          </tr>
 				<tr>
-					<td>会员名称</td>
-					<td>					
-						
-							{$data.order.username}
-						
-					</td>
-				</tr>
-				<tr>
-				    <td>电子邮件</td>
-				    <td>{$data.order.email}</td>
-				</tr>
-				  <tr>
-				    <td>联系电话</td>
-				    <td>{$data.order.telephone}</td>
-				</tr> 
-				<?php if($data['order']['points_order']==0){ ?>
-				<tr>
-				    <td>合计金额</td>
-				    <td>
-				    	￥{$data.order.total}
-				    </td>
-				</tr>
-				<?php }elseif($data['order']['points_order']==1){ ?>
-				<tr>
-				    <td>兑换积分</td>
-				    <td>
-				    	{$data.order.pay_points}
-				    </td>
-				</tr>	
-				<?php } ?>
-				<tr>
-				    <td>订单状态</td>
-				    <td id="order-status"> <?php echo get_order_status_name($data['order']['order_status_id']); ?></td>
-				</tr>     
-				<tr>
-					<td>IP地址</td>
-					<td>{$data.order.ip}</td>
+					<td>会员昵称</td>
+					<td>{$data.order.username}</td>
 				</tr>  
-				<tr>
-					<td>用户系统</td>
-					<td>{$data.order.user_agent}</td>
-				</tr>
 				<tr>
 					<td>下单时间</td>
 					<td>{$data.order.date_added|date='Y/m/d H:i:s',###}</td>
@@ -100,43 +49,57 @@
 						{/if}
 					</td>
 				</tr>
-				</table>
+                <tr>
+                    <td>主账户消费</td>
+                    <td>￥{$data.order.mainPay}</td>
+                </tr>
+                  <tr>
+                    <td>辅账户消费</td>
+                    <td>￥{$data.order.secondPay}</td>
+                </tr> 
+                <tr>
+                    <td>合计金额</td>
+                    <td>￥{$data.order.total}</td>
+                </tr>
+                <tr>
+                    <td>订单状态</td>
+                    <td id="order-status"> <?php echo get_order_status_name($data['order']['order_status_id']); ?></td>
+                </tr> 
+			</table>
 		</div>
-		{if condition="$data['order']['shipping_method']"}
+
 		<div class="tab-pane" id="tab-shipping">
             <table class="table table-bordered">
-          <tr>
-            <td>收货人姓名</td>
-            <td>{$data.order.shipping_name}</td>
-          </tr>
-                  
-          <tr>
-            <td>所在地</td>
-            <td>
-            	<?php echo get_area_name($data['order']['shipping_province_id']); ?>，
-            	<?php echo get_area_name($data['order']['shipping_city_id']); ?>，
-            	<?php echo get_area_name($data['order']['shipping_country_id']); ?>
-            </td>
-          </tr>
-          
-          <tr>
-            <td>地址</td>
-            <td>{$data.order.address}</td>
-          </tr>
-         
-         
-           <tr>
-          	<td>货运方式</td>
-          	<td><?php echo get_shipping_name($data['order']['shipping_method']); ?></td>
-          </tr>
-          <tr>
-          	<td>联系电话</td>
-          	<td>{$data.order.shipping_tel}</td>
-          </tr>
-          
-        </table>        
-      </div>
-      {/if}
+              <tr>
+                <td>收货人姓名</td>
+                <td>{$data.order.shipping_name}</td>
+              </tr>
+                      
+              <tr>
+                <td>所在地</td>
+                <td>
+                	<?php echo get_area_name($data['order']['shipping_province_id']); ?>，
+                	<?php echo get_area_name($data['order']['shipping_city_id']); ?>，
+                	<?php echo get_area_name($data['order']['shipping_country_id']); ?>
+                </td>
+              </tr>
+              
+              <tr>
+                <td>地址</td>
+                <td>{$data.order.address}</td>
+              </tr>
+             
+               <tr>
+              	<td>货运方式</td>
+              	<td><?php echo get_shipping_name($data['order']['shipping_method']); ?></td>
+              </tr>
+              <tr>
+              	<td>联系电话</td>
+              	<td>{$data.order.shipping_tel}</td>
+              </tr>
+            </table>        
+        </div>
+
       <div id="tab-product" class="tab-pane">
        <table class="table table-bordered">
           <thead>

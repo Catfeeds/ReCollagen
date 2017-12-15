@@ -1,16 +1,4 @@
 <?php
-/**
- * oscshop2 B2C电子商务系统
- *
- * ==========================================================================
- * @link      http://www.oscshop.cn/
- * @copyright Copyright (c) 2015-2016 oscshop.cn. 
- * @license   http://www.oscshop.cn/license.html License
- * ==========================================================================
- *
- * @author    李梓钿
- *
- */
 namespace osc\admin\controller;
 use osc\common\controller\AdminBase;
 use think\Db;
@@ -23,15 +11,8 @@ class Category extends AdminBase{
 	}
 	
     public function index(){
-    	
-		$pid=input('param.pid');
-		
-		if(!$pid){
-			$pid=0;
-		}
-		
-		$list = Db::name('category')->where('pid',$pid)->paginate(config('page_num'));
-		$this->assign('empty', '<tr><td colspan="20">~~暂无数据</td></tr>');
+		$list = Db::name('category')->order('sort')->paginate(config('page_num'));
+		$this->assign('empty', '<tr><td colspan="20">暂无数据</td></tr>');
 		$this->assign('list', $list);
 		
 		return $this->fetch();   
@@ -41,15 +22,13 @@ class Category extends AdminBase{
 		
 		if(request()->isPost()){
 			
-			$model=osc_model('admin','category');
+			$model=osc_model('admin','category');			
+			$result=$model->add(input('post.'));
 			
-			$resault=$model->add(input('post.'));
-			
-			if(isset($resault['error'])){
-				return ['error'=>$resault['error']];
+			if(isset($result['error'])){
+				return ['error'=>$result['error']];
 			}else{
-				
-				if($resault){								
+				if($result){								
 					storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'新增了商品分类');						
 					return ['success'=>'新增成功','action'=>'add'];				
 				}else{			
@@ -70,40 +49,30 @@ class Category extends AdminBase{
 		if(request()->isPost()){
 			
 			$model=osc_model('admin','category');
+			$result=$model->edit(input('post.'));
 			
-			$resault=$model->edit(input('post.'));
-			
-			if(isset($resault['error'])){
-				return ['error'=>$resault['error']];
+			if(isset($result['error'])){
+				return ['error'=>$result['error']];
 			}else{
-				
-				if($resault){								
+				if($result){								
 					storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'修改了商品分类');						
 					return ['success'=>'修改成功','action'=>'edit'];				
 				}else{			
 					return ['error'=>'修改失败'];
 				}
-				
 			}
 			
+		}else{
+			$this->assign('cat',Db::name('category')->find((int)input('param.id')));
+			$this->assign('action',url('Category/edit'));
+			$this->assign('crumbs','修改');
+			return $this->fetch('edit');
 		}
 		
-		$this->assign('category',osc_goods()->get_category_tree());
-		
-		$this->assign('cat',Db::name('category')->find((int)input('param.id')));
-		
-		$link_data=osc_model('admin','category')->category_link_data((int)input('param.id'));
-		
-		$this->assign('category_attribute',$link_data['attribute']);
-		$this->assign('category_brand',$link_data['brand']);
-		
-		$this->assign('action',url('Category/edit'));
-		$this->assign('crumbs','修改');
-		return $this->fetch('edit');
 	}
 	
 	//删除分类
-	function del(){	
+	public function del(){	
 			
 		$r=osc_model('admin','category')->del_category((int)input('param.id'));	
 		
@@ -120,7 +89,7 @@ class Category extends AdminBase{
 		
 	}
 	
-	function autocomplete(){	
+	public function autocomplete(){	
 		
 		$filter_name=input('filter_name');
 		
@@ -141,11 +110,11 @@ class Category extends AdminBase{
 		return 	$json;
 	}
 	//更新排序
-	function update_sort(){
+	public function update_sort(){
 		$data=input('post.');
 		
 		$update['id']=(int)$data['cid'];
-		$update['sort_order']=(int)$data['sort'];
+		$update['sort']=(int)$data['sort'];
 		
 		if(Db::name('category')->update($update)){
 			

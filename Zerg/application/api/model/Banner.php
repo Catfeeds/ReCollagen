@@ -6,20 +6,23 @@ use think\Model;
 
 class Banner extends BaseModel
 {
-    public function items()
-    {
-        return $this->hasMany('BannerItem', 'banner_id', 'id');
+    /**
+     * 修改图片路径
+     */
+    public function getImageAttr($value, $data){
+        return $this->prefixImgUrl($value, $data);
     }
+    // public function items()
+    // {
+    //     return $this->hasMany('BannerItem', 'banner_id', 'id');
+    // }
     //
 
     /**
-     * @param $id int banner所在位置
      * @return Banner
      */
-    public static function getBannerById($id)
-    {
-        $banner = self::with(['items','items.img'])
-            ->find($id);
+    public static function getBanners(){
+        $banner = self::order('sort')->select();
 
 //         $banner = BannerModel::relation('items,items.img')
 //             ->find($id);

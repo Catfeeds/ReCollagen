@@ -1,0 +1,31 @@
+Request:
+    /api/v1/product/recent/paginate
+
+Method:
+    Get
+
+Params:
+    # page      分页数
+    # size      每页显示条数
+
+
+
+Callback: 编码一律utf-8
+
++-------------------------------------------------------+
+
+    {  
+        "current_page"      :  当前页, 
+        "data" : {
+            "goods_id"      : "商品id"     
+            "image"         : "商品图片"                
+            "name"          : "商品名称"                
+            "price"         : "商品价格"                
+        },
+    }
+
++-------------------------------------------------------+
+    {  
+        "errorCode"     :  "错误码", 
+        "msg"           : "错误提示",        
+    }

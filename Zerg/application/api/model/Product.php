@@ -5,28 +5,28 @@ namespace app\api\model;
 use think\Model;
 
 class Product extends BaseModel
-{
+{   
+    protected $table = 'osc_goods';
     protected $autoWriteTimestamp = 'datetime';
     protected $hidden = [
-        'delete_time', 'main_img_id', 'pivot', 'from', 'category_id',
-        'create_time', 'update_time'];
+        'pivot', 'add_time', 'date_modified', 'viewed','status', 'sort_order', 'location', 'shipping', 'sku', 'brand_id', 'date_available', 'stock_status_id', 'weight_class_id', 'length_class_id', 'subtract', 'minimum', 'pay_points', 'is_points_goods', 'model', 'points', 'sale_count'
+    ];
 
     /**
      * 图片属性
      */
-    public function imgs()
-    {
+    public function imgs(){
         return $this->hasMany('ProductImage', 'product_id', 'id');
     }
-
-    public function getMainImgUrlAttr($value, $data)
-    {
+    /**
+     * 修改图片路径
+     */
+    public function getImageAttr($value, $data){
         return $this->prefixImgUrl($value, $data);
     }
 
 
-    public function properties()
-    {
+    public function properties(){
         return $this->hasMany('ProductProperty', 'product_id', 'id');
     }
 
@@ -38,17 +38,12 @@ class Product extends BaseModel
      * @param bool $paginate
      * @return \think\Paginator
      */
-    public static function getProductsByCategoryID(
-        $categoryID, $paginate = true, $page = 1, $size = 30)
-    {
-        $query = self::
-        where('category_id', '=', $categoryID);
-        if (!$paginate)
-        {
+    public static function getProductsByCategoryID($categoryID, $paginate = true, $page = 1, $size = 30){
+        
+        $query = self::where('cat_id', '=', $categoryID);
+        if (!$paginate){
             return $query->select();
-        }
-        else
-        {
+        }else{
             // paginate 第二参数true表示采用简洁模式，简洁模式不需要查询记录总数
             return $query->paginate(
                 $size, true, [
@@ -84,11 +79,10 @@ class Product extends BaseModel
         return $product;
     }
 
-    public static function getMostRecent($count)
-    {
-        $products = self::limit($count)
-            ->order('create_time desc')
-            ->select();
+    public static function getMostRecent($page,$size){
+
+        $products = self::order('add_time desc')->where(['status'=>1])->paginate($size, true, ['page' => $page]);
+
         return $products;
     }
 

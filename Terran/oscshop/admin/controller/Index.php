@@ -1,23 +1,12 @@
 <?php
-/**
- * oscshop2 B2C电子商务系统
- *
- * ==========================================================================
- * @link      http://www.oscshop.cn/
- * @copyright Copyright (c) 2015-2016 oscshop.cn. 
- * @license   http://www.oscshop.cn/license.html License
- * ==========================================================================
- *
- * @author    李梓钿
- *
- */
 namespace osc\admin\controller;
 use osc\common\controller\AdminBase;
 use think\Db;
 class Index extends AdminBase{
-	
-    public function index()
-    {
+	/**
+	 * 后台首页
+	 */
+    public function index(){
     	//订单数量    
 		$this->assign('total_order',$this->get_total_order());
 		$this->assign('today_order',$this->get_total_order(array('date_added' => date('Y-m-d'))));	
@@ -32,11 +21,12 @@ class Index extends AdminBase{
 		$this->assign('member_count',Db::name('member')->count());		
 		//用户行为列表
     	$this->assign('user_action',Db::name('user_action')->order('ua_id desc')->limit(config('page_num'))->select());
-		$this->assign('uc_empty', '<tr><td colspan="20">~~暂无数据</td></tr>');		
+		$this->assign('uc_empty', '<tr><td colspan="20">暂无数据</td></tr>');		
 		//订单列表	
 		$this->assign('order_list',osc_order()->order_list(null,10));		
-		$this->assign('empty', '<tr><td colspan="20">~~暂无数据</td></tr>');    
+		$this->assign('empty', '<tr><td colspan="20">暂无数据</td></tr>');    
 		
+		$this->assign('breadcrumb1','主页');
 		return $this->fetch();   
     }
 

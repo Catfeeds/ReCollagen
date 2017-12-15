@@ -1,30 +1,24 @@
 <?php
 /**
- * oscshop2 B2C电子商务系统
- *
- * ==========================================================================
- * @link      http://www.oscshop.cn/
- * @copyright Copyright (c) 2015-2016 oscshop.cn. 
- * @license   http://www.oscshop.cn/license.html License
- * ==========================================================================
- *
- * @author    李梓钿
- *
+ * 后台系统菜单控制器
  */
 namespace osc\admin\controller;
 use osc\common\controller\AdminBase;
 use think\Db;
 class Menu extends AdminBase{
-	
+	/**
+	 * 初始化
+	 */
 	protected function _initialize(){
 		parent::_initialize();
 		$this->assign('breadcrumb1','系统');
 		$this->assign('breadcrumb2','后台菜单管理');
 	}
-	
+	/**
+	 * 菜单列表
+	 */
     public function index(){
     	
-				
 		$cate =Db::query('SELECT id,pid,title AS name FROM '.config('database.prefix').'menu ORDER BY sort_order ASC');
 		
 		$list =list_to_tree($cate);

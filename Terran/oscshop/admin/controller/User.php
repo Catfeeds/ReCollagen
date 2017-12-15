@@ -1,16 +1,4 @@
 <?php
-/**
- * oscshop2 B2C电子商务系统
- *
- * ==========================================================================
- * @link      http://www.oscshop.cn/
- * @copyright Copyright (c) 2015-2016 oscshop.cn. 
- * @license   http://www.oscshop.cn/license.html License
- * ==========================================================================
- *
- * @author    李梓钿
- *
- */
 namespace osc\admin\controller;
 use osc\common\controller\AdminBase;
 use think\Db;
@@ -22,14 +10,14 @@ class User extends AdminBase{
 		$this->assign('breadcrumb2','系统用户');
 	}
 	
-    public function index()
-    {		
+    public function index(){		
 		$list = Db::view('Admin','admin_id,user_name,status')
-		->view('AuthGroupAccess','group_id','Admin.admin_id=AuthGroupAccess.uid')
-		->view('AuthGroup','title','AuthGroupAccess.group_id=AuthGroup.id')
-		->where('user_name','neq',config('administrator'))
-		->order('admin_id desc')
-		->paginate(config('page_num'));	
+			->view('AuthGroupAccess','group_id','Admin.admin_id=AuthGroupAccess.uid')
+			->view('AuthGroup','title','AuthGroupAccess.group_id=AuthGroup.id')
+			->where('user_name','neq',config('administrator'))
+			->order('admin_id desc')
+			->paginate(config('page_num'));	
+
 		$this->assign('empty', '<tr><td colspan="20">~~暂无数据</td></tr>');
 		$this->assign('list',$list);
 		    

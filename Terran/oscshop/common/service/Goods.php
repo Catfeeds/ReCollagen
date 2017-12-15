@@ -55,7 +55,7 @@ class Goods{
 	 * @param string $field 取出字段
 	 * @return object(think\paginator\Collection) 
 	 */
-	public function get_category_goods_list($filter,$page_num=10,$field='*'){
+	public function get_category_goods_list($filter,$page_num=10){
 		
 		$map=[];
 		$query=[];
@@ -70,26 +70,22 @@ class Goods{
 		}
 		//后台台分类商品搜索
 		if(isset($filter['category'])){
-			$map['gtc.category_id']=['eq',(int)$filter['category']];	
+			$map['c.id']=['eq',(int)$filter['category']];	
 			$query['category']=urlencode($filter['category']);		
 		}
-		//前台分类商品搜索
-		if(isset($filter['id'])){
-			$map['gtc.category_id']=['eq',(int)$filter['id']];	
-		}
+
 		//状态筛选
 		if(isset($filter['status'])){	
 			$map['g.status']=['eq',(int)$filter['status']];	
 			$query['status']=urlencode($filter['status']);
-		}else{
-			$map['g.status']=['eq',1];	
-		}		
+		}	
+		$list = Db::name('goods')->alias('g')->field('g.*,c.name As cat_name')
+			->where($map)		
+			->join('__CATEGORY__ c','c.id = g.cat_id','left')
+			->order('g.add_time desc')
+			->paginate($page_num,false,['query'=>$query]);
 		
-		return Db::name('goods')->alias('g')->field($field)		
-		->join('__GOODS_TO_CATEGORY__ gtc','g.goods_id = gtc.goods_id')
-		->where($map)->order('g.goods_id desc')
-		->paginate($page_num,false,['query'=>$query]);
-		
+		return $list;
 	}
 
 	/**
@@ -102,19 +98,20 @@ class Goods{
 		$map=[];
 		
 		if(isset($filter['name'])){
-			$map['name']=['like',$filter['name']];		
+			$map['g.name']=['like',"%".$filter['name']."%"];		
 		}
 
 		if(isset($filter['status'])){	
-			$map['status']=['eq',$filter['status']];	
+			$map['g.status']=['eq',$filter['status']];	
 		}
 		
-		$map['goods_id']=['GT','0'];
+		$list = Db::name('goods')->alias('g')->field('g.*,c.name As cat_name')
+			->where($map)
+			->join('__CATEGORY__ c','c.id = g.cat_id','left')
+			->order('g.add_time desc')
+			->paginate($page_num);
 		
-		return Db::name('goods')
-		->where($map)->order('goods_id desc')
-		->paginate($page_num);
-		
+		return $list;
 	}
 	
 	public function ajax_get_goods($page_num,$limit_num){		
@@ -123,7 +120,7 @@ class Goods{
 		//数据量
 		$limit = ((int)$limit_num * (int)$page) . ",".(int)$limit_num;
 					
-		$sql='SELECT goods_id,image,price,name FROM '.config('database.prefix').'goods WHERE status=1 ORDER BY goods_id LIMIT '.$limit;
+		$sql='SELECT goods_id,image,price,name FROM '.config('database.prefix').'goods WHERE status=1 ORDER BY add_time desc LIMIT '.$limit;
 		
 		$list=Db::query($sql);				
 		
@@ -170,7 +167,7 @@ class Goods{
 				'type'                 => $goods_option['type'],					
 				'option_value'         => $goods_option['name'],
 				'required'             => $goods_option['required'],
-				'goods_option_value'   =>  $goods_option_value_data,				
+				'goods_option_value'   => $goods_option_value_data,				
 			);
 		}
 	
@@ -214,14 +211,14 @@ class Goods{
 	//取得商品分类树形结构
 	public function get_category_tree(){	
 		$tree=new \oscshop\Tree();	
-		return $tree->toFormatTree(Db::name('category')->field('id,pid,name')->select(),'name');
+		return $tree->toFormatTree(Db::name('category')->field('id,pid,name')->order('sort')->select(),'name');
 	}
 
 	//取得商品分类
 	public function get_goods_category(){
 			
 		if(!$home_goods_category= cache('home_goods_category')){
-			$home_goods_category=list_to_tree(Db::name('category')->field('id,pid,name')->order('sort_order asc')->select());
+			$home_goods_category=list_to_tree(Db::name('category')->field('id,pid,name')->order('sort asc')->select());
 			cache('home_goods_category', $home_goods_category);
 		}	
 			
@@ -258,8 +255,7 @@ class Goods{
 	}
 	//商品详情信息
 	public function get_goods_info($goods_id){
-		
-		if(!$goods=Db::name('goods')->alias('g')->join('__GOODS_DESCRIPTION__ gd','g.goods_id = gd.goods_id')->where('g.goods_id',$goods_id)->find()){
+		if(!$goods=Db::name('goods')->alias('g')->join('__GOODS_DESCRIPTION__ gd','g.goods_id = gd.goods_id','left')->where('g.goods_id',$goods_id)->find()){
 			return false;
 		}
 		return [

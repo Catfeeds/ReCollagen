@@ -137,10 +137,10 @@
 				</script>
 				
 				<ul class="nav nav-list">
-					<li class="hover">
-						<a target="_blank" href="{$Request.root.true}">
+					<li class="hover {if condition='isset($breadcrumb1) AND ($breadcrumb1 eq "主页")'} active open {/if}">
+						<a href="{:url('Admin/Index/index')}">
 							<i class="menu-icon fa fa fa-home fa-lg"></i>
-							<span class="menu-text">前台 </span>
+							<span class="menu-text">主页</span>
 							<b class="arrow fa fa-angle-down"></b>
 						</a>
 						<b class="arrow"></b>
