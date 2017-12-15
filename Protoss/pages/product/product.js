@@ -24,6 +24,7 @@ Page({
     _loadData:function(callback){
         var that = this;
         product.getDetailInfo(this.data.id,(data)=>{
+          console.log(data)
             that.setData({
                 cartTotalCounts:cart.getCartTotalCounts().counts1,
                 product:data,

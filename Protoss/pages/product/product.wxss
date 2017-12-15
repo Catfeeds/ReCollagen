@@ -5,11 +5,21 @@
 .detail-header-box,.detail-bottom-box{
   background-color: #fff;
 }
-.detail-topic-img{
+.swiper{
+  height: 400rpx;
+  width: 100%;
   display: flex;
   justify-content: center;
 }
-.detail-topic-img image{
+.swiper-box{
+  overflow-x: hidden;
+}
+.banner-item{
+  height: 100%;
+  width: 100%;
+}
+.banner-item image{
+  height: 100%;
   width: 100%;
 }
 

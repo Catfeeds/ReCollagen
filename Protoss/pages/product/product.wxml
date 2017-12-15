@@ -6,9 +6,13 @@
                 <view wx:if="{{cartTotalCounts>0}}">{{cartTotalCounts}}</view>
             </view>
         </view>
-        <view class="detail-topic-img">
-            <image src="{{product.main_img_url}}" mode="aspectFit"></image>
-        </view>
+        <swiper indicator-dots="true" autoplay="true" indicator-active-color="#00a1e9" indicator-color="#d6d0c7" class="swiper">
+            <block wx:for="{{imgs}}">
+                <swiper-item class="banner-item">
+                    <image class="item-image" src="{{item.image}}" mode="aspectFill" />
+                </swiper-item>
+            </block>
+        </swiper>
         <view class="cart-box">
             <view class="add-cart-btn add-Collection-btn" bindtap="onAddingToCollectionTap">
                 <image class="cart-icon" src="../../imgs/icon/Collection.png"></image>
@@ -41,7 +45,7 @@
     </view>
     <view class="detail-bottom-box">
         <view class="tabs-box">
-            <block wx:for="{{['商品详情' ,'产品参数','售后保障']}}">
+            <block wx:for="{{['商品详情' ,'产品参数']}}">
                 <view class="tabs-item {{currentTabsIndex==index?'selected':''}}" bindtap="onTabsItemTap" data-index="{{index}}">
                     {{item}}
                 </view>
@@ -49,20 +53,17 @@
         </view>
         <view class="product-detail-box">
             <view class="product-detail-imgs" hidden="{{currentTabsIndex!=0}}">
-                <block wx:for="{{product.imgs}}">
-                    <image src="{{item.img_url.url}}" mode="aspectFill"></image>
+                <block wx:for="{{product.detail}}">
+                    <image src="{{item.image}}" alt="{{item.description}}" mode="aspectFill"></image>
                 </block>
             </view>
             <view class="product-detail-properties" hidden="{{currentTabsIndex!=1}}">
                 <block wx:for="{{product.properties}}">
                     <view class="properties-item">
-                        <view class="properties-name">{{item.name}}</view>
-                        <view class="properties-detail">{{item.detail}}</view>
+                        <view class="properties-name">{{item.param_name}}</view>
+                        <view class="properties-detail">{{item.param_value}}</view>
                     </view>
                 </block>
-            </view>
-            <view class="product-detail-protect" hidden="{{currentTabsIndex!=2}}">
-                <view>七天无理由免费退货</view>
             </view>
         </view>
     </view>
