@@ -117,13 +117,13 @@ class UserToken extends Token
         //        $token = Request::instance()->token('token', 'md5');
         $openid = $wxResult['openid'];
         $user = User::getByOpenID($openid);
-        if (!$user)
-            // 借助微信的openid作为用户标识
-            // 但在系统中的相关查询还是使用自己的uid
-        {
+        
+        // 借助微信的openid作为用户标识
+        // 但在系统中的相关查询还是使用自己的uid
+        if (!$user){
+            // 创建新用户
             $uid = $this->newUser($openid);
-        }
-        else {
+        }else {
             $uid = $user->id;
         }
         $cachedValue = $this->prepareCachedValue($wxResult, $uid);
@@ -150,7 +150,7 @@ class UserToken extends Token
         // 也不应该定义BaseException返回到客户端
         $user = User::create(
             [
-                'openid' => $openid
+                'openId' => $openid
             ]);
         return $user->id;
     }
