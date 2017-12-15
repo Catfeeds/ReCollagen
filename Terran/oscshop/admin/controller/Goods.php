@@ -97,7 +97,14 @@ class Goods extends AdminBase{
 		
 	 	return $this->fetch('general');
 	 }
-
+	/**
+	  * 商品选项
+	  */
+	public function edit_param(){
+		$this->assign('goods_param',Db::name('goods_param')->where('goods_id',input('id/d'))->order('id')->select());	
+		$this->assign('crumbs', '产品参数');	
+	 	return $this->fetch('param');
+	}
 	/**
 	  * 商品选项
 	  */
@@ -133,7 +140,7 @@ class Goods extends AdminBase{
 	public function ajax_eidt(){
 		if(request()->isPost()){
 
-			$data       = input('post.');
+			$data       = input('post.');			
 			$table_name = $data['table'];
 			
 			if(isset($data[$table_name][$data['key']])){
@@ -148,6 +155,7 @@ class Goods extends AdminBase{
 			if(isset($data['id'])&&$data['id']!=''){
 				//更新
 				$info[$data['pk_id']]=(int)$data['id'];				
+halt($info);
 								
 				$r=Db::name($table_name)->update($info,false,true);
 				if($r){

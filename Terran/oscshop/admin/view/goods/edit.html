@@ -22,7 +22,8 @@
     
           <ul class="nav nav-tabs">
           	<li class="active"><a href="#tab-data" data-toggle="tab">基本信息</a></li>
-            <li><a href="#tab-option" data-toggle="tab">选项</a></li>  
+          	<li><a href="#tab-param" data-toggle="tab">产品参数</a></li> 
+            <li><a href="#tab-option" data-toggle="tab">选项</a></li>   
             <li><a href="#tab-discount" data-toggle="tab">折扣</a></li>                    
             <li><a href="#tab-image" data-toggle="tab">商品轮播图</a></li>      
             <li><a href="#tab-mobile" data-toggle="tab">详情描述</a></li>       
@@ -111,6 +112,26 @@
 	          	</div>
 	          	<!-- 基本信息 END -->
 	          	
+	          	<!-- 产品参数 START -->
+	       		<div class="tab-pane" id="tab-param">
+	          		<div class="table-responsive">
+	                	<table id="param" class="table table-striped table-bordered table-hover">
+							<thead>
+								<tr>
+								  <td class="text-left">参数名称</td>
+								  <td class="text-right">参数值</td>
+								  <td></td>
+								</tr>
+							</thead>
+							<tbody>
+							
+							</tbody>
+						</table>
+		                <div><a  onclick="addParam();" class="add_image btn btn-primary ">添加参数</a></div>
+                  </div>	          		
+	          	</div>
+	       		<!-- 产品参数 END -->
+
 	       		<!-- 选项 START -->
 	       		<div class="tab-pane" id="tab-option">
 	          		<div class="table-responsive">
@@ -199,8 +220,39 @@
 {/block}
 {block name="javascript"}
 <script>
-var image_row =0;
+// 添加参数
+var param_now =0;
+function addParam() {
+	html  = '<tr id="param-row' + param_now + '">'; 
+	html += '  <td class="text-left"><input type="text" name="goods_param[' + param_now + '][param_name]" value="" class="form-control" /></td>';
+	html += '  <td class="text-left"><input type="text" name="goods_param[' + param_now + '][param_value]" value="" class="form-control" /></td>';
 
+	html += '  <td class="text-left"><button type="button" onclick="$(\'#param-row' + param_now  + '\').remove();" data-toggle="tooltip" class="btn btn-danger"><i class="fa fa-trash"></i></button></td>';
+	html += '</tr>';
+	
+	$('#param tbody').append(html);
+	
+	param_now++;
+}
+// 添加选项
+var option_now =0;
+function addOption() {
+	html  = '<tr id="option-row' + option_now + '">'; 
+	html += '  <td class="text-left"><input type="text" name="goods_option[' + option_now + '][option_name]" value="" class="form-control" /></td>';
+	html += '  <td class="text-left"><input type="text" name="goods_option[' + option_now + '][option_price]" value="" class="form-control" /></td>';
+	html += '  <td class="text-left"><input type="text" name="goods_option[' + option_now + '][quantity]" value="" class="form-control" /></td>';
+	html += '  <td class="text-left"><input type="text" name="goods_option[' + option_now + '][sort]" value="" class="form-control" /></td>';
+
+	html += '  <td class="text-left"><button type="button" onclick="$(\'#option-row' + option_now  + '\').remove();" data-toggle="tooltip" class="btn btn-danger"><i class="fa fa-trash"></i></button></td>';
+	html += '</tr>';
+	
+	$('#option tbody').append(html);
+	
+	option_now++;
+}
+	
+
+var image_row =0;
 function addImage() {
 	html  = '<tr id="gallery-image-row' + image_row + '">';
 	html += '  <td class="text-left"><a href="#" id="thumb-image' + image_row + '"data-toggle="image" class="img-thumbnail"><img src="__PUBLIC__/image/no_image_100x100.jpg" /><input type="hidden" name="goods_image[' + image_row + '][image]" value="" id="gallery-input-image' + image_row + '" /></td>';
@@ -215,7 +267,6 @@ function addImage() {
 
 
 var mobile_image_row =0;
-
 function add_mobile_image() {
 	html  = '<tr id="mobile-image-row' + mobile_image_row + '">';
 	html += '  <td class="text-left"><a href="#" id="mobile-thumb-image' + mobile_image_row + '"data-toggle="image" class="img-thumbnail"><img src="__PUBLIC__/image/no_image_100x100.jpg" /><input type="hidden" name="mobile_image[' + mobile_image_row + '][image]" value="" id="mobile-input-image' + mobile_image_row + '" /></td>';
@@ -231,7 +282,6 @@ function add_mobile_image() {
 
 
 var discount_row =0;
-
 function addDiscount() {
 	html  = '<tr id="discount-row' + discount_row + '">'; 
 	html += '  <td class="text-left"><input type="text" name="goods_discount[' + discount_row + '][quantity]" value="" class="form-control" /></td>';
@@ -244,26 +294,7 @@ function addDiscount() {
 	discount_row++;
 }
 
-var option_now =0;
-
-function addOption() {
-	html  = '<tr id="discount-row' + option_now + '">'; 
-	html += '  <td class="text-left"><input type="text" name="goods_option[' + option_now + '][option_name]" value="" class="form-control" /></td>';
-	html += '  <td class="text-left"><input type="text" name="goods_option[' + option_now + '][option_price]" value="" class="form-control" /></td>';
-	html += '  <td class="text-left"><input type="text" name="goods_option[' + option_now + '][quantity]" value="" class="form-control" /></td>';
-	html += '  <td class="text-left"><input type="text" name="goods_option[' + option_now + '][sort]" value="" class="form-control" /></td>';
-
-	html += '  <td class="text-left"><button type="button" onclick="$(\'#discount-row' + option_now  + '\').remove();" data-toggle="tooltip" class="btn btn-danger"><i class="fa fa-trash"></i></button></td>';
-	html += '</tr>';
-	
-	$('#option tbody').append(html);
-	
-	option_now++;
-}
-	
 $('#option a:first').tab('show');	
-	
-
 
 </script>
 {/block}

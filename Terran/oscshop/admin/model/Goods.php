@@ -32,10 +32,18 @@ class Goods extends Model{
 
 		if($goods_id){
 			try{
+				//商品参数	
+				if(isset($data['goods_param'])){
+					foreach ($data['goods_param'] as $param) {
+						if (!empty($param['param_name']) && !empty($param['param_value'])) {
+							Db::name('goods_param')->insert(['goods_id'=>(int)$goods_id,'param_name'=>$param['param_name'],'param_value'=>$param['param_value']]);
+						}
+					}
+				}
 				//商品选项	
 				if(isset($data['goods_option'])){
-					foreach ($data['goods_option'] as $discount) {
-						Db::execute("INSERT INTO " . config('database.prefix'). "goods_option SET goods_id = '" . (int)$goods_id . "', quantity = '" . (int)$discount['quantity'] . "', sort = '" . (int)$discount['sort'] . "', option_name = '" . $discount['option_name'] . "', option_price=".(float)$discount['option_price']);
+					foreach ($data['goods_option'] as $option) {
+						Db::execute("INSERT INTO " . config('database.prefix'). "goods_option SET goods_id = '" . (int)$goods_id . "', quantity = '" . (int)$option['quantity'] . "', sort = '" . (int)$option['sort'] . "', option_name = '" . $option['option_name'] . "', option_price=".(float)$option['option_price']);
 					}
 				}
 				//折扣
