@@ -13,10 +13,28 @@ class Product extends BaseModel
     ];
 
     /**
-     * 图片属性
+     * 获取商品选项
+     */
+    public function options(){
+        return $this->hasMany('ProductOption', 'goods_id', 'goods_id');
+    }
+    /**
+     * 获取商品折扣
+     */
+    public function discounts(){
+        return $this->hasMany('ProductDiscount', 'goods_id', 'goods_id');
+    }
+    /**
+     * 获取商品详情页滚动图
      */
     public function imgs(){
-        return $this->hasMany('ProductImage', 'product_id', 'id');
+        return $this->hasMany('ProductImage', 'goods_id', 'goods_id');
+    }
+    /**
+     * 获取商品详情图片
+     */
+    public function detail(){
+        return $this->hasMany('ProductDetail', 'goods_id', 'goods_id');
     }
     /**
      * 修改图片路径
@@ -25,9 +43,11 @@ class Product extends BaseModel
         return $this->prefixImgUrl($value, $data);
     }
 
-
+    /**
+     * 获取产品参数
+     */
     public function properties(){
-        return $this->hasMany('ProductProperty', 'product_id', 'id');
+        return $this->hasMany('ProductProperty', 'goods_id', 'goods_id');
     }
 
     /**
@@ -68,11 +88,17 @@ class Product extends BaseModel
         //        return $product;
 
         $product = self::with(
-            [
-                'imgs' => function ($query)
-                {
-                    $query->with(['imgUrl'])
-                        ->order('order', 'asc');
+                ['options' => function ($query){
+                        $query->order('sort');
+                }])
+            ->with('discounts')
+            ->with(
+                ['imgs' => function ($query){
+                        $query->order('sort_order');
+                }])
+            ->with(
+                ['detail' => function ($query){
+                    $query->order('sort_order');
                 }])
             ->with('properties')
             ->find($id);
@@ -81,7 +107,7 @@ class Product extends BaseModel
 
     public static function getMostRecent($page,$size){
 
-        $products = self::order('add_time desc')->where(['status'=>1])->paginate($size, true, ['page' => $page]);
+        $products = self::where(['status'=>1])->order('add_time desc')->paginate($size, true, ['page' => $page]);
 
         return $products;
     }

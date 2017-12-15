@@ -1,23 +1,19 @@
 <?php
 /**
- * Created by 七月.
- * Author: 七月
- * 微信公号：小楼昨夜又秋风
- * 知乎ID: 七月在夏天
- * Date: 2017/2/20
- * Time: 1:34
+ * 商品详情页滚动图模型
  */
 
 namespace app\api\model;
-
-
 use think\Model;
 
-class ProductImage extends BaseModel
-{
-    protected $hidden = ['img_id', 'delete_time', 'product_id'];
-    public function imgUrl()
-    {
-        return $this->belongsTo('Image', 'img_id', 'id');
-    }
+class ProductImage extends BaseModel{
+
+    protected $table = 'osc_goods_image';
+
+    protected $hidden = ['goods_image_id', 'goods_id', 'sort_order'];
+    // public function imgUrl()
+    // {
+    //     return $this->belongsTo('Image', 'img_id', 'id');
+    // }
+
 }

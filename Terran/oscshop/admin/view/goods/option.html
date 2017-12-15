@@ -119,7 +119,6 @@ $('.save').live('click', function() {
         function(d){
             if(d.success){
                 alertMsg(d.success);
-                window.location.reload();
             }else if(d.error){
                 alertMsg(d.error);
             }

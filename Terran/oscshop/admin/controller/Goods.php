@@ -155,7 +155,6 @@ class Goods extends AdminBase{
 			if(isset($data['id'])&&$data['id']!=''){
 				//更新
 				$info[$data['pk_id']]=(int)$data['id'];				
-halt($info);
 								
 				$r=Db::name($table_name)->update($info,false,true);
 				if($r){
