@@ -15,7 +15,7 @@ Page({
         cartTotalCounts:0,
     },
     onLoad: function (option) {
-      var id = 30;
+      var id = 2;
         this.data.id=id;
         this._loadData();
     },

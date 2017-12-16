@@ -40,6 +40,7 @@
             <view class="stock no" wx:else>缺货</view>
             <view class="name">{{product.name}}</view>
             <view class="price">￥{{product.price}} <text class='cuxiao'>促销</text></view>
+             <view class="Spec">规格：<text class='Speclist'>红色</text><text class='Speclist'>青色</text><text class='Speclist'>紫色</text></view>
             <view class="ycuxiao">促销：{{product.price}}</view>
         </view>
     </view>
