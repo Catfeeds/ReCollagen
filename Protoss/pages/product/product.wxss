@@ -29,6 +29,7 @@
   top:50rpx;
   right:12px;
   width: 80rpx;
+  z-index: 999999
 }
 .fiexd-cart image{
   height: 64rpx;
@@ -199,7 +200,7 @@
   margin-bottom: 15rpx;
 }
 .tabs-item{
-  width: 33.3%;
+  width: 50%;
   color: #C7C7CB;
   font-size: 28rpx;
   display: flex;
