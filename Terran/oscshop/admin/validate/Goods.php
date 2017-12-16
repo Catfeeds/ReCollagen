@@ -7,7 +7,7 @@ class Goods extends Validate
         'name'     =>  'require|min:2|unique:goods',  
         'cat_id'   =>  'require',
         'price'    =>  'require|float|between:0.01,9999999',  
-        'quantity' =>  'require|number|between:0,99999999',  
+        'stock' =>  'require|number|between:0,99999999',  
         'weight'   =>  'float|between:1,9999999',  
         'length'   =>  'float|between:1,9999999',  
         'width'    =>  'float|between:1,9999999',  
@@ -26,9 +26,9 @@ class Goods extends Validate
         'price.float'      =>  '商品价格必须是数字',
         'price.between'    =>  '商品价格最低为0.01',
         
-        'quantity.require' =>  '库存数量必填',
-        'quantity.number'  =>  '库存数量必须是数字',
-        'quantity.between' =>  '库存数量最低为0',
+        'stock.require' =>  '库存数量必填',
+        'stock.number'  =>  '库存数量必须是数字',
+        'stock.between' =>  '库存数量最低为0',
         
         'weight.float'     =>  '重量必须是数字',
         'weight.between'   =>  '重量最低为1',

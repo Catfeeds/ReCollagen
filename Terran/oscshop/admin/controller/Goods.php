@@ -247,15 +247,17 @@ class Goods extends AdminBase{
 			return true;
 		}		
 	}
-	//更新数量
-	public function update_quantity(){
+	/**
+	 * 修改库存
+	 */
+	public function update_stock(){
 		$data=input('post.');
 		
-		$update['goods_id']=(int)$data['goods_id'];
-		$update['quantity']=(int)$data['quantity'];
+		$update['goods_id'] =(int)$data['goods_id'];
+		$update['stock']    =(int)$data['stock'];
 		
 		if($this->goodsModel->update($update)){
-			storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'更新商品数量');
+			storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'更新商品库存');
 			return true;
 		}		
 	}
