@@ -82,7 +82,7 @@ class Goods{
 		$list = Db::name('goods')->alias('g')->field('g.*,c.name As cat_name')
 			->where($map)		
 			->join('__CATEGORY__ c','c.id = g.cat_id','left')
-			->order('g.add_time desc')
+			->order('g.create_time desc')
 			->paginate($page_num,false,['query'=>$query]);
 		
 		return $list;
@@ -108,7 +108,7 @@ class Goods{
 		$list = Db::name('goods')->alias('g')->field('g.*,c.name As cat_name')
 			->where($map)
 			->join('__CATEGORY__ c','c.id = g.cat_id','left')
-			->order('g.add_time desc')
+			->order('g.create_time desc')
 			->paginate($page_num);
 		
 		return $list;

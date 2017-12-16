@@ -6,23 +6,21 @@ use think\Db;
 class Goods extends Model{
 	
 	protected $autoWriteTimestamp = 'datetime';
-	protected $createTime         = 'add_time';
-	protected $updateTime         = 'date_modified';
 
 	/**
 	 * 新增商品
 	 */
 	public function add_goods($data){		
 
-		$goods['name']     = $data['name'];
-		$goods['image']    = $data['image'];
-		$goods['cat_id']   = $data['cat_id'];
-		$goods['price']    = (float)$data['price'];
-		$goods['quantity'] = (int)$data['quantity'];
-		$goods['status']   = $data['status'];
-		$goods['add_time'] = date('Y-m-d H:i:s',time());
+		$goods['name']        = $data['name'];
+		$goods['image']       = $data['image'];
+		$goods['cat_id']      = $data['cat_id'];
+		$goods['price']       = (float)$data['price'];
+		$goods['stock']       = (int)$data['stock'];
+		$goods['isMainGoods'] = $data['isMainGoods'];
+		$goods['status']      = $data['status'];
+		$goods['create_time'] = date('Y-m-d H:i:s',time());
 
-		
 		$goods['weight']   = empty($data['weight'])? '100' : $data['weight'];
 		$goods['length']   = empty($data['length'])? '10' : $data['length'];
 		$goods['width']    = empty($data['width'])? '10' : $data['width'];
@@ -43,7 +41,7 @@ class Goods extends Model{
 				//商品选项	
 				if(isset($data['goods_option'])){
 					foreach ($data['goods_option'] as $option) {
-						Db::execute("INSERT INTO " . config('database.prefix'). "goods_option SET goods_id = '" . (int)$goods_id . "', quantity = '" . (int)$option['quantity'] . "', sort = '" . (int)$option['sort'] . "', option_name = '" . $option['option_name'] . "', option_price=".(float)$option['option_price']);
+						Db::execute("INSERT INTO " . config('database.prefix'). "goods_option SET goods_id = '" . (int)$goods_id . "', stock = '" . (int)$option['stock'] . "', sort = '" . (int)$option['sort'] . "', option_name = '" . $option['option_name'] . "', option_price=".(float)$option['option_price']);
 					}
 				}
 				//折扣
@@ -78,7 +76,7 @@ class Goods extends Model{
 	
 	public function edit_option($data){
 		$id=(int)$data['goods_id'];
-		$quantity=0;
+		$stock=0;
 		Db::name('goods_option')->where('goods_id',$id)->delete();
 		Db::name('goods_option_value')->where('goods_id',$id)->delete();					
 		if (isset($data['goods_option'])) {
@@ -90,16 +88,16 @@ class Goods extends Model{
 											
 					if (isset($goods_option['goods_option_value']) && count($goods_option['goods_option_value']) > 0 ) {
 							foreach ($goods_option['goods_option_value'] as $goods_option_value) {								
-								Db::execute("INSERT INTO ".config('database.prefix')."goods_option_value SET goods_option_id=".(int)$option_id.",goods_id=".(int)$id.",option_id=".(int)$goods_option['option_id'].",image='".(isset($goods_option_value['option_value_image'])?$goods_option_value['option_value_image']:'')."',option_value_id=".(int)$goods_option_value['option_value_id'].",quantity=".(int)$goods_option_value['quantity'].",subtract=".(int)$goods_option_value['subtract'].",price='".(float)$goods_option_value['price']."',price_prefix='".$goods_option_value['price_prefix']."',weight='".(float)$goods_option_value['weight']."',weight_prefix='".$goods_option_value['weight_prefix']."'");	
-								$quantity+=$goods_option_value['quantity'];
+								Db::execute("INSERT INTO ".config('database.prefix')."goods_option_value SET goods_option_id=".(int)$option_id.",goods_id=".(int)$id.",option_id=".(int)$goods_option['option_id'].",image='".(isset($goods_option_value['option_value_image'])?$goods_option_value['option_value_image']:'')."',option_value_id=".(int)$goods_option_value['option_value_id'].",stock=".(int)$goods_option_value['stock'].",subtract=".(int)$goods_option_value['subtract'].",price='".(float)$goods_option_value['price']."',price_prefix='".$goods_option_value['price_prefix']."',weight='".(float)$goods_option_value['weight']."',weight_prefix='".$goods_option_value['weight_prefix']."'");	
+								$stock+=$goods_option_value['stock'];
 							} 
 					}						
 				}			
 			}
 		}
 
-		if($quantity>0)
-		$this->where('goods_id',$id)->update(['quantity'=>$quantity]);
+		if($stock>0)
+		$this->where('goods_id',$id)->update(['stock'=>$stock]);
 
 	}
 

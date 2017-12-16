@@ -27,7 +27,6 @@
 				{volist name="category" id="cat"}
 					<option {if condition="$input_cid eq $cat['id']"} selected="selected"{/if} value="{$cat.id}">{$cat.name}</option>
 				{/volist}
-				
 			</select>
 		</th>	
 		<th>    				
@@ -60,6 +59,7 @@
 						<th>ID</th> 
 						<th>图片</th> 
 						<th>商品名称</th> 	
+						<th>商品类型</th> 	
 						<th>商品分类</th> 			
 						<th>价格</th>
 						<th>库存</th>
@@ -85,19 +85,15 @@
 			                  	{/if}
 							</td>
 							<td>{$v.name} 
-								{if condition="$v['shipping'] eq 0"}
-								<span class="warning">免配送</span> 								
-								{/if}
-								{if condition="$v['subtract'] eq 0"}
-								<span class="warning">不减库存</span> 								
-								{/if}
+								<!-- <span class="warning">免配送</span> 								 -->
 							</td>
+							<td>{$v.cat_name}</td>
 							<td>{$v.cat_name}</td>
 							<td>
 								<input name="price" type="text" size="6" class="price" goods_id='{$v.goods_id}' value="{$v.price}" />
 							</td>
 							<td>							
-								<input name="quantity" type="text" size="4" class="quantity" goods_id='{$v.goods_id}' value="{$v.quantity}" />
+								<input name="stock" type="text" size="4" class="stock" goods_id='{$v.goods_id}' value="{$v.stock}" />
 							</td>
 							<td>
 								{switch name="v.status"}
@@ -165,11 +161,11 @@ $(function(){
 		);
 	});
 	
-	$('.quantity').blur(function(){
+	$('.stock').blur(function(){
 		
 		$.post(
-			"{:url('Goods/update_quantity')}",
-			{quantity:$(this).val(),goods_id:$(this).attr('goods_id')},
+			"{:url('Goods/update_stock')}",
+			{stock:$(this).val(),goods_id:$(this).attr('goods_id')},
 			function(data){
 				if(data){
 					window.location.reload();
