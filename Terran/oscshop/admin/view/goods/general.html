@@ -69,7 +69,7 @@
 					<div class="form-group required">
 						<label class="col-sm-2 control-label" for="input-meta-title2">库存数量(个)：</label>
 						<div class="col-sm-10">
-							<input id="input-meta-title2" class="form-control" type="text" placeholder="库存数量(个)" value="{$goods.quantity}" name="quantity">
+							<input id="input-meta-title2" class="form-control" type="text" placeholder="库存数量(个)" value="{$goods.stock}" name="stock">
 						</div>
 					</div>
 
@@ -98,6 +98,16 @@
 					</div>
 		            
 		            <div class="form-group">
+						<label class="col-sm-2 control-label">商品类型：</label>
+						<div class="col-sm-10">
+							<label class="radio-inline">
+							<input type="radio" checked="checked" value="1" name="isMainGoods">主商品</label>
+							<label class="radio-inline">
+							<input type="radio" value="0" name="isMainGoods">辅销品</label>
+						</div>
+					</div>
+
+		            <div class="form-group">
 						<label class="col-sm-2 control-label">商品状态：</label>
 						<div class="col-sm-10">
 							<label class="radio-inline">
@@ -120,7 +130,8 @@
 <script>
 	$(function(){
 		{if condition="$Request.param.id"}
-			Oscshop.setValue("status", {$goods.status|default=1});		
+			Oscshop.setValue("status", {$goods.status|default=1});	
+			Oscshop.setValue("isMainGoods", {$goods.isMainGoods|default=1});		
 		{/if}
 	});	
 </script>

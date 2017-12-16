@@ -75,9 +75,9 @@ class Goods{
 		}
 
 		//状态筛选
-		if(isset($filter['status'])){	
-			$map['g.status']=['eq',(int)$filter['status']];	
-			$query['status']=urlencode($filter['status']);
+		if(isset($filter['isMainGoods'])){	
+			$map['g.isMainGoods']=['eq',(int)$filter['isMainGoods']];	
+			$query['isMainGoods']=urlencode($filter['isMainGoods']);
 		}	
 		$list = Db::name('goods')->alias('g')->field('g.*,c.name As cat_name')
 			->where($map)		
@@ -101,8 +101,8 @@ class Goods{
 			$map['g.name']=['like',"%".$filter['name']."%"];		
 		}
 
-		if(isset($filter['status'])){	
-			$map['g.status']=['eq',$filter['status']];	
+		if(isset($filter['isMainGoods'])){	
+			$map['g.isMainGoods']=['eq',$filter['isMainGoods']];	
 		}
 		
 		$list = Db::name('goods')->alias('g')->field('g.*,c.name As cat_name')

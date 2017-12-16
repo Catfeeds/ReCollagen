@@ -514,3 +514,20 @@ function getOrderStatus($order_status){
             break;
     }
 }
+/**
+ * 判断商品类型
+ */
+function isMainGoods($isMainGoods){
+    switch ($isMainGoods) {
+        case '1':
+            return '主商品';
+            break;
+        case '0':
+            return '辅销品';
+            break;
+        
+        default:
+            return '主商品';
+            break;
+    }
+}

@@ -144,17 +144,21 @@ class Goods extends Model{
 	
 	public function del_goods($goods_id){
 		
+		Db::startTrans();
 		try{
-								
 			Db::name('goods')->where('goods_id',$goods_id)->delete();
+			Db::name('goods_param')->where('goods_id',$goods_id)->delete();	
+
 			Db::name('goods_discount')->where('goods_id',$goods_id)->delete();	
 			Db::name('goods_option')->where('goods_id',$goods_id)->delete();	
 			
 			Db::name('goods_image')->where('goods_id',$goods_id)->delete();
 			Db::name('goods_mobile_description_image')->where('goods_id',$goods_id)->delete();
-			
+
+			Db::commit();
 			return true;
 		}catch(Exception $e){
+			Db::rollback();
 			return false;
 		}
 	}

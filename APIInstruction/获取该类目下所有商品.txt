@@ -15,6 +15,7 @@ Callback: 编码一律utf-8
 
     {  
         "goods_id"      :  "商品id", 
+        "isMainGoods"   :  "商品类型(1主商品，2辅销品)"
         "cat_id"        :  "分类id", 
         "image"         :  "商品图片", 
         "name"          :  "商品名称", 

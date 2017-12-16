@@ -28,10 +28,10 @@ class Goods extends AdminBase{
 		}		
 
 		$this->assign([
-			'list'     => $list,
-			'status'   => input('get.status/d'),
-			'category' => osc_goods()->get_category_tree(),
-			'empty'    => '<tr><td colspan="20">没有数据</td></tr>',
+			'list'        => $list,
+			'isMainGoods' => input('get.isMainGoods/d'),
+			'category'    => osc_goods()->get_category_tree(),
+			'empty'       => '<tr><td colspan="20">没有数据</td></tr>',
 		]);
 	
 		return $this->fetch();
