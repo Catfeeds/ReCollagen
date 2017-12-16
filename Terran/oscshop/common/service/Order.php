@@ -8,51 +8,11 @@ namespace osc\common\service;
 use think\Db;
 class Order{
 	
-	//加入订单历史
-	public function add_order_history($order_id, $data=array()) {		
-		
-		$order['order_id']=$order_id;
-		$order['date_modified']=time();
-		$order['order_status_id']=$data['order_status_id'];
-		Db::name('Order')->update($order);		
-		
-		$oh['order_id']=$order_id;
-		$oh['order_status_id']=$data['order_status_id'];
-		$oh['notify']=(isset($data['notify']) ? (int)$data['notify'] : 0) ;
-		$oh['comment']=strip_tags($data['comment']);
-		$oh['date_added']=time();
-		$oh_id=Db::name('order_history')->insert($oh,false,true);
-
-		return $oh_id;
-		
-	}
-	//取得订单历史
-	public function get_order_histories($order_id,$uid=null) {		
-		
-		$map['o.order_id']=['eq',$order_id];	
-		
-		if($uid){
-			$map['o.uid']=['eq',$uid];	
-		}
-		
-		$order=Db::name('order')
-			->alias('o')				
-			->join('__ORDER_HISTORY__ oh','oh.order_id = o.order_id','left')
-			->join('__ORDER_STATUS__ os','oh.order_status_id = os.order_status_id','left')			
-			->field('oh.*,os.*')
-			->where($map)
-			->order('oh.order_history_id desc')
-			->select();
-			
-		return $order;	
-	}
 	//删除订单
 	public function del_order($id){
 		
 		Db::name('order')->where(array('order_id'=>$id))->delete();
 		Db::name('order_goods')->where(array('order_id'=>$id))->delete();
-		Db::name('order_history')->where(array('order_id'=>$id))->delete();
-		Db::name('order_total')->where(array('order_id'=>$id))->delete();
 		
 	}
 	//取消订单
@@ -61,16 +21,16 @@ class Order{
 		if($uid){
 			$map['uid']=['eq',$uid];
 		}
-		$order['order_status_id']=config('cancel_order_status_id');		
-		$map['order_id']=['eq',$order_id];		
+		$order['order_status_id'] =config('cancel_order_status_id');		
+		$map['order_id']          =['eq',$order_id];		
 		//设置订单状态	
 		Db::name('order')->where($map)->update($order);	
-		//写人订单历史
-		Db::execute("INSERT INTO " .config('database.prefix'). "order_history SET order_status_id = ".config('cancel_order_status_id').',order_id='.$order_id.",comment='用户取消了订单',date_added=".time());
 		
 	}
 	
-	//订单信息
+	/**
+	 * 获取订单详情信息
+	 */
 	public function order_info($order_id,$uid=null){
 		
 		$map['o.order_id']=['eq',$order_id];	
@@ -79,27 +39,17 @@ class Order{
 			$map['m.uid']=['eq',$uid];	
 		}
 		
-		$order=Db::name('order')
-			->alias('o')
-			->join('__MEMBER__ m','o.uid = m.uid','left')			
-			->join('__ORDER_STATUS__ os','o.order_status_id = os.order_status_id','left')
-			->join('__ADDRESS__ a','o.address_id = a.address_id','left')
-			->field('o.*,m.username,m.openId,a.*')
+		$order=Db::name('order')->alias('o')->field('o.*,m.openId,d.dispatch_title')
+			->join('__MEMBER__ m','o.uid = m.uid')	
+			->join('__DISPATCH__ d','o.dispatch_id = d.id')			
 			->where($map)
 			->find();
-		
-		if(!$order){
-			return false;
-		}
 			
 		return array(
-			'order'=>$order,
-			'order_product'=>Db::name('order_goods')->alias('og')
-			->join('__GOODS__ g','og.goods_id = g.goods_id','left')
-			->field('og.*,g.image')->where('og.order_id',$order_id)->select(),			
-			'order_total'=>Db::name('order_total')->where('order_id',$order_id)->select(),
-			'order_statuses'=>Db::name('OrderStatus')->select(),
-			'order_history'=>Db::name('order_history')->where('order_id',$order_id)->select()
+			'order'			=>	$order,
+			'order_product'	=>	Db::name('order_goods')->alias('og')
+								->join('__GOODS__ g','og.goods_id = g.goods_id','left')
+								->field('og.*,g.image')->where('og.order_id',$order_id)->select()
 		);	
 			
 	}
@@ -114,9 +64,9 @@ class Order{
 			$map['Order.order_num_alias']=['eq',$param['order_num']];	
 			$query['order_num']=urlencode($param['order_num']);
 		}
-		if(isset($param['username'])){
-			$map['Member.username']=['like',"%".$param['username']."%"];
-			$query['username']=urlencode($param['username']);
+		if(isset($param['name'])){
+			$map['Member.name']=['like',"%".$param['name']."%"];
+			$query['name']=urlencode($param['name']);
 		}
 		if(isset($param['status'])){
 			$map['Order.order_status_id']=['eq',$param['status']];	
@@ -130,10 +80,11 @@ class Order{
 		$map['Order.order_id']=['gt',0];
 	
 		return Db::view('Order','*')
-		->view('Member','openId,username','Order.uid=Member.uid')
-		->where($map)
-		->order('Order.order_id desc')
-		->paginate($page_num,false,['query'=>$query]);
+			->view('Member','openId','Order.uid=Member.uid')
+			->view('Dispatch','dispatch_title','Order.dispatch_id=Dispatch.id')
+			->where($map)
+			->order('Order.order_id desc')
+			->paginate($page_num,false,['query'=>$query]);
 	}
 	/**
 	 * 写入订单
@@ -219,37 +170,14 @@ class Order{
 			
 			}
 		}		
-	
-		if(isset($data['totals'])){
-			foreach ($data['totals'] as $total) {
-				Db::execute("INSERT INTO ".config('database.prefix')."order_total SET order_id = '" .$order_id				
-				."',code='".$total['code']."'"
-				.",title='".$total['title']."'"
-				.",text='".$total['text']."'"
-				.",value='".(float)$total['value']."'");
-			}	
-		}
-		
-		$oh['order_id']=$order_id;
-		
-		if(isset($data['pay_type'])&&$data['pay_type']=='points'){
-			$oh['order_status_id']=config('paid_order_status_id');
-		}else{
-			$oh['order_status_id']=config('default_order_status_id');
-		}				
-		
-		$oh['comment']=$data['comment'];
-		$oh['date_added']=time();
-		$oh_id=Db::name('OrderHistory')->insert($oh);
-		
 
 		return [
-			'order_id'=>$order_id,
-			'subject'=>$order['pay_subject'],			
-			'name'=>$order['shipping_name'],//收货人姓名
-			'pay_order_no'=>$order['order_num_alias'],
-			'pay_total'=>$order['total'],
-			'uid'=>$order['uid']
+			'order_id'     =>$order_id,
+			'subject'      =>$order['pay_subject'],			
+			'name'         =>$order['shipping_name'],//收货人姓名
+			'pay_order_no' =>$order['order_num_alias'],
+			'pay_total'    =>$order['total'],
+			'uid'          =>$order['uid']
 		];
 		
 	}
@@ -412,7 +340,7 @@ class Order{
 		}
 	}
 
-	//更新订单，订单历史，积分，商品数量
+	//更新订单，商品数量
 	public function update_order($order_id){
 		
 		$order_info=Db::name('order')->where('order_id',$order_id)->find();
@@ -423,66 +351,8 @@ class Order{
 		$order['pay_time']=time();
 		Db::name('order')->update($order);
 		
-		$order_history['order_id']=$order_id;
-		$order_history['order_status_id']=config('paid_order_status_id');
-		$order_history['comment']='买家已付款';
-		$order_history['date_added']=time();
-		$order_history['notify']=1;
 		
-		Db::name('order_history')->insert($order_history);
-		
-		//更新积分
-		if(!empty($order_info['return_points'])){			
-			Db::name('points')->insert(
-				[
-					'uid'=>$order_info['uid'],
-					'order_id'=>$order_info['order_id'],
-					'order_num_alias'=>$order_info['order_num_alias'],
-					'points'=>$order_info['return_points'],
-					'description'=>'下单积分',
-					'prefix'=>1,
-					'creat_time'=>time(),
-					'type'=>1
-				]
-			);
-			Db::name('member')->where('uid',$order_info['uid'])->setInc('points',$order_info['return_points']);				
-		}
-		
-	
 		$member=Db::name('member')->where('uid',$order_info['uid'])->find();
-		//存在上级代理商,本系统代理商只做一级分红
-		if($member['pid']!=0){
-			
-			$agent_info=Db::name('agent')->where('uid',$member['pid'])->find();
-			
-			//代理商是状态是开启的
-			if($agent_info['status']==1){
-						
-				Db::name('agent')->where('agent_id',$agent_info['agent_id'])->setInc('total_bonus',$order_info['total']*$agent_info['return_percent']);	
-				Db::name('agent')->where('agent_id',$agent_info['agent_id'])->setInc('no_cash',$order_info['total']*$agent_info['return_percent']);	
-				
-				Db::name('member')->where('uid',$member['pid'])->setInc('total_bonus',$order_info['total']*$agent_info['return_percent']);	
-				
-				$bonus['uid']=$member['pid'];
-				$bonus['agent_id']=$agent_info['agent_id'];
-				$bonus['order_id']=$order_info['order_id'];
-				$bonus['order_num_alias']=$order_info['order_num_alias'];
-				$bonus['buyer_id']=$order_info['uid'];
-				$bonus['bonus']=$order_info['total']*$agent_info['return_percent'];
-				$bonus['return_percent']=$agent_info['return_percent'];
-				$bonus['order_total']=$order_info['total'];
-				$bonus['pay_time']=$order['pay_time'];
-				
-				$bonus['create_time']=date('Y-m-d',time());
-				$bonus['month_time']=date('m',time());
-				$bonus['year_time']=date('Y',time());
-				$bonus['order_status_id']=config('paid_order_status_id');
-				
-				Db::name('agent_bonus')->insert($bonus);
-				
-			}
-			
-		}
 		
 		$list=Db::name('goods')
 			->alias('g')				
@@ -515,18 +385,7 @@ class Order{
 		storage_user_action($order_info['uid'],$order_info['name'],config('FRONTEND_USER'),'成功支付了订单');
 		
 	} 
-	//清空购物车，用于电脑端
-	public function clear_cart($uid){
-		Db::name('cart')->where('uid',$uid)->delete();
-		session('weight',null);
-		session('shipping_address_id',null);
-		session('shipping_city_id',null);
-		session('shipping_name',null);
-		session('shipping_method',null);
-		session('comment',null);
-		session('payment_method',null);	
-		session('total',null);	
-	}
+
 	//会员中心点击立即支付，验证商品数量
 	public function check_goods_quantity($order_id){
 		$goods_list=Db::view('OrderGoods','name,quantity as order_quantity')

@@ -37,7 +37,7 @@
 		      <div class="col-lg-3 col-md-3 col-sm-6">
 					<div class="tile">
 					<div class="tile-heading">
-					新增客户 
+					新增会员 
 					<span class="pull-right"> 总{$member_count}个</span>
 					</div>
 					<div class="tile-body">
@@ -109,7 +109,6 @@
 							<tr>
 							<td>订单号</td>
 							<td>会员微信openId</td>
-							<td>会员昵称</td>
 							<td>下单时间</td>
 							<td>主账户消费</td>
 							<td>辅账户消费</td>
@@ -123,12 +122,11 @@
 								<tr>
 									<td>{$v.order_num_alias}</td>
 									<td>{$v.openId}</td>
-									<td>{$v.username}</td>
-									<td>{$v.date_added|date='Y-m-d H:i:s',###}</td>
+									<td>{$v.create_time|date='Y-m-d H:i:s',###}</td>
 									<td>&yen;{$v.mainPay}</td>
 									<td>&yen;{$v.secondPay}</td>
 									<td>&yen;{$v.total}</td>
-									<td>{$v.name}</td>
+									<td>{$v.order_status|getOrderStatus}</td>
 									<td>
 										<a class="btn btn-xs btn-info" href='{:url("member/OrderBackend/show_order",array("id"=>$v["order_id"]))}'><i class="fa-eye fa"></i></a> 
 										<a class="btn btn-xs btn-info" href='{:url("OrderBackend/print_order",array("id"=>$v["order_id"]))}' target="_blank"><i class="fa fa-print bigger-120"></i></a> 

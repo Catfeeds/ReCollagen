@@ -39,7 +39,7 @@ function art_dialog(d,index_url){
 }
 //错误信息弹窗
 function alertMsg(msg){
-	art.dialog({
+	return art.dialog({
 		content:msg,
 		lock: true,						
 	});		

@@ -33,10 +33,6 @@
 					</td>
 				</tr>
 				<tr>
-					<td>昵称</td>
-					<td>{$data.info.username}</td>
-				</tr>
-				<tr>
 				    <td>主账户金额（元）</td>
 				    <td><input name="mainAccount" type="text" style="width:200px;" value="{$data.info.mainAccount}" /></td>
 				</tr> 
@@ -45,22 +41,8 @@
 				    <td><input name="secondAccount" type="text" style="width:200px;" value="{$data.info.secondAccount}" /></td>
 				</tr> 
 				<tr>
-					<td>登录次数</td>
-					<td>{$data.info.loginnum}</td>
-				</tr>
-				<tr>
 					<td>创建时间</td>
-					<td>{$data.info.regdate|date="Y-m-d H:i:s",###}</td>
-				</tr>
-				<tr>
-					<td>最近登录时间</td>
-					<td>
-						{if condition="empty($data['info']['lastdate'])"}
-							无
-						{else/}
-							{$data.info.lastdate|date="Y-m-d H:i:s",###}
-						{/if}
-					</td>
+					<td>{$data.info.create_time|date="Y-m-d H:i:s",###}</td>
 				</tr>
 				<tr>
 					<td>状态</td>
@@ -68,7 +50,7 @@
 						<label class="radio-inline">
 						<input type="radio" checked="checked" value="1" name="checked">审核通过</label>
 						<label class="radio-inline">
-						<input type="radio" value="0" name="checked">未通过审核</label>
+						<input type="radio" value="0" name="checked">审核不通过</label>
 					</td>
 				</tr>
 				</table>
