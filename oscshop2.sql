@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2017-12-16 09:29:20
+Date: 2017-12-16 10:29:59
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -3646,7 +3646,7 @@ CREATE TABLE `osc_banner` (
   `goods_id` int(11) NOT NULL DEFAULT '0' COMMENT '链接到的商品id',
   `sort` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`banner_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='首页轮播图';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='首页轮播图';
 
 -- ----------------------------
 -- Records of osc_banner
@@ -3698,26 +3698,23 @@ INSERT INTO `osc_cart` VALUES ('2', 'money', '2', '11', '', '2', '1513130571');
 DROP TABLE IF EXISTS `osc_category`;
 CREATE TABLE `osc_category` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `name` varchar(50) DEFAULT NULL COMMENT '标题',
-  `image` varchar(64) DEFAULT NULL,
+  `pid` int(11) NOT NULL DEFAULT '0',
+  `name` varchar(50) NOT NULL DEFAULT '' COMMENT '标题',
+  `image` varchar(100) NOT NULL DEFAULT '',
   `sort` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '排序',
   `update_time` int(10) NOT NULL DEFAULT '0',
-  `pid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '上级分类ID',
-  `meta_keyword` varchar(255) DEFAULT NULL,
-  `meta_description` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `pid` (`pid`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 COMMENT='商品分类';
 
 -- ----------------------------
 -- Records of osc_category
 -- ----------------------------
-INSERT INTO `osc_category` VALUES ('1', '五谷杂粮', 'images/osc1/category/category-rice.png', '2', '1513157092', '0', '衣服', '衣服');
-INSERT INTO `osc_category` VALUES ('2', '正宗好茶', 'images/osc1/category/category-tea.png', '5', '1513157076', '0', '鞋子', '鞋子');
-INSERT INTO `osc_category` VALUES ('3', '美味零食', 'images/osc1/category/category-dryfruit.png', '1', '1513157118', '0', '陶瓷', '陶瓷');
-INSERT INTO `osc_category` VALUES ('5', '时令蔬果', 'images/osc1/category/category-vg.png', '6', '1513157636', '0', '数码', '数码');
-INSERT INTO `osc_category` VALUES ('13', '精美茶具', 'images/osc1/category/category-fry-a.png', '3', '1513219382', '0', '鲜花', '鲜花');
-INSERT INTO `osc_category` VALUES ('29', '传统糕点', 'images/osc1/category/category-cake.png', '4', '1513157182', '0', null, null);
+INSERT INTO `osc_category` VALUES ('1', '0', '五谷杂粮', 'images/osc1/category/category-rice.png', '2', '1513157092');
+INSERT INTO `osc_category` VALUES ('2', '0', '正宗好茶', 'images/osc1/category/category-tea.png', '5', '1513157076');
+INSERT INTO `osc_category` VALUES ('3', '0', '美味零食', 'images/osc1/category/category-dryfruit.png', '1', '1513157118');
+INSERT INTO `osc_category` VALUES ('5', '0', '时令蔬果', 'images/osc1/category/category-vg.png', '6', '1513157636');
+INSERT INTO `osc_category` VALUES ('13', '0', '精美茶具', 'images/osc1/category/category-fry-a.png', '3', '1513219382');
+INSERT INTO `osc_category` VALUES ('29', '0', '传统糕点', 'images/osc1/category/category-cake.png', '4', '1513157182');
 
 -- ----------------------------
 -- Table structure for `osc_category_to_attribute`
@@ -3829,7 +3826,7 @@ CREATE TABLE `osc_dispatch` (
   `sort` int(11) NOT NULL DEFAULT '1' COMMENT '货仓排序',
   `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '最后更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='货仓表';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='货仓表';
 
 -- ----------------------------
 -- Records of osc_dispatch
@@ -3846,7 +3843,7 @@ CREATE TABLE `osc_goods` (
   `goods_id` int(11) NOT NULL AUTO_INCREMENT,
   `isMainGoods` tinyint(4) NOT NULL DEFAULT '1' COMMENT '是否主商品',
   `cat_id` int(11) NOT NULL DEFAULT '0' COMMENT '商品分类id',
-  `image` varchar(64) NOT NULL DEFAULT '' COMMENT '商品缩略图',
+  `image` varchar(100) NOT NULL DEFAULT '' COMMENT '商品缩略图',
   `name` varchar(64) NOT NULL DEFAULT '',
   `price` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '商品价格',
   `stock` int(11) NOT NULL DEFAULT '0' COMMENT '库存',
@@ -3860,12 +3857,11 @@ CREATE TABLE `osc_goods` (
   `sort_order` int(11) NOT NULL DEFAULT '1',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1上架0下架',
   PRIMARY KEY (`goods_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8 COMMENT='商品信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8 COMMENT='商品信息表';
 
 -- ----------------------------
 -- Records of osc_goods
 -- ----------------------------
-INSERT INTO `osc_goods` VALUES ('1', '1', '13', 'images/osc1/1/1.jpg', '青花功夫茶具敬茶陶瓷', '491.00', '0', '0', '200.00', '20.00', '20.00', '20.00', '2016-08-17 22:55:16', '2017-12-14 10:42:31', '1', '1');
 INSERT INTO `osc_goods` VALUES ('2', '1', '13', 'images/osc1/2/2.jpg', '品茗陶瓷茶盏瓷杯6个', '79.00', '0', '0', '500.00', '20.00', '20.00', '10.00', '2016-08-17 23:10:22', '2017-12-14 10:39:59', '2', '1');
 INSERT INTO `osc_goods` VALUES ('3', '1', '1', 'images/osc1/3/2.jpg', '公道杯茶海分茶器陶瓷', '39.00', '54678', '0', '200.00', '20.00', '20.00', '20.00', '2016-08-19 20:22:43', '0000-00-00 00:00:00', '3', '1');
 INSERT INTO `osc_goods` VALUES ('4', '1', '2', 'images/osc1/4/1.jpg', '青花功夫茶具陶瓷配件', '30.00', '787', '0', '200.00', '20.00', '20.00', '20.00', '2016-08-19 20:37:55', '2017-12-14 10:38:54', '4', '1');
@@ -3890,7 +3886,7 @@ INSERT INTO `osc_goods` VALUES ('22', '0', '2', 'images/osc1/product/product-tea
 INSERT INTO `osc_goods` VALUES ('25', '0', '29', 'images/osc1/fruit/product-cake-a@3.png', '比利时华夫饼', '30.00', '988', '0', '100.00', '10.00', '10.00', '10.00', '2017-12-15 10:00:04', '', '1', '1');
 INSERT INTO `osc_goods` VALUES ('30', '1', '3', 'images/osc1/fruit/product-cake@1.png', '李大爷的妙脆角', '9.90', '998', '0', '100.00', '10.00', '10.00', '10.00', '2017-12-15 10:13:43', '2017-12-16 08:58:24', '1', '1');
 INSERT INTO `osc_goods` VALUES ('32', '1', '3', 'images/osc1/fruit/product-cake-a@3.png', '好吃的饼干', '30.00', '999', '0', '100.00', '10.00', '10.00', '10.00', '2017-12-15 10:19:07', '', '1', '1');
-INSERT INTO `osc_goods` VALUES ('34', '0', '3', 'images/osc1/product/2@theme.png', '八宝莲子200克', '9.90', '999', '0', '100.00', '10.00', '10.00', '10.00', '2017-12-16 09:25:07', '', '1', '1');
+INSERT INTO `osc_goods` VALUES ('34', '0', '3', 'images/osc1/product/2@theme.png', '八宝莲子200克', '9.90', '9991', '0', '100.00', '10.00', '10.00', '10.00', '2017-12-16 09:25:07', '2017-12-16 09:45:35', '1', '1');
 
 -- ----------------------------
 -- Table structure for `osc_goods_attribute`
@@ -3975,8 +3971,6 @@ INSERT INTO `osc_goods_discount` VALUES ('3', '12', '3', '80.00');
 INSERT INTO `osc_goods_discount` VALUES ('4', '12', '2', '60.00');
 INSERT INTO `osc_goods_discount` VALUES ('5', '12', '5', '50.00');
 INSERT INTO `osc_goods_discount` VALUES ('6', '12', '8', '30.00');
-INSERT INTO `osc_goods_discount` VALUES ('7', '1', '3', '8.00');
-INSERT INTO `osc_goods_discount` VALUES ('8', '1', '5', '6.60');
 INSERT INTO `osc_goods_discount` VALUES ('9', '30', '5', '6.00');
 INSERT INTO `osc_goods_discount` VALUES ('10', '30', '10', '5.50');
 INSERT INTO `osc_goods_discount` VALUES ('11', '32', '5', '0.05');
@@ -3991,7 +3985,7 @@ DROP TABLE IF EXISTS `osc_goods_image`;
 CREATE TABLE `osc_goods_image` (
   `goods_image_id` int(11) NOT NULL AUTO_INCREMENT,
   `goods_id` int(11) NOT NULL DEFAULT '0',
-  `image` varchar(255) DEFAULT NULL,
+  `image` varchar(100) NOT NULL DEFAULT '',
   `sort_order` int(3) NOT NULL DEFAULT '0',
   PRIMARY KEY (`goods_image_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8 COMMENT='商品图片表';
@@ -3999,8 +3993,6 @@ CREATE TABLE `osc_goods_image` (
 -- ----------------------------
 -- Records of osc_goods_image
 -- ----------------------------
-INSERT INTO `osc_goods_image` VALUES ('4', '1', 'images/osc1/1/4.jpg', '3');
-INSERT INTO `osc_goods_image` VALUES ('5', '1', 'images/osc1/1/5.jpg', '4');
 INSERT INTO `osc_goods_image` VALUES ('6', '2', 'images/osc1/2/1.jpg', '0');
 INSERT INTO `osc_goods_image` VALUES ('8', '2', 'images/osc1/2/8.jpg', '2');
 INSERT INTO `osc_goods_image` VALUES ('9', '2', 'images/osc1/2/5.jpg', '3');
@@ -4071,8 +4063,8 @@ DROP TABLE IF EXISTS `osc_goods_mobile_description_image`;
 CREATE TABLE `osc_goods_mobile_description_image` (
   `mdi_id` int(11) NOT NULL AUTO_INCREMENT,
   `goods_id` int(11) NOT NULL DEFAULT '0',
-  `image` varchar(255) DEFAULT NULL COMMENT '原图',
-  `description` varchar(255) DEFAULT NULL,
+  `image` varchar(100) NOT NULL DEFAULT '' COMMENT '原图',
+  `description` varchar(255) NOT NULL DEFAULT '',
   `sort_order` int(5) NOT NULL DEFAULT '0',
   PRIMARY KEY (`mdi_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=131 DEFAULT CHARSET=utf8 COMMENT='手机商品描述图片';
@@ -4080,13 +4072,6 @@ CREATE TABLE `osc_goods_mobile_description_image` (
 -- ----------------------------
 -- Records of osc_goods_mobile_description_image
 -- ----------------------------
-INSERT INTO `osc_goods_mobile_description_image` VALUES ('1', '1', 'images/osc1/1/d1.jpg', '', '0');
-INSERT INTO `osc_goods_mobile_description_image` VALUES ('2', '1', 'images/osc1/1/d2.jpg', '', '1');
-INSERT INTO `osc_goods_mobile_description_image` VALUES ('3', '1', 'images/osc1/1/d3.jpg', '', '2');
-INSERT INTO `osc_goods_mobile_description_image` VALUES ('4', '1', 'images/osc1/1/d4.jpg', '', '3');
-INSERT INTO `osc_goods_mobile_description_image` VALUES ('5', '1', 'images/osc1/1/d5.jpg', '', '4');
-INSERT INTO `osc_goods_mobile_description_image` VALUES ('6', '1', 'images/osc1/1/d6.jpg', '', '5');
-INSERT INTO `osc_goods_mobile_description_image` VALUES ('7', '1', 'images/osc1/1/d7.jpg', '', '6');
 INSERT INTO `osc_goods_mobile_description_image` VALUES ('8', '2', 'images/osc1/2/d01.jpg', '', '0');
 INSERT INTO `osc_goods_mobile_description_image` VALUES ('9', '2', 'images/osc1/2/d02.jpg', '', '1');
 INSERT INTO `osc_goods_mobile_description_image` VALUES ('10', '2', 'images/osc1/2/d03.jpg', '', '2');
@@ -4234,7 +4219,7 @@ INSERT INTO `osc_goods_option` VALUES ('7', '15', '5个装', '0.05', '50', '4');
 INSERT INTO `osc_goods_option` VALUES ('8', '30', '500g', '6.60', '999', '2');
 INSERT INTO `osc_goods_option` VALUES ('9', '30', '1000g', '8.80', '996', '3');
 INSERT INTO `osc_goods_option` VALUES ('12', '34', '礼盒装', '12.20', '988', '0');
-INSERT INTO `osc_goods_option` VALUES ('13', '34', '简装', '11.10', '966', '0');
+INSERT INTO `osc_goods_option` VALUES ('13', '34', '简装', '11.10', '965', '0');
 
 -- ----------------------------
 -- Table structure for `osc_goods_option_value`
@@ -4254,7 +4239,7 @@ CREATE TABLE `osc_goods_option_value` (
   `weight` decimal(15,8) NOT NULL DEFAULT '0.00000000',
   `weight_prefix` varchar(1) DEFAULT NULL,
   PRIMARY KEY (`goods_option_value_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of osc_goods_option_value
@@ -4270,7 +4255,7 @@ CREATE TABLE `osc_goods_param` (
   `param_name` varchar(50) NOT NULL DEFAULT '',
   `param_value` varchar(100) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COMMENT='产品参数';
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='产品参数';
 
 -- ----------------------------
 -- Records of osc_goods_param
@@ -4283,6 +4268,7 @@ INSERT INTO `osc_goods_param` VALUES ('10', '32', '保质期', '30天');
 INSERT INTO `osc_goods_param` VALUES ('11', '32', '产地', '北京');
 INSERT INTO `osc_goods_param` VALUES ('12', '32', '配料', '面粉，食用油，饮用水等');
 INSERT INTO `osc_goods_param` VALUES ('16', '34', '保质期', '180天');
+INSERT INTO `osc_goods_param` VALUES ('17', '34', '产地', '上海市');
 
 -- ----------------------------
 -- Table structure for `osc_goods_to_category`
@@ -4310,25 +4296,6 @@ INSERT INTO `osc_goods_to_category` VALUES ('10', '3');
 INSERT INTO `osc_goods_to_category` VALUES ('11', '2');
 INSERT INTO `osc_goods_to_category` VALUES ('12', '3');
 INSERT INTO `osc_goods_to_category` VALUES ('13', '3');
-
--- ----------------------------
--- Table structure for `osc_length_class`
--- ----------------------------
-DROP TABLE IF EXISTS `osc_length_class`;
-CREATE TABLE `osc_length_class` (
-  `length_class_id` int(11) NOT NULL AUTO_INCREMENT,
-  `value` decimal(15,8) NOT NULL DEFAULT '0.00000000',
-  `title` varchar(32) DEFAULT NULL,
-  `unit` varchar(4) DEFAULT NULL,
-  PRIMARY KEY (`length_class_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='长度单位';
-
--- ----------------------------
--- Records of osc_length_class
--- ----------------------------
-INSERT INTO `osc_length_class` VALUES ('1', '100.00000000', '厘米', 'cm');
-INSERT INTO `osc_length_class` VALUES ('2', '1000.00000000', '毫米', 'mm');
-INSERT INTO `osc_length_class` VALUES ('3', '0.01100000', '千米', 'km');
 
 -- ----------------------------
 -- Table structure for `osc_member`
@@ -4896,21 +4863,6 @@ INSERT INTO `osc_order_total` VALUES ('44', '4', 'shipping', '运费', '￥922.0
 INSERT INTO `osc_order_total` VALUES ('45', '4', 'total', '总价', '￥17562.5', '17562.50', '0');
 
 -- ----------------------------
--- Table structure for `osc_test`
--- ----------------------------
-DROP TABLE IF EXISTS `osc_test`;
-CREATE TABLE `osc_test` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `info` text,
-  `create_time` varchar(20) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='调试测试';
-
--- ----------------------------
--- Records of osc_test
--- ----------------------------
-
--- ----------------------------
 -- Table structure for `osc_transport`
 -- ----------------------------
 DROP TABLE IF EXISTS `osc_transport`;
@@ -4919,7 +4871,7 @@ CREATE TABLE `osc_transport` (
   `title` varchar(30) NOT NULL DEFAULT '' COMMENT '运费模板名称',
   `update_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最后更新时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='运费模板';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='运费模板';
 
 -- ----------------------------
 -- Records of osc_transport
@@ -4945,7 +4897,7 @@ CREATE TABLE `osc_transport_extend` (
   `transport_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '运费模板ID',
   `transport_title` varchar(60) NOT NULL DEFAULT '' COMMENT '运费模板',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=246 DEFAULT CHARSET=utf8 COMMENT='运费模板扩展表';
+) ENGINE=InnoDB AUTO_INCREMENT=244 DEFAULT CHARSET=utf8 COMMENT='运费模板扩展表';
 
 -- ----------------------------
 -- Records of osc_transport_extend
@@ -4977,7 +4929,7 @@ CREATE TABLE `osc_user_action` (
   `info` varchar(255) DEFAULT NULL COMMENT '行为描述',
   `add_time` int(10) NOT NULL DEFAULT '0' COMMENT '加入时间',
   PRIMARY KEY (`ua_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=473 DEFAULT CHARSET=utf8 COMMENT='用户行为';
+) ENGINE=InnoDB AUTO_INCREMENT=482 DEFAULT CHARSET=utf8 COMMENT='用户行为';
 
 -- ----------------------------
 -- Records of osc_user_action
@@ -5266,21 +5218,12 @@ INSERT INTO `osc_user_action` VALUES ('469', '1', 'admin', '后台系统用户',
 INSERT INTO `osc_user_action` VALUES ('470', '1', 'admin', '后台系统用户', '新增了商品', '1513387422');
 INSERT INTO `osc_user_action` VALUES ('471', '1', 'admin', '后台系统用户', '新增了商品', '1513387545');
 INSERT INTO `osc_user_action` VALUES ('472', '1', 'admin', '后台系统用户', '删除商品', '1513387580');
-
--- ----------------------------
--- Table structure for `osc_weight_class`
--- ----------------------------
-DROP TABLE IF EXISTS `osc_weight_class`;
-CREATE TABLE `osc_weight_class` (
-  `weight_class_id` int(11) NOT NULL AUTO_INCREMENT,
-  `value` decimal(15,2) NOT NULL DEFAULT '0.00',
-  `title` varchar(32) DEFAULT NULL,
-  `unit` varchar(4) DEFAULT NULL,
-  PRIMARY KEY (`weight_class_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='重量单位';
-
--- ----------------------------
--- Records of osc_weight_class
--- ----------------------------
-INSERT INTO `osc_weight_class` VALUES ('1', '1.00', '千克', 'kg');
-INSERT INTO `osc_weight_class` VALUES ('2', '1000.00', '克', 'g');
+INSERT INTO `osc_user_action` VALUES ('473', '1', 'admin', '后台系统用户', '更新商品基本信息', '1513388609');
+INSERT INTO `osc_user_action` VALUES ('474', '1', 'admin', '后台系统用户', '更新商品基本信息', '1513388670');
+INSERT INTO `osc_user_action` VALUES ('475', '1', 'admin', '后台系统用户', '更新商品基本信息', '1513388675');
+INSERT INTO `osc_user_action` VALUES ('476', '1', 'admin', '后台系统用户', '更新商品基本信息', '1513388724');
+INSERT INTO `osc_user_action` VALUES ('477', '1', 'admin', '后台系统用户', '更新商品基本信息', '1513388729');
+INSERT INTO `osc_user_action` VALUES ('478', '1', 'admin', '后台系统用户', '更新商品基本信息', '1513388735');
+INSERT INTO `osc_user_action` VALUES ('479', '1', 'admin', '后台系统用户', '更新商品34', '1513389083');
+INSERT INTO `osc_user_action` VALUES ('480', '1', 'admin', '后台系统用户', '更新商品13', '1513389156');
+INSERT INTO `osc_user_action` VALUES ('481', '1', 'admin', '后台系统用户', '删除商品', '1513389854');
