@@ -15,22 +15,23 @@ Page({
         // 获得bannar信息
         home.getBannerData((data) => {
             that.setData({
-                bannerArr: data,
+                bannerArr: data
             });
         });
 
         /*获取主题信息*/
-        home.getThemeData((data) => {
-            that.setData({
-                themeArr: data,
-                loadingHidden: true
-            });
-        });
+        // home.getThemeData((data) => {
+        //     that.setData({
+        //         themeArr: data,
+        //         loadingHidden: true
+        //     });
+        // });
 
         /*获取单品信息*/
         home.getProductorData((data) => {
             that.setData({
-                productsArr: data
+                productsArr: data,
+                loadingHidden: true
             });
             callback&&callback();
         });

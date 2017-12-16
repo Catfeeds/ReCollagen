@@ -18,11 +18,12 @@ Page({
         categoryTypeArr: categoryData,
         loadingHidden: true
       });
+      
       that.getProductsByCategory(categoryData[0].id,(data)=>{
         var dataObj= [{
           procucts: data,
           id: categoryData[0].id,
-          topImgUrl: categoryData[0].img.url,
+          topImgUrl: categoryData[0].image,
           title: categoryData[0].name
         }];
         that.setData({
@@ -50,7 +51,7 @@ Page({
         var dataObj = {
           procucts: data,
           id: baseData.id,
-          topImgUrl: baseData.img.url,
+          topImgUrl: baseData.image,
           title: baseData.name
         };
         var prData = that.data.categoryInfo;
@@ -64,7 +65,6 @@ Page({
   },
 
   isLoadedData: function (id){
-    
     var prData = this.data.categoryInfo;
     var i = prData.length;
     while (i--) {
