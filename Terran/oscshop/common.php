@@ -531,3 +531,45 @@ function isMainGoods($isMainGoods){
             break;
     }
 }
+/**
+ * 获取快递公司代码
+ */
+function getShippingCode($shipping_method){
+    $code = ['圆通'=>'yuantong','申通'=>'shentong','中通'=>'zhongtong','邮政'=>'youzhengguonei','顺丰'=>'shunfeng','韵达'=>'yunda','天天'=>'tiantian','德邦'=>'debangwuliu'];
+    
+    $shippingCode = '';
+    foreach ($code as $k => $v) {
+        if (strpos($shipping_method, $k) !== false) {
+            $shippingCode = $v;
+            break;
+        }
+    }
+
+    return $shippingCode;
+}
+/**
+ *  查询物流进度
+ *  http://api.kuaidi100.com/api?id=f0306948c9ecf939&com=youzhengguonei&nu=9891770403677(返回json)
+ *  https://m.kuaidi100.com/query?type=shentong&postid=3345307575167(返回json,支持的快递公司更多)
+ */
+function getTranportInfo($shipping_method,$shipping_num){
+    if(isset($shipping_method)&&isset($shipping_num)){
+        $AppKey ='f0306948c9ecf939';
+        $url    = 'http://www.kuaidi100.com/applyurl?key='.$AppKey.'&com='.$shipping_method.'&nu='.$shipping_num;//生成完整的请求URL
+        //优先使用curl模式发送数据（以下一大段都是在PHP语言下向$url发送请求并获得返回结果的代码）
+        $curl = curl_init();
+        curl_setopt ($curl, CURLOPT_URL, $url);
+        curl_setopt ($curl, CURLOPT_HEADER,0);
+        curl_setopt ($curl, CURLOPT_RETURNTRANSFER,1);
+        curl_setopt ($curl,CURLOPT_USERAGENT,$_SERVER['HTTP_USER_AGENT']);
+        curl_setopt ($curl, CURLOPT_TIMEOUT,5);
+        $get_content = curl_exec($curl);
+        curl_close ($curl);
+
+        return $get_content;
+        // //注释：第二步：将上面获得的返回结果传入iframe的src值，并将iframe显示出来，代码参考：
+        // print_r('<iframe src="'.$get_content.'" width="580"height="380"><br/>');
+    }else{
+        return '';
+    }
+}

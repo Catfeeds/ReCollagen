@@ -22,8 +22,18 @@ class OrderBackend extends AdminBase{
 	 * 订单详情
 	 */
  	public function show_order(){
+     	$info = osc_order()->order_info(input('param.id/d'));
+
+	    $info['order']['transportInfo'] = '';
+     	if (!empty($info['order']['shipping_method']) && !empty($info['order']['shipping_num'])) {
+     		//获取快递公司代码
+	     	$shippingCode = getShippingCode($info['order']['shipping_method']);
+	     	//查询物流进度
+	     	$info['order']['transportInfo'] = getTranportInfo($shippingCode,$info['order']['shipping_num']);
+     	}
      	
-		$this->assign('data',osc_order()->order_info(input('param.id')));		
+
+		$this->assign('data',$info);		
 		$this->assign('crumbs','订单详情');
 				
     	return $this->fetch('show');

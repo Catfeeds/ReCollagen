@@ -28,6 +28,7 @@ Callback: 编码一律utf-8
 
 
         "options" : {       ："商品选项"（如果有，则该商品默认显示第一个选项的价格，库存）
+            "goods_option_id"  : "商品选项id"     
             "option_name"      : "商品选项名称"     
             "option_price"     : "商品选项价格"                
             "stock"            : "商品选项库存"                             
