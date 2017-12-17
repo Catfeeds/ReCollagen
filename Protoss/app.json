@@ -1,12 +1,16 @@
 {
   "pages":[
-    "pages/product/product",
     "pages/home/home",
+    "pages/cart/cart",
+    "pages/product/product",
+    
+    
+    
     "pages/category/category",
     
     
     "pages/order/order",
-    "pages/cart/cart",
+    
    
     "pages/my/my",
     "pages/theme/theme",
