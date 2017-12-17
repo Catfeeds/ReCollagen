@@ -13,7 +13,7 @@
 
 <div class="page-header">	
 	<a href="{:url('Goods/add')}" class="btn btn-primary">新增</a>
-	<span href="{:url('Goods/copy_goods')}" class="btn btn-primary copy">复制</span>
+	<!-- <span href="{:url('Goods/copy_goods')}" class="btn btn-primary copy">复制</span> -->
 </div>	
 	
 <table class="table table-striped table-bordered table-hover search-form">
@@ -30,10 +30,10 @@
 			</select>
 		</th>	
 		<th>    				
-			<select name="status">
-				<option {if condition="$status eq null"} selected="selected"{/if}value="">全部状态</option>							
-				<option {if condition="$status eq 1"} selected="selected"{/if}value="1">上架商品</option>
-				<option {if condition="$status === 0"} selected="selected"{/if} value="0">下架商品</option>
+			<select name="isMainGoods">
+				<option {if condition="$isMainGoods eq null"} selected="selected"{/if}value="">全部状态</option>							
+				<option {if condition="$isMainGoods eq 1"} selected="selected"{/if}value="1">主商品</option>
+				<option {if condition="$isMainGoods === 0"} selected="selected"{/if} value="0">辅销品</option>
 			</select>
 		</th>
 		<th>
@@ -87,7 +87,7 @@
 							<td>{$v.name} 
 								<!-- <span class="warning">免配送</span> 								 -->
 							</td>
-							<td>{$v.cat_name}</td>
+							<td>{$v.isMainGoods|isMainGoods}</td>
 							<td>{$v.cat_name}</td>
 							<td>
 								<input name="price" type="text" size="6" class="price" goods_id='{$v.goods_id}' value="{$v.price}" />

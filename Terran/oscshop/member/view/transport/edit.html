@@ -18,7 +18,6 @@
   <form method="post" id="tpl_form" name="tpl_form" action='{:url("Transport/save")}'>
     <input type="hidden" name="transport_id" value="{$output.transport.id|default=''}" />
     <input type="hidden" name="form_submit" value="ok" />
-    <?php $unit=get_weight_name(config('weight_id')); ?>
     <dl>
       <dt>
         <label for="J_TemplateTitle" class="label-like">模版名称</label>
@@ -33,7 +32,7 @@
       <dd>除指定地区外，其余地区的运费采用"默认运费"</dd>
     </dl>
 
-    <!-----------------------POST begin--------------------------------------->
+    <!-- POST begin -->
     <dl>
       <dt></dt>
       <dd class="trans-line">
@@ -56,22 +55,21 @@
       </form>
     </div>
   </div>
-  <div id="dialog_batch" class="dialog-batch" style="z-index: 9999; display:none">
-    <div class="ks-contentbox">
-      <div class="title">批量操作<a class="ks-ext-close" href="javascript:void(0)">X</a></div>
-      <form method="post">
-        <div class="batch">默认运费：
-        <input class="w30 mr5 text" type="text" maxlength="4" autocomplete="off" data-field="start" value="1" name="express_start">
-        <?php echo $unit; ?>内
-        <input class="w60 text" type="text" maxlength="6" autocomplete="off" value="0.00" name="express_postage" data-field="postage"><em class="add-on"> <i class="icon-renminbi"></i> </em>，每增加
-        <input class="w30 mr5 text" type="text" maxlength="4" autocomplete="off" value="1" data-field="plus" name="express_plus">
-        <?php echo $unit; ?>，增加运费
-        <input class="w60 text" type="text" maxlength="6" autocomplete="off" value="0.00" data-field="postageplus" name="express_postageplus"><em class="add-on"> <i class="icon-renminbi"></i> </em></div>
-        <div class="J_DefaultMessage"></div>
-        <div class="bottom"> <a href="javascript:void(0);" class="J_SubmitPL ncsc-btn ncsc-btn-green">确认</a> <a href="javascript:void(0);" class="J_Cancel ncsc-btn">取消</a> </div>
-      </form>
+    <!-- 批量操作 -->
+    <div id="dialog_batch" class="dialog-batch" style="z-index: 9999; display:none">
+        <div class="ks-contentbox">
+          <div class="title">批量操作<a class="ks-ext-close" href="javascript:void(0)">X</a></div>
+          <form method="post">
+            <div class="batch">首重运费(元)：
+            <input class="w60 text" type="text" maxlength="6" autocomplete="off" value="0.00" name="express_postage" data-field="postage"><em class="add-on"> <i class="icon-renminbi"></i> </em>
+            续费运费(元)
+            <input class="w60 text" type="text" maxlength="6" autocomplete="off" value="0.00" data-field="postageplus" name="express_postageplus"><em class="add-on"> <i class="icon-renminbi"></i> </em></div>
+            <div class="J_DefaultMessage"></div>
+            <div class="bottom"> <a href="javascript:void(0);" class="J_SubmitPL ncsc-btn ncsc-btn-green">确认</a> <a href="javascript:void(0);" class="J_Cancel ncsc-btn">取消</a> </div>
+          </form>
+        </div>
     </div>
-  </div>
+
 </div>
 		
 	</div>
@@ -87,7 +85,7 @@
 
 <script>
 
-var unit ='<?php echo $unit; ?>';
+
 
 $(function(){
 	$('.trans-line').append(TransTpl.replace(/TRANSTYPE/g,'kd'));

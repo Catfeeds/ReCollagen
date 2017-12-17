@@ -28,10 +28,10 @@ class Goods extends AdminBase{
 		}		
 
 		$this->assign([
-			'list'     => $list,
-			'status'   => input('get.status/d'),
-			'category' => osc_goods()->get_category_tree(),
-			'empty'    => '<tr><td colspan="20">没有数据</td></tr>',
+			'list'        => $list,
+			'isMainGoods' => input('get.isMainGoods/d'),
+			'category'    => osc_goods()->get_category_tree(),
+			'empty'       => '<tr><td colspan="20">没有数据</td></tr>',
 		]);
 	
 		return $this->fetch();
@@ -98,7 +98,7 @@ class Goods extends AdminBase{
 	 	return $this->fetch('general');
 	 }
 	/**
-	  * 商品选项
+	  * 编辑产品参数
 	  */
 	public function edit_param(){
 		$this->assign('goods_param',Db::name('goods_param')->where('goods_id',input('id/d'))->order('id')->select());	

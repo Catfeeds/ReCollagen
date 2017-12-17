@@ -43,13 +43,10 @@ class Transport extends AdminBase{
             }
 		}
 
-		$data['list']=$list;
-	
-		$data['extend']=$extend;
-	// halt($data);
+		$data['list']   = $list;
+		$data['extend'] = $extend;
 
 		$this->assign('output',$data);	
-
 		
 		return $this->fetch();  
 	}
@@ -96,7 +93,6 @@ class Transport extends AdminBase{
 		$data['transport']=$transport;
 		$data['extend']=$extend;
 		
-		
 		$this->assign('output',$data);
 		$this->assign('crumbs','修改');
 	
@@ -105,85 +101,77 @@ class Transport extends AdminBase{
 	function save(){
 		if(request()->isPost()){		
 		
-		$post=input('post.');
-// halt($post);
-	
-		$trans_info = array();
-		$trans_info['title'] 		= $post['title'];	
-		$trans_info['update_time'] 	= time();
-
-		$model = new \osc\member\model\Transport();
-
-		if (is_numeric($post['transport_id'])){
-			//编辑时，删除所有附加表信息
-			$trans_info['id'] = intval($post['transport_id']);
-			$transport_id = intval($post['transport_id']);
-			$model->transUpdate($trans_info);
-			$model->delExtend($transport_id);
-		}else{
-			//新增
-			$transport_id = $model->addTransport($trans_info);
-		}
-		//保存默认运费
-		if (is_array($post['default']['kd'])){
-			$a = $post['default']['kd'];
-			$trans_list[0]['area_id'] = '';
-			$trans_list[0]['area_name'] = '全国';
-			$trans_list[0]['snum'] = $a['start'];
-			$trans_list[0]['sprice'] = $a['postage'];
-			$trans_list[0]['xnum'] = $a['plus'];
-			$trans_list[0]['xprice'] = $a['postageplus'];
-			$trans_list[0]['is_default'] = 1;
-			$trans_list[0]['transport_id'] = $transport_id;
-			$trans_list[0]['transport_title'] = $post['title'];
-			$trans_list[0]['top_area_id'] = '';
-		}
-		//保存自定义地区的运费设置
+			$post=input('post.');
 		
-		$areas = isset($post['areas']['kd'])?$post['areas']['kd']:'';
-		$special = isset($post['special']['kd'])?$post['special']['kd']:'';
-		if (is_array($areas) && is_array($special)){
-			//$key需要加1，因为快递默认运费占了第一个下标
-			foreach ($special as $key=>$value) {
-			    if (empty($areas[$key])) continue;
-				$areas[$key] = explode('|||',$areas[$key]);
-				$trans_list[$key+1]['area_id'] = ','.$areas[$key][0].',';
-				$trans_list[$key+1]['area_name'] = $areas[$key][1];
-				$trans_list[$key+1]['snum'] = $value['start'];
-				$trans_list[$key+1]['sprice'] = $value['postage'];
-				$trans_list[$key+1]['xnum'] = $value['plus'];
-				$trans_list[$key+1]['xprice'] = $value['postageplus'];
-				$trans_list[$key+1]['is_default'] = 2;
-				$trans_list[$key+1]['transport_id'] = $transport_id;
-				$trans_list[$key+1]['transport_title'] = $post['title'];
-				//计算省份ID
-				$province = array();
-				$tmp = explode(',',$areas[$key][0]);
-				if (!empty($tmp) && is_array($tmp)){
-					$city = $this->getCity();
-					foreach ($tmp as $t) {
-						if(isset($city[$t])){
-							$pid = $city[$t];						
-							if (!in_array($pid,$province) && !empty($pid))
-							$province[] = $pid;
+			$trans_info = array();
+			$trans_info['title'] 		= $post['title'];	
+			$trans_info['update_time'] 	= time();
+
+			$model = new \osc\member\model\Transport();
+
+			if (is_numeric($post['transport_id'])){
+				//编辑时，删除所有附加表信息
+				$trans_info['id'] = intval($post['transport_id']);
+				$transport_id = intval($post['transport_id']);
+				$model->transUpdate($trans_info);
+				$model->delExtend($transport_id);
+			}else{
+				//新增
+				$transport_id = $model->addTransport($trans_info);
+			}
+			//保存默认运费
+			if (is_array($post['default']['kd'])){
+				$a = $post['default']['kd'];
+				$trans_list[0]['area_id']         = '';
+				$trans_list[0]['area_name']       = '全国';
+				$trans_list[0]['sprice']          = $a['postage'];
+				$trans_list[0]['xprice']          = $a['postageplus'];
+				$trans_list[0]['is_default']      = 1;
+				$trans_list[0]['transport_id']    = $transport_id;
+				$trans_list[0]['transport_title'] = $post['title'];
+				$trans_list[0]['top_area_id']     = '';
+			}
+			//保存自定义地区的运费设置
+			$areas   = isset($post['areas']['kd'])?$post['areas']['kd']:'';
+			$special = isset($post['special']['kd'])?$post['special']['kd']:'';
+			if (is_array($areas) && is_array($special)){
+				//$key需要加1，因为快递默认运费占了第一个下标
+				foreach ($special as $key=>$value) {
+				    if (empty($areas[$key])) continue;
+					$areas[$key] = explode('|||',$areas[$key]);
+					$trans_list[$key+1]['area_id'] = ','.$areas[$key][0].',';
+					$trans_list[$key+1]['area_name'] = $areas[$key][1];
+					$trans_list[$key+1]['sprice'] = $value['postage'];
+					$trans_list[$key+1]['xprice'] = $value['postageplus'];
+					$trans_list[$key+1]['is_default'] = 2;
+					$trans_list[$key+1]['transport_id'] = $transport_id;
+					$trans_list[$key+1]['transport_title'] = $post['title'];
+					//计算省份ID
+					$province = array();
+					$tmp = explode(',',$areas[$key][0]);
+					if (!empty($tmp) && is_array($tmp)){
+						$city = $this->getCity();
+						foreach ($tmp as $t) {
+							if(isset($city[$t])){
+								$pid = $city[$t];						
+								if (!in_array($pid,$province) && !empty($pid))
+								$province[] = $pid;
+							}
+							
 						}
-						
 					}
-				}
-				if (count($province)>0){
-					$trans_list[$key+1]['top_area_id'] = ','.implode(',',$province).',';
-				}else{
-					$trans_list[$key+1]['top_area_id'] = '';
+					if (count($province)>0){
+						$trans_list[$key+1]['top_area_id'] = ','.implode(',',$province).',';
+					}else{
+						$trans_list[$key+1]['top_area_id'] = '';
+					}
+					
 				}
 				
 			}
-			
-		}
-		$model->addExtend($trans_list);
-		storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'更新了运费模板');
-		$this->success('保存成功',url('Transport/index'));
-		
-		
+			$model->addExtend($trans_list);
+			storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'更新了运费模板');
+			$this->success('保存成功',url('Transport/index'));
 		}
 	}
 	function del(){

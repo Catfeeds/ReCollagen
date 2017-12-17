@@ -87,40 +87,33 @@ class Product extends Controller
             throw new ThemeException();
         }
         $data = $products
-            ->hidden(['quantity','weight','length','width','height'])
+            ->hidden(['stock','weight','length','width','height','create_time','update_time'])
             ->toArray();
 
         return $data;
     }
 
     /**
-     * 获取指定数量的最近商品
-     * @url /product/recent?count=:count
-     * @param int $count
+     * 获取最近商品
+     * @url /product/recent
      * @return mixed
      * @throws ParameterException
      */
-    public function getRecent($page = 1, $size = 30){
+    public function getRecent(){
 
         (new Count())->goCheck();
-        $pagingProducts = ProductModel::getMostRecent($page,$size);
+        $pagingProducts = ProductModel::getMostRecent();
 
         if ($pagingProducts->isEmpty()){
-            return [
-                'current_page' => $pagingProducts->currentPage(),
-                'data' => []
-            ];
+            return [];
         }
         $data = $pagingProducts->hidden(
             [
-                'cat_id','quantity','weight','length','width','height'
+                'cat_id','weight','length','width','height','stock','create_time','update_time'
             ])
             ->toArray();
 
-        return [
-            'current_page' => $pagingProducts->currentPage(),
-            'data' => $data
-        ];
+        return $data;
 
     }
 

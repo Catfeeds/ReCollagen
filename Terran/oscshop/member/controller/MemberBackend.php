@@ -2,6 +2,9 @@
 namespace osc\member\controller;
 use osc\common\controller\AdminBase;
 use think\Db;
+/**
+ * 会员管理
+ */
 class MemberBackend extends AdminBase{
 	/**
 	 * 初始化
@@ -18,53 +21,20 @@ class MemberBackend extends AdminBase{
 		$param=input('param.');
 		$map = $query = [];
 		if(isset($param['condition'])){		
-			$map['m.username|m.openId']=['like',"%".trim($param['condition'])."%"];
+			$map['m.openId|m.username|m.tel']=['like',"%".trim($param['condition'])."%"];
 		}
 
 		$list=[];
 		$list=Db::name('member')->alias('m')
 			->where($map)
-			->order('m.uid desc')
+			->order('m.create_time desc')
 			->paginate(config('page_num'));		
 
 		$this->assign('list',$list);
-		$this->assign('empty','<tr><td colspan="20">没有数据~</td></tr>');
+		$this->assign('empty','<tr><td colspan="20">没有数据</td></tr>');
 		
     	return $this->fetch();
 	}
-	public function add(){	 	
-		if(request()->isPost()){
-			$date=input('post.');
-			$date['password'] = $date['pwd'];
-			$result = $this->validate($date,'Member');	
-			if($result!==true){
-				return ['error'=>$result];
-			}
-			$member['username']  =$date['username'];
-			$member['password']  =think_ucenter_encrypt($date['password'],config('PWD_KEY'));
-			$member['regdate']   =time();
-			$member['email']     =$date['email'];
-			$member['telephone'] =$date['telephone'];
-			
-			$uid=Db::name('member')->insert($member,false,true);
-			
-			if($uid){
-				
-				Db::name('member_auth_group_access')->insert(['uid'=>$uid,'group_id'=>$date['groupid']]);
-				
-				storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'新增了会员');
-			
-				return ['success'=>'新增成功','action'=>'add'];
-			}else{
-				return ['error'=>'新增失败'];
-				
-			}
-			
-		}
-		$this->assign('group',Db::name('member_auth_group')->field('id,title')->select());
-		$this->assign('crumbs','新增');
-	 	return $this->fetch();
-	 }
 	 /**
 	  * 编辑会员
 	  */

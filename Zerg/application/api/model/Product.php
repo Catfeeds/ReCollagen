@@ -62,7 +62,7 @@ class Product extends BaseModel
         
         $query = self::where('cat_id', '=', $categoryID);
         if (!$paginate){
-            return $query->select();
+            return $query->order('create_time desc')->select();
         }else{
             // paginate 第二参数true表示采用简洁模式，简洁模式不需要查询记录总数
             return $query->paginate(
@@ -105,9 +105,9 @@ class Product extends BaseModel
         return $product;
     }
 
-    public static function getMostRecent($page,$size){
+    public static function getMostRecent(){
 
-        $products = self::where(['status'=>1])->order('add_time desc')->paginate($size, true, ['page' => $page]);
+        $products = self::where(['status'=>1])->order('create_time desc')->select();
 
         return $products;
     }

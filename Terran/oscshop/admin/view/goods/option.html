@@ -17,7 +17,7 @@
     <div class="row">
     <div class="col-xs-12"> 
         <div class="panel-body">
-        <form action="{:url('Goods/edit_links')}" method="post" enctype="multipart/form-data" id="form-goods" class="form-horizontal">
+        <form>
           <div class="tab-content">
                 
             <!-- 关联 START -->
@@ -41,7 +41,7 @@
                                     <tr id="discount-row<?php echo $discount_row; ?>">
                                     <td class="text-left"><input type="text" name="goods_option[<?php echo $discount_row; ?>][option_name]" value="<?php echo $discount['option_name']; ?>" class="form-control" /></td>
                                     <td class="text-left"><input type="text" name="goods_option[<?php echo $discount_row; ?>][option_price]" value="<?php echo $discount['option_price']; ?>" class="form-control" /></td>
-                                    <td class="text-left"><input type="text" name="goods_option[<?php echo $discount_row; ?>][quantity]" value="<?php echo $discount['quantity']; ?>" class="form-control" /></td>
+                                    <td class="text-left"><input type="text" name="goods_option[<?php echo $discount_row; ?>][stock]" value="<?php echo $discount['stock']; ?>" class="form-control" /></td>
                                     <td class="text-left"><input type="text" name="goods_option[<?php echo $discount_row; ?>][sort]" value="<?php echo $discount['sort']; ?>" class="form-control" /></td>
 
                                       <td class="text-left"> 
@@ -83,7 +83,7 @@
         html  = '<tr id="discount-row' + discount_row + '">'; 
         html += '  <td class="text-left"><input type="text" name="goods_option[' + discount_row + '][option_name]" value="" class="form-control" /></td>';
         html += '  <td class="text-left"><input type="text" name="goods_option[' + discount_row + '][option_price]" value="" class="form-control" /></td>';
-        html += '  <td class="text-left"><input type="text" name="goods_option[' + discount_row + '][quantity]" value="" class="form-control" /></td>';
+        html += '  <td class="text-left"><input type="text" name="goods_option[' + discount_row + '][stock]" value="" class="form-control" /></td>';
         html += '  <td class="text-left"><input type="text" name="goods_option[' + discount_row + '][sort]" value="" class="form-control" /></td>';
 
         html += '  <td class="text-left">';
