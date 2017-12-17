@@ -9,13 +9,14 @@ Page({
     data: {
         loadingHidden:false,
         hiddenSmallImg:true,
-        countsArray:[1,2,3,4,5,6,7,8,9,10],
+        countsArray: [],
         productCounts:1,
         currentTabsIndex:0,
         cartTotalCounts:0,
+        currentAttrIndex:-1,
     },
     onLoad: function (option) {
-      var id = 2;
+      var id = 30;
         this.data.id=id;
         this._loadData();
     },
@@ -24,20 +25,95 @@ Page({
     _loadData:function(callback){
         var that = this;
         product.getDetailInfo(this.data.id,(data)=>{
+          var stockArray = [],
+            stockArr = data.stock<52?data.stock:52;
+            for (let i = 1; i <= stockArr; i++) {
+              stockArray.push(i);
+            }
             that.setData({
                 cartTotalCounts:cart.getCartTotalCounts().counts1,
+                countsArray: stockArray,
+                price: data.price,
                 product:data,
                 loadingHidden:true
             });
+
+            var optionsArr = data.options;
+            if (optionsArr.length > 0){
+              var stockArray = [], 
+                  options = this._getProductOptions(optionsArr),
+                  stockArr = options.stock < 52 ? options.stock : 52;
+              for (let i = 1; i <= stockArr; i++) {
+                stockArray.push(i);
+              }
+              that.setData({
+                price: options.price,
+                currentAttrIndex: options.i,
+                countsArray: stockArray,
+              });
+            }
             callback&& callback();
         });
     },
 
+    /*规格数量是否大于0来判断默认规格、获取数量和价格*/
+    _getProductOptions: function (data) {
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].stock > 0) {
+          return{
+            i:i,
+            stock: data[i].stock,
+            price: data[i].option_price
+          };
+        }
+      }
+    },
+
     //选择购买数目
     bindPickerChange: function(e) {
+      var tempPrice,
+        float=false,
+        counts = this.data.countsArray[e.detail.value],
+        discounts = this.data.product.discounts,
+        optionsArr = this.data.product.options;
+
+        if (optionsArr.length < 1) {
+          discounts.sort(function (a, b) {
+            return a.quantity - b.quantity;
+          });
+          for (var key in discounts) {
+            if (counts >= discounts[key].quantity) {
+              tempPrice = discounts[key].price;
+              float = true;
+            }
+          }
+          tempPrice = float == true ? tempPrice : this.data.product.price;
+        }
+        else
+        {
+          tempPrice = this.data.price;
+        }
         this.setData({
-            productCounts: this.data.countsArray[e.detail.value],
+          price: tempPrice,
+          productCounts: counts,
         })
+    },
+
+    //切换规格
+    onClickAttr: function (event) {
+      var index = product.getDataSet(event, 'index');
+      var price = product.getDataSet(event, 'price');
+      var stock = product.getDataSet(event, 'stock');
+      var stockArray = [],
+          stockArr = stock < 52 ? stock : 52;
+      for (let i = 1; i <= stockArr; i++) {
+        stockArray.push(i);
+      }
+      this.setData({
+        countsArray: stockArray,
+        price: price,
+        currentAttrIndex: index
+      });
     },
 
     //切换详情面板
@@ -60,14 +136,13 @@ Page({
 
     /*将商品数据添加到内存中*/
     addToCart:function(){
-        var tempObj={},keys=['id','name','main_img_url','price'];
+      var tempObj = {}, keys = ['goods_id', 'name', 'image', 'price', 'isMainGoods', 'stock', 'weight', 'length', 'length', 'width', 'height', 'options','discounts'];
         for(var key in this.data.product){
             if(keys.indexOf(key)>=0){
                 tempObj[key]=this.data.product[key];
             }
         }
-
-        cart.add(tempObj,this.data.productCounts);
+        cart.add(tempObj, this.data.productCounts, this.data.price , this.data.currentAttrIndex);
     },
 
     /*加入购物车动效*/

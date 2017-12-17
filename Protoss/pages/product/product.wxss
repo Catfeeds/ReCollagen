@@ -175,6 +175,25 @@
 .basic-info-box .price{
   font-size: 38rpx;
 }
+.basic-info-box .attr_list{
+  font-size: 34rpx;
+  padding:5px 0px;
+}
+.attr_list_li{
+  display: inline-block;
+  padding:0px 6px;
+  border:1px solid #ddd;
+  margin-right:3px;
+}
+.attr_list_li.on{
+  border:1px solid #ff0000;
+  color:#fff;
+  background: #ff0000;
+}
+.attr_list_li.disabled {
+  border:1px dotted #ddd;
+}
+
 .basic-info-box .cuxiao{
   font-size: 28rpx;
   color: #fff;
@@ -184,9 +203,14 @@
   border-radius: 100rpx;
   vertical-align: 5rpx;
 }
-.basic-info-box .ycuxiao{
-  font-size: 34rpx;
+.basic-info-box .discounts{
+  text-align: left;
+  font-size: 28rpx;
   color: #999;
+  padding: 0 45rpx;
+}
+.discounts_list_li{
+  margin-right:8px;
 }
 
 /*商品详情*/

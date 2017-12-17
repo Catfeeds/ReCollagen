@@ -3,26 +3,31 @@
         <view class="cart-box">
             <block wx:for="{{cartData}}">
                 <view class="cart-item {{deleteFlag&&index==currentIndex?'showDeleteBtn':'hideDeleteBtn'}}">
-                    <view class="cart-item-main" data-id="{{item.id}}" data-index="{{index}}">
-                        <view  class="cart-item-checkbox" ontap="toggleSelect" data-id="{{item.id}}" data-status="{{item.selectStatus}}">
+                    <view class="cart-item-main" data-id="{{item.goods_id}}" data-index="{{index}}">
+                        <view  class="cart-item-checkbox" ontap="toggleSelect" data-id="{{item.goods_id}}" data-status="{{item.selectStatus}}">
                             <image wx:if="{{item.selectStatus}}" src="../../imgs/icon/circle@selected.png"></image>
                             <image wx:else src="../../imgs/icon/circle@noselected.png"></image>
                         </view>
-                        <view class="cart-item-img" bindtap="onProductsItemTap" data-id="{{item.id}}">
-                            <image class="good-image" src="{{item.main_img_url}}"></image>
+                        <view class="cart-item-img" bindtap="onProductsItemTap" data-id="{{item.goods_id}}">
+                            <image class="good-image" src="{{item.image}}"></image>
                         </view>
                         <view class="cart-item-word">
                             <view class="title-box">
                                 <text class="title">{{item.name}}</text>
-                                <text>￥{{item.price}}</text>
+                                <text>￥{{item.currentPrice}}</text>
                             </view>
                             <view class="bottom-box">
                                 <view class="cart-item-counts">
-                                    <view class="btns {{item.counts==1?'disabled':''}}" bindtap="changeCounts" data-id="{{item.id}}" data-type="cut">-</view>
+                                    <view class="btns {{item.counts==1?'disabled':''}}" bindtap="changeCounts" data-id="{{item.goods_id}}" data-type="cut">-</view>
                                     <view class="counts">{{item.counts}}</view>
-                                    <view class="btns" bindtap="changeCounts" data-id="{{item.id}}" data-type="add">+</view>
+                                    <view class="btns" bindtap="changeCounts" data-id="{{item.goods_id}}" data-type="add">+</view>
                                 </view>
-                                <view class="delete" data-id="{{item.id}}" bindtap="delete">×</view>
+                                <view class="delete" data-id="{{item.goods_id}}" bindtap="delete">×</view>
+                            </view>
+                            <view class="bottom-box" wx:if="{{item.options.length>0}}">规格：
+                                <block  wx:for="{{item.options}}" wx:for-index="idx" wx:for-item="itemName" wx:if="{{idx==item.optionsIndex}}">
+                                    {{itemName.option_name}}
+                                </block>
                             </view>
                         </view>
                     </view>

@@ -39,9 +39,18 @@
             <view class="stock" wx:if="{{product.stock>0}}">有货</view>
             <view class="stock no" wx:else>缺货</view>
             <view class="name">{{product.name}}</view>
-            <view class="price">￥{{product.price}} <text class='cuxiao'>促销</text></view>
-             <view class="Spec">规格：<text class='Speclist'>红色</text><text class='Speclist'>青色</text><text class='Speclist'>紫色</text></view>
-            <view class="ycuxiao">促销：{{product.price}}</view>
+            <view class="price">￥{{price}}
+            <text class='cuxiao' wx:if="{{product.discounts.length>0}}">促销</text></view>
+            <view class="attr_list" wx:if="{{product.options.length>0}}">规格：
+              <block wx:for="{{product.options}}">
+              <text class="attr_list_li {{currentAttrIndex==index?'on':''}} {{item.stock==0?'disabled':''}}" data-index="{{index}}" data-price="{{item.option_price}}" data-stock="{{item.stock}}" bindtap='onClickAttr'>{{item.option_name}}</text>
+              </block>
+            </view>
+            <view class="discounts" wx:if="{{product.discounts.length>0}}">促销：
+              <block wx:for="{{product.discounts}}">
+              <text class='discounts_list_li'> 数量：{{item.quantity}} 价格：{{item.price}} </text>
+              </block>
+            </view>
         </view>
     </view>
     <view class="detail-bottom-box">

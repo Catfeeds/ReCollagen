@@ -82,21 +82,25 @@ class Cart extends Base{
     * item - {obj} 商品对象,
     * counts - {int} 商品数目,
     * */
-    add(item,counts){
+    add(item, counts, price, options){
         var cartData=this.getCartDataFromLocal();
         if(!cartData){
             cartData=[];
         }
-        var isHadInfo=this._isHasThatOne(item.id,cartData);
+        var isHadInfo = this._isHasThatOne(item.goods_id,cartData);
         //新商品
         if(isHadInfo.index==-1) {
-            item.counts=counts;
+            item.counts = counts;
+            item.currentPrice = price;
+            item.optionsIndex = options;
             item.selectStatus=true;  //默认在购物车中为选中状态
             cartData.push(item);
         }
         //已有商品
         else{
-            cartData[isHadInfo.index].counts+=counts;
+            cartData[isHadInfo.index].counts += counts;
+            cartData[isHadInfo.index].currentPrice = price;
+            cartData[isHadInfo.index].optionsIndex = options;
         }
         this.execSetStorageSync(cartData);  //更新本地缓存
         return cartData;
@@ -108,12 +112,13 @@ class Cart extends Base{
     * id - {int} 商品id
     * counts -{int} 数目
     * */
-    _changeCounts(id,counts){
+    _changeCounts(id, counts, price){
         var cartData=this.getCartDataFromLocal(),
             hasInfo=this._isHasThatOne(id,cartData);
         if(hasInfo.index!=-1){
             if(hasInfo.data.counts>1){
                 cartData[hasInfo.index].counts+=counts;
+                cartData[isHadInfo.index].currentPrice=price;
             }
         }
         this.execSetStorageSync(cartData);  //更新本地缓存
@@ -122,15 +127,15 @@ class Cart extends Base{
     /*
     * 增加商品数目
     * */
-    addCounts(id){
-        this._changeCounts(id,1);
+    addCounts(id, price){
+      this._changeCounts(id, 1, price);
     };
 
     /*
     * 购物车减
     * */
-    cutCounts(id){
-        this._changeCounts(id,-1);
+    cutCounts(id, price){
+      this._changeCounts(id, -1, price);
     };
 
     /*购物车中是否已经存在该商品*/
@@ -139,7 +144,7 @@ class Cart extends Base{
             result={index:-1};
         for(let i=0;i<arr.length;i++){
             item=arr[i];
-            if(item.id==id) {
+            if (item.goods_id==id) {
                 result = {
                     index:i,
                     data:item

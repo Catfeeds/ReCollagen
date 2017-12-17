@@ -11,6 +11,7 @@ Page({
         loadingHidden:false,
         selectedCounts:0, //总的商品数
         selectedTypeCounts:0, //总的商品类型数
+        
     },
 
     onLoad: function () {
@@ -23,6 +24,7 @@ Page({
     onShow:function(){
         var cartData=cart.getCartDataFromLocal(),
             countsInfo=cart.getCartTotalCounts(true);
+        
         this.setData({
             selectedCounts:countsInfo.counts1,
             selectedTypeCounts:countsInfo.counts2,
@@ -39,6 +41,7 @@ Page({
 
     /*更新购物车商品数据*/
     _resetCartData:function(){
+
         var newData = this._calcTotalAccountAndCounts(this.data.cartData); /*重新计算总金额和商品总数*/
         this.setData({
             account: newData.account,
@@ -60,7 +63,7 @@ Page({
         for(let i=0;i<len;i++){
             //避免 0.05 + 0.01 = 0.060 000 000 000 000 005 的问题，乘以 100 *100
             if(data[i].selectStatus) {
-                account += data[i].counts * multiple *  Number(data[i].price)*multiple;
+              account += data[i].counts * multiple * Number(data[i].currentPrice)*multiple;
                 selectedCounts+=data[i].counts;
                 selectedTypeCounts++;
             }
@@ -68,7 +71,7 @@ Page({
         return{
             selectedCounts:selectedCounts,
             selectedTypeCounts:selectedTypeCounts,
-            account:account/(multiple*multiple)
+            account: (account/(multiple*multiple)).toFixed(2)
         }
     },
 
@@ -80,14 +83,42 @@ Page({
             index=this._getProductIndexById(id),
             counts=1;
         if(type=='add') {
-            cart.addCounts(id);
+            this._getProductIndexPrice(index, counts);
+            var price = this.data.cartData[index].price;
+            cart.addCounts(id, price);
         }else{
             counts=-1;
-            cart.cutCounts(id);
+            this._getProductIndexPrice(index, counts);
+            var price = this.data.cartData[index].price;
+            cart.cutCounts(id, price);
         }
+        
         //更新商品页面
         this.data.cartData[index].counts+=counts;
         this._resetCartData();
+    },
+
+    /*调整商品价格*/
+    _getProductIndexPrice: function (index, counts) {
+      var tempPrice,
+        float = false,
+        counts = this.data.cartData[index].counts + counts,
+        discounts = this.data.cartData[index].discounts,
+        optionsArr = this.data.cartData[index].options;
+
+      // if (optionsArr.length < 1) {
+        discounts.sort(function (a, b) {
+          return a.quantity - b.quantity;
+        });
+        for (var key in discounts) {
+          if (counts >= discounts[key].quantity) {
+            tempPrice = discounts[key].price;
+            float = true;
+          }
+        }
+        tempPrice = float == true ? tempPrice : this.data.cartData[index].price;
+        this.data.cartData[index].currentPrice = tempPrice;
+      // }
     },
 
     /*根据商品id得到 商品所在下标*/
@@ -95,7 +126,7 @@ Page({
         var data=this.data.cartData,
             len=data.length;
         for(let i=0;i<len;i++){
-            if(data[i].id==id){
+          if (data[i].goods_id==id){
                 return i;
             }
         }
