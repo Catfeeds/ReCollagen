@@ -110,5 +110,12 @@ class OrderBackend extends AdminBase{
 		}
 		return false;
 	}
+	/**
+	 * 导出订单
+	 */
+	public function toExport(){
+		osc_order()->toExport();
+	}
+
 }
 ?>

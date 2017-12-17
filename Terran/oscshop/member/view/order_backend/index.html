@@ -16,7 +16,8 @@
 			</select>
 		</th>
 		<th>
-			<a class="btn btn-primary" href="javascript:;" id="search" url="{:url('OrderBackend/index')}">查询</a>
+			<a class="btn btn-primary" href="javascript:;" id="search" url="{:url('OrderBackend/index')}">查询</a>&nbsp;&nbsp;&nbsp;
+			<a class="btn btn-primary" href="{:url('OrderBackend/toExport')}">导出</a>
 		</th>
 	</thead>
 </table>	
@@ -53,9 +54,7 @@
 						<td>{$v.shipping_name}</td>
 						<td>{$v.shipping_tel}</td>
 						<td>{$v.shipping_addr}</td>
-						<td>
-							<?php echo date('Y-m-d H:i:s',$v['create_time']); ?>
-						</td>
+						<td><?php echo date('Y-m-d H:i:s',$v['create_time']); ?></td>
 						<td>￥{$v.mainPay}</td>	
 						<td>￥{$v.secondPay}</td>				
 						<td>￥{$v.total}</td>	
@@ -63,7 +62,9 @@
 						<td>
 							<a class="btn btn-xs btn-info" href='{:url("OrderBackend/show_order",array("id"=>$v["order_id"]))}'><i class="fa fa-eye bigger-120"></i></a>
 							<a class="btn btn-xs btn-info" href='{:url("OrderBackend/print_order",array("id"=>$v["order_id"]))}' target="_blank"><i class="fa fa-print bigger-120"></i></a> 
+						{eq name="v['order_status']" value="5"}
 							<a class="delete btn btn-xs btn-danger" href='{:url("OrderBackend/del",array("id"=>$v["order_id"]))}' ><i class="fa fa-trash bigger-120"></i></a>
+						{/eq}
 						</td>
 					</tr>
 					{/volist}	

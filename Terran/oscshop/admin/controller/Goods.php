@@ -98,7 +98,7 @@ class Goods extends AdminBase{
 	 	return $this->fetch('general');
 	 }
 	/**
-	  * 商品选项
+	  * 编辑产品参数
 	  */
 	public function edit_param(){
 		$this->assign('goods_param',Db::name('goods_param')->where('goods_id',input('id/d'))->order('id')->select());	

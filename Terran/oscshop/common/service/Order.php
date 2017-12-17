@@ -1,11 +1,8 @@
 <?php
-/**
- *
- * @author    李梓钿
- *
- */
 namespace osc\common\service;
 use think\Db;
+use think\Loader;
+
 class Order{
 	
 	//删除订单
@@ -399,6 +396,100 @@ class Order{
 		}
 		
 	}
+	/**
+	 * 导出订单
+	 */
+	public function toExport(){
+		$name='会员订单表';
+
+		$page = Db::view('Order','*')
+			->view('Member','openId','Order.uid=Member.uid')
+			->view('Dispatch','dispatch_title','Order.dispatch_id=Dispatch.id')
+			->order('Order.order_id desc')
+			->select();
+
+		if(count($page)>0){
+			foreach ($page as $key => $v){
+				$page[$key]['order_status'] = getOrderStatus($v['order_status']);
+				$page[$key]['create_time'] = date('Y-m-d H:i:s',$v['create_time']);
+			}
+		}
+
+		Loader::import('phpexcel.PHPExcel.IOFactory');
+		$objPHPExcel = new \PHPExcel();
+
+		// 设置excel文档的属性
+		$objPHPExcel->getProperties()->setCreator("Admin")//创建人
+		->setLastModifiedBy("Admin")//最后修改人
+		->setTitle($name)//标题
+		->setSubject($name)//题目
+		->setDescription($name)//描述
+		->setKeywords("订单")//关键字
+		->setCategory("Test result file");//种类
+	
+		// 开始操作excel表
+		$objPHPExcel->setActiveSheetIndex(0);
+		// 设置工作薄名称
+		$objPHPExcel->getActiveSheet()->setTitle(iconv('gbk', 'utf-8', 'Sheet'));
+		// 设置默认字体和大小
+		$objPHPExcel->getDefaultStyle()->getFont()->setName(iconv('gbk', 'utf-8', ''));
+		$objPHPExcel->getDefaultStyle()->getFont()->setSize(11);
+		$styleArray = array(
+				'font' => array(
+						'bold' => true,
+						'color'=>array(
+								'argb' => 'ffffffff',
+						)
+				),
+				'borders' => array (
+						'outline' => array (
+								'style' => \PHPExcel_Style_Border::BORDER_THIN,  //设置border样式
+								'color' => array ('argb' => 'FF000000'),     //设置border颜色
+						)
+				)
+		);
+		//设置宽
+		$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(8);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(25);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(25);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(20);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(18);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(50);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(25);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(15);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(15);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(15);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(15);
+		$objPHPExcel->getActiveSheet()->getStyle('A1:K1')->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID);
+		$objPHPExcel->getActiveSheet()->getStyle('A1:K1')->getFill()->getStartColor()->setARGB('333399');
+	
+		$objPHPExcel->getActiveSheet()->setCellValue('A1', '订单ID')->setCellValue('B1', '订单号')->setCellValue('C1', '会员微信openId')->setCellValue('D1', '收货人')->setCellValue('E1', '联系电话')
+		->setCellValue('F1', '收货地址')->setCellValue('G1', '下单时间')->setCellValue('H1', '主账户消费')->setCellValue('I1', '辅账户消费')->setCellValue('J1', '总计')->setCellValue('K1', '状态');
+		$objPHPExcel->getActiveSheet()->getStyle('A1:K1')->applyFromArray($styleArray);
+	
+		for ($row = 0; $row < count($page); $row++){
+			$i = $row+2;
+			$objPHPExcel->getActiveSheet()->setCellValue('A'.$i, $page[$row]['order_id'])->setCellValue('B'.$i, $page[$row]['order_num_alias'])->setCellValue('C'.$i, $page[$row]['openId'])->setCellValue('D'.$i, $page[$row]['shipping_name'])
+			->setCellValue('E'.$i, $page[$row]['shipping_tel'])->setCellValue('F'.$i, $page[$row]['shipping_addr'])->setCellValue('G'.$i, $page[$row]['create_time'])->setCellValue('H'.$i, $page[$row]['mainPay'])->setCellValue('I'.$i, $page[$row]['secondPay'])
+			->setCellValue('J'.$i, $page[$row]['total'])->setCellValue('K'.$i, $page[$row]['order_status']);
+		}
+	
+		//输出EXCEL格式
+		$objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+		// 从浏览器直接输出$filename
+		header('Content-Type:application/csv;charset=UTF-8');
+		header("Pragma: public");
+		header("Expires: 0");
+		header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
+		header("Content-Type:application/force-download");
+		header("Content-Type:application/vnd.ms-excel;");
+		header("Content-Type:application/octet-stream");
+		header("Content-Type:application/download");
+		header('Content-Disposition: attachment;filename="'.$name.'.xls"');
+		header("Content-Transfer-Encoding:binary");
+		$objWriter->save('php://output');
+	}
+
 }
 
 ?>

@@ -2,6 +2,9 @@
 namespace osc\member\controller;
 use osc\common\controller\AdminBase;
 use think\Db;
+/**
+ * 会员管理
+ */
 class MemberBackend extends AdminBase{
 	/**
 	 * 初始化
@@ -18,7 +21,7 @@ class MemberBackend extends AdminBase{
 		$param=input('param.');
 		$map = $query = [];
 		if(isset($param['condition'])){		
-			$map['m.openId']=['like',"%".trim($param['condition'])."%"];
+			$map['m.openId|m.username|m.tel']=['like',"%".trim($param['condition'])."%"];
 		}
 
 		$list=[];
