@@ -6,7 +6,7 @@ use think\Model;
 
 class Order extends BaseModel
 {
-    protected $hidden = ['user_id', 'delete_time', 'update_time'];
+    protected $hidden = ['uid', 'create_time', 'update_time'];
     protected $autoWriteTimestamp = true;
 
     public function getSnapItemsAttr($value)
@@ -26,7 +26,7 @@ class Order extends BaseModel
     
     public static function getSummaryByUser($uid, $page=1, $size=15)
     {
-        $pagingData = self::where('user_id', '=', $uid)
+        $pagingData = self::where('uid', '=', $uid)
             ->order('create_time desc')
             ->paginate($size, true, ['page' => $page]);
         return $pagingData ;

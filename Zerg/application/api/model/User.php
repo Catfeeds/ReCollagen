@@ -11,12 +11,12 @@ class User extends BaseModel
 
     public function orders()
     {
-        return $this->hasMany('Order', 'user_id', 'id');
+        return $this->hasMany('Order', 'uid', 'uid');
     }
 
     public function address()
     {
-        return $this->hasOne('UserAddress', 'user_id', 'id');
+        return $this->hasOne('UserAddress', 'uid', 'uid');
     }
 
     /**

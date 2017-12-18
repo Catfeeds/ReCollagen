@@ -26,7 +26,7 @@ class Address extends BaseController
      */
     public function getUserAddress(){
         $uid = Token::getCurrentUid();
-        $userAddress = UserAddress::where('user_id', $uid)
+        $userAddress = UserAddress::where('uid', $uid)
             ->find();
         if(!$userAddress){
             throw new UserException([
@@ -57,14 +57,11 @@ class Address extends BaseController
         $userAddress = $user->address;
         // 根据规则取字段是很有必要的，防止恶意更新非客户端字段
         $data = $validate->getDataByRule(input('post.'));
-        if (!$userAddress )
-        {
+        if (!$userAddress ){
             // 关联属性不存在，则新建
             $user->address()
                 ->save($data);
-        }
-        else
-        {
+        }else{
             // 存在则更新
 //            fromArrayToModel($user->address, $data);
             // 新增的save方法和更新的save方法并不一样
