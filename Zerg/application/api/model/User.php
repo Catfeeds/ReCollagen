@@ -8,7 +8,6 @@ class User extends BaseModel
 {
     protected $table = 'osc_member';
     protected $autoWriteTimestamp = true;
-    protected $createTime = 'regdate';
 
     public function orders()
     {

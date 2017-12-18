@@ -1,15 +1,6 @@
 <?php
-/**
- * Created by 七月
- * Author: 七月
- * 微信公号: 小楼昨夜又秋风
- * 知乎ID: 七月在夏天
- * Date: 2017/2/21
- * Time: 12:23
- */
 
 namespace app\api\controller\v1;
-
 
 use app\api\service\AppToken;
 use app\api\service\UserToken;
