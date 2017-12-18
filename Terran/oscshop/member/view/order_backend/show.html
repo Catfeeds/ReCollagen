@@ -8,11 +8,8 @@
 	<ul class="nav nav-tabs">
 		
 	  <li class="active"><a href="#tab-order" data-toggle="tab">订单详情</a></li>
-	 {if condition="$data['order']['shipping_method']"}
 	  <li><a href="#tab-shipping" data-toggle="tab">收货地址</a></li>
-	 {/if}
 	  <li><a href="#tab-product" data-toggle="tab">商品清单</a></li>
-	  
 	  <li><a href="#tab-history" data-toggle="tab">物流信息</a></li>          
 	  
 	</ul>
@@ -77,7 +74,7 @@
             <tr>
               <td class="left">商品品名</td>
               <td class="right">数量</td>
-              <td class="right">价格</td>              
+              <td class="right">单价</td>              
               <td class="right">总计</td>
 
             </tr>
