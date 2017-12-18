@@ -1,15 +1,6 @@
 <?php
-/**
- * Created by 七月.
- * Author: 七月
- * 微信公号：小楼昨夜又秋风
- * 知乎ID: 七月在夏天
- * Date: 2017/2/23
- * Time: 1:48
- */
 
 namespace app\api\service;
-
 
 use app\api\model\OrderProduct;
 use app\api\model\Product;

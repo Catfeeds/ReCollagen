@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: 七月
-* Date: 2017/2/12
-* Time: 19:44
-*/
 
 namespace app\lib\exception;
 

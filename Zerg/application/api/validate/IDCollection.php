@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by 七月.
- * User: 七月
- * Date: 2017/2/16
- * Time: 2:17
- */
+
 namespace app\api\validate;
 
 
