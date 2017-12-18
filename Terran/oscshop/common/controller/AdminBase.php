@@ -23,14 +23,13 @@ class AdminBase extends Base{
         //权限判断  
         if(session('user_auth.username')!=config('administrator')){//超级管理员不需要验证        
 	        
-			$auth = new \auth\Auth();
-			
-			if (!$auth->check(request()->module().'/'.to_under_score(request()->controller()).'/'.request()->action(), session('user_auth.uid'))) {
-								
-				$this->error('没有权限！');
+			if (request()->action() != 'ajax_del' && request()->action() != 'ajax_eidt') {
+				$auth = new \auth\Auth();
+				if (!$auth->check(request()->module().'/'.to_under_score(request()->controller()).'/'.request()->action(), session('user_auth.uid'))) {
+					$this->error('没有权限！');
+				}
 			}
 		}
-	
 	
 	}
 

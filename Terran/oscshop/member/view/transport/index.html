@@ -30,7 +30,7 @@
 	</h1>
 </div>	
 	<div class="page-header">
-	<a href="{:url('Transport/add')}" class="btn btn-primary">新增</a>
+	<a href="{:url('transport/add')}" class="btn btn-primary">新增</a>
 
 	</div>	
 	
@@ -106,7 +106,7 @@ $(function(){
 		var f=confirm('确认要执行该操作吗？');
 		
 		if(f){
-			$(this).attr('href','{:url("Transport/del")}'+'/id/'+id);
+			$(this).attr('href','{:url("transport/del")}'+'/id/'+id);
 			return true;	
 		}else{
 			return false;
@@ -116,14 +116,14 @@ $(function(){
 	$('a[class="J_Modify ncsc-btn-mini"]').click(function(){
 		var id = $(this).attr('data-id');
 		if(typeof(id) == 'undefined') return false;
-		$(this).attr('href','{:url("Transport/edit")}'+'/id/'+id);
+		$(this).attr('href','{:url("transport/edit")}'+'/id/'+id);
 		return true;
 	});
 	
 	$('a[class="J_Clone ncsc-btn-mini"]').click(function(){
 		var id = $(this).attr('data-id');
 		if(typeof(id) == 'undefined') return false;
-		$(this).attr('href','{:url("Transport/clone_data")}'+'/id/'+id);
+		$(this).attr('href','{:url("transport/clone_data")}'+'/id/'+id);
 		return true;
 	});
 
