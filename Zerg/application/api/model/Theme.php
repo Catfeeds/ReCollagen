@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by 七月.
- * User: 七月
- * Date: 2017/2/16
- * Time: 1:59
- */
 
 namespace app\api\model;
-
 
 use app\lib\exception\ProductException;
 use app\lib\exception\ThemeException;

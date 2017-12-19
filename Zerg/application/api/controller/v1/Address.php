@@ -1,15 +1,6 @@
 <?php
-/**
- * Created by 七月.
- * Author: 七月
- * 微信公号：小楼昨夜又秋风
- * 知乎ID: 七月在夏天
- * Date: 2017/2/23
- * Time: 2:56
- */
 
 namespace app\api\controller\v1;
-
 
 use app\api\controller\BaseController;
 use app\api\model\User;
@@ -35,7 +26,7 @@ class Address extends BaseController
      */
     public function getUserAddress(){
         $uid = Token::getCurrentUid();
-        $userAddress = UserAddress::where('user_id', $uid)
+        $userAddress = UserAddress::where('uid', $uid)
             ->find();
         if(!$userAddress){
             throw new UserException([
@@ -59,21 +50,18 @@ class Address extends BaseController
         if(!$user){
             throw new UserException([
                 'code' => 404,
-                'msg' => '用户收获地址不存在',
+                'msg' => '用户收货地址不存在',
                 'errorCode' => 60001
             ]);
         }
         $userAddress = $user->address;
         // 根据规则取字段是很有必要的，防止恶意更新非客户端字段
         $data = $validate->getDataByRule(input('post.'));
-        if (!$userAddress )
-        {
+        if (!$userAddress ){
             // 关联属性不存在，则新建
             $user->address()
                 ->save($data);
-        }
-        else
-        {
+        }else{
             // 存在则更新
 //            fromArrayToModel($user->address, $data);
             // 新增的save方法和更新的save方法并不一样

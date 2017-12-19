@@ -9,7 +9,7 @@ class Product extends BaseModel
     protected $table = 'osc_goods';
     protected $autoWriteTimestamp = 'datetime';
     protected $hidden = [
-        'pivot', 'add_time', 'date_modified', 'viewed','status', 'sort_order', 'location', 'shipping', 'sku', 'brand_id', 'date_available', 'stock_status_id', 'weight_class_id', 'length_class_id', 'subtract', 'minimum', 'pay_points', 'is_points_goods', 'model', 'points', 'sale_count'
+        'pivot','sale_count','status', 'sort_order', 'create_time', 'update_time'
     ];
 
     /**

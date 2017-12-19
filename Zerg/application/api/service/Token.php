@@ -1,15 +1,6 @@
 <?php
-/**
- * Created by 七月
- * Author: 七月
- * 微信公号: 小楼昨夜又秋风
- * 知乎ID: 七月在夏天
- * Date: 2017/2/24
- * Time: 17:18
- */
 
 namespace app\api\service;
-
 
 use app\lib\enum\ScopeEnum;
 use app\lib\exception\ForbiddenException;
@@ -137,7 +128,7 @@ class Token
 
     /**
      * 当需要获取全局UID时，应当调用此方法
-     *而不应当自己解析UID
+     * 而不应当自己解析UID
      *
      */
     public static function getCurrentUid()

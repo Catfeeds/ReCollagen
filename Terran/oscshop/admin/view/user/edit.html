@@ -31,7 +31,7 @@
 			<div class="form-group required">
 				<label class="col-sm-2 control-label">密码：</label>
 				<div class="col-sm-10">
-					<input  class="form-control" type="text" placeholder="密码" name="passwd"  value="888888" />
+					<input  class="form-control" type="password" placeholder="密码" name="passwd"  value="" />
 				</div>
 			</div>
 									
@@ -89,7 +89,7 @@ var back_index="{:url('User/index')}";
 $('#send').click(function(){
 	$.post(
 		'{$action}',
-		$('.form-horizontal input[type=\'text\'],.form-horizontal input[type=\'hidden\'],.form-horizontal select,.form-horizontal input[type=\'radio\']:checked'),
+		$('.form-horizontal input[type=\'text\'],.form-horizontal input[type=\'password\'],.form-horizontal input[type=\'hidden\'],.form-horizontal select,.form-horizontal input[type=\'radio\']:checked'),
 		function(d){
 			art_dialog(d,back_index);
 		}

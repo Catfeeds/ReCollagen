@@ -18,7 +18,7 @@ class User extends AdminBase{
 			->order('admin_id desc')
 			->paginate(config('page_num'));	
 
-		$this->assign('empty', '<tr><td colspan="20">~~暂无数据</td></tr>');
+		$this->assign('empty', '<tr><td colspan="20">暂无数据</td></tr>');
 		$this->assign('list',$list);
 		    
 		return $this->fetch();   
@@ -27,7 +27,8 @@ class User extends AdminBase{
 		
 		if(request()->isPost()){
 				
-			$data=input('post.');	
+			$data = input('post.');	
+
 			$result = $this->validate($data,'User');			
 			if($result!==true){
 				return ['error'=>$result];
@@ -55,7 +56,7 @@ class User extends AdminBase{
 			
 		}
 		
-		$this->assign('group',Db::name('auth_group')->field('id,title')->select());
+		$this->assign('group',Db::name('auth_group')->field('id,title')->where(['type'=>['neq','admin']])->select());
 		
 		$this->assign('crumbs','新增');
 		$this->assign('action',url('User/add'));
@@ -67,13 +68,12 @@ class User extends AdminBase{
 		if(request()->isPost()){
 			$data=input('post.');
 						
-			$admin['admin_id']=$data['admin_id'];
-			$admin['user_name']=$data['user_name'];
-			$admin['true_name']=$data['true_name'];
-			$admin['telephone']=$data['telephone'];
-			$admin['status']=$data['status'];
-			
-			$admin['group_id']=$data['group_id'];
+			$admin['admin_id']  = $data['admin_id'];
+			$admin['user_name'] = $data['user_name'];
+			$admin['true_name'] = $data['true_name'];
+			$admin['telephone'] = $data['telephone'];
+			$admin['status']    = $data['status'];
+			$admin['group_id']  = $data['group_id'];
 			
 			if(!empty($data['passwd']))
 			$admin['passwd']=think_ucenter_encrypt($data['passwd'],config('PWD_KEY'));
@@ -93,10 +93,10 @@ class User extends AdminBase{
 			
 		}
 		
-		$this->assign('group',Db::name('auth_group')->field('id,title')->select());
+		$this->assign('group',Db::name('auth_group')->field('id,title')->where(['type'=>['neq','admin']])->select());
 		
 
-		$this->assign('user',Db::name('admin')->where('admin_id',input('id'))->find());
+		$this->assign('user',Db::name('admin')->where('admin_id',input('id/d'))->find());
 		
 		$this->assign('crumbs','修改');
 		$this->assign('action',url('User/edit'));

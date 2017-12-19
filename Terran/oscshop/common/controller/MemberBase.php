@@ -1,7 +1,5 @@
 <?php
 /**
- *
- * @author    李梓钿
  *会员中心
  */
 namespace osc\common\controller;

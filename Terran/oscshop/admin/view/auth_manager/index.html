@@ -23,28 +23,32 @@
 						{volist name="list" id="d" empty="$empty"}
 						<tr>													
 							<td>
-								<a href='{:url("AuthManager/edit_group",array("id"=>$d["id"]))}'>
-									{$d.title}
-								</a> 
+							{if condition="$d['type'] eq 'admin'"}
+								{$d.title}
+							{else /}
+								<a href='{:url("AuthManager/edit_group",array("id"=>$d["id"]))}'>{$d.title}</a> 
+							{/if}
 							</td>
 							<td>{$d.description	}</td>
 							<td>
-								<a href='{:url("AuthManager/access",array("id"=>$d["id"]))}'>
-									访问授权
-								</a> 
+							{if condition="$d['type'] neq 'admin'"}
+								<a href='{:url("AuthManager/access",array("id"=>$d["id"]))}'>访问授权</a> 
+							{/if}
 							</td>
-							<td>							
+							<td>					
+							{if condition="$d['type'] neq 'admin'"}
 							{switch name="d.status"}
 								{case value="1"}<a href='{:url("AuthManager/set_status",array("id"=>$d["id"],"status"=>0))}'><span class="btn btn-xs btn-success"><i class="fa fa-check bigger-120"></i></span></a>{/case}
 								{case value="0"}<a href='{:url("AuthManager/set_status",array("id"=>$d["id"],"status"=>1))}'><span class="btn btn-xs btn-danger"><i class="fa fa-remove bigger-120"></i></span></a>{/case}
 							{/switch}
+							{/if}
 							</td>
 							<td>
-								
+							{if condition="$d['type'] neq 'admin'"}
 								<a class="delete btn btn-xs btn-danger" href='{:url("AuthManager/del_group",array("id"=>$d["id"]))}' >
 									<i class="fa fa-trash bigger-120"></i>
 								</a>
-								
+							{/if}
 							</td>
 						</tr>
 						{/volist}	

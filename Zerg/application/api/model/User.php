@@ -8,16 +8,15 @@ class User extends BaseModel
 {
     protected $table = 'osc_member';
     protected $autoWriteTimestamp = true;
-    protected $createTime = 'regdate';
 
     public function orders()
     {
-        return $this->hasMany('Order', 'user_id', 'id');
+        return $this->hasMany('Order', 'uid', 'uid');
     }
 
     public function address()
     {
-        return $this->hasOne('UserAddress', 'user_id', 'id');
+        return $this->hasOne('UserAddress', 'uid', 'uid');
     }
 
     /**

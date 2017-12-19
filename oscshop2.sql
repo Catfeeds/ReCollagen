@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2017-12-17 17:38:02
+Date: 2017-12-18 10:38:52
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -64,7 +64,7 @@ CREATE TABLE `osc_admin` (
 -- Records of osc_admin
 -- ----------------------------
 INSERT INTO `osc_admin` VALUES ('1', 'admin', 'MDAwMDAwMDAwMLO6d61/iaja', '', '', 'admin@admin.com', '26', '127.0.0.1', '', '1505270345', '1513412152', '1513503278', '1', '2');
-INSERT INTO `osc_admin` VALUES ('2', 'admin_order', 'MDAwMDAwMDAwMLO6d61/iaja', '', '', null, '12', '127.0.0.1', null, '1512538804', '1513413778', '1513503420', '1', '3');
+INSERT INTO `osc_admin` VALUES ('2', 'admin_order', 'MDAwMDAwMDAwMLO6d61/iaja', '', '', null, '13', '127.0.0.1', null, '1512538804', '1513413778', '1513559676', '1', '3');
 
 -- ----------------------------
 -- Table structure for `osc_area`
@@ -3730,40 +3730,6 @@ INSERT INTO `osc_category` VALUES ('13', '0', '精美茶具', 'images/osc1/categ
 INSERT INTO `osc_category` VALUES ('29', '0', '传统糕点', 'images/osc1/category/category-cake.png', '4', '1513157182');
 
 -- ----------------------------
--- Table structure for `osc_category_to_attribute`
--- ----------------------------
-DROP TABLE IF EXISTS `osc_category_to_attribute`;
-CREATE TABLE `osc_category_to_attribute` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `cid` int(10) NOT NULL DEFAULT '0',
-  `attribute_id` int(10) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='分类和属性关联';
-
--- ----------------------------
--- Records of osc_category_to_attribute
--- ----------------------------
-INSERT INTO `osc_category_to_attribute` VALUES ('4', '3', '1');
-INSERT INTO `osc_category_to_attribute` VALUES ('5', '3', '2');
-
--- ----------------------------
--- Table structure for `osc_category_to_brand`
--- ----------------------------
-DROP TABLE IF EXISTS `osc_category_to_brand`;
-CREATE TABLE `osc_category_to_brand` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
-  `cid` int(10) NOT NULL DEFAULT '0',
-  `brand_id` int(10) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='分类品牌关联';
-
--- ----------------------------
--- Records of osc_category_to_brand
--- ----------------------------
-INSERT INTO `osc_category_to_brand` VALUES ('3', '3', '2');
-INSERT INTO `osc_category_to_brand` VALUES ('4', '3', '3');
-
--- ----------------------------
 -- Table structure for `osc_config`
 -- ----------------------------
 DROP TABLE IF EXISTS `osc_config`;
@@ -3883,7 +3849,7 @@ INSERT INTO `osc_goods` VALUES ('6', '1', '5', 'images/osc1/6/1.jpg', '定窑白
 INSERT INTO `osc_goods` VALUES ('7', '1', '3', 'images/osc1/7/1.jpg', '功夫茶具手拉坯柴烧', '30.00', '785', '0', '200.00', '20.00', '20.00', '20.00', '2016-08-19 21:29:39', '0000-00-00 00:00:00', '7', '1');
 INSERT INTO `osc_goods` VALUES ('8', '1', '1', 'images/osc1/8/1.jpg', '青瓷手绘荷花陶瓷茶叶罐', '58.00', '323', '0', '200.00', '20.00', '20.00', '20.00', '2016-08-19 21:42:42', '0000-00-00 00:00:00', '8', '1');
 INSERT INTO `osc_goods` VALUES ('9', '1', '13', 'images/osc1/9/1.jpg', '定窑白瓷手绘胭红整套', '198.00', '746', '0', '2.00', '20.00', '20.00', '20.00', '2016-08-19 22:00:25', '2017-12-14 10:42:43', '9', '1');
-INSERT INTO `osc_goods` VALUES ('10', '1', '3', 'images/osc1/10/1.jpg', '定窑白瓷手绘山水整套', '158.00', '323', '0', '2.00', '20.00', '20.00', '20.00', '2016-08-19 22:08:17', '0000-00-00 00:00:00', '10', '1');
+INSERT INTO `osc_goods` VALUES ('10', '1', '2', 'images/osc1/10/1.jpg', '定窑白瓷手绘山水整套', '158.00', '323', '0', '2.00', '20.00', '20.00', '20.00', '2016-08-19 22:08:17', '2017-12-18 09:51:59', '10', '1');
 INSERT INTO `osc_goods` VALUES ('11', '1', '2', 'images/osc1/11/1.jpg', '222手工粗陶柴烧整套', '450.00', '23', '0', '1001.56', '10.00', '20.00', '10.01', '2016-08-19 22:15:27', '2017-12-14 09:31:15', '11', '1');
 INSERT INTO `osc_goods` VALUES ('12', '1', '2', 'images/osc1/product/2@theme.png', '青花白瓷手绘荷花', '168.50', '2323', '0', '2.00', '20.00', '20.00', '20.00', '2016-08-19 22:24:54', '2017-12-14 10:38:17', '12', '1');
 INSERT INTO `osc_goods` VALUES ('13', '1', '3', 'images/osc1/product/product-dryfruit@4.png', '贵妃笑', '200.00', '2323', '0', '100.00', '10.00', '10.00', '10.00', '2017-12-13 17:29:40', '2017-12-14 09:38:36', '0', '1');
@@ -3988,8 +3954,6 @@ INSERT INTO `osc_goods_discount` VALUES ('9', '30', '5', '6.00');
 INSERT INTO `osc_goods_discount` VALUES ('10', '30', '10', '5.50');
 INSERT INTO `osc_goods_discount` VALUES ('11', '32', '5', '0.05');
 INSERT INTO `osc_goods_discount` VALUES ('12', '32', '8', '0.03');
-INSERT INTO `osc_goods_discount` VALUES ('13', '34', '6', '6.66');
-INSERT INTO `osc_goods_discount` VALUES ('14', '34', '8', '8.88');
 
 -- ----------------------------
 -- Table structure for `osc_goods_image`
@@ -4334,120 +4298,21 @@ INSERT INTO `osc_member` VALUES ('2', 'wx-fdsf53575rwere710', '哈哈哈', '1812
 INSERT INTO `osc_member` VALUES ('3', 'wx-iuyifghgf6345re221', '嘿嘿嘿', '13355556666', '111.00', '1500.00', '1', '1512633763', '1513393824');
 
 -- ----------------------------
--- Table structure for `osc_member_auth_group`
+-- Table structure for `osc_member_collect`
 -- ----------------------------
-DROP TABLE IF EXISTS `osc_member_auth_group`;
-CREATE TABLE `osc_member_auth_group` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户组id,自增主键',
-  `type` varchar(20) DEFAULT NULL,
-  `title` char(20) DEFAULT NULL COMMENT '用户组中文名称',
-  `description` varchar(80) DEFAULT NULL COMMENT '描述信息',
-  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '用户组状态：为1正常，为0禁用,-1为删除',
-  `rules` text COMMENT '用户组拥有的规则id，多个规则 , 隔开',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of osc_member_auth_group
--- ----------------------------
-INSERT INTO `osc_member_auth_group` VALUES ('1', '', '普通用户', '普通用户', '1', '13,14,15,19,20,21,22,23,25,26,27,28');
-
--- ----------------------------
--- Table structure for `osc_member_auth_group_access`
--- ----------------------------
-DROP TABLE IF EXISTS `osc_member_auth_group_access`;
-CREATE TABLE `osc_member_auth_group_access` (
-  `uid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户id',
-  `group_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '用户组id',
-  UNIQUE KEY `uid_group_id` (`uid`,`group_id`),
-  KEY `uid` (`uid`),
-  KEY `group_id` (`group_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of osc_member_auth_group_access
--- ----------------------------
-INSERT INTO `osc_member_auth_group_access` VALUES ('1', '2');
-INSERT INTO `osc_member_auth_group_access` VALUES ('2', '2');
-INSERT INTO `osc_member_auth_group_access` VALUES ('3', '2');
-
--- ----------------------------
--- Table structure for `osc_member_auth_rule`
--- ----------------------------
-DROP TABLE IF EXISTS `osc_member_auth_rule`;
-CREATE TABLE `osc_member_auth_rule` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '规则id,自增主键',
-  `group_id` int(11) NOT NULL DEFAULT '0',
-  `menu_id` int(11) NOT NULL DEFAULT '0',
-  `name` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of osc_member_auth_rule
--- ----------------------------
-INSERT INTO `osc_member_auth_rule` VALUES ('1', '2', '13', '');
-INSERT INTO `osc_member_auth_rule` VALUES ('2', '2', '14', 'member/account/profile');
-INSERT INTO `osc_member_auth_rule` VALUES ('3', '2', '15', 'member/account/password');
-INSERT INTO `osc_member_auth_rule` VALUES ('4', '2', '19', '');
-INSERT INTO `osc_member_auth_rule` VALUES ('5', '2', '20', 'member/account/address');
-INSERT INTO `osc_member_auth_rule` VALUES ('6', '2', '21', 'member/order_member/index');
-INSERT INTO `osc_member_auth_rule` VALUES ('7', '2', '22', 'member/order_member/show_order');
-INSERT INTO `osc_member_auth_rule` VALUES ('8', '2', '23', 'member/order_member/history');
-INSERT INTO `osc_member_auth_rule` VALUES ('9', '2', '25', 'member/account/add_address');
-INSERT INTO `osc_member_auth_rule` VALUES ('10', '2', '26', 'member/account/edit_address');
-INSERT INTO `osc_member_auth_rule` VALUES ('11', '2', '27', 'member/account/del_address');
-INSERT INTO `osc_member_auth_rule` VALUES ('12', '2', '28', 'member/order_member/cancel');
-
--- ----------------------------
--- Table structure for `osc_member_menu`
--- ----------------------------
-DROP TABLE IF EXISTS `osc_member_menu`;
-CREATE TABLE `osc_member_menu` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '文档ID',
-  `module` varchar(20) DEFAULT NULL,
-  `pid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '上级分类ID',
-  `title` varchar(50) DEFAULT NULL COMMENT '标题',
-  `url` char(255) DEFAULT NULL COMMENT '链接地址',
-  `icon` varchar(64) DEFAULT NULL,
-  `sort_order` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '排序（同级有效）',
-  `type` varchar(40) DEFAULT NULL COMMENT 'nav,auth',
-  PRIMARY KEY (`id`),
-  KEY `pid` (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COMMENT='后台菜单';
-
--- ----------------------------
--- Records of osc_member_menu
--- ----------------------------
-INSERT INTO `osc_member_menu` VALUES ('13', 'member', '0', '个人资料', '', 'fa-users fa-lg', '1', 'nav');
-INSERT INTO `osc_member_menu` VALUES ('14', 'member', '13', '我的资料', 'member/account/profile', '', '1', 'nav');
-INSERT INTO `osc_member_menu` VALUES ('15', 'member', '13', '修改密码', 'member/account/password', '', '2', 'nav');
-INSERT INTO `osc_member_menu` VALUES ('19', 'member', '0', '我的订单', '', 'fa-credit-card fa-lg', '0', 'nav');
-INSERT INTO `osc_member_menu` VALUES ('20', 'member', '13', '地址簿', 'member/account/address', '', '3', 'nav');
-INSERT INTO `osc_member_menu` VALUES ('21', 'member', '19', '订单管理', 'member/order_member/index', '', '1', 'nav');
-INSERT INTO `osc_member_menu` VALUES ('22', 'member', '21', '订单详情', 'member/order_member/show_order', '', '1', 'auth');
-INSERT INTO `osc_member_menu` VALUES ('23', 'member', '21', '订单历史', 'member/order_member/history', '', '0', 'auth');
-INSERT INTO `osc_member_menu` VALUES ('25', 'member', '20', '新增', 'member/account/add_address', '', '0', 'auth');
-INSERT INTO `osc_member_menu` VALUES ('26', 'member', '20', '编辑', 'member/account/edit_address', '', '0', 'auth');
-INSERT INTO `osc_member_menu` VALUES ('27', 'member', '20', '删除', 'member/account/del_address', '', '0', 'auth');
-INSERT INTO `osc_member_menu` VALUES ('28', 'member', '21', '取消订单', 'member/order_member/cancel', '', '0', 'auth');
-
--- ----------------------------
--- Table structure for `osc_member_wishlist`
--- ----------------------------
-DROP TABLE IF EXISTS `osc_member_wishlist`;
-CREATE TABLE `osc_member_wishlist` (
+DROP TABLE IF EXISTS `osc_member_collect`;
+CREATE TABLE `osc_member_collect` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `uid` int(11) NOT NULL,
   `goods_id` int(11) NOT NULL DEFAULT '0',
-  `date_added` varchar(40) DEFAULT NULL,
-  KEY `uid` (`uid`,`goods_id`)
+  `create_time` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='收藏的商品';
 
 -- ----------------------------
--- Records of osc_member_wishlist
+-- Records of osc_member_collect
 -- ----------------------------
-INSERT INTO `osc_member_wishlist` VALUES ('1', '1', '2017-12-06 14:40:05');
-INSERT INTO `osc_member_wishlist` VALUES ('2', '2', '2017-12-14 10:35:05');
 
 -- ----------------------------
 -- Table structure for `osc_menu`
@@ -4673,7 +4538,7 @@ CREATE TABLE `osc_order` (
 -- Records of osc_order
 -- ----------------------------
 INSERT INTO `osc_order` VALUES ('3', 'wx2017120753575710', '2', '旅行茶具套装便携式功夫茶具 车载 户外 手绘茶具等商品', '2', '哈哈哈22', '18121029523', '北京市国家图书馆111号', '1', '邮政快递', '9891770403677', '39.61', '0.00', '39.50', '0.11', '39.61', '0', '1513402181', '1513479717');
-INSERT INTO `osc_order` VALUES ('4', 'wx2017121253555353', '5', '111艺创 青花白瓷手绘荷花整套功夫茶具陶瓷 盖碗 茶杯创意礼盒', '2', '哈哈哈22', '18121029523', '北京市国家图书馆111号', '3', '顺丰速递', '426530659301', '0.00', '0.00', '16640.50', '922.00', '17562.50', '0', '1513411181', '1513479809');
+INSERT INTO `osc_order` VALUES ('4', 'wx2017121253555353', '5', '111艺创 青花白瓷手绘荷花整套功夫茶具陶瓷 盖碗 茶杯创意礼盒', '2', '哈哈哈22', '18121029523', '江苏省南京市玄武区人民路XX小区1栋101', '3', '顺丰速递', '426530659301', '0.00', '0.00', '16640.50', '922.00', '17562.50', '0', '1513411181', '1513479809');
 
 -- ----------------------------
 -- Table structure for `osc_order_goods`
@@ -4786,7 +4651,7 @@ CREATE TABLE `osc_user_action` (
   `info` varchar(255) DEFAULT NULL COMMENT '行为描述',
   `add_time` int(10) NOT NULL DEFAULT '0' COMMENT '加入时间',
   PRIMARY KEY (`ua_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=582 DEFAULT CHARSET=utf8 COMMENT='用户行为';
+) ENGINE=InnoDB AUTO_INCREMENT=584 DEFAULT CHARSET=utf8 COMMENT='用户行为';
 
 -- ----------------------------
 -- Records of osc_user_action
@@ -4845,3 +4710,5 @@ INSERT INTO `osc_user_action` VALUES ('578', '1', 'admin', '后台系统用户',
 INSERT INTO `osc_user_action` VALUES ('579', '1', 'admin', '后台系统用户', '清除了缓存', '1513503415');
 INSERT INTO `osc_user_action` VALUES ('580', '1', 'admin', '后台系统用户', '退出了系统', '1513503418');
 INSERT INTO `osc_user_action` VALUES ('581', '2', 'admin_order', '后台系统用户', '登录了后台系统', '1513503420');
+INSERT INTO `osc_user_action` VALUES ('582', '2', 'admin_order', '后台系统用户', '登录了后台系统', '1513559676');
+INSERT INTO `osc_user_action` VALUES ('583', '2', 'admin_order', '后台系统用户', '更新商品基本信息', '1513561919');
