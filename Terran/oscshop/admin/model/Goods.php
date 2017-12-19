@@ -47,7 +47,7 @@ class Goods extends Model{
 				//折扣
 				if(isset($data['goods_discount'])){
 					foreach ($data['goods_discount'] as $discount) {
-						Db::execute("INSERT INTO " . config('database.prefix'). "goods_discount SET goods_id = '" . (int)$goods_id . "', quantity = '" . (int)$discount['quantity'] . "', price=".(float)$discount['price']);
+						Db::execute("INSERT INTO " . config('database.prefix'). "goods_discount SET goods_id = '" . (int)$goods_id . "', quantity = '" . (int)$discount['quantity'] . "', discount=".(int)$discount['discount']);
 					}
 				}
 				//商品轮播图
