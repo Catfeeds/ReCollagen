@@ -1,0 +1,50 @@
+﻿Request:
+    /api/v1/order/:id
+
+Method:
+    Get
+
+Params:
+    # id      订单id
+
+
+
+Callback: 编码一律utf-8
+
++-------------------------------------------------------+
+
+    {  
+        "order_id"              :  "订单id", 
+        "order_num_alias"       :  "订单编号", 
+        "order_status"          :  "订单状态(1待付款,2待发货,3已发货,4已收货,5已取消订单)", 
+        "shipping_name"         :  "收货人", 
+        "shipping_tel"          :  "联系电话", 
+        "shipping_addr"         :  "收货地址", 
+        "shipping_method"       :  "物流公司", 
+        "shipping_num"          :  "快递单号", 
+        "mainPay"               :  "主账户消费金额", 
+        "secondPay"             :  "辅账户消费金额", 
+        "goodsPrice"            :  "商品总价", 
+        "shippingPrice"         :  "运费价格", 
+        "total"                 :  "总计", 
+        "create_time"           :  "下单时间", 
+
+
+        "products" : {       
+            "goods_id"          : "商品id"     
+            "isMainGoods"       : "商品类型(1主商品，0辅销品)"     
+            "image"             : "商品缩略图"                
+            "name"              : "商品名称"   
+            "option_name"       : "商品选项名称"                             
+            "quantity"          : "商品数量"                             
+            "price"             : "商品价格"                             
+            "total"             : "单件商品总价"                             
+        },
+
+    }
+
++-------------------------------------------------------+
+    {  
+        "errorCode"     :  "错误码", 
+        "msg"           : "错误提示",        
+    }

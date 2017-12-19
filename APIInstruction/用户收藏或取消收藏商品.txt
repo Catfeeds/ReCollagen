@@ -5,7 +5,7 @@ Method:
     Post
 
 Params:
-    "goods_id"        :   "商品id"
+    "id"        :   "商品id"
 
 
 

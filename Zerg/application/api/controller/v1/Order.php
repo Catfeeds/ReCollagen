@@ -37,52 +37,42 @@ class Order extends BaseController
     }
 
     /**
-     * 获取订单详情
+     * 根据订单id获取订单详情
      * @param $id
      * @return static
      * @throws OrderException
      * @throws \app\lib\exception\ParameterException
      */
-    public function getDetail($id)
-    {
+    public function getDetail($id){
+
         (new IDMustBePositiveInt())->goCheck();
-        $orderDetail = OrderModel::get($id);
-        if (!$orderDetail)
-        {
+        $orderDetail = OrderModel::getDetail($id);
+        if (!$orderDetail){
             throw new OrderException();
         }
+
         return $orderDetail
-            ->hidden(['prepay_id']);
+            ->hidden(['pay_subject_img','pay_subject']);
     }
 
     /**
-     * 根据用户id分页获取订单列表（简要信息）
-     * @param int $page
-     * @param int $size
+     * 根据用户id获取订单列表（简要信息）
      * @return array
      * @throws \app\lib\exception\ParameterException
      */
-    public function getSummaryByUser($page = 1, $size = 15)
-    {
-        (new PagingParameter())->goCheck();
+    public function getSummaryByUser(){
+        
         $uid = Token::getCurrentUid();
-        $pagingOrders = OrderModel::getSummaryByUser($uid, $page, $size);
-        if ($pagingOrders->isEmpty())
-        {
-            return [
-                'current_page' => $pagingOrders->currentPage(),
-                'data' => []
-            ];
+        
+        $orders = OrderModel::getSummaryByUser($uid);
+        if ($orders->isEmpty()){
+            return [];
         }
-//        $collection = collection($pagingOrders->items());
-//        $data = $collection->hidden(['snap_items', 'snap_address'])
-//            ->toArray();
-        $data = $pagingOrders->hidden(['snap_items', 'snap_address'])
+
+        $data = $orders->hidden(['shipping_name','shipping_tel','shipping_addr','shipping_method','shipping_num','mainPay','secondPay','goodsPrice','shippingPrice','products'])
             ->toArray();
-        return [
-            'current_page' => $pagingOrders->currentPage(),
-            'data' => $data
-        ];
+
+        return $data;
 
     }
 

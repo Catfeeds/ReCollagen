@@ -123,10 +123,10 @@ class Order
     {
         $pIndex = -1;
         $pStatus = [
-            'id' => null,
-            'haveStock' => false,
-            'count' => 0,
-            'name' => '',
+            'id'         => null,
+            'haveStock'  => false,
+            'count'      => 0,
+            'name'       => '',
             'totalPrice' => 0
         ];
 
@@ -144,9 +144,9 @@ class Order
                 ]);
         } else {
             $product = $products[$pIndex];
-            $pStatus['id'] = $product['id'];
-            $pStatus['name'] = $product['name'];
-            $pStatus['count'] = $oCount;
+            $pStatus['id']         = $product['id'];
+            $pStatus['name']       = $product['name'];
+            $pStatus['count']      = $oCount;
             $pStatus['totalPrice'] = $product['price'] * $oCount;
 
             if ($product['stock'] - $oCount >= 0) {
@@ -192,14 +192,14 @@ class Order
         try {
             $orderNo = $this->makeOrderNo();
             $order = new OrderModel();
-            $order->user_id = $this->uid;
-            $order->order_no = $orderNo;
-            $order->total_price = $snap['orderPrice'];
-            $order->total_count = $snap['totalCount'];
-            $order->snap_img = $snap['snapImg'];
-            $order->snap_name = $snap['snapName'];
+            $order->user_id      = $this->uid;
+            $order->order_no     = $orderNo;
+            $order->total_price  = $snap['orderPrice'];
+            $order->total_count  = $snap['totalCount'];
+            $order->snap_img     = $snap['snapImg'];
+            $order->snap_name    = $snap['snapName'];
             $order->snap_address = $snap['snapAddress'];
-            $order->snap_items = json_encode($snap['pStatus']);
+            $order->snap_items   = json_encode($snap['pStatus']);
             $order->save();
 
             $orderID = $order->id;
@@ -225,12 +225,12 @@ class Order
     {
         // status可以单独定义一个类
         $snap = [
-            'orderPrice' => 0,
-            'totalCount' => 0,
-            'pStatus' => [],
+            'orderPrice'  => 0,
+            'totalCount'  => 0,
+            'pStatus'     => [],
             'snapAddress' => json_encode($this->getUserAddress()),
-            'snapName' => $this->products[0]['name'],
-            'snapImg' => $this->products[0]['main_img_url'],
+            'snapName'    => $this->products[0]['name'],
+            'snapImg'     => $this->products[0]['main_img_url'],
         ];
 
         if (count($this->products) > 1) {
@@ -254,26 +254,27 @@ class Order
     private function snapProduct($product, $oCount)
     {
         $pStatus = [
-            'id' => null,
-            'name' => null,
-            'main_img_url'=>null,
-            'count' => $oCount,
-            'totalPrice' => 0,
-            'price' => 0
+            'id'           => null,
+            'name'         => null,
+            'main_img_url' => null,
+            'count'        => $oCount,
+            'totalPrice'   => 0,
+            'price'        => 0
         ];
 
-        $pStatus['counts'] = $oCount;
+        $pStatus['counts']       = $oCount;
         // 以服务器价格为准，生成订单
-        $pStatus['totalPrice'] = $oCount * $product['price'];
-        $pStatus['name'] = $product['name'];
-        $pStatus['id'] = $product['id'];
-        $pStatus['main_img_url'] =$product['main_img_url'];
-        $pStatus['price'] = $product['price'];
+        $pStatus['totalPrice']   = $oCount * $product['price'];
+        $pStatus['name']         = $product['name'];
+        $pStatus['id']           = $product['id'];
+        $pStatus['main_img_url'] = $product['main_img_url'];
+        $pStatus['price']        = $product['price'];
         return $pStatus;
     }
-
-    public static function makeOrderNo()
-    {
+    /**
+     * 生成订单号
+     */
+    private static function makeOrderNo(){
         $yCode = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J');
         $orderSn =
             $yCode[intval(date('Y')) - 2017] . strtoupper(dechex(date('m'))) . date(
