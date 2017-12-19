@@ -43,7 +43,7 @@
             <text class='cuxiao' wx:if="{{product.discounts.length>0}}">促销</text></view>
             <view class="attr_list" wx:if="{{product.options.length>0}}">规格：
               <block wx:for="{{product.options}}">
-              <text class="attr_list_li {{currentAttrIndex==index?'on':''}} {{item.stock==0?'disabled':''}}" data-index="{{index}}" data-price="{{item.option_price}}" data-stock="{{item.stock}}" bindtap='onClickAttr'>{{item.option_name}}</text>
+              <text class="attr_list_li {{currentAttrIndex==index?'on':''}} {{item.stock==0?'disabled':''}}" data-index="{{index}}" data-id="{{item.goods_option_id}}" data-price="{{item.option_price}}" data-stock="{{item.stock}}" bindtap='onClickAttr'>{{item.option_name}}</text>
               </block>
             </view>
             <view class="discounts" wx:if="{{product.discounts.length>0}}">促销：

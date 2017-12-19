@@ -41,7 +41,6 @@ Page({
 
     /*更新购物车商品数据*/
     _resetCartData:function(){
-
         var newData = this._calcTotalAccountAndCounts(this.data.cartData); /*重新计算总金额和商品总数*/
         this.setData({
             account: newData.account,
@@ -79,18 +78,19 @@ Page({
     /*调整商品数目*/
     changeCounts:function(event){
         var id=cart.getDataSet(event,'id'),
+            guid=cart.getDataSet(event, 'guid'),
             type=cart.getDataSet(event,'type'),
-            index=this._getProductIndexById(id),
+            index = this._getProductIndexById(id, guid),
             counts=1;
         if(type=='add') {
             this._getProductIndexPrice(index, counts);
             var price = this.data.cartData[index].price;
-            cart.addCounts(id, price);
+            cart.addCounts(id, guid, price);
         }else{
             counts=-1;
             this._getProductIndexPrice(index, counts);
             var price = this.data.cartData[index].price;
-            cart.cutCounts(id, price);
+            cart.cutCounts(id, guid, price);
         }
         
         //更新商品页面
@@ -106,7 +106,7 @@ Page({
         discounts = this.data.cartData[index].discounts,
         optionsArr = this.data.cartData[index].options;
 
-      // if (optionsArr.length < 1) {
+      if (optionsArr.length < 1) {
         discounts.sort(function (a, b) {
           return a.quantity - b.quantity;
         });
@@ -118,15 +118,15 @@ Page({
         }
         tempPrice = float == true ? tempPrice : this.data.cartData[index].price;
         this.data.cartData[index].currentPrice = tempPrice;
-      // }
+      }
     },
 
     /*根据商品id得到 商品所在下标*/
-    _getProductIndexById:function(id){
+    _getProductIndexById: function (id, guid){
         var data=this.data.cartData,
             len=data.length;
         for(let i=0;i<len;i++){
-          if (data[i].goods_id==id){
+          if (data[i].goods_id == id && data[i].optionsid == guid){
                 return i;
             }
         }
@@ -135,20 +135,22 @@ Page({
     /*删除商品*/
     delete:function(event){
         var id=cart.getDataSet(event,'id'),
-        index=this._getProductIndexById(id);
+        guid = cart.getDataSet(event, 'guid'),
+        index = this._getProductIndexById(id, guid);
         this.data.cartData.splice(index,1);//删除某一项商品
 
         this._resetCartData();
         //this.toggleSelectAll();
 
-        cart.delete(id);  //内存中删除该商品
+        cart.delete(id, guid);  //内存中删除该商品
     },
 
     /*选择商品*/
     toggleSelect:function(event){
         var id=cart.getDataSet(event,'id'),
+            guid = cart.getDataSet(event, 'guid'),
             status=cart.getDataSet(event,'status'),
-            index=this._getProductIndexById(id);
+            index = this._getProductIndexById(id,guid);
         this.data.cartData[index].selectStatus=!status;
         this._resetCartData();
     },

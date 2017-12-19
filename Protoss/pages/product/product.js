@@ -14,6 +14,7 @@ Page({
         currentTabsIndex:0,
         cartTotalCounts:0,
         currentAttrIndex:-1,
+        optionid: -1,
     },
     onLoad: function (option) {
       var id = 30;
@@ -47,8 +48,9 @@ Page({
                 stockArray.push(i);
               }
               that.setData({
+                optionid: options.id,
                 price: options.price,
-                currentAttrIndex: options.i,
+                currentAttrIndex: options.index,
                 countsArray: stockArray,
               });
             }
@@ -61,7 +63,8 @@ Page({
       for (let i = 0; i < data.length; i++) {
         if (data[i].stock > 0) {
           return{
-            i:i,
+            index:i,
+            id:data[i].goods_option_id,
             stock: data[i].stock,
             price: data[i].option_price
           };
@@ -77,7 +80,11 @@ Page({
         discounts = this.data.product.discounts,
         optionsArr = this.data.product.options;
 
-        if (optionsArr.length < 1) {
+        if (optionsArr.length > 0) {
+          tempPrice = this.data.price;
+        }
+        else
+        {
           discounts.sort(function (a, b) {
             return a.quantity - b.quantity;
           });
@@ -89,10 +96,6 @@ Page({
           }
           tempPrice = float == true ? tempPrice : this.data.product.price;
         }
-        else
-        {
-          tempPrice = this.data.price;
-        }
         this.setData({
           price: tempPrice,
           productCounts: counts,
@@ -101,6 +104,7 @@ Page({
 
     //切换规格
     onClickAttr: function (event) {
+      var id = product.getDataSet(event, 'id');
       var index = product.getDataSet(event, 'index');
       var price = product.getDataSet(event, 'price');
       var stock = product.getDataSet(event, 'stock');
@@ -111,6 +115,7 @@ Page({
       }
       this.setData({
         countsArray: stockArray,
+        optionid:id,
         price: price,
         currentAttrIndex: index
       });
@@ -142,7 +147,7 @@ Page({
                 tempObj[key]=this.data.product[key];
             }
         }
-        cart.add(tempObj, this.data.productCounts, this.data.price , this.data.currentAttrIndex);
+        cart.add(tempObj, this.data.productCounts, this.data.price, this.data.optionid);
     },
 
     /*加入购物车动效*/

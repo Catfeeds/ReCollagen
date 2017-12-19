@@ -82,17 +82,17 @@ class Cart extends Base{
     * item - {obj} 商品对象,
     * counts - {int} 商品数目,
     * */
-    add(item, counts, price, options){
+    add(item, counts, price, guid){
         var cartData=this.getCartDataFromLocal();
         if(!cartData){
             cartData=[];
         }
-        var isHadInfo = this._isHasThatOne(item.goods_id,cartData);
+        var isHadInfo = this._isHasThatOne(item.goods_id, guid,cartData);
         //新商品
-        if(isHadInfo.index==-1) {
+        if(isHadInfo.index==-2) {
             item.counts = counts;
             item.currentPrice = price;
-            item.optionsIndex = options;
+            item.optionsid = guid;
             item.selectStatus=true;  //默认在购物车中为选中状态
             cartData.push(item);
         }
@@ -100,7 +100,6 @@ class Cart extends Base{
         else{
             cartData[isHadInfo.index].counts += counts;
             cartData[isHadInfo.index].currentPrice = price;
-            cartData[isHadInfo.index].optionsIndex = options;
         }
         this.execSetStorageSync(cartData);  //更新本地缓存
         return cartData;
@@ -112,13 +111,13 @@ class Cart extends Base{
     * id - {int} 商品id
     * counts -{int} 数目
     * */
-    _changeCounts(id, counts, price){
+    _changeCounts(id, guid, counts, price){
         var cartData=this.getCartDataFromLocal(),
-            hasInfo=this._isHasThatOne(id,cartData);
-        if(hasInfo.index!=-1){
+          hasInfo = this._isHasThatOne(id,guid,cartData);
+        if(hasInfo.index!=-2){
             if(hasInfo.data.counts>1){
                 cartData[hasInfo.index].counts+=counts;
-                cartData[isHadInfo.index].currentPrice=price;
+                cartData[hasInfo.index].currentPrice=price;
             }
         }
         this.execSetStorageSync(cartData);  //更新本地缓存
@@ -127,45 +126,47 @@ class Cart extends Base{
     /*
     * 增加商品数目
     * */
-    addCounts(id, price){
-      this._changeCounts(id, 1, price);
+    addCounts(id, guid, price){
+      this._changeCounts(id, guid, 1, price);
     };
 
     /*
     * 购物车减
     * */
-    cutCounts(id, price){
-      this._changeCounts(id, -1, price);
+    cutCounts(id, guid, price){
+      this._changeCounts(id, guid, -1, price);
     };
 
-    /*购物车中是否已经存在该商品*/
-    _isHasThatOne(id,arr){
+    /*购物车中是否已经存在该单商品和规格商品*/
+    _isHasThatOne(id, guid,arr){
         var item,
-            result={index:-1};
-        for(let i=0;i<arr.length;i++){
-            item=arr[i];
-            if (item.goods_id==id) {
-                result = {
-                    index:i,
-                    data:item
-                };
-                break;
-            }
+            result={index:-2};
+        for (let i = 0; i < arr.length; i++) {
+          item = arr[i];
+          if (item.goods_id == id && item.optionsid == guid){
+            result = {
+              index: i,
+              data: item
+            };
+            break;
+          }
         }
         return result;
     }
 
+    
     /*
     * 删除某些商品
     */
-    delete(ids){
+    delete(ids, guid){
         if(!(ids instanceof Array)){
             ids=[ids];
+            guid=[guid];
         }
         var cartData=this.getCartDataFromLocal();
         for(let i=0;i<ids.length;i++) {
-            var hasInfo = this._isHasThatOne(ids[i], cartData);
-            if (hasInfo.index != -1) {
+          var hasInfo = this._isHasThatOne(ids[i], guid[i], cartData);
+            if (hasInfo.index != -2) {
                 cartData.splice(hasInfo.index, 1);  //删除数组某一项
             }
         }

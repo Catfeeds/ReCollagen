@@ -35,7 +35,7 @@ class Home extends Base{
     /*首页部分商品*/
     getProductorData(callback){
         var param={
-          url: 'product/recent/paginate',
+          url: 'product/recent',
             sCallback:function(data){
                 callback && callback(data);
             }

@@ -1,17 +1,13 @@
 {
   "pages":[
-    "pages/home/home",
     "pages/cart/cart",
+    "pages/home/home",
     "pages/product/product",
     
     
     
     "pages/category/category",
-    
-    
     "pages/order/order",
-    
-   
     "pages/my/my",
     "pages/theme/theme",
     "pages/pay-result/pay-result"
