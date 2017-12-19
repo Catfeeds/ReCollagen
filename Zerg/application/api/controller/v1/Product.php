@@ -4,6 +4,8 @@ namespace app\api\controller\v1;
 
 use app\api\model\Product as ProductModel;
 use app\api\model\UserCollect as UserCollectModel;
+use app\api\service\Token as TokenService;
+
 use app\api\validate\Count;
 use app\api\validate\IDMustBePositiveInt;
 use app\api\validate\PagingParameter;
@@ -120,15 +122,20 @@ class Product extends Controller
      * @return Product
      * @throws ProductException
      */
-    public function getOne($id)
-    {
+    public function getOne($id){
+        
         (new IDMustBePositiveInt())->goCheck();
         $product = ProductModel::getProductDetail($id);
 
-        if (!$product)
-        {
+        if (!$product){
             throw new ProductException();
         }
+        //判断用户是否已收藏
+        $currentUid  = TokenService::getCurrentUid();
+        $where       = ['uid'=>$currentUid,'goods_id'=>$id];
+        $haveCollect = $this->haveCollectGoods($where);
+        $product['haveCollect'] = $haveCollect ? 1:0;
+
         return $product;
     }
 
@@ -149,10 +156,33 @@ class Product extends Controller
     /**
      * 收藏或取消收藏商品
      */
-    public function collectGoods($id,$type){
+    public function collectGoods(){
+        
         (new IDMustBePositiveInt())->goCheck();
 
-        UserCollectModel::collectGoods($id,$type);
+        $id = input('post.id/d');
+
+        $UserCollectModel = new UserCollectModel();
+
+        $currentUid = TokenService::getCurrentUid();
+        $where = ['uid'=>$currentUid,'goods_id'=>$id];
+
+        $haveCollect = $this->haveCollectGoods($where);
+        if (!$haveCollect) {
+            $UserCollectModel->save($where);
+        }else{
+            UserCollectModel::destroy($where);
+        }
+
+    }
+    /**
+     * 判断用户是否已收藏该商品
+     */
+    private function haveCollectGoods($where){
+
+        $UserCollectModel = new UserCollectModel();
+
+        return $UserCollectModel->where($where)->find();
 
     }
 

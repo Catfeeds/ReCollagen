@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2017-12-18 10:38:52
+Date: 2017-12-19 15:24:56
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -24,10 +24,11 @@ CREATE TABLE `osc_address` (
   `uid` int(11) NOT NULL DEFAULT '0',
   `name` varchar(30) NOT NULL DEFAULT '',
   `telephone` varchar(20) NOT NULL DEFAULT '',
-  `address` varchar(255) NOT NULL DEFAULT '' COMMENT '地址',
   `province_id` int(11) NOT NULL DEFAULT '0' COMMENT '省',
   `city_id` int(11) NOT NULL DEFAULT '0' COMMENT '市',
   `country_id` int(11) NOT NULL DEFAULT '0' COMMENT '县乡',
+  `address` varchar(255) NOT NULL DEFAULT '' COMMENT '地址',
+  `update_time` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`address_id`),
   KEY `customer_id` (`uid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='用户收货地址';
@@ -35,8 +36,8 @@ CREATE TABLE `osc_address` (
 -- ----------------------------
 -- Records of osc_address
 -- ----------------------------
-INSERT INTO `osc_address` VALUES ('2', '2', '哈哈哈', '18121029523', '明珠广场1号', '12', '193', '2273');
-INSERT INTO `osc_address` VALUES ('3', '3', '嘿嘿嘿', '13355556666', '国家图书馆11号', '1', '36', '49');
+INSERT INTO `osc_address` VALUES ('2', '2', '哈哈哈', '18121029523', '12', '193', '2273', '明珠广场1号', '0');
+INSERT INTO `osc_address` VALUES ('3', '3', '嘿嘿嘿', '13355556666', '1', '36', '49', '国家图书馆11号', '0');
 
 -- ----------------------------
 -- Table structure for `osc_admin`
@@ -58,13 +59,14 @@ CREATE TABLE `osc_admin` (
   `status` tinyint(4) NOT NULL DEFAULT '0' COMMENT '状态',
   `group_id` smallint(5) NOT NULL DEFAULT '0',
   PRIMARY KEY (`admin_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='后台管理员';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='后台管理员';
 
 -- ----------------------------
 -- Records of osc_admin
 -- ----------------------------
-INSERT INTO `osc_admin` VALUES ('1', 'admin', 'MDAwMDAwMDAwMLO6d61/iaja', '', '', 'admin@admin.com', '26', '127.0.0.1', '', '1505270345', '1513412152', '1513503278', '1', '2');
-INSERT INTO `osc_admin` VALUES ('2', 'admin_order', 'MDAwMDAwMDAwMLO6d61/iaja', '', '', null, '13', '127.0.0.1', null, '1512538804', '1513413778', '1513559676', '1', '3');
+INSERT INTO `osc_admin` VALUES ('1', 'admin', 'MDAwMDAwMDAwMLO6d61/iaja', '', '', 'admin@admin.com', '29', '127.0.0.1', '', '1505270345', '1513412152', '1513644857', '1', '2');
+INSERT INTO `osc_admin` VALUES ('2', 'orderAdmin', 'MDAwMDAwMDAwMLO6d61/iaja', '', '', null, '15', '127.0.0.1', null, '1512538804', '1513575692', '1513578428', '1', '3');
+INSERT INTO `osc_admin` VALUES ('3', 'memberAdmin', 'MDAwMDAwMDAwMLO6d61/iaja', '', '', null, '0', null, null, '1513577469', '1513577592', '0', '1', '4');
 
 -- ----------------------------
 -- Table structure for `osc_area`
@@ -3460,19 +3462,20 @@ INSERT INTO `osc_attribute_value` VALUES ('16', '哈哈哈的属性', '2', '哈�
 DROP TABLE IF EXISTS `osc_auth_group`;
 CREATE TABLE `osc_auth_group` (
   `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户组id,自增主键',
-  `type` varchar(20) DEFAULT NULL,
-  `title` char(20) DEFAULT NULL COMMENT '用户组中文名称',
-  `description` varchar(80) DEFAULT NULL COMMENT '描述信息',
+  `type` varchar(20) NOT NULL DEFAULT '',
+  `title` char(20) NOT NULL DEFAULT '' COMMENT '用户组中文名称',
+  `description` varchar(80) NOT NULL DEFAULT '' COMMENT '描述信息',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '用户组状态：为1正常，为0禁用,-1为删除',
   `rules` text COMMENT '用户组拥有的规则id，多个规则 , 隔开',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of osc_auth_group
 -- ----------------------------
-INSERT INTO `osc_auth_group` VALUES ('2', 'admin', '超级管理员', '后台超级管理员', '1', '1,2,19,28,29,57,66,68,69,70,71,72,120,121,122,123,125,126,127,129,136,137,138,139,140,141,142,144,146,147,148,149,153,162,163,164,176,177,178,179,180,181,182,187,188,189,190,191,192,193,194,195,196,200,202,203,204,205,290,321,322,323,325,326,328,329,330,331,332,333,334');
-INSERT INTO `osc_auth_group` VALUES ('3', 'admin', '订单管理员', '管理用户订单', '1', '1,2,19,28,29,57,66,68,69,70,71,72,120,121,122,123,125,126,127,129,136,137,138,139,140,141,142,144,146,147,148,149,153,162,163,164,176,177,178,179,180,181,182,187,188,189,190,191,192,193,194,195,196,200,202,203,204,205,290,321,322,323,325,326,328,329,330,331,332,333,334');
+INSERT INTO `osc_auth_group` VALUES ('2', 'admin', '超级管理员', '后台超级管理员', '1', '1,2,19,28,29,57,66,68,69,70,71,72,120,121,122,123,125,126,127,129,136,137,138,139,140,141,142,144,146,147,148,149,153,162,163,164,176,177,178,179,180,181,182,187,188,189,190,191,192,193,194,195,196,200,202,203,204,205,290,321,322,323,325,326,328,329,330,331,332,333,334,335');
+INSERT INTO `osc_auth_group` VALUES ('3', '', '订单管理员', '管理用户订单', '1', '1,2,19,28,29,57,66,68,69,70,71,72,120,121,122,123,125,126,127,129,136,137,138,139,140,141,142,144,146,147,148,149,153,162,163,164,176,177,178,179,180,181,182,187,188,189,190,191,192,193,194,195,196,200,202,203,204,205,290,321,322,323,325,326,328,329,330,331,332,333,334,335');
+INSERT INTO `osc_auth_group` VALUES ('4', '', '会员管理员', '管理后台用户', '1', '57,129,139,181,182,290,335');
 
 -- ----------------------------
 -- Table structure for `osc_auth_group_access`
@@ -3490,6 +3493,7 @@ CREATE TABLE `osc_auth_group_access` (
 -- Records of osc_auth_group_access
 -- ----------------------------
 INSERT INTO `osc_auth_group_access` VALUES ('2', '3');
+INSERT INTO `osc_auth_group_access` VALUES ('3', '4');
 
 -- ----------------------------
 -- Table structure for `osc_auth_rule`
@@ -3501,153 +3505,162 @@ CREATE TABLE `osc_auth_rule` (
   `menu_id` int(11) NOT NULL DEFAULT '0',
   `name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=397 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=981 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of osc_auth_rule
 -- ----------------------------
-INSERT INTO `osc_auth_rule` VALUES ('115', '2', '1', '');
-INSERT INTO `osc_auth_rule` VALUES ('116', '2', '2', 'admin/menu/index');
-INSERT INTO `osc_auth_rule` VALUES ('117', '2', '19', 'admin/category/index');
-INSERT INTO `osc_auth_rule` VALUES ('118', '2', '28', '');
-INSERT INTO `osc_auth_rule` VALUES ('119', '2', '29', 'admin/goods/index');
-INSERT INTO `osc_auth_rule` VALUES ('120', '2', '57', '');
-INSERT INTO `osc_auth_rule` VALUES ('121', '2', '66', 'admin/goods/add');
-INSERT INTO `osc_auth_rule` VALUES ('122', '2', '68', 'admin/goods/edit');
-INSERT INTO `osc_auth_rule` VALUES ('123', '2', '69', 'admin/goods/del');
-INSERT INTO `osc_auth_rule` VALUES ('124', '2', '70', 'admin/category/add');
-INSERT INTO `osc_auth_rule` VALUES ('125', '2', '71', 'admin/category/edit');
-INSERT INTO `osc_auth_rule` VALUES ('126', '2', '72', 'admin/category/del');
-INSERT INTO `osc_auth_rule` VALUES ('127', '2', '120', 'admin/menu/add');
-INSERT INTO `osc_auth_rule` VALUES ('128', '2', '121', 'admin/menu/edit');
-INSERT INTO `osc_auth_rule` VALUES ('129', '2', '122', 'admin/menu/del');
-INSERT INTO `osc_auth_rule` VALUES ('130', '2', '123', 'admin/menu/get_info');
-INSERT INTO `osc_auth_rule` VALUES ('131', '2', '125', 'admin/auth_manager/index');
-INSERT INTO `osc_auth_rule` VALUES ('132', '2', '126', 'admin/user_action/index');
-INSERT INTO `osc_auth_rule` VALUES ('133', '2', '127', 'admin/user/index');
-INSERT INTO `osc_auth_rule` VALUES ('134', '2', '129', '');
-INSERT INTO `osc_auth_rule` VALUES ('135', '2', '136', 'admin/banner/index');
-INSERT INTO `osc_auth_rule` VALUES ('136', '2', '137', 'member/transport/index');
-INSERT INTO `osc_auth_rule` VALUES ('137', '2', '138', 'member/order_backend/index');
-INSERT INTO `osc_auth_rule` VALUES ('138', '2', '139', 'member/member_backend/index');
-INSERT INTO `osc_auth_rule` VALUES ('139', '2', '140', 'admin/goods/set_status');
-INSERT INTO `osc_auth_rule` VALUES ('140', '2', '141', 'admin/goods/update_price');
-INSERT INTO `osc_auth_rule` VALUES ('141', '2', '142', 'admin/goods/update_stock');
-INSERT INTO `osc_auth_rule` VALUES ('142', '2', '144', 'admin/goods/edit_general');
-INSERT INTO `osc_auth_rule` VALUES ('143', '2', '146', 'admin/goods/edit_option');
-INSERT INTO `osc_auth_rule` VALUES ('144', '2', '147', 'admin/goods/edit_discount');
-INSERT INTO `osc_auth_rule` VALUES ('145', '2', '148', 'admin/goods/edit_image');
-INSERT INTO `osc_auth_rule` VALUES ('146', '2', '149', 'admin/goods/edit_mobile');
-INSERT INTO `osc_auth_rule` VALUES ('147', '2', '153', 'admin/category/update_sort');
-INSERT INTO `osc_auth_rule` VALUES ('148', '2', '162', 'admin/banner/add');
-INSERT INTO `osc_auth_rule` VALUES ('149', '2', '163', 'admin/banner/edit');
-INSERT INTO `osc_auth_rule` VALUES ('150', '2', '164', 'admin/banner/del');
-INSERT INTO `osc_auth_rule` VALUES ('151', '2', '176', 'member/order_backend/show_order');
-INSERT INTO `osc_auth_rule` VALUES ('152', '2', '177', 'member/order_backend/print_order');
-INSERT INTO `osc_auth_rule` VALUES ('153', '2', '178', 'member/order_backend/del');
-INSERT INTO `osc_auth_rule` VALUES ('154', '2', '179', 'member/order_backend/update_order');
-INSERT INTO `osc_auth_rule` VALUES ('155', '2', '180', 'member/order_backend/update_shipping');
-INSERT INTO `osc_auth_rule` VALUES ('156', '2', '181', 'member/member_backend/set_status');
-INSERT INTO `osc_auth_rule` VALUES ('157', '2', '182', 'member/member_backend/edit');
-INSERT INTO `osc_auth_rule` VALUES ('158', '2', '187', 'admin/auth_manager/create_group');
-INSERT INTO `osc_auth_rule` VALUES ('159', '2', '188', 'admin/auth_manager/edit_group');
-INSERT INTO `osc_auth_rule` VALUES ('160', '2', '189', 'admin/auth_manager/del_group');
-INSERT INTO `osc_auth_rule` VALUES ('161', '2', '190', 'admin/auth_manager/access');
-INSERT INTO `osc_auth_rule` VALUES ('162', '2', '191', 'admin/auth_manager/write_group');
-INSERT INTO `osc_auth_rule` VALUES ('163', '2', '192', 'admin/auth_manager/set_status');
-INSERT INTO `osc_auth_rule` VALUES ('164', '2', '193', 'admin/user/add');
-INSERT INTO `osc_auth_rule` VALUES ('165', '2', '194', 'admin/user/edit');
-INSERT INTO `osc_auth_rule` VALUES ('166', '2', '195', 'admin/user/del');
-INSERT INTO `osc_auth_rule` VALUES ('167', '2', '196', 'admin/user/set_status');
-INSERT INTO `osc_auth_rule` VALUES ('168', '2', '200', 'admin/transport/add');
-INSERT INTO `osc_auth_rule` VALUES ('169', '2', '202', 'admin/transport/edit');
-INSERT INTO `osc_auth_rule` VALUES ('170', '2', '203', 'admin/transport/save');
-INSERT INTO `osc_auth_rule` VALUES ('171', '2', '204', 'admin/transport/del');
-INSERT INTO `osc_auth_rule` VALUES ('172', '2', '205', 'admin/transport/getCity');
-INSERT INTO `osc_auth_rule` VALUES ('173', '2', '290', 'admin/index/logout');
-INSERT INTO `osc_auth_rule` VALUES ('174', '2', '321', '');
-INSERT INTO `osc_auth_rule` VALUES ('175', '2', '322', '');
-INSERT INTO `osc_auth_rule` VALUES ('176', '2', '323', '');
-INSERT INTO `osc_auth_rule` VALUES ('177', '2', '325', 'member/dispatch/index');
-INSERT INTO `osc_auth_rule` VALUES ('178', '2', '326', 'admin/dispatch/add');
-INSERT INTO `osc_auth_rule` VALUES ('179', '2', '328', 'admin/dispatch/edit');
-INSERT INTO `osc_auth_rule` VALUES ('180', '2', '329', 'admin/dispatch/save');
-INSERT INTO `osc_auth_rule` VALUES ('181', '2', '330', 'admin/dispatch/del');
-INSERT INTO `osc_auth_rule` VALUES ('182', '2', '331', 'admin/dispatch/getCity');
-INSERT INTO `osc_auth_rule` VALUES ('183', '2', '332', 'member/order_backend/toExport');
-INSERT INTO `osc_auth_rule` VALUES ('184', '2', '333', 'admin/banner/update_sort');
-INSERT INTO `osc_auth_rule` VALUES ('185', '2', '334', 'admin/goods/edit_param');
-INSERT INTO `osc_auth_rule` VALUES ('326', '3', '1', 'admin/settings/general');
-INSERT INTO `osc_auth_rule` VALUES ('327', '3', '2', 'admin/menu/index');
-INSERT INTO `osc_auth_rule` VALUES ('328', '3', '19', 'admin/category/index');
-INSERT INTO `osc_auth_rule` VALUES ('329', '3', '28', 'admin/goods/index');
-INSERT INTO `osc_auth_rule` VALUES ('330', '3', '29', 'admin/goods/index');
-INSERT INTO `osc_auth_rule` VALUES ('331', '3', '57', 'admin/index/index');
-INSERT INTO `osc_auth_rule` VALUES ('332', '3', '66', 'admin/goods/add');
-INSERT INTO `osc_auth_rule` VALUES ('333', '3', '68', 'admin/goods/edit');
-INSERT INTO `osc_auth_rule` VALUES ('334', '3', '69', 'admin/goods/del');
-INSERT INTO `osc_auth_rule` VALUES ('335', '3', '70', 'admin/category/add');
-INSERT INTO `osc_auth_rule` VALUES ('336', '3', '71', 'admin/category/edit');
-INSERT INTO `osc_auth_rule` VALUES ('337', '3', '72', 'admin/category/del');
-INSERT INTO `osc_auth_rule` VALUES ('338', '3', '120', 'admin/menu/add');
-INSERT INTO `osc_auth_rule` VALUES ('339', '3', '121', 'admin/menu/edit');
-INSERT INTO `osc_auth_rule` VALUES ('340', '3', '122', 'admin/menu/del');
-INSERT INTO `osc_auth_rule` VALUES ('341', '3', '123', 'admin/menu/get_info');
-INSERT INTO `osc_auth_rule` VALUES ('342', '3', '125', 'admin/auth_manager/index');
-INSERT INTO `osc_auth_rule` VALUES ('343', '3', '126', 'admin/user_action/index');
-INSERT INTO `osc_auth_rule` VALUES ('344', '3', '127', 'admin/user/index');
-INSERT INTO `osc_auth_rule` VALUES ('345', '3', '129', 'member/member_backend/index');
-INSERT INTO `osc_auth_rule` VALUES ('346', '3', '136', 'admin/banner/index');
-INSERT INTO `osc_auth_rule` VALUES ('347', '3', '137', 'member/transport/index');
-INSERT INTO `osc_auth_rule` VALUES ('348', '3', '138', 'member/order_backend/index');
-INSERT INTO `osc_auth_rule` VALUES ('349', '3', '139', 'member/member_backend/index');
-INSERT INTO `osc_auth_rule` VALUES ('350', '3', '140', 'admin/goods/set_status');
-INSERT INTO `osc_auth_rule` VALUES ('351', '3', '141', 'admin/goods/update_price');
-INSERT INTO `osc_auth_rule` VALUES ('352', '3', '142', 'admin/goods/update_stock');
-INSERT INTO `osc_auth_rule` VALUES ('353', '3', '144', 'admin/goods/edit_general');
-INSERT INTO `osc_auth_rule` VALUES ('354', '3', '146', 'admin/goods/edit_option');
-INSERT INTO `osc_auth_rule` VALUES ('355', '3', '147', 'admin/goods/edit_discount');
-INSERT INTO `osc_auth_rule` VALUES ('356', '3', '148', 'admin/goods/edit_image');
-INSERT INTO `osc_auth_rule` VALUES ('357', '3', '149', 'admin/goods/edit_mobile');
-INSERT INTO `osc_auth_rule` VALUES ('358', '3', '153', 'admin/category/update_sort');
-INSERT INTO `osc_auth_rule` VALUES ('359', '3', '162', 'admin/banner/add');
-INSERT INTO `osc_auth_rule` VALUES ('360', '3', '163', 'admin/banner/edit');
-INSERT INTO `osc_auth_rule` VALUES ('361', '3', '164', 'admin/banner/del');
-INSERT INTO `osc_auth_rule` VALUES ('362', '3', '176', 'member/order_backend/show_order');
-INSERT INTO `osc_auth_rule` VALUES ('363', '3', '177', 'member/order_backend/print_order');
-INSERT INTO `osc_auth_rule` VALUES ('364', '3', '178', 'member/order_backend/del');
-INSERT INTO `osc_auth_rule` VALUES ('365', '3', '179', 'member/order_backend/update_order');
-INSERT INTO `osc_auth_rule` VALUES ('366', '3', '180', 'member/order_backend/update_shipping');
-INSERT INTO `osc_auth_rule` VALUES ('367', '3', '181', 'member/member_backend/set_status');
-INSERT INTO `osc_auth_rule` VALUES ('368', '3', '182', 'member/member_backend/edit');
-INSERT INTO `osc_auth_rule` VALUES ('369', '3', '187', 'admin/auth_manager/create_group');
-INSERT INTO `osc_auth_rule` VALUES ('370', '3', '188', 'admin/auth_manager/edit_group');
-INSERT INTO `osc_auth_rule` VALUES ('371', '3', '189', 'admin/auth_manager/del_group');
-INSERT INTO `osc_auth_rule` VALUES ('372', '3', '190', 'admin/auth_manager/access');
-INSERT INTO `osc_auth_rule` VALUES ('373', '3', '191', 'admin/auth_manager/write_group');
-INSERT INTO `osc_auth_rule` VALUES ('374', '3', '192', 'admin/auth_manager/set_status');
-INSERT INTO `osc_auth_rule` VALUES ('375', '3', '193', 'admin/user/add');
-INSERT INTO `osc_auth_rule` VALUES ('376', '3', '194', 'admin/user/edit');
-INSERT INTO `osc_auth_rule` VALUES ('377', '3', '195', 'admin/user/del');
-INSERT INTO `osc_auth_rule` VALUES ('378', '3', '196', 'admin/user/set_status');
-INSERT INTO `osc_auth_rule` VALUES ('379', '3', '200', 'admin/transport/add');
-INSERT INTO `osc_auth_rule` VALUES ('380', '3', '202', 'admin/transport/edit');
-INSERT INTO `osc_auth_rule` VALUES ('381', '3', '203', 'admin/transport/save');
-INSERT INTO `osc_auth_rule` VALUES ('382', '3', '204', 'admin/transport/del');
-INSERT INTO `osc_auth_rule` VALUES ('383', '3', '205', 'admin/transport/getCity');
-INSERT INTO `osc_auth_rule` VALUES ('384', '3', '290', 'admin/index/logout');
-INSERT INTO `osc_auth_rule` VALUES ('385', '3', '321', 'member/order_backend/index');
-INSERT INTO `osc_auth_rule` VALUES ('386', '3', '322', 'member/transport/index');
-INSERT INTO `osc_auth_rule` VALUES ('387', '3', '323', 'member/dispatch/index');
-INSERT INTO `osc_auth_rule` VALUES ('388', '3', '325', 'member/dispatch/index');
-INSERT INTO `osc_auth_rule` VALUES ('389', '3', '326', 'admin/dispatch/add');
-INSERT INTO `osc_auth_rule` VALUES ('390', '3', '328', 'admin/dispatch/edit');
-INSERT INTO `osc_auth_rule` VALUES ('391', '3', '329', 'admin/dispatch/save');
-INSERT INTO `osc_auth_rule` VALUES ('392', '3', '330', 'admin/dispatch/del');
-INSERT INTO `osc_auth_rule` VALUES ('393', '3', '331', 'admin/dispatch/getCity');
-INSERT INTO `osc_auth_rule` VALUES ('394', '3', '332', 'member/order_backend/toExport');
-INSERT INTO `osc_auth_rule` VALUES ('395', '3', '333', 'admin/banner/update_sort');
-INSERT INTO `osc_auth_rule` VALUES ('396', '3', '334', 'admin/goods/edit_param');
+INSERT INTO `osc_auth_rule` VALUES ('751', '3', '1', 'admin/settings/general');
+INSERT INTO `osc_auth_rule` VALUES ('752', '3', '2', 'admin/menu/index');
+INSERT INTO `osc_auth_rule` VALUES ('753', '3', '19', 'admin/category/index');
+INSERT INTO `osc_auth_rule` VALUES ('754', '3', '28', 'admin/goods/index');
+INSERT INTO `osc_auth_rule` VALUES ('755', '3', '29', 'admin/goods/index');
+INSERT INTO `osc_auth_rule` VALUES ('756', '3', '57', 'admin/index/index');
+INSERT INTO `osc_auth_rule` VALUES ('757', '3', '66', 'admin/goods/add');
+INSERT INTO `osc_auth_rule` VALUES ('758', '3', '68', 'admin/goods/edit');
+INSERT INTO `osc_auth_rule` VALUES ('759', '3', '69', 'admin/goods/del');
+INSERT INTO `osc_auth_rule` VALUES ('760', '3', '70', 'admin/category/add');
+INSERT INTO `osc_auth_rule` VALUES ('761', '3', '71', 'admin/category/edit');
+INSERT INTO `osc_auth_rule` VALUES ('762', '3', '72', 'admin/category/del');
+INSERT INTO `osc_auth_rule` VALUES ('763', '3', '120', 'admin/menu/add');
+INSERT INTO `osc_auth_rule` VALUES ('764', '3', '121', 'admin/menu/edit');
+INSERT INTO `osc_auth_rule` VALUES ('765', '3', '122', 'admin/menu/del');
+INSERT INTO `osc_auth_rule` VALUES ('766', '3', '123', 'admin/menu/get_info');
+INSERT INTO `osc_auth_rule` VALUES ('767', '3', '125', 'admin/auth_manager/index');
+INSERT INTO `osc_auth_rule` VALUES ('768', '3', '126', 'admin/user_action/index');
+INSERT INTO `osc_auth_rule` VALUES ('769', '3', '127', 'admin/user/index');
+INSERT INTO `osc_auth_rule` VALUES ('770', '3', '129', 'member/member_backend/index');
+INSERT INTO `osc_auth_rule` VALUES ('771', '3', '136', 'admin/banner/index');
+INSERT INTO `osc_auth_rule` VALUES ('772', '3', '137', 'member/transport/index');
+INSERT INTO `osc_auth_rule` VALUES ('773', '3', '138', 'member/order_backend/index');
+INSERT INTO `osc_auth_rule` VALUES ('774', '3', '139', 'member/member_backend/index');
+INSERT INTO `osc_auth_rule` VALUES ('775', '3', '140', 'admin/goods/set_status');
+INSERT INTO `osc_auth_rule` VALUES ('776', '3', '141', 'admin/goods/update_price');
+INSERT INTO `osc_auth_rule` VALUES ('777', '3', '142', 'admin/goods/update_stock');
+INSERT INTO `osc_auth_rule` VALUES ('778', '3', '144', 'admin/goods/edit_general');
+INSERT INTO `osc_auth_rule` VALUES ('779', '3', '146', 'admin/goods/edit_option');
+INSERT INTO `osc_auth_rule` VALUES ('780', '3', '147', 'admin/goods/edit_discount');
+INSERT INTO `osc_auth_rule` VALUES ('781', '3', '148', 'admin/goods/edit_image');
+INSERT INTO `osc_auth_rule` VALUES ('782', '3', '149', 'admin/goods/edit_mobile');
+INSERT INTO `osc_auth_rule` VALUES ('783', '3', '153', 'admin/category/update_sort');
+INSERT INTO `osc_auth_rule` VALUES ('784', '3', '162', 'admin/banner/add');
+INSERT INTO `osc_auth_rule` VALUES ('785', '3', '163', 'admin/banner/edit');
+INSERT INTO `osc_auth_rule` VALUES ('786', '3', '164', 'admin/banner/del');
+INSERT INTO `osc_auth_rule` VALUES ('787', '3', '176', 'member/order_backend/show_order');
+INSERT INTO `osc_auth_rule` VALUES ('788', '3', '177', 'member/order_backend/print_order');
+INSERT INTO `osc_auth_rule` VALUES ('789', '3', '178', 'member/order_backend/del');
+INSERT INTO `osc_auth_rule` VALUES ('790', '3', '179', 'member/order_backend/update_order');
+INSERT INTO `osc_auth_rule` VALUES ('791', '3', '180', 'member/order_backend/update_shipping');
+INSERT INTO `osc_auth_rule` VALUES ('792', '3', '181', 'member/member_backend/set_status');
+INSERT INTO `osc_auth_rule` VALUES ('793', '3', '182', 'member/member_backend/edit');
+INSERT INTO `osc_auth_rule` VALUES ('794', '3', '187', 'admin/auth_manager/create_group');
+INSERT INTO `osc_auth_rule` VALUES ('795', '3', '188', 'admin/auth_manager/edit_group');
+INSERT INTO `osc_auth_rule` VALUES ('796', '3', '189', 'admin/auth_manager/del_group');
+INSERT INTO `osc_auth_rule` VALUES ('797', '3', '190', 'admin/auth_manager/access');
+INSERT INTO `osc_auth_rule` VALUES ('798', '3', '191', 'admin/auth_manager/write_group');
+INSERT INTO `osc_auth_rule` VALUES ('799', '3', '192', 'admin/auth_manager/set_status');
+INSERT INTO `osc_auth_rule` VALUES ('800', '3', '193', 'admin/user/add');
+INSERT INTO `osc_auth_rule` VALUES ('801', '3', '194', 'admin/user/edit');
+INSERT INTO `osc_auth_rule` VALUES ('802', '3', '195', 'admin/user/del');
+INSERT INTO `osc_auth_rule` VALUES ('803', '3', '196', 'admin/user/set_status');
+INSERT INTO `osc_auth_rule` VALUES ('804', '3', '200', 'member/transport/add');
+INSERT INTO `osc_auth_rule` VALUES ('805', '3', '202', 'member/transport/edit');
+INSERT INTO `osc_auth_rule` VALUES ('806', '3', '203', 'member/transport/save');
+INSERT INTO `osc_auth_rule` VALUES ('807', '3', '204', 'member/transport/del');
+INSERT INTO `osc_auth_rule` VALUES ('808', '3', '205', 'member/transport/getCity');
+INSERT INTO `osc_auth_rule` VALUES ('809', '3', '290', 'admin/index/logout');
+INSERT INTO `osc_auth_rule` VALUES ('810', '3', '321', 'member/order_backend/index');
+INSERT INTO `osc_auth_rule` VALUES ('811', '3', '322', 'member/transport/index');
+INSERT INTO `osc_auth_rule` VALUES ('812', '3', '323', 'member/dispatch/index');
+INSERT INTO `osc_auth_rule` VALUES ('813', '3', '325', 'member/dispatch/index');
+INSERT INTO `osc_auth_rule` VALUES ('814', '3', '326', 'member/dispatch/add');
+INSERT INTO `osc_auth_rule` VALUES ('815', '3', '328', 'member/dispatch/edit');
+INSERT INTO `osc_auth_rule` VALUES ('816', '3', '329', 'member/dispatch/save');
+INSERT INTO `osc_auth_rule` VALUES ('817', '3', '330', 'member/dispatch/del');
+INSERT INTO `osc_auth_rule` VALUES ('818', '3', '331', 'member/dispatch/getCity');
+INSERT INTO `osc_auth_rule` VALUES ('819', '3', '332', 'member/order_backend/toExport');
+INSERT INTO `osc_auth_rule` VALUES ('820', '3', '333', 'admin/banner/update_sort');
+INSERT INTO `osc_auth_rule` VALUES ('821', '3', '334', 'admin/goods/edit_param');
+INSERT INTO `osc_auth_rule` VALUES ('822', '3', '335', 'member/member_backend/updateAccount');
+INSERT INTO `osc_auth_rule` VALUES ('902', '4', '57', 'admin/index/index');
+INSERT INTO `osc_auth_rule` VALUES ('903', '4', '129', 'member/member_backend/index');
+INSERT INTO `osc_auth_rule` VALUES ('904', '4', '139', 'member/member_backend/index');
+INSERT INTO `osc_auth_rule` VALUES ('905', '4', '181', 'member/member_backend/set_status');
+INSERT INTO `osc_auth_rule` VALUES ('906', '4', '182', 'member/member_backend/edit');
+INSERT INTO `osc_auth_rule` VALUES ('907', '4', '290', 'admin/index/logout');
+INSERT INTO `osc_auth_rule` VALUES ('908', '4', '335', 'member/member_backend/updateAccount');
+INSERT INTO `osc_auth_rule` VALUES ('909', '2', '1', 'admin/settings/general');
+INSERT INTO `osc_auth_rule` VALUES ('910', '2', '2', 'admin/menu/index');
+INSERT INTO `osc_auth_rule` VALUES ('911', '2', '19', 'admin/category/index');
+INSERT INTO `osc_auth_rule` VALUES ('912', '2', '28', 'admin/goods/index');
+INSERT INTO `osc_auth_rule` VALUES ('913', '2', '29', 'admin/goods/index');
+INSERT INTO `osc_auth_rule` VALUES ('914', '2', '57', 'admin/index/index');
+INSERT INTO `osc_auth_rule` VALUES ('915', '2', '66', 'admin/goods/add');
+INSERT INTO `osc_auth_rule` VALUES ('916', '2', '68', 'admin/goods/edit');
+INSERT INTO `osc_auth_rule` VALUES ('917', '2', '69', 'admin/goods/del');
+INSERT INTO `osc_auth_rule` VALUES ('918', '2', '70', 'admin/category/add');
+INSERT INTO `osc_auth_rule` VALUES ('919', '2', '71', 'admin/category/edit');
+INSERT INTO `osc_auth_rule` VALUES ('920', '2', '72', 'admin/category/del');
+INSERT INTO `osc_auth_rule` VALUES ('921', '2', '120', 'admin/menu/add');
+INSERT INTO `osc_auth_rule` VALUES ('922', '2', '121', 'admin/menu/edit');
+INSERT INTO `osc_auth_rule` VALUES ('923', '2', '122', 'admin/menu/del');
+INSERT INTO `osc_auth_rule` VALUES ('924', '2', '123', 'admin/menu/get_info');
+INSERT INTO `osc_auth_rule` VALUES ('925', '2', '125', 'admin/auth_manager/index');
+INSERT INTO `osc_auth_rule` VALUES ('926', '2', '126', 'admin/user_action/index');
+INSERT INTO `osc_auth_rule` VALUES ('927', '2', '127', 'admin/user/index');
+INSERT INTO `osc_auth_rule` VALUES ('928', '2', '129', 'member/member_backend/index');
+INSERT INTO `osc_auth_rule` VALUES ('929', '2', '136', 'admin/banner/index');
+INSERT INTO `osc_auth_rule` VALUES ('930', '2', '137', 'member/transport/index');
+INSERT INTO `osc_auth_rule` VALUES ('931', '2', '138', 'member/order_backend/index');
+INSERT INTO `osc_auth_rule` VALUES ('932', '2', '139', 'member/member_backend/index');
+INSERT INTO `osc_auth_rule` VALUES ('933', '2', '140', 'admin/goods/set_status');
+INSERT INTO `osc_auth_rule` VALUES ('934', '2', '141', 'admin/goods/update_price');
+INSERT INTO `osc_auth_rule` VALUES ('935', '2', '142', 'admin/goods/update_stock');
+INSERT INTO `osc_auth_rule` VALUES ('936', '2', '144', 'admin/goods/edit_general');
+INSERT INTO `osc_auth_rule` VALUES ('937', '2', '146', 'admin/goods/edit_option');
+INSERT INTO `osc_auth_rule` VALUES ('938', '2', '147', 'admin/goods/edit_discount');
+INSERT INTO `osc_auth_rule` VALUES ('939', '2', '148', 'admin/goods/edit_image');
+INSERT INTO `osc_auth_rule` VALUES ('940', '2', '149', 'admin/goods/edit_mobile');
+INSERT INTO `osc_auth_rule` VALUES ('941', '2', '153', 'admin/category/update_sort');
+INSERT INTO `osc_auth_rule` VALUES ('942', '2', '162', 'admin/banner/add');
+INSERT INTO `osc_auth_rule` VALUES ('943', '2', '163', 'admin/banner/edit');
+INSERT INTO `osc_auth_rule` VALUES ('944', '2', '164', 'admin/banner/del');
+INSERT INTO `osc_auth_rule` VALUES ('945', '2', '176', 'member/order_backend/show_order');
+INSERT INTO `osc_auth_rule` VALUES ('946', '2', '177', 'member/order_backend/print_order');
+INSERT INTO `osc_auth_rule` VALUES ('947', '2', '178', 'member/order_backend/del');
+INSERT INTO `osc_auth_rule` VALUES ('948', '2', '179', 'member/order_backend/update_order');
+INSERT INTO `osc_auth_rule` VALUES ('949', '2', '180', 'member/order_backend/update_shipping');
+INSERT INTO `osc_auth_rule` VALUES ('950', '2', '181', 'member/member_backend/set_status');
+INSERT INTO `osc_auth_rule` VALUES ('951', '2', '182', 'member/member_backend/edit');
+INSERT INTO `osc_auth_rule` VALUES ('952', '2', '187', 'admin/auth_manager/create_group');
+INSERT INTO `osc_auth_rule` VALUES ('953', '2', '188', 'admin/auth_manager/edit_group');
+INSERT INTO `osc_auth_rule` VALUES ('954', '2', '189', 'admin/auth_manager/del_group');
+INSERT INTO `osc_auth_rule` VALUES ('955', '2', '190', 'admin/auth_manager/access');
+INSERT INTO `osc_auth_rule` VALUES ('956', '2', '191', 'admin/auth_manager/write_group');
+INSERT INTO `osc_auth_rule` VALUES ('957', '2', '192', 'admin/auth_manager/set_status');
+INSERT INTO `osc_auth_rule` VALUES ('958', '2', '193', 'admin/user/add');
+INSERT INTO `osc_auth_rule` VALUES ('959', '2', '194', 'admin/user/edit');
+INSERT INTO `osc_auth_rule` VALUES ('960', '2', '195', 'admin/user/del');
+INSERT INTO `osc_auth_rule` VALUES ('961', '2', '196', 'admin/user/set_status');
+INSERT INTO `osc_auth_rule` VALUES ('962', '2', '200', 'member/transport/add');
+INSERT INTO `osc_auth_rule` VALUES ('963', '2', '202', 'member/transport/edit');
+INSERT INTO `osc_auth_rule` VALUES ('964', '2', '203', 'member/transport/save');
+INSERT INTO `osc_auth_rule` VALUES ('965', '2', '204', 'member/transport/del');
+INSERT INTO `osc_auth_rule` VALUES ('966', '2', '205', 'member/transport/getCity');
+INSERT INTO `osc_auth_rule` VALUES ('967', '2', '290', 'admin/index/logout');
+INSERT INTO `osc_auth_rule` VALUES ('968', '2', '321', 'member/order_backend/index');
+INSERT INTO `osc_auth_rule` VALUES ('969', '2', '322', 'member/transport/index');
+INSERT INTO `osc_auth_rule` VALUES ('970', '2', '323', 'member/dispatch/index');
+INSERT INTO `osc_auth_rule` VALUES ('971', '2', '325', 'member/dispatch/index');
+INSERT INTO `osc_auth_rule` VALUES ('972', '2', '326', 'member/dispatch/add');
+INSERT INTO `osc_auth_rule` VALUES ('973', '2', '328', 'member/dispatch/edit');
+INSERT INTO `osc_auth_rule` VALUES ('974', '2', '329', 'member/dispatch/save');
+INSERT INTO `osc_auth_rule` VALUES ('975', '2', '330', 'member/dispatch/del');
+INSERT INTO `osc_auth_rule` VALUES ('976', '2', '331', 'member/dispatch/getCity');
+INSERT INTO `osc_auth_rule` VALUES ('977', '2', '332', 'member/order_backend/toExport');
+INSERT INTO `osc_auth_rule` VALUES ('978', '2', '333', 'admin/banner/update_sort');
+INSERT INTO `osc_auth_rule` VALUES ('979', '2', '334', 'admin/goods/edit_param');
+INSERT INTO `osc_auth_rule` VALUES ('980', '2', '335', 'member/member_backend/updateAccount');
 
 -- ----------------------------
 -- Table structure for `osc_banner`
@@ -3659,7 +3672,7 @@ CREATE TABLE `osc_banner` (
   `goods_id` int(11) NOT NULL DEFAULT '0' COMMENT '链接到的商品id',
   `sort` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`banner_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='首页轮播图';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='首页轮播图';
 
 -- ----------------------------
 -- Records of osc_banner
@@ -3667,6 +3680,7 @@ CREATE TABLE `osc_banner` (
 INSERT INTO `osc_banner` VALUES ('2', 'images/osc1/2/d04.jpg', '7', '1');
 INSERT INTO `osc_banner` VALUES ('3', 'images/osc1/category/banner-3a.png', '11', '2');
 INSERT INTO `osc_banner` VALUES ('4', 'images/osc1/category/category-dryfruit.png', '12', '5');
+INSERT INTO `osc_banner` VALUES ('6', 'images/osc2/banner-1a.png', '19', '0');
 
 -- ----------------------------
 -- Table structure for `osc_brand`
@@ -3724,7 +3738,7 @@ CREATE TABLE `osc_category` (
 -- ----------------------------
 INSERT INTO `osc_category` VALUES ('1', '0', '五谷杂粮', 'images/osc1/category/category-rice.png', '2', '1513157092');
 INSERT INTO `osc_category` VALUES ('2', '0', '正宗好茶', 'images/osc1/category/category-tea.png', '5', '1513157076');
-INSERT INTO `osc_category` VALUES ('3', '0', '美味零食', 'images/osc1/category/category-dryfruit.png', '1', '1513157118');
+INSERT INTO `osc_category` VALUES ('3', '0', '美味零食', 'images/osc1/category/category-dryfruit.png', '1', '1513568720');
 INSERT INTO `osc_category` VALUES ('5', '0', '时令蔬果', 'images/osc1/category/category-vg.png', '6', '1513157636');
 INSERT INTO `osc_category` VALUES ('13', '0', '精美茶具', 'images/osc1/category/category-fry-a.png', '3', '1513219382');
 INSERT INTO `osc_category` VALUES ('29', '0', '传统糕点', 'images/osc1/category/category-cake.png', '4', '1513157182');
@@ -3811,7 +3825,7 @@ CREATE TABLE `osc_dispatch` (
 -- Records of osc_dispatch
 -- ----------------------------
 INSERT INTO `osc_dispatch` VALUES ('1', '西安仓', ',30,31,29,28,27,24,26,25,23,22,', '宁夏,新疆,青海,甘肃,陕西,贵州,西藏,云南,四川,重庆', '3', '1513059612');
-INSERT INTO `osc_dispatch` VALUES ('3', '北京仓', ',11,14,12,10,9,15,5,4,1,3,2,17,16,18,7,8,6,', '浙江,江西,安徽,江苏,上海,山东,内蒙古,山西,北京,河北,天津,湖北,河南,湖南,吉林,黑龙江,辽宁', '1', '1513059590');
+INSERT INTO `osc_dispatch` VALUES ('3', '北京仓', ',11,14,12,10,9,15,5,4,1,3,2,17,16,18,7,8,6,', '浙江,江西,安徽,江苏,上海,山东,内蒙古,山西,北京,河北,天津,湖北,河南,湖南,吉林,黑龙江,辽宁', '1', '1513575087');
 INSERT INTO `osc_dispatch` VALUES ('6', '广州仓', ',20,21,19,13,34,33,32,', '广西,海南,广东,福建,澳门,香港,台湾', '1', '1513059602');
 
 -- ----------------------------
@@ -3823,7 +3837,7 @@ CREATE TABLE `osc_goods` (
   `isMainGoods` tinyint(4) NOT NULL DEFAULT '1' COMMENT '是否主商品',
   `cat_id` int(11) NOT NULL DEFAULT '0' COMMENT '商品分类id',
   `image` varchar(100) NOT NULL DEFAULT '' COMMENT '商品缩略图',
-  `name` varchar(64) NOT NULL DEFAULT '',
+  `name` varchar(100) NOT NULL DEFAULT '',
   `price` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '商品价格',
   `stock` int(11) NOT NULL DEFAULT '0' COMMENT '库存',
   `sale_count` int(11) NOT NULL DEFAULT '0' COMMENT '销量',
@@ -3836,7 +3850,7 @@ CREATE TABLE `osc_goods` (
   `sort_order` int(11) NOT NULL DEFAULT '1',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1上架0下架',
   PRIMARY KEY (`goods_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8 COMMENT='商品信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 COMMENT='商品信息表';
 
 -- ----------------------------
 -- Records of osc_goods
@@ -3844,8 +3858,8 @@ CREATE TABLE `osc_goods` (
 INSERT INTO `osc_goods` VALUES ('2', '1', '13', 'images/osc1/2/2.jpg', '品茗陶瓷茶盏瓷杯6个', '79.00', '0', '0', '500.00', '20.00', '20.00', '10.00', '2016-08-17 23:10:22', '2017-12-14 10:39:59', '2', '1');
 INSERT INTO `osc_goods` VALUES ('3', '1', '1', 'images/osc1/3/2.jpg', '公道杯茶海分茶器陶瓷', '39.00', '54678', '0', '200.00', '20.00', '20.00', '20.00', '2016-08-19 20:22:43', '0000-00-00 00:00:00', '3', '1');
 INSERT INTO `osc_goods` VALUES ('4', '1', '2', 'images/osc1/4/1.jpg', '青花功夫茶具陶瓷配件', '30.00', '787', '0', '200.00', '20.00', '20.00', '20.00', '2016-08-19 20:37:55', '2017-12-14 10:38:54', '4', '1');
-INSERT INTO `osc_goods` VALUES ('5', '1', '13', 'images/osc1/5/1.jpg', '旅行套装便携功夫茶具', '0.20', '5654', '0', '200.00', '20.00', '20.00', '20.00', '2016-08-19 20:57:05', '2017-12-14 10:39:33', '5', '1');
-INSERT INTO `osc_goods` VALUES ('6', '1', '5', 'images/osc1/6/1.jpg', '定窑白荷花大号茶个', '39.00', '0', '0', '100.00', '20.00', '20.00', '20.00', '2016-08-19 21:12:02', '0000-00-00 00:00:00', '6', '0');
+INSERT INTO `osc_goods` VALUES ('5', '1', '13', 'images/osc1/5/1.jpg', '旅行套装便携功夫茶具', '19.90', '5654', '0', '200.00', '20.00', '20.00', '20.00', '2016-08-19 20:57:05', '2017-12-19 15:21:43', '5', '1');
+INSERT INTO `osc_goods` VALUES ('6', '1', '5', 'images/osc1/6/1.jpg', '定窑白荷花大号茶个', '39.00', '0', '0', '100.00', '20.00', '20.00', '20.00', '2016-08-19 21:12:02', '2017-12-19 15:20:15', '6', '1');
 INSERT INTO `osc_goods` VALUES ('7', '1', '3', 'images/osc1/7/1.jpg', '功夫茶具手拉坯柴烧', '30.00', '785', '0', '200.00', '20.00', '20.00', '20.00', '2016-08-19 21:29:39', '0000-00-00 00:00:00', '7', '1');
 INSERT INTO `osc_goods` VALUES ('8', '1', '1', 'images/osc1/8/1.jpg', '青瓷手绘荷花陶瓷茶叶罐', '58.00', '323', '0', '200.00', '20.00', '20.00', '20.00', '2016-08-19 21:42:42', '0000-00-00 00:00:00', '8', '1');
 INSERT INTO `osc_goods` VALUES ('9', '1', '13', 'images/osc1/9/1.jpg', '定窑白瓷手绘胭红整套', '198.00', '746', '0', '2.00', '20.00', '20.00', '20.00', '2016-08-19 22:00:25', '2017-12-14 10:42:43', '9', '1');
@@ -3865,7 +3879,8 @@ INSERT INTO `osc_goods` VALUES ('22', '0', '2', 'images/osc1/product/product-tea
 INSERT INTO `osc_goods` VALUES ('25', '0', '29', 'images/osc1/fruit/product-cake-a@3.png', '比利时华夫饼', '30.00', '988', '0', '100.00', '10.00', '10.00', '10.00', '2017-12-15 10:00:04', '', '1', '1');
 INSERT INTO `osc_goods` VALUES ('30', '1', '3', 'images/osc1/fruit/product-cake@1.png', '李大爷的妙脆角', '9.90', '998', '0', '100.00', '10.00', '10.00', '10.00', '2017-12-15 10:13:43', '2017-12-16 08:58:24', '1', '1');
 INSERT INTO `osc_goods` VALUES ('32', '1', '3', 'images/osc1/fruit/product-cake-a@3.png', '好吃的饼干', '30.00', '992', '0', '100.00', '10.00', '10.00', '10.00', '2017-12-15 10:19:07', '2017-12-17 17:02:17', '1', '1');
-INSERT INTO `osc_goods` VALUES ('34', '0', '3', 'images/osc1/product/2@theme.png', '八宝莲子200克', '9.90', '9991', '0', '100.00', '10.00', '10.00', '10.00', '2017-12-16 09:25:07', '2017-12-17 17:21:06', '1', '1');
+INSERT INTO `osc_goods` VALUES ('34', '0', '1', 'images/osc1/product/2@theme.png', '八宝莲子200克', '9.91', '9991', '0', '100.00', '10.00', '10.00', '10.00', '2017-12-16 09:25:07', '2017-12-18 13:06:26', '1', '1');
+INSERT INTO `osc_goods` VALUES ('36', '1', '5', 'images/osc1/fruit/product-vg@3.png', '我吃西红柿', '10.00', '999', '0', '100.00', '10.00', '10.00', '10.00', '2017-12-19 14:10:35', '', '1', '1');
 
 -- ----------------------------
 -- Table structure for `osc_goods_attribute`
@@ -3936,24 +3951,26 @@ CREATE TABLE `osc_goods_discount` (
   `product_discount_id` int(11) NOT NULL AUTO_INCREMENT,
   `goods_id` int(11) NOT NULL DEFAULT '0',
   `quantity` int(4) NOT NULL DEFAULT '0' COMMENT '商品数量',
-  `price` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '商品折扣价格',
+  `discount` tinyint(4) NOT NULL DEFAULT '0' COMMENT '商品折扣',
   PRIMARY KEY (`product_discount_id`),
   KEY `product_id` (`goods_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COMMENT='数量折扣';
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='数量折扣';
 
 -- ----------------------------
 -- Records of osc_goods_discount
 -- ----------------------------
-INSERT INTO `osc_goods_discount` VALUES ('1', '11', '2', '300.00');
-INSERT INTO `osc_goods_discount` VALUES ('2', '11', '5', '200.00');
-INSERT INTO `osc_goods_discount` VALUES ('3', '12', '3', '80.00');
-INSERT INTO `osc_goods_discount` VALUES ('4', '12', '2', '60.00');
-INSERT INTO `osc_goods_discount` VALUES ('5', '12', '5', '50.00');
-INSERT INTO `osc_goods_discount` VALUES ('6', '12', '8', '30.00');
-INSERT INTO `osc_goods_discount` VALUES ('9', '30', '5', '6.00');
-INSERT INTO `osc_goods_discount` VALUES ('10', '30', '10', '5.50');
-INSERT INTO `osc_goods_discount` VALUES ('11', '32', '5', '0.05');
-INSERT INTO `osc_goods_discount` VALUES ('12', '32', '8', '0.03');
+INSERT INTO `osc_goods_discount` VALUES ('1', '11', '2', '99');
+INSERT INTO `osc_goods_discount` VALUES ('2', '11', '5', '86');
+INSERT INTO `osc_goods_discount` VALUES ('3', '12', '3', '80');
+INSERT INTO `osc_goods_discount` VALUES ('4', '12', '2', '60');
+INSERT INTO `osc_goods_discount` VALUES ('5', '12', '5', '50');
+INSERT INTO `osc_goods_discount` VALUES ('6', '12', '8', '70');
+INSERT INTO `osc_goods_discount` VALUES ('9', '30', '5', '66');
+INSERT INTO `osc_goods_discount` VALUES ('10', '30', '10', '66');
+INSERT INTO `osc_goods_discount` VALUES ('11', '32', '5', '50');
+INSERT INTO `osc_goods_discount` VALUES ('12', '32', '8', '66');
+INSERT INTO `osc_goods_discount` VALUES ('17', '36', '5', '90');
+INSERT INTO `osc_goods_discount` VALUES ('18', '36', '10', '80');
 
 -- ----------------------------
 -- Table structure for `osc_goods_image`
@@ -3965,7 +3982,7 @@ CREATE TABLE `osc_goods_image` (
   `image` varchar(100) NOT NULL DEFAULT '',
   `sort_order` int(3) NOT NULL DEFAULT '0',
   PRIMARY KEY (`goods_image_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=69 DEFAULT CHARSET=utf8 COMMENT='商品图片表';
+) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8 COMMENT='商品图片表';
 
 -- ----------------------------
 -- Records of osc_goods_image
@@ -4032,6 +4049,8 @@ INSERT INTO `osc_goods_image` VALUES ('65', '19', 'images/osc1/7/m06.jpg', '1');
 INSERT INTO `osc_goods_image` VALUES ('66', '30', 'images/osc1/fruit/product-cake@1.png', '0');
 INSERT INTO `osc_goods_image` VALUES ('67', '30', 'images/osc1/fruit/product-dryfruit@2.png', '1');
 INSERT INTO `osc_goods_image` VALUES ('68', '30', 'images/osc1/fruit/product-cake-a@3.png', '2');
+INSERT INTO `osc_goods_image` VALUES ('69', '34', 'images/osc2/1/product-rice@6.png', '0');
+INSERT INTO `osc_goods_image` VALUES ('70', '34', 'images/osc2/1/2@theme.png', '1');
 
 -- ----------------------------
 -- Table structure for `osc_goods_mobile_description_image`
@@ -4044,7 +4063,7 @@ CREATE TABLE `osc_goods_mobile_description_image` (
   `description` varchar(255) NOT NULL DEFAULT '',
   `sort_order` int(5) NOT NULL DEFAULT '0',
   PRIMARY KEY (`mdi_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=131 DEFAULT CHARSET=utf8 COMMENT='手机商品描述图片';
+) ENGINE=InnoDB AUTO_INCREMENT=136 DEFAULT CHARSET=utf8 COMMENT='手机商品描述图片';
 
 -- ----------------------------
 -- Records of osc_goods_mobile_description_image
@@ -4171,6 +4190,11 @@ INSERT INTO `osc_goods_mobile_description_image` VALUES ('127', '30', 'images/os
 INSERT INTO `osc_goods_mobile_description_image` VALUES ('128', '30', 'images/osc1/detail/detail-5@1-dryfruit.png', '', '4');
 INSERT INTO `osc_goods_mobile_description_image` VALUES ('129', '30', 'images/osc1/detail/detail-7@1-dryfruit.png', '', '6');
 INSERT INTO `osc_goods_mobile_description_image` VALUES ('130', '30', 'images/osc1/detail/detail-8@1-dryfruit.png', '', '7');
+INSERT INTO `osc_goods_mobile_description_image` VALUES ('131', '34', 'images/osc2/1/detail-9@1-dryfruit.png', '', '0');
+INSERT INTO `osc_goods_mobile_description_image` VALUES ('132', '34', 'images/osc2/1/detail-10@1-dryfruit.png', '', '1');
+INSERT INTO `osc_goods_mobile_description_image` VALUES ('133', '34', 'images/osc2/1/detail-11@1-dryfruit.png', '', '2');
+INSERT INTO `osc_goods_mobile_description_image` VALUES ('134', '34', 'images/osc2/1/detail-12@1-dryfruit.png', '', '3');
+INSERT INTO `osc_goods_mobile_description_image` VALUES ('135', '34', 'images/osc2/1/detail-13@1-dryfruit.png', '', '4');
 
 -- ----------------------------
 -- Table structure for `osc_goods_option`
@@ -4179,12 +4203,12 @@ DROP TABLE IF EXISTS `osc_goods_option`;
 CREATE TABLE `osc_goods_option` (
   `goods_option_id` int(11) NOT NULL AUTO_INCREMENT,
   `goods_id` int(11) NOT NULL DEFAULT '0',
-  `option_name` varchar(64) NOT NULL DEFAULT '' COMMENT '选项',
+  `option_name` varchar(50) NOT NULL DEFAULT '' COMMENT '选项',
   `option_price` decimal(11,2) NOT NULL DEFAULT '0.00' COMMENT '选项价格',
   `stock` int(11) NOT NULL DEFAULT '0' COMMENT '库存',
   `sort` int(11) NOT NULL DEFAULT '1' COMMENT '排序',
   PRIMARY KEY (`goods_option_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of osc_goods_option
@@ -4197,6 +4221,7 @@ INSERT INTO `osc_goods_option` VALUES ('8', '30', '500g', '6.60', '999', '2');
 INSERT INTO `osc_goods_option` VALUES ('9', '30', '1000g', '8.80', '996', '3');
 INSERT INTO `osc_goods_option` VALUES ('12', '34', '礼盒装', '12.20', '988', '2');
 INSERT INTO `osc_goods_option` VALUES ('13', '34', '简装', '11.10', '9651', '1');
+INSERT INTO `osc_goods_option` VALUES ('14', '6', '优雅白', '39.00', '966', '0');
 
 -- ----------------------------
 -- Table structure for `osc_goods_option_value`
@@ -4232,7 +4257,7 @@ CREATE TABLE `osc_goods_param` (
   `param_name` varchar(50) NOT NULL DEFAULT '',
   `param_value` varchar(100) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='产品参数';
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COMMENT='产品参数';
 
 -- ----------------------------
 -- Records of osc_goods_param
@@ -4246,6 +4271,7 @@ INSERT INTO `osc_goods_param` VALUES ('11', '32', '产地', '北京');
 INSERT INTO `osc_goods_param` VALUES ('12', '32', '配料', '面粉，食用油，饮用水等');
 INSERT INTO `osc_goods_param` VALUES ('16', '34', '保质期', '180天');
 INSERT INTO `osc_goods_param` VALUES ('17', '34', '产地', '上海市');
+INSERT INTO `osc_goods_param` VALUES ('19', '34', '生产日期', '2017年12月12日');
 
 -- ----------------------------
 -- Table structure for `osc_goods_to_category`
@@ -4294,7 +4320,7 @@ CREATE TABLE `osc_member` (
 -- ----------------------------
 -- Records of osc_member
 -- ----------------------------
-INSERT INTO `osc_member` VALUES ('2', 'wx-fdsf53575rwere710', '哈哈哈', '18121029523', '0.00', '2.62', '1', '1512608799', '1512701091');
+INSERT INTO `osc_member` VALUES ('2', 'oMgsK0VdN3Q43P-zIeC0IiVvd_fw', '哈哈哈', '18121029523', '22.00', '3.62', '1', '1512608799', '1513574261');
 INSERT INTO `osc_member` VALUES ('3', 'wx-iuyifghgf6345re221', '嘿嘿嘿', '13355556666', '111.00', '1500.00', '1', '1512633763', '1513393824');
 
 -- ----------------------------
@@ -4306,6 +4332,7 @@ CREATE TABLE `osc_member_collect` (
   `uid` int(11) NOT NULL,
   `goods_id` int(11) NOT NULL DEFAULT '0',
   `create_time` int(11) NOT NULL DEFAULT '0',
+  `update_time` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='收藏的商品';
@@ -4330,7 +4357,7 @@ CREATE TABLE `osc_menu` (
   `status` tinyint(2) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `pid` (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=335 DEFAULT CHARSET=utf8 COMMENT='后台菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=336 DEFAULT CHARSET=utf8 COMMENT='后台菜单';
 
 -- ----------------------------
 -- Records of osc_menu
@@ -4390,11 +4417,11 @@ INSERT INTO `osc_menu` VALUES ('193', 'admin', '127', '新增', 'admin/user/add'
 INSERT INTO `osc_menu` VALUES ('194', 'admin', '127', '编辑', 'admin/user/edit', '', '0', 'auth', '1');
 INSERT INTO `osc_menu` VALUES ('195', 'admin', '127', '删除', 'admin/user/del', '', '0', 'auth', '1');
 INSERT INTO `osc_menu` VALUES ('196', 'admin', '127', '设置状态', 'admin/user/set_status', '', '0', 'auth', '1');
-INSERT INTO `osc_menu` VALUES ('200', 'admin', '137', '新增', 'admin/transport/add', '', '0', 'auth', '1');
-INSERT INTO `osc_menu` VALUES ('202', 'admin', '137', '编辑', 'admin/transport/edit', '', '0', 'auth', '1');
-INSERT INTO `osc_menu` VALUES ('203', 'admin', '137', '保存', 'admin/transport/save', '', '0', 'auth', '1');
-INSERT INTO `osc_menu` VALUES ('204', 'admin', '137', '删除', 'admin/transport/del', '', '0', 'auth', '1');
-INSERT INTO `osc_menu` VALUES ('205', 'admin', '137', '获取地区', 'admin/transport/getCity', '', '0', 'auth', '1');
+INSERT INTO `osc_menu` VALUES ('200', 'member', '137', '新增', 'member/transport/add', '', '0', 'auth', '1');
+INSERT INTO `osc_menu` VALUES ('202', 'member', '137', '编辑', 'member/transport/edit', '', '0', 'auth', '1');
+INSERT INTO `osc_menu` VALUES ('203', 'member', '137', '保存', 'member/transport/save', '', '0', 'auth', '1');
+INSERT INTO `osc_menu` VALUES ('204', 'member', '137', '删除', 'member/transport/del', '', '0', 'auth', '1');
+INSERT INTO `osc_menu` VALUES ('205', 'member', '137', '获取地区', 'member/transport/getCity', '', '0', 'auth', '1');
 INSERT INTO `osc_menu` VALUES ('290', 'admin', '57', '退出系统', 'admin/index/logout', '', '1', 'auth', '1');
 INSERT INTO `osc_menu` VALUES ('293', 'mobile', '292', '代理分销', '', '', '1', 'nav', '1');
 INSERT INTO `osc_menu` VALUES ('294', 'mobile', '293', '代理管理', 'mobile/agent_backend/agent_list', '', '2', 'nav', '1');
@@ -4426,14 +4453,15 @@ INSERT INTO `osc_menu` VALUES ('321', 'member', '0', '订单', 'member/order_bac
 INSERT INTO `osc_menu` VALUES ('322', 'member', '0', '物流', 'member/transport/index', 'fa-truck', '5', 'nav', '1');
 INSERT INTO `osc_menu` VALUES ('323', 'member', '0', '货仓', 'member/dispatch/index', 'fa-sitemap', '6', 'nav', '1');
 INSERT INTO `osc_menu` VALUES ('325', 'member', '323', '货仓管理', 'member/dispatch/index', '', '7', 'nav', '1');
-INSERT INTO `osc_menu` VALUES ('326', 'admin', '325', '新增', 'admin/dispatch/add', '', '0', 'auth', '1');
-INSERT INTO `osc_menu` VALUES ('328', 'admin', '325', '编辑', 'admin/dispatch/edit', '', '0', 'auth', '1');
-INSERT INTO `osc_menu` VALUES ('329', 'admin', '325', '保存', 'admin/dispatch/save', '', '0', 'auth', '1');
-INSERT INTO `osc_menu` VALUES ('330', 'admin', '325', '删除', 'admin/dispatch/del', '', '0', 'auth', '1');
-INSERT INTO `osc_menu` VALUES ('331', 'admin', '325', '获取地区', 'admin/dispatch/getCity', '', '0', 'auth', '1');
+INSERT INTO `osc_menu` VALUES ('326', 'member', '325', '新增', 'member/dispatch/add', '', '0', 'auth', '1');
+INSERT INTO `osc_menu` VALUES ('328', 'member', '325', '编辑', 'member/dispatch/edit', '', '0', 'auth', '1');
+INSERT INTO `osc_menu` VALUES ('329', 'member', '325', '保存', 'member/dispatch/save', '', '0', 'auth', '1');
+INSERT INTO `osc_menu` VALUES ('330', 'member', '325', '删除', 'member/dispatch/del', '', '0', 'auth', '1');
+INSERT INTO `osc_menu` VALUES ('331', 'member', '325', '获取地区', 'member/dispatch/getCity', '', '0', 'auth', '1');
 INSERT INTO `osc_menu` VALUES ('332', 'member', '138', '导出订单', 'member/order_backend/toExport', null, '0', 'auth', '1');
 INSERT INTO `osc_menu` VALUES ('333', 'admin', '136', '更新排序', 'admin/banner/update_sort', null, '0', 'auth', '1');
 INSERT INTO `osc_menu` VALUES ('334', 'admin', '29', '编辑产品参数', 'admin/goods/edit_param', null, '0', 'auth', '1');
+INSERT INTO `osc_menu` VALUES ('335', 'member', '139', '修改账户金额', 'member/member_backend/updateAccount', null, '0', 'auth', '1');
 
 -- ----------------------------
 -- Table structure for `osc_module`
@@ -4515,7 +4543,8 @@ CREATE TABLE `osc_order` (
   `order_id` int(11) NOT NULL AUTO_INCREMENT,
   `order_num_alias` varchar(40) NOT NULL DEFAULT '' COMMENT '订单编号',
   `order_status` tinyint(4) NOT NULL DEFAULT '1',
-  `pay_subject` varchar(255) NOT NULL DEFAULT '',
+  `pay_subject_img` varchar(100) NOT NULL DEFAULT '' COMMENT '订单快照图片',
+  `pay_subject` varchar(255) NOT NULL DEFAULT '' COMMENT '订单快照名称',
   `uid` int(11) NOT NULL DEFAULT '0',
   `shipping_name` varchar(32) NOT NULL DEFAULT '' COMMENT '收货人姓名',
   `shipping_tel` varchar(20) NOT NULL DEFAULT '' COMMENT '收货人电话',
@@ -4537,8 +4566,8 @@ CREATE TABLE `osc_order` (
 -- ----------------------------
 -- Records of osc_order
 -- ----------------------------
-INSERT INTO `osc_order` VALUES ('3', 'wx2017120753575710', '2', '旅行茶具套装便携式功夫茶具 车载 户外 手绘茶具等商品', '2', '哈哈哈22', '18121029523', '北京市国家图书馆111号', '1', '邮政快递', '9891770403677', '39.61', '0.00', '39.50', '0.11', '39.61', '0', '1513402181', '1513479717');
-INSERT INTO `osc_order` VALUES ('4', 'wx2017121253555353', '5', '111艺创 青花白瓷手绘荷花整套功夫茶具陶瓷 盖碗 茶杯创意礼盒', '2', '哈哈哈22', '18121029523', '江苏省南京市玄武区人民路XX小区1栋101', '3', '顺丰速递', '426530659301', '0.00', '0.00', '16640.50', '922.00', '17562.50', '0', '1513411181', '1513479809');
+INSERT INTO `osc_order` VALUES ('3', 'wx2017120753575710', '2', 'images/osc1/5/1.jpg', '旅行套装便携功夫茶具等', '2', '哈哈哈22', '18121029523', '北京市国家图书馆111号', '1', '邮政快递', '9891770403677', '98.70', '10.00', '98.70', '10.00', '108.70', '0', '1513402181', '1513574159');
+INSERT INTO `osc_order` VALUES ('4', 'wx2017121253555353', '4', 'images/osc1/product/2@theme.png', '青花白瓷手绘荷花', '2', '哈哈哈22', '18121029523', '江苏省南京市玄武区人民路XX小区1栋101', '3', '顺丰速递', '426530659301', '7235.00', '15.00', '7235.00', '15.00', '7250.00', '0', '1513411181', '1513479809');
 
 -- ----------------------------
 -- Table structure for `osc_order_goods`
@@ -4549,40 +4578,21 @@ CREATE TABLE `osc_order_goods` (
   `order_id` int(11) NOT NULL DEFAULT '0',
   `goods_id` int(11) NOT NULL DEFAULT '0',
   `isMainGoods` tinyint(4) NOT NULL DEFAULT '1' COMMENT '是否主商品',
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `quantity` int(4) NOT NULL DEFAULT '0',
-  `price` decimal(15,2) NOT NULL DEFAULT '0.00',
-  `total` decimal(15,2) NOT NULL DEFAULT '0.00',
+  `image` varchar(100) NOT NULL DEFAULT '',
+  `name` varchar(100) NOT NULL DEFAULT '',
+  `option_name` varchar(50) NOT NULL DEFAULT '' COMMENT '商品选项名称',
+  `quantity` int(4) NOT NULL DEFAULT '0' COMMENT '数量',
+  `price` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '单价',
+  `total` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '单个商品总价',
   PRIMARY KEY (`order_goods_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of osc_order_goods
 -- ----------------------------
-INSERT INTO `osc_order_goods` VALUES ('13', '3', '5', '0', '旅行茶具套装便携式功夫茶具 车载 户外 手绘茶具', '3', '0.20', '0.60');
-INSERT INTO `osc_order_goods` VALUES ('14', '3', '6', '0', '艺创 品茗杯陶瓷功夫茶具 定窑白荷花大号茶个人主人杯', '1', '39.00', '39.00');
-INSERT INTO `osc_order_goods` VALUES ('15', '4', '12', '0', '111艺创 青花白瓷手绘荷花整套功夫茶具陶瓷 盖碗 茶杯创意礼盒', '23', '723.50', '16640.50');
-
--- ----------------------------
--- Table structure for `osc_order_option`
--- ----------------------------
-DROP TABLE IF EXISTS `osc_order_option`;
-CREATE TABLE `osc_order_option` (
-  `order_option_id` int(11) NOT NULL AUTO_INCREMENT,
-  `order_id` int(11) NOT NULL DEFAULT '0',
-  `order_goods_id` int(11) NOT NULL DEFAULT '0',
-  `name` varchar(255) DEFAULT NULL,
-  `value` text,
-  `option_id` int(11) NOT NULL DEFAULT '0',
-  `option_value_id` int(11) NOT NULL DEFAULT '0',
-  `goods_id` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`order_option_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of osc_order_option
--- ----------------------------
-INSERT INTO `osc_order_option` VALUES ('1', '3', '14', '500g', '佛手荷花', '1', '1', '12');
+INSERT INTO `osc_order_goods` VALUES ('13', '3', '5', '0', 'images/osc1/5/1.jpg', '旅行套装便携功夫茶具', '', '3', '19.90', '59.70');
+INSERT INTO `osc_order_goods` VALUES ('14', '3', '6', '0', 'images/osc1/6/1.jpg', '定窑白荷花大号茶个', '优雅白', '1', '39.00', '39.00');
+INSERT INTO `osc_order_goods` VALUES ('15', '4', '12', '0', 'images/osc1/product/2@theme.png', '青花白瓷手绘荷花', '', '10', '723.50', '7235.00');
 
 -- ----------------------------
 -- Table structure for `osc_transport`
@@ -4598,7 +4608,7 @@ CREATE TABLE `osc_transport` (
 -- ----------------------------
 -- Records of osc_transport
 -- ----------------------------
-INSERT INTO `osc_transport` VALUES ('1', '圆通快递', '1513500692');
+INSERT INTO `osc_transport` VALUES ('1', '圆通快递', '1513574898');
 INSERT INTO `osc_transport` VALUES ('4', '德邦物流', '1513500750');
 INSERT INTO `osc_transport` VALUES ('5', '顺丰速递', '1513404504');
 
@@ -4619,7 +4629,7 @@ CREATE TABLE `osc_transport_extend` (
   `transport_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '运费模板ID',
   `transport_title` varchar(60) NOT NULL DEFAULT '' COMMENT '运费模板',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=303 DEFAULT CHARSET=utf8 COMMENT='运费模板扩展表';
+) ENGINE=InnoDB AUTO_INCREMENT=310 DEFAULT CHARSET=utf8 COMMENT='运费模板扩展表';
 
 -- ----------------------------
 -- Records of osc_transport_extend
@@ -4629,15 +4639,15 @@ INSERT INTO `osc_transport_extend` VALUES ('259', ',11,14,12,10,9,15,', '', '浙
 INSERT INTO `osc_transport_extend` VALUES ('260', ',17,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,16,243,257,256,255,254,244,245,246,247,248,249,250,251,252,253,242,240,241,18,283,284,285,286,287,288,282,281,280,275,276,277,278,279,20,310,311,312,313,314,315,316,317,318,319,320,321,322,323,21,334,335,336,337,338,339,340,341,342,343,333,332,331,324,325,326,327,328,329,330,344,19,294,308,309,307,306,305,295,296,297,298,299,300,301,302,303,304,289,290,291,292,293,13,205,206,207,208,209,210,211,204,203,', ',17,16,18,20,21,19,13,', '湖北,河南,湖南,广西,海南,广东,福建', '1', '18.00', '1', '8.00', '2', '5', '顺丰速递');
 INSERT INTO `osc_transport_extend` VALUES ('261', ',30,474,470,471,472,473,31,489,490,491,492,488,477,478,479,480,481,482,483,484,485,486,476,475,487,29,462,463,464,465,466,467,468,469,28,451,452,453,454,455,456,457,458,459,460,450,449,448,461,27,438,439,440,441,442,443,444,445,446,447,24,406,407,408,409,410,411,412,413,414,26,431,432,433,434,435,436,437,25,426,427,428,429,430,425,424,423,415,416,417,418,419,420,421,422,23,399,400,401,402,403,404,405,398,397,386,387,388,389,390,391,392,393,394,395,396,385,22,62,', ',30,31,29,28,27,24,26,25,23,22,', '宁夏,新疆,青海,甘肃,陕西,贵州,西藏,云南,四川,重庆', '1', '20.00', '1', '10.00', '2', '5', '顺丰速递');
 INSERT INTO `osc_transport_extend` VALUES ('262', ',34,33,32,', '', '澳门,香港,台湾', '1', '200.00', '1', '100.00', '2', '5', '顺丰速递');
-INSERT INTO `osc_transport_extend` VALUES ('289', '', '', '全国', '1', '15.00', '1', '8.00', '1', '1', '圆通快递');
-INSERT INTO `osc_transport_extend` VALUES ('290', ',11,14,12,10,9,15,17,16,18,', '', '浙江,江西,安徽,江苏,上海,山东,湖北,河南,湖南', '1', '8.00', '1', '5.00', '2', '1', '圆通快递');
-INSERT INTO `osc_transport_extend` VALUES ('291', ',5,4,1,3,2,20,21,19,13,7,8,6,', '', '内蒙古,山西,北京,河北,天津,广西,海南,广东,福建,吉林,黑龙江,辽宁', '1', '10.00', '1', '8.00', '2', '1', '圆通快递');
-INSERT INTO `osc_transport_extend` VALUES ('292', ',30,31,29,28,27,24,26,25,23,22,', '', '宁夏,新疆,青海,甘肃,陕西,贵州,西藏,云南,四川,重庆', '1', '15.00', '1', '10.00', '2', '1', '圆通快递');
-INSERT INTO `osc_transport_extend` VALUES ('293', ',34,33,32,', '', '澳门,香港,台湾', '1', '50.00', '1', '20.00', '2', '1', '圆通快递');
 INSERT INTO `osc_transport_extend` VALUES ('296', '', '', '全国', '1', '12.00', '1', '10.00', '1', '4', '德邦物流');
 INSERT INTO `osc_transport_extend` VALUES ('297', ',11,180,181,182,183,184,185,179,178,177,175,176,14,212,213,214,215,216,217,218,219,220,221,222,12,186,187,188,189,190,191,202,192,193,194,195,196,197,198,199,200,201,10,162,163,164,165,166,167,168,169,170,171,172,173,174,9,39,15,231,232,233,234,235,236,237,238,239,230,229,228,223,224,225,226,227,5,95,106,96,97,98,99,100,101,102,103,104,105,4,84,85,86,87,88,89,90,91,92,93,94,1,36,3,83,82,81,80,73,74,75,76,77,78,79,2,40,', ',11,14,12,10,9,15,5,4,1,3,2,', '浙江,江西,安徽,江苏,上海,山东,内蒙古,山西,北京,河北,天津', '1', '7.00', '1', '6.00', '2', '4', '德邦物流');
 INSERT INTO `osc_transport_extend` VALUES ('298', ',17,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,16,243,257,256,255,254,244,245,246,247,248,249,250,251,252,253,242,240,241,18,283,284,285,286,287,288,282,281,280,275,276,277,278,279,20,310,311,312,313,314,315,316,317,318,319,320,321,322,323,21,334,335,336,337,338,339,340,341,342,343,333,332,331,324,325,326,327,328,329,330,344,19,294,308,309,307,306,305,295,296,297,298,299,300,301,302,303,304,289,290,291,292,293,13,205,206,207,208,209,210,211,204,203,', ',17,16,18,20,21,19,13,', '湖北,河南,湖南,广西,海南,广东,福建', '1', '8.00', '1', '7.00', '2', '4', '德邦物流');
 INSERT INTO `osc_transport_extend` VALUES ('299', ',30,474,470,471,472,473,31,489,490,491,492,488,477,478,479,480,481,482,483,484,485,486,476,475,487,29,462,463,464,465,466,467,468,469,28,451,452,453,454,455,456,457,458,459,460,450,449,448,461,27,438,439,440,441,442,443,444,445,446,447,24,406,407,408,409,410,411,412,413,414,26,431,432,433,434,435,436,437,25,426,427,428,429,430,425,424,423,415,416,417,418,419,420,421,422,23,399,400,401,402,403,404,405,398,397,386,387,388,389,390,391,392,393,394,395,396,385,22,62,', ',30,31,29,28,27,24,26,25,23,22,', '宁夏,新疆,青海,甘肃,陕西,贵州,西藏,云南,四川,重庆', '1', '10.00', '1', '8.00', '2', '4', '德邦物流');
+INSERT INTO `osc_transport_extend` VALUES ('303', '', '', '全国', '1', '15.00', '1', '8.00', '1', '1', '圆通快递');
+INSERT INTO `osc_transport_extend` VALUES ('304', ',11,14,12,10,9,15,17,16,18,', '', '浙江,江西,安徽,江苏,上海,山东,湖北,河南,湖南', '1', '8.00', '1', '5.00', '2', '1', '圆通快递');
+INSERT INTO `osc_transport_extend` VALUES ('305', ',5,4,1,3,2,20,21,19,13,7,8,6,', '', '内蒙古,山西,北京,河北,天津,广西,海南,广东,福建,吉林,黑龙江,辽宁', '1', '10.00', '1', '8.00', '2', '1', '圆通快递');
+INSERT INTO `osc_transport_extend` VALUES ('306', ',30,31,29,28,27,24,26,25,23,22,', '', '宁夏,新疆,青海,甘肃,陕西,贵州,西藏,云南,四川,重庆', '1', '15.00', '1', '10.00', '2', '1', '圆通快递');
+INSERT INTO `osc_transport_extend` VALUES ('307', ',34,33,32,', '', '澳门,香港,台湾', '1', '50.00', '1', '20.00', '2', '1', '圆通快递');
 
 -- ----------------------------
 -- Table structure for `osc_user_action`
@@ -4651,7 +4661,7 @@ CREATE TABLE `osc_user_action` (
   `info` varchar(255) DEFAULT NULL COMMENT '行为描述',
   `add_time` int(10) NOT NULL DEFAULT '0' COMMENT '加入时间',
   PRIMARY KEY (`ua_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=584 DEFAULT CHARSET=utf8 COMMENT='用户行为';
+) ENGINE=InnoDB AUTO_INCREMENT=659 DEFAULT CHARSET=utf8 COMMENT='用户行为';
 
 -- ----------------------------
 -- Records of osc_user_action
@@ -4712,3 +4722,78 @@ INSERT INTO `osc_user_action` VALUES ('580', '1', 'admin', '后台系统用户',
 INSERT INTO `osc_user_action` VALUES ('581', '2', 'admin_order', '后台系统用户', '登录了后台系统', '1513503420');
 INSERT INTO `osc_user_action` VALUES ('582', '2', 'admin_order', '后台系统用户', '登录了后台系统', '1513559676');
 INSERT INTO `osc_user_action` VALUES ('583', '2', 'admin_order', '后台系统用户', '更新商品基本信息', '1513561919');
+INSERT INTO `osc_user_action` VALUES ('584', '2', 'admin_order', '后台系统用户', '更新了物流单号', '1513567851');
+INSERT INTO `osc_user_action` VALUES ('585', '2', 'admin_order', '后台系统用户', '修改了banner', '1513567890');
+INSERT INTO `osc_user_action` VALUES ('586', '2', 'admin_order', '后台系统用户', '更新了banner排序', '1513567896');
+INSERT INTO `osc_user_action` VALUES ('587', '1', 'admin', '后台系统用户', '登录了后台系统', '1513568055');
+INSERT INTO `osc_user_action` VALUES ('588', '2', 'admin_order', '后台系统用户', '添加了banner', '1513568662');
+INSERT INTO `osc_user_action` VALUES ('589', '2', 'admin_order', '后台系统用户', '删除了banner', '1513568688');
+INSERT INTO `osc_user_action` VALUES ('590', '2', 'admin_order', '后台系统用户', '添加了banner', '1513568698');
+INSERT INTO `osc_user_action` VALUES ('591', '2', 'admin_order', '后台系统用户', '修改了商品分类', '1513568711');
+INSERT INTO `osc_user_action` VALUES ('592', '2', 'admin_order', '后台系统用户', '修改了商品分类', '1513568720');
+INSERT INTO `osc_user_action` VALUES ('593', '2', 'admin_order', '后台系统用户', '更新商品价格', '1513573367');
+INSERT INTO `osc_user_action` VALUES ('594', '2', 'admin_order', '后台系统用户', '更新商品基本信息', '1513573413');
+INSERT INTO `osc_user_action` VALUES ('595', '2', 'admin_order', '后台系统用户', '更新商品状态', '1513573415');
+INSERT INTO `osc_user_action` VALUES ('596', '2', 'admin_order', '后台系统用户', '更新商品状态', '1513573417');
+INSERT INTO `osc_user_action` VALUES ('597', '2', 'admin_order', '后台系统用户', '更新商品状态', '1513573585');
+INSERT INTO `osc_user_action` VALUES ('598', '2', 'admin_order', '后台系统用户', '更新商品状态', '1513573586');
+INSERT INTO `osc_user_action` VALUES ('599', '1', 'admin', '后台系统用户', '编辑了用户权限', '1513573621');
+INSERT INTO `osc_user_action` VALUES ('600', '1', 'admin', '后台系统用户', '编辑了用户权限', '1513573650');
+INSERT INTO `osc_user_action` VALUES ('601', '1', 'admin', '后台系统用户', '编辑了用户权限', '1513574038');
+INSERT INTO `osc_user_action` VALUES ('602', '2', 'admin_order', '后台系统用户', '更新了物流单号', '1513574159');
+INSERT INTO `osc_user_action` VALUES ('603', '2', 'admin_order', '后台系统用户', '修改了用户状态', '1513574191');
+INSERT INTO `osc_user_action` VALUES ('604', '2', 'admin_order', '后台系统用户', '修改了用户状态', '1513574193');
+INSERT INTO `osc_user_action` VALUES ('605', '2', 'admin_order', '后台系统用户', '修改了用户状态', '1513574241');
+INSERT INTO `osc_user_action` VALUES ('606', '2', 'admin_order', '后台系统用户', '修改了用户状态', '1513574243');
+INSERT INTO `osc_user_action` VALUES ('607', '2', 'admin_order', '后台系统用户', '编辑了会员', '1513574261');
+INSERT INTO `osc_user_action` VALUES ('608', '1', 'admin', '后台系统用户', '编辑了用户权限', '1513574504');
+INSERT INTO `osc_user_action` VALUES ('609', '2', 'admin_order', '后台系统用户', '更新会员账户金额', '1513574509');
+INSERT INTO `osc_user_action` VALUES ('610', '1', 'admin', '后台系统用户', '编辑了用户权限', '1513574803');
+INSERT INTO `osc_user_action` VALUES ('611', '2', 'admin_order', '后台系统用户', '更新了运费模板', '1513574898');
+INSERT INTO `osc_user_action` VALUES ('612', '1', 'admin', '后台系统用户', '编辑了用户权限', '1513574981');
+INSERT INTO `osc_user_action` VALUES ('613', '2', 'admin_order', '后台系统用户', '更新了货仓管理', '1513575087');
+INSERT INTO `osc_user_action` VALUES ('614', '2', 'admin_order', '后台系统用户', '修改了用户组状态', '1513575096');
+INSERT INTO `osc_user_action` VALUES ('615', '1', 'admin', '后台系统用户', '修改了用户组状态', '1513575166');
+INSERT INTO `osc_user_action` VALUES ('616', '2', 'admin_order', '后台系统用户', '修改了用户组状态', '1513575236');
+INSERT INTO `osc_user_action` VALUES ('617', '2', 'admin_order', '后台系统用户', '修改了用户组状态', '1513575248');
+INSERT INTO `osc_user_action` VALUES ('618', '1', 'admin', '后台系统用户', '清除了缓存', '1513575524');
+INSERT INTO `osc_user_action` VALUES ('619', '1', 'admin', '后台系统用户', '退出了系统', '1513575526');
+INSERT INTO `osc_user_action` VALUES ('620', '1', 'admin', '后台系统用户', '登录了后台系统', '1513575529');
+INSERT INTO `osc_user_action` VALUES ('621', '1', 'admin', '后台系统用户', '添加了用户组', '1513575604');
+INSERT INTO `osc_user_action` VALUES ('622', '1', 'admin', '后台系统用户', '编辑了用户权限', '1513575657');
+INSERT INTO `osc_user_action` VALUES ('623', '1', 'admin', '后台系统用户', '修改了系统用户', '1513575692');
+INSERT INTO `osc_user_action` VALUES ('624', '1', 'admin', '后台系统用户', '编辑了用户权限', '1513575833');
+INSERT INTO `osc_user_action` VALUES ('625', '1', 'admin', '后台系统用户', '编辑了用户权限', '1513575858');
+INSERT INTO `osc_user_action` VALUES ('626', '2', 'admin_order', '后台系统用户', '修改了用户组', '1513576144');
+INSERT INTO `osc_user_action` VALUES ('627', '2', 'admin_order', '后台系统用户', '修改了用户组状态', '1513576155');
+INSERT INTO `osc_user_action` VALUES ('628', '1', 'admin', '后台系统用户', '修改了用户组状态', '1513576162');
+INSERT INTO `osc_user_action` VALUES ('629', '1', 'admin', '后台系统用户', '编辑了用户权限', '1513576539');
+INSERT INTO `osc_user_action` VALUES ('630', '2', 'admin_order', '后台系统用户', '退出了系统', '1513577008');
+INSERT INTO `osc_user_action` VALUES ('631', '2', 'orderAdmin', '后台系统用户', '登录了后台系统', '1513577019');
+INSERT INTO `osc_user_action` VALUES ('632', '2', 'orderAdmin', '后台系统用户', '新增了系统用户', '1513577469');
+INSERT INTO `osc_user_action` VALUES ('633', '2', 'orderAdmin', '后台系统用户', '修改了系统用户', '1513577530');
+INSERT INTO `osc_user_action` VALUES ('634', '2', 'orderAdmin', '后台系统用户', '修改了系统用户状态', '1513577544');
+INSERT INTO `osc_user_action` VALUES ('635', '2', 'orderAdmin', '后台系统用户', '修改了系统用户状态', '1513577550');
+INSERT INTO `osc_user_action` VALUES ('636', '2', 'orderAdmin', '后台系统用户', '修改了系统用户', '1513577561');
+INSERT INTO `osc_user_action` VALUES ('637', '2', 'orderAdmin', '后台系统用户', '修改了系统用户', '1513577577');
+INSERT INTO `osc_user_action` VALUES ('638', '2', 'orderAdmin', '后台系统用户', '修改了系统用户', '1513577592');
+INSERT INTO `osc_user_action` VALUES ('639', '2', 'orderAdmin', '后台系统用户', '退出了系统', '1513578424');
+INSERT INTO `osc_user_action` VALUES ('640', '2', 'orderAdmin', '后台系统用户', '登录了后台系统', '1513578428');
+INSERT INTO `osc_user_action` VALUES ('641', '2', 'orderAdmin', '后台系统用户', '更新商品34', '1513578550');
+INSERT INTO `osc_user_action` VALUES ('642', '2', 'orderAdmin', '后台系统用户', '更新商品34', '1513578608');
+INSERT INTO `osc_user_action` VALUES ('643', '2', 'orderAdmin', '后台系统用户', '更新商品34', '1513578638');
+INSERT INTO `osc_user_action` VALUES ('644', '2', 'orderAdmin', '后台系统用户', '更新商品34', '1513578644');
+INSERT INTO `osc_user_action` VALUES ('645', '2', 'orderAdmin', '后台系统用户', '更新商品34', '1513578749');
+INSERT INTO `osc_user_action` VALUES ('646', '2', 'orderAdmin', '后台系统用户', '更新商品34', '1513578814');
+INSERT INTO `osc_user_action` VALUES ('647', '2', 'orderAdmin', '后台系统用户', '更新商品34', '1513578844');
+INSERT INTO `osc_user_action` VALUES ('648', '2', 'orderAdmin', '后台系统用户', '更新商品34', '1513578851');
+INSERT INTO `osc_user_action` VALUES ('649', '2', 'orderAdmin', '后台系统用户', '更新商品34', '1513578865');
+INSERT INTO `osc_user_action` VALUES ('650', '1', 'admin', '后台系统用户', '登录了后台系统', '1513644857');
+INSERT INTO `osc_user_action` VALUES ('651', '1', 'admin', '后台系统用户', '更新商品12', '1513663328');
+INSERT INTO `osc_user_action` VALUES ('652', '1', 'admin', '后台系统用户', '新增了商品', '1513663665');
+INSERT INTO `osc_user_action` VALUES ('653', '1', 'admin', '后台系统用户', '更新商品16', '1513663729');
+INSERT INTO `osc_user_action` VALUES ('654', '1', 'admin', '后台系统用户', '删除商品', '1513663745');
+INSERT INTO `osc_user_action` VALUES ('655', '1', 'admin', '后台系统用户', '新增了商品', '1513663835');
+INSERT INTO `osc_user_action` VALUES ('656', '1', 'admin', '后台系统用户', '更新商品6', '1513667995');
+INSERT INTO `osc_user_action` VALUES ('657', '1', 'admin', '后台系统用户', '更新商品状态', '1513668015');
+INSERT INTO `osc_user_action` VALUES ('658', '1', 'admin', '后台系统用户', '更新商品基本信息', '1513668103');

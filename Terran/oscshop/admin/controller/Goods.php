@@ -148,7 +148,7 @@ class Goods extends AdminBase{
 			}	
 			
 			if($table_name=='goods_discount'){
-				if(!is_numeric($info['quantity'])||!is_numeric($info['price']))
+				if(!is_numeric($info['quantity'])||!is_numeric($info['discount']))
 				return ['error'=>'请输入数字'];
 			}
 			
