@@ -4,6 +4,8 @@ namespace app\api\controller\v1;
 
 use app\api\model\Product as ProductModel;
 use app\api\model\UserCollect as UserCollectModel;
+use app\api\service\Token as TokenService;
+
 use app\api\validate\Count;
 use app\api\validate\IDMustBePositiveInt;
 use app\api\validate\PagingParameter;
@@ -150,9 +152,20 @@ class Product extends Controller
      * 收藏或取消收藏商品
      */
     public function collectGoods($id,$type){
-        (new IDMustBePositiveInt())->goCheck();
 
-        UserCollectModel::collectGoods($id,$type);
+        $UserCollectModel = new UserCollectModel();
+
+        $currentUid = TokenService::getCurrentUid();
+        $where = ['uid'=>$currentUid,'goods_id'=>$id];
+
+        if ($type == 'add') {
+            $haveCollect = $UserCollectModel->where($where)->find();
+            if (!$haveCollect) {
+                $UserCollectModel->save($where);
+            }
+        }elseif ($type == 'cancel') {
+            UserCollectModel::destroy($where);
+        }
 
     }
 
