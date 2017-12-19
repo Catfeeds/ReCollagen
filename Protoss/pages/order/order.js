@@ -116,7 +116,7 @@ Page({
                 order=new Order();
             for(let i=0;i<procuctInfo.length;i++){
                 orderInfo.push({
-                    product_id:procuctInfo[i].id,
+                    product_id: procuctInfo[i].goods_id,
                     count:procuctInfo[i].counts
                 });
             }
@@ -210,16 +210,10 @@ Page({
         * id - {int}订单id
         */
         _execPay:function(id){
-            if(!order.onPay) {
-                this.showTips('支付提示','本产品仅用于演示，支付系统已屏蔽',true);//屏蔽支付，提示
-                this.deleteProducts(); //将已经下单的商品从购物车删除
-                return;
-            }
             var that=this;
             order.execPay(id,(statusCode)=>{
                 if(statusCode!=0){
                     that.deleteProducts(); //将已经下单的商品从购物车删除   当状态为0时，表示
-
                     var flag = statusCode == 2;
                     wx.navigateTo({
                         url: '../pay-result/pay-result?id=' + id + '&flag=' + flag + '&from=order'

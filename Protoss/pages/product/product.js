@@ -17,7 +17,7 @@ Page({
         optionid: -1,
     },
     onLoad: function (option) {
-      var id = 30;
+      var id = 12;
         this.data.id=id;
         this._loadData();
     },

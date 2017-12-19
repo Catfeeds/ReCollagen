@@ -53,11 +53,16 @@
     <block wx:for="{{productsArr}}">
       <view class="product-item">
         <view class="item-left">
-          <image src="{{item.main_img_url}}"></image>
+          <image src="{{item.image}}"></image>
         </view>
         <view class="item-middle">
           <view>{{item.name}}</view>
-          <view>￥{{item.price}}</view>
+          <view>￥{{item.currentPrice}}</view>
+          <view wx:if="{{item.options.length>0}}">规格：
+            <block  wx:for="{{item.options}}" wx:for-index="idx" wx:for-item="itemName" wx:if="{{itemName.goods_option_id==item.optionsid}}">
+                {{itemName.option_name}}
+            </block>
+            </view>
         </view>
         <view class="item-right">
           ×{{item.counts}}
