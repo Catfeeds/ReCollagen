@@ -86,11 +86,9 @@
 	            <tr>
 	              <td class="left">
 	              	<a><?php echo $product['name']; ?></a>
-	              	<?php if($option_list=Db::query('select * from '.config('database.prefix').'order_option where order_goods_id='.$product['order_goods_id'].' and order_id='.$product['order_id'])){ ?>
-    					<?php foreach ($option_list as $option) { ?>
-    	                   <br />&nbsp;<small>({$option['name']})</small>
-    	                <?php } ?>
-	                <?php } ?>
+                {if condition="$product['option_name'] neq null"}
+                    <br />&nbsp;<small>({$product['option_name']})</small>
+                {/if}
 	              </td>
 	              <td class="right">{$product['quantity']}</td>
 	              <td class="right">￥{$product['price']}</td>
