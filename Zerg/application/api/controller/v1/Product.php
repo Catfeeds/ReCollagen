@@ -122,15 +122,20 @@ class Product extends Controller
      * @return Product
      * @throws ProductException
      */
-    public function getOne($id)
-    {
+    public function getOne($id){
+        
         (new IDMustBePositiveInt())->goCheck();
         $product = ProductModel::getProductDetail($id);
 
-        if (!$product)
-        {
+        if (!$product){
             throw new ProductException();
         }
+        //判断用户是否已收藏
+        $currentUid  = TokenService::getCurrentUid();
+        $where       = ['uid'=>$currentUid,'goods_id'=>$id];
+        $haveCollect = $this->haveCollectGoods($where);
+        $product['haveCollect'] = $haveCollect ? 1:0;
+
         return $product;
     }
 
@@ -158,12 +163,22 @@ class Product extends Controller
         $currentUid = TokenService::getCurrentUid();
         $where = ['uid'=>$currentUid,'goods_id'=>$id];
 
-        $haveCollect = $UserCollectModel->where($where)->find();
+        $haveCollect = $this->haveCollectGoods($where);
         if (!$haveCollect) {
             $UserCollectModel->save($where);
         }else{
             UserCollectModel::destroy($where);
         }
+
+    }
+    /**
+     * 判断用户是否已收藏该商品
+     */
+    private function haveCollectGoods($where){
+
+        $UserCollectModel = new UserCollectModel();
+
+        return $UserCollectModel->where($where)->find();
 
     }
 
