@@ -1,11 +1,11 @@
 Request:
-    /api/v1/product/:id
+    /api/v1/product/collect
 
 Method:
     Post
 
 Params:
-    "id"        :   "商品id"
+    "goods_id"        :   "商品id"
 
 
 
