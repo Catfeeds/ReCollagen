@@ -1,11 +1,11 @@
 ﻿Request:
-    /api/v1/product/30
+    /api/v1/product/:id
 
 Method:
     Get
 
 Params:
-    # 30      商品id
+    # id      商品id
 
 
 

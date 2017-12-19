@@ -151,19 +151,17 @@ class Product extends Controller
     /**
      * 收藏或取消收藏商品
      */
-    public function collectGoods($id,$type){
+    public function collectGoods($id){
 
         $UserCollectModel = new UserCollectModel();
 
         $currentUid = TokenService::getCurrentUid();
         $where = ['uid'=>$currentUid,'goods_id'=>$id];
 
-        if ($type == 'add') {
-            $haveCollect = $UserCollectModel->where($where)->find();
-            if (!$haveCollect) {
-                $UserCollectModel->save($where);
-            }
-        }elseif ($type == 'cancel') {
+        $haveCollect = $UserCollectModel->where($where)->find();
+        if (!$haveCollect) {
+            $UserCollectModel->save($where);
+        }else{
             UserCollectModel::destroy($where);
         }
 
