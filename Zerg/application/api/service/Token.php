@@ -128,7 +128,7 @@ class Token
 
     /**
      * 当需要获取全局UID时，应当调用此方法
-     *而不应当自己解析UID
+     * 而不应当自己解析UID
      *
      */
     public static function getCurrentUid()

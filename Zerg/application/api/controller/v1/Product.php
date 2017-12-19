@@ -3,6 +3,7 @@
 namespace app\api\controller\v1;
 
 use app\api\model\Product as ProductModel;
+use app\api\model\UserCollect as UserCollectModel;
 use app\api\validate\Count;
 use app\api\validate\IDMustBePositiveInt;
 use app\api\validate\PagingParameter;
@@ -144,6 +145,15 @@ class Product extends Controller
     {
         ProductModel::destroy($id);
         //        ProductModel::destroy(1,true);
+    }
+    /**
+     * 收藏或取消收藏商品
+     */
+    public function collectGoods($id,$type){
+        (new IDMustBePositiveInt())->goCheck();
+
+        UserCollectModel::collectGoods($id,$type);
+
     }
 
 }
