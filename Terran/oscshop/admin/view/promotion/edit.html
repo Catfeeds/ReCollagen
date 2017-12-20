@@ -1,0 +1,152 @@
+{extend name="public:base" /}
+{block name="content"}
+<div class="page-header">
+	<h1>
+		{$breadcrumb1}
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			{$breadcrumb2}
+		</small>
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			{$crumbs}
+		</small>			
+	
+	</h1>
+</div>
+
+<div class="row">
+	<div class="col-xs-12">	
+		
+		<div class="form-horizontal">
+			
+			{if condition="$Request.param.id"}
+			<input name="id" type="hidden" value="{$Request.param.id}" />
+			{/if}
+			
+			
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 促销活动名称 </label>
+				<div class="col-sm-5">
+					<div class="clearfix">
+						<input name="name" class="col-xs-10"  value="{$promotion.name|default=''}" type="text">
+					</div>
+				</div>
+			</div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-length-class"><font color="red">*</font> 促销活动类型 </label>
+                <div class="col-sm-10">
+                    <select name="type" id="type" class="col-xs-5">
+                        <option value="1" {if isset($promotion) && $promotion['type'] eq 1}selected{/if}>满额打折</option>
+                        <option value="2" {if isset($promotion) && $promotion['type'] eq 2}selected{/if}>满额返现</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 需要满足的金额 </label>
+                <div class="col-sm-5">
+                    <div class="clearfix">
+                        <input type="text" name="money" class="col-xs-10" value="{$promotion.money|default=''}"  onpaste="this.value=this.value.replace(/[^\d.]/g,'')" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group" id="expression_dl">
+                <label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 折扣 </label>
+                <div class="col-sm-5">
+                    <div class="clearfix">
+                        <input name="expression" class="col-xs-10"  value="{$promotion.expression|default=''}" type="text" placeholder="折扣值(1-100 如果打9折，请输入90)">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 开始时间 </label>
+                <div class="col-sm-5">
+                    <div class="clearfix">
+                        <input type="text" id="start_time" name="start_time" class="col-xs-10"  value="{$promotion.start_time|default=''}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 结束时间 </label>
+                <div class="col-sm-5">
+                    <div class="clearfix">
+                        <input type="text" id="end_time" name="end_time" class="col-xs-10"  value="{$promotion.end_time|default=''}">
+                    </div>
+                </div>
+            </div>
+			
+			<div class="space-4"></div>
+			
+			<div class="form-group">
+				<label class="col-sm-1 control-label no-padding-left"> </label>	
+				<div class="col-sm-11">
+					<input id="send" name="send" type="submit" value="提交" class="btn btn-primary" />
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{/block}
+{block name="javascript"}
+<script type="text/javascript" src="__PUBLIC__/js/layer/laydate/laydate.js"></script>
+
+<script>
+    $(document).ready(function(){
+        $("#type").trigger('change');
+        $('input[name=expression]').val("{$promotion.expression|default=''}");
+
+        $('#start_time').layDate();
+        $('#end_time').layDate();
+
+    })
+
+    $('#send').click(function(){
+    	$.post(
+    		'{$action}',
+    		$('input[type=\'text\'],input[type=\'hidden\'],select'),
+    		function(data){
+                if (data.code == 1) {
+                    layer.msg(data.msg,{icon:1});
+                    setTimeout(function(){
+                        location.href = data.url;
+                    },1000); 
+                }else{
+                    return layer.msg(data.msg,{icon:2});
+                }
+    		}
+    	);
+    });
+
+    $("#type").on("change",function(){
+        var type = parseInt($("#type").val());
+        var expression = '';
+        switch(type){
+            case 1:{
+                expression = '<label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 折扣 </label>'
+                            +'<div class="col-sm-5">'
+                            +'<div class="clearfix">'
+                            +'<input name="expression" class="col-xs-10"  value="" type="text" placeholder="折扣值(1-100 如果打9折，请输入90)">'
+                            +'</div>'
+                            +'</div>';
+                break;
+            }
+            case 2:{
+                expression = '<label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 优惠金额 </label>'
+                            +'<div class="col-sm-5">'
+                            +'<div class="clearfix">'
+                            +'<input name="expression" class="col-xs-10"  value="" type="text">'
+                            +'</div>'
+                            +'</div>';
+                break;
+            }
+        }
+        $("#expression_dl").html(expression);
+    });
+
+</script>							
+{/block}

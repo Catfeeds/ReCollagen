@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2017-12-19 15:24:56
+Date: 2017-12-20 15:46:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -64,7 +64,7 @@ CREATE TABLE `osc_admin` (
 -- ----------------------------
 -- Records of osc_admin
 -- ----------------------------
-INSERT INTO `osc_admin` VALUES ('1', 'admin', 'MDAwMDAwMDAwMLO6d61/iaja', '', '', 'admin@admin.com', '29', '127.0.0.1', '', '1505270345', '1513412152', '1513644857', '1', '2');
+INSERT INTO `osc_admin` VALUES ('1', 'admin', 'MDAwMDAwMDAwMLO6d61/iaja', '', '', 'admin@admin.com', '31', '127.0.0.1', '', '1505270345', '1513412152', '1513737029', '1', '2');
 INSERT INTO `osc_admin` VALUES ('2', 'orderAdmin', 'MDAwMDAwMDAwMLO6d61/iaja', '', '', null, '15', '127.0.0.1', null, '1512538804', '1513575692', '1513578428', '1', '3');
 INSERT INTO `osc_admin` VALUES ('3', 'memberAdmin', 'MDAwMDAwMDAwMLO6d61/iaja', '', '', null, '0', null, null, '1513577469', '1513577592', '0', '1', '4');
 
@@ -4357,7 +4357,7 @@ CREATE TABLE `osc_menu` (
   `status` tinyint(2) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `pid` (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=336 DEFAULT CHARSET=utf8 COMMENT='后台菜单';
+) ENGINE=InnoDB AUTO_INCREMENT=338 DEFAULT CHARSET=utf8 COMMENT='后台菜单';
 
 -- ----------------------------
 -- Records of osc_menu
@@ -4367,7 +4367,7 @@ INSERT INTO `osc_menu` VALUES ('2', 'admin', '1', '后台菜单管理', 'admin/m
 INSERT INTO `osc_menu` VALUES ('19', 'admin', '28', '商品分类', 'admin/category/index', '', '2', 'nav', '1');
 INSERT INTO `osc_menu` VALUES ('28', 'admin', '0', '商品', 'admin/goods/index', 'fa-gift fa-lg', '2', 'nav', '1');
 INSERT INTO `osc_menu` VALUES ('29', 'admin', '28', '商品管理', 'admin/goods/index', '', '1', 'nav', '1');
-INSERT INTO `osc_menu` VALUES ('57', 'admin', '0', '主页', 'admin/index/index', '', '1', 'auth', '1');
+INSERT INTO `osc_menu` VALUES ('57', 'admin', '0', '主页', 'admin/index/index', '', '0', 'auth', '1');
 INSERT INTO `osc_menu` VALUES ('66', 'admin', '29', '新增', 'admin/goods/add', '', '1', 'auth', '1');
 INSERT INTO `osc_menu` VALUES ('68', 'admin', '29', '编辑', 'admin/goods/edit', '', '3', 'auth', '1');
 INSERT INTO `osc_menu` VALUES ('69', 'admin', '29', '删除', 'admin/goods/del', '', '4', 'auth', '1');
@@ -4462,6 +4462,8 @@ INSERT INTO `osc_menu` VALUES ('332', 'member', '138', '导出订单', 'member/o
 INSERT INTO `osc_menu` VALUES ('333', 'admin', '136', '更新排序', 'admin/banner/update_sort', null, '0', 'auth', '1');
 INSERT INTO `osc_menu` VALUES ('334', 'admin', '29', '编辑产品参数', 'admin/goods/edit_param', null, '0', 'auth', '1');
 INSERT INTO `osc_menu` VALUES ('335', 'member', '139', '修改账户金额', 'member/member_backend/updateAccount', null, '0', 'auth', '1');
+INSERT INTO `osc_menu` VALUES ('336', 'admin', '0', '促销', 'admin/promotion/index', 'fa-smile-o', '1', 'nav', '1');
+INSERT INTO `osc_menu` VALUES ('337', 'admin', '336', '促销管理', 'admin/promotion/index', '', '0', 'nav', '1');
 
 -- ----------------------------
 -- Table structure for `osc_module`
@@ -4561,7 +4563,7 @@ CREATE TABLE `osc_order` (
   `create_time` int(11) NOT NULL DEFAULT '0',
   `update_time` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of osc_order
@@ -4590,9 +4592,32 @@ CREATE TABLE `osc_order_goods` (
 -- ----------------------------
 -- Records of osc_order_goods
 -- ----------------------------
-INSERT INTO `osc_order_goods` VALUES ('13', '3', '5', '0', 'images/osc1/5/1.jpg', '旅行套装便携功夫茶具', '', '3', '19.90', '59.70');
-INSERT INTO `osc_order_goods` VALUES ('14', '3', '6', '0', 'images/osc1/6/1.jpg', '定窑白荷花大号茶个', '优雅白', '1', '39.00', '39.00');
-INSERT INTO `osc_order_goods` VALUES ('15', '4', '12', '0', 'images/osc1/product/2@theme.png', '青花白瓷手绘荷花', '', '10', '723.50', '7235.00');
+INSERT INTO `osc_order_goods` VALUES ('13', '3', '5', '1', 'images/osc1/5/1.jpg', '旅行套装便携功夫茶具', '', '3', '19.90', '59.70');
+INSERT INTO `osc_order_goods` VALUES ('14', '3', '6', '1', 'images/osc1/6/1.jpg', '定窑白荷花大号茶个', '优雅白', '1', '39.00', '39.00');
+INSERT INTO `osc_order_goods` VALUES ('15', '4', '12', '1', 'images/osc1/product/2@theme.png', '青花白瓷手绘荷花', '', '10', '723.50', '7235.00');
+
+-- ----------------------------
+-- Table structure for `osc_promotion`
+-- ----------------------------
+DROP TABLE IF EXISTS `osc_promotion`;
+CREATE TABLE `osc_promotion` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(60) NOT NULL DEFAULT '' COMMENT '活动名称',
+  `type` int(2) NOT NULL DEFAULT '0' COMMENT '活动类型',
+  `money` float(10,2) DEFAULT '0.00' COMMENT '最小金额',
+  `expression` varchar(100) DEFAULT NULL COMMENT '优惠体现',
+  `start_time` int(11) NOT NULL DEFAULT '0' COMMENT '活动开始时间',
+  `end_time` int(11) NOT NULL DEFAULT '0' COMMENT '活动结束时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='促销类型';
+
+-- ----------------------------
+-- Records of osc_promotion
+-- ----------------------------
+INSERT INTO `osc_promotion` VALUES ('2', '限时满500打8折', '1', '500.00', '80', '1513753284', '1519974087');
+INSERT INTO `osc_promotion` VALUES ('3', '限时满500返现60', '2', '500.00', '60', '1513754327', '1520611200');
+INSERT INTO `osc_promotion` VALUES ('4', '限时满300返现30', '2', '300.00', '30', '1513754470', '1516809600');
+INSERT INTO `osc_promotion` VALUES ('7', '限时满100返现5', '2', '100.00', '5', '1512316800', '1513267200');
 
 -- ----------------------------
 -- Table structure for `osc_transport`
@@ -4629,7 +4654,7 @@ CREATE TABLE `osc_transport_extend` (
   `transport_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '运费模板ID',
   `transport_title` varchar(60) NOT NULL DEFAULT '' COMMENT '运费模板',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=310 DEFAULT CHARSET=utf8 COMMENT='运费模板扩展表';
+) ENGINE=InnoDB AUTO_INCREMENT=308 DEFAULT CHARSET=utf8 COMMENT='运费模板扩展表';
 
 -- ----------------------------
 -- Records of osc_transport_extend
@@ -4661,7 +4686,7 @@ CREATE TABLE `osc_user_action` (
   `info` varchar(255) DEFAULT NULL COMMENT '行为描述',
   `add_time` int(10) NOT NULL DEFAULT '0' COMMENT '加入时间',
   PRIMARY KEY (`ua_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=659 DEFAULT CHARSET=utf8 COMMENT='用户行为';
+) ENGINE=InnoDB AUTO_INCREMENT=687 DEFAULT CHARSET=utf8 COMMENT='用户行为';
 
 -- ----------------------------
 -- Records of osc_user_action
@@ -4797,3 +4822,31 @@ INSERT INTO `osc_user_action` VALUES ('655', '1', 'admin', '后台系统用户',
 INSERT INTO `osc_user_action` VALUES ('656', '1', 'admin', '后台系统用户', '更新商品6', '1513667995');
 INSERT INTO `osc_user_action` VALUES ('657', '1', 'admin', '后台系统用户', '更新商品状态', '1513668015');
 INSERT INTO `osc_user_action` VALUES ('658', '1', 'admin', '后台系统用户', '更新商品基本信息', '1513668103');
+INSERT INTO `osc_user_action` VALUES ('659', '1', 'admin', '后台系统用户', '登录了后台系统', '1513731414');
+INSERT INTO `osc_user_action` VALUES ('660', '1', 'admin', '后台系统用户', '登录了后台系统', '1513737029');
+INSERT INTO `osc_user_action` VALUES ('661', '1', 'admin', '后台系统用户', '添加了后台菜单，促销', '1513737541');
+INSERT INTO `osc_user_action` VALUES ('662', '1', 'admin', '后台系统用户', '添加了后台菜单，促销管理', '1513737958');
+INSERT INTO `osc_user_action` VALUES ('663', '1', 'admin', '后台系统用户', '修改了后台菜单，主页', '1513737979');
+INSERT INTO `osc_user_action` VALUES ('664', '1', 'admin', '后台系统用户', '修改了后台菜单，促销管理', '1513738191');
+INSERT INTO `osc_user_action` VALUES ('665', '1', 'admin', '后台系统用户', '修改了商品分类', '1513752940');
+INSERT INTO `osc_user_action` VALUES ('666', '1', 'admin', '后台系统用户', '修改了促销管理', '1513752972');
+INSERT INTO `osc_user_action` VALUES ('667', '1', 'admin', '后台系统用户', '修改了促销管理', '1513753003');
+INSERT INTO `osc_user_action` VALUES ('668', '1', 'admin', '后台系统用户', '修改了促销管理', '1513753132');
+INSERT INTO `osc_user_action` VALUES ('669', '1', 'admin', '后台系统用户', '修改了促销管理', '1513753215');
+INSERT INTO `osc_user_action` VALUES ('670', '1', 'admin', '后台系统用户', '修改了促销管理', '1513753288');
+INSERT INTO `osc_user_action` VALUES ('671', '1', 'admin', '后台系统用户', '修改了促销管理', '1513753305');
+INSERT INTO `osc_user_action` VALUES ('672', '1', 'admin', '后台系统用户', '修改了促销管理', '1513753321');
+INSERT INTO `osc_user_action` VALUES ('673', '1', 'admin', '后台系统用户', '修改了促销管理', '1513753347');
+INSERT INTO `osc_user_action` VALUES ('674', '1', 'admin', '后台系统用户', '修改了促销管理', '1513753363');
+INSERT INTO `osc_user_action` VALUES ('675', '1', 'admin', '后台系统用户', '修改了促销管理', '1513753898');
+INSERT INTO `osc_user_action` VALUES ('676', '1', 'admin', '后台系统用户', '修改了促销管理', '1513753907');
+INSERT INTO `osc_user_action` VALUES ('677', '1', 'admin', '后台系统用户', '修改了促销管理', '1513753920');
+INSERT INTO `osc_user_action` VALUES ('678', '1', 'admin', '后台系统用户', '修改了促销管理', '1513754328');
+INSERT INTO `osc_user_action` VALUES ('679', '1', 'admin', '后台系统用户', '新增了促销管理', '1513754667');
+INSERT INTO `osc_user_action` VALUES ('680', '1', 'admin', '后台系统用户', '新增了促销管理', '1513755123');
+INSERT INTO `osc_user_action` VALUES ('681', '1', 'admin', '后台系统用户', '删除了促销管理', '1513755127');
+INSERT INTO `osc_user_action` VALUES ('682', '1', 'admin', '后台系统用户', '修改了促销管理', '1513755163');
+INSERT INTO `osc_user_action` VALUES ('683', '1', 'admin', '后台系统用户', '新增了促销管理', '1513755551');
+INSERT INTO `osc_user_action` VALUES ('684', '1', 'admin', '后台系统用户', '修改了促销管理', '1513755561');
+INSERT INTO `osc_user_action` VALUES ('685', '1', 'admin', '后台系统用户', '修改了促销管理', '1513755576');
+INSERT INTO `osc_user_action` VALUES ('686', '1', 'admin', '后台系统用户', '修改了促销管理', '1513755646');
