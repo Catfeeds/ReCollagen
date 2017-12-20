@@ -162,7 +162,7 @@
     $('#button-dispatch').live('click', function() {
         var shipping_num = $('input[name=\'shipping_num\']').val();
         if (isNaN(shipping_num)) {
-            alertMsg('请输入正确的物流单号');
+            return layer.msg('请输入正确的物流单号',{icon:2});
         }
     	$.ajax({
     		url: '<?php echo url("OrderBackend/update_shipping",array("id"=>input("param.id"))); ?>',
@@ -171,9 +171,9 @@
     		data: 'shipping_num=' + encodeURIComponent(shipping_num),
     		success: function(res) {
     			if (res == 'true') {
-                    alertMsg('录入成功');
+                    layer.msg('录入成功',{icon:1});
                 }else{
-                    alertMsg('录入失败');
+                    layer.msg('录入失败',{icon:2});
                 }
     		}
     	});

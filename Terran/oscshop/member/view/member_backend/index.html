@@ -89,12 +89,21 @@ $(function(){
     });	
     //修改用户账户金额
     $('.account').blur(function(){
+    	var accountMoney = $(this).val();
+        if (isNaN(accountMoney)) {
+            return layer.msg('请输入正确的充值金额',{icon:2});
+        }
 		$.post(
 			"{:url('MemberBackend/updateAccount')}",
-			{accountMoney:$(this).val(),accountName:$(this).attr('name'),uid:$(this).attr('uid')},
+			{accountMoney:accountMoney,accountName:$(this).attr('name'),uid:$(this).attr('uid')},
 			function(data){
 				if(data){
-					window.location.reload();
+                    layer.msg('充值成功',{icon:1});
+                    setTimeout(function(){
+						window.location.reload();
+                    },1000);
+				}else{
+                    layer.msg('充值失败',{icon:2});
 				}
 			}
 		);

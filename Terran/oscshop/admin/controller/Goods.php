@@ -46,7 +46,7 @@ class Goods extends AdminBase{
 			$data     = input('post.');	
 			$validate = $this->validate($data,'Goods');	
 			if($validate!==true){
-				return $this->error($validate);	
+				$this->error($validate);	
 			}
 			
 			$res = $this->goodsModel->add_goods($data);		
@@ -83,9 +83,9 @@ class Goods extends AdminBase{
 			$res = $this->goodsModel->update($data,false,true);
 			if ($res) {
 				storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'更新商品基本信息');							
-				return $this->success('更新成功！',url('Goods/index'));
+				$this->success('更新成功！',url('Goods/index'));
 			}else{
-				return $this->error('更新失败！');	
+				$this->error('更新失败！');	
 			}
 		}
 
