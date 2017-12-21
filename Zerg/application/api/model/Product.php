@@ -117,11 +117,12 @@ class Product extends BaseModel
             ->order('create_time desc')
             ->select();
         //如果商品有选项，默认价格为第一个选项的价格
-        if (empty($products)) {
+        if (!empty($products)) {
             foreach ($products as $key => $product) {
-                if (condition) {
-                    # code...
+                if (!empty($product['options'][0])) {
+                    $products[$key]['price'] = $product['options'][0]['option_price'];
                 }
+                unset($product['options']);
             }
         }
         return $products;

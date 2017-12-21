@@ -44,7 +44,7 @@ Route::group('api/:version/theme',function(){
 Route::post('api/:version/product', 'api/:version.Product/createOne');
 Route::delete('api/:version/product/:id', 'api/:version.Product/deleteOne');
 Route::get('api/:version/product/by_category/paginate', 'api/:version.Product/getByCategory');  //获取该类目下所有商品(分页）
-Route::get('api/:version/product/by_category', 'api/:version.Product/getAllInCategory');        //获取该类目下所有商品(不分页）
+Route::get('api/:version/product/by_category/:id', 'api/:version.Product/getAllInCategory',[], ['id'=>'\d+']);        //获取该类目下所有商品(不分页）
 Route::get('api/:version/product/:id', 'api/:version.Product/getOne',[],['id'=>'\d+']);         //获取商品详情
 Route::get('api/:version/product/recent', 'api/:version.Product/getRecent');                    //首页最新新品列表
 Route::post('api/:version/product/collect','api/:version.Product/collectGoods');                //收藏或取消收藏商品

@@ -109,7 +109,7 @@ class Product extends Controller
                 'cat_id','weight','bulk','stock'
             ])
             ->toArray();
-halt($data);
+// halt($data);
 
         return $data;
 

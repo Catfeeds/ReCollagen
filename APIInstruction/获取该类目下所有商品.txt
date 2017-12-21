@@ -1,5 +1,5 @@
 Request:
-    api/v1/product/by_category
+    api/v1/product/by_category/:id
 
 Method:
     Get
