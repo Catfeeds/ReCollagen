@@ -1,0 +1,32 @@
+Request:
+    /api/v1/address
+
+Method:
+    Get
+
+Params:
+    ""
+
+
+
+Callback: 编码一律utf-8
+
++-------------------------------------------------------+
+
+    {  
+
+        "uid"           : "用户id"     
+        "name"          : "收货人"                
+        "telephone"     : "联系电话"   
+        "province_id"   : "省id"                               
+        "city_id"       : "市id"                               
+        "country_id"    : "区县id"                               
+        "address"       : "具体地址"                               
+
+    }
+
++-------------------------------------------------------+
+    {  
+        "errorCode"     :  "错误码", 
+        "msg"           : "错误提示",        
+    }
