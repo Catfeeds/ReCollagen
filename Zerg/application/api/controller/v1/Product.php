@@ -34,7 +34,7 @@ class Product extends Controller
     {
         (new IDMustBePositiveInt())->goCheck();
         (new PagingParameter())->goCheck();
-        $pagingProducts = ProductModel::getProductsByCategoryID(
+        $pagingProducts = ProductModel::getProductsByCatId(
             $id, true, $page, $size);
         if ($pagingProducts->isEmpty())
         {
@@ -57,7 +57,7 @@ class Product extends Controller
 
 //        $collection = collection($pagingProducts->items());
         $data = $pagingProducts
-            ->hidden(['quantity','weight','length','width','height'])
+            ->hidden(['quantity','weight','bulk'])
             ->toArray();
         // 如果是简洁分页模式，直接序列化$pagingProducts这个Paginator对象会报错
         //        $pagingProducts->data = $data;            
@@ -69,22 +69,20 @@ class Product extends Controller
 
     /**
      * 获取该分类下所有商品(不分页）
-     * @url /product/all?id=:category_id
+     * @url /product/all/:category_id
      * @param int $id 分类id号
      * @return \think\Paginator
      * @throws ThemeException
      */
-    public function getAllInCategory($id = -1)
-    {
+    public function getProductsByCatId($id = -1){
+
         (new IDMustBePositiveInt())->goCheck();
-        $products = ProductModel::getProductsByCategoryID(
-            $id, false);
-        if ($products->isEmpty())
-        {
+        $products = ProductModel::getProductsByCatId($id, false);
+        if ($products->isEmpty()){
             throw new ThemeException();
         }
         $data = $products
-            ->hidden(['stock','weight','length','width','height','create_time','update_time'])
+            ->hidden(['stock','weight','bulk'])
             ->toArray();
 
         return $data;
@@ -106,7 +104,7 @@ class Product extends Controller
         }
         $data = $pagingProducts->hidden(
             [
-                'cat_id','weight','length','width','height','stock','create_time','update_time'
+                'cat_id','weight','bulk','stock'
             ])
             ->toArray();
 

@@ -58,18 +58,34 @@ class Product extends BaseModel
      * @param bool $paginate
      * @return \think\Paginator
      */
-    public static function getProductsByCategoryID($categoryID, $paginate = true, $page = 1, $size = 30){
+    public static function getProductsByCatId($categoryID, $paginate = true, $page = 1, $size = 30){
         
-        $query = self::where('cat_id', '=', $categoryID);
+        $query = self::with(
+                ['options' => function ($query){
+                        $query->order('sort');
+                }])
+            ->where('cat_id', '=', $categoryID);
+
         if (!$paginate){
-            return $query->order('create_time desc')->select();
+            $products = $query->order('create_time desc')->select();
         }else{
             // paginate 第二参数true表示采用简洁模式，简洁模式不需要查询记录总数
-            return $query->paginate(
+            $products = $query->paginate(
                 $size, true, [
                 'page' => $page
             ]);
         }
+
+        //如果商品有选项，默认价格为第一个选项的价格
+        if (!empty($products)) {
+            foreach ($products as $key => $product) {
+                if (!empty($product['options'][0])) {
+                    $products[$key]['price'] = $product['options'][0]['option_price'];
+                }
+                unset($product['options']);
+            }
+        }
+        return $products;
     }
 
     /**
@@ -104,11 +120,27 @@ class Product extends BaseModel
             ->find($id);
         return $product;
     }
-
+    /**
+     * 获取最近商品
+     */
     public static function getMostRecent(){
 
-        $products = self::where(['status'=>1])->order('create_time desc')->select();
-
+        $products = self::with(
+                ['options' => function ($query){
+                        $query->order('sort');
+                }])
+            ->where(['status'=>1])
+            ->order('create_time desc')
+            ->select();
+        //如果商品有选项，默认价格为第一个选项的价格
+        if (!empty($products)) {
+            foreach ($products as $key => $product) {
+                if (!empty($product['options'][0])) {
+                    $products[$key]['price'] = $product['options'][0]['option_price'];
+                }
+                unset($product['options']);
+            }
+        }
         return $products;
     }
 

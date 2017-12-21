@@ -590,3 +590,15 @@ function getPromotionType($type){
             break;
     }
 }
+/**
+ * 判断促销活动状态
+ */
+function getPromotionStatus($start_time,$end_time){
+    if ($start_time > time()) {
+        return '即将开始';
+    }elseif ($start_time < time() && $end_time > time()) {
+        return '进行中';
+    }elseif ($end_time < time()) {
+        return '已结束';
+    }
+}

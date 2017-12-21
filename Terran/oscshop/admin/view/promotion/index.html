@@ -24,7 +24,8 @@
 						<th>活动名称</th> 		
 						<th>活动类型</th> 									
 						<th>开始时间</th>
-						<th>结束时间</th>					
+						<th>结束时间</th>	
+						<th>状态</th>					
 						<th>操作</th>				
 					</tr>
 				</thead>
@@ -36,7 +37,7 @@
 						<td>{$promotion.type|getPromotionType}</td>
 						<td>{$promotion.start_time|date="Y-m-d H:i:s",###}</td>
 						<td>{$promotion.end_time|date="Y-m-d H:i:s",###}</td>
-
+						<td>{$promotion.status}</td>
 						<td>
 							<a  class="btn btn-xs btn-info" href='{:url("Promotion/edit",array("id"=>$promotion["id"]))}'>
 								<i class="fa fa-edit bigger-120"></i>

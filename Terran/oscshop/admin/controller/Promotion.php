@@ -21,6 +21,11 @@ class Promotion extends AdminBase{
     public function index(){
 		$list = $this->model->order('id desc')->paginate(config('page_num'));
 
+		if (count($list) > 0) {
+			foreach ($list as $key => $v) {
+				$list[$key]['status'] = getPromotionStatus($v['start_time'],$v['end_time']);
+			}
+		}
 
 		$this->assign('empty', '<tr><td colspan="20">暂无数据</td></tr>');
 		$this->assign('list', $list);

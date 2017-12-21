@@ -22,7 +22,7 @@ class Category extends Base {
     getProductsByCategory(id,callback) {
      
         var param = {
-          url: 'product/by_category?id='+id,
+          url: 'product/by_category/'+id,
             sCallback: function (data) {
                 callback && callback(data);
             }
