@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2017-12-20 15:46:49
+Date: 2017-12-21 10:02:34
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -64,7 +64,7 @@ CREATE TABLE `osc_admin` (
 -- ----------------------------
 -- Records of osc_admin
 -- ----------------------------
-INSERT INTO `osc_admin` VALUES ('1', 'admin', 'MDAwMDAwMDAwMLO6d61/iaja', '', '', 'admin@admin.com', '31', '127.0.0.1', '', '1505270345', '1513412152', '1513737029', '1', '2');
+INSERT INTO `osc_admin` VALUES ('1', 'admin', 'MDAwMDAwMDAwMLO6d61/iaja', '', '', 'admin@admin.com', '32', '127.0.0.1', '', '1505270345', '1513412152', '1513817908', '1', '2');
 INSERT INTO `osc_admin` VALUES ('2', 'orderAdmin', 'MDAwMDAwMDAwMLO6d61/iaja', '', '', null, '15', '127.0.0.1', null, '1512538804', '1513575692', '1513578428', '1', '3');
 INSERT INTO `osc_admin` VALUES ('3', 'memberAdmin', 'MDAwMDAwMDAwMLO6d61/iaja', '', '', null, '0', null, null, '1513577469', '1513577592', '0', '1', '4');
 
@@ -3680,7 +3680,7 @@ CREATE TABLE `osc_banner` (
 INSERT INTO `osc_banner` VALUES ('2', 'images/osc1/2/d04.jpg', '7', '1');
 INSERT INTO `osc_banner` VALUES ('3', 'images/osc1/category/banner-3a.png', '11', '2');
 INSERT INTO `osc_banner` VALUES ('4', 'images/osc1/category/category-dryfruit.png', '12', '5');
-INSERT INTO `osc_banner` VALUES ('6', 'images/osc2/banner-1a.png', '19', '0');
+INSERT INTO `osc_banner` VALUES ('6', 'images/osc1/category/category-fry-a.png', '19', '0');
 
 -- ----------------------------
 -- Table structure for `osc_brand`
@@ -3842,45 +3842,43 @@ CREATE TABLE `osc_goods` (
   `stock` int(11) NOT NULL DEFAULT '0' COMMENT '库存',
   `sale_count` int(11) NOT NULL DEFAULT '0' COMMENT '销量',
   `weight` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '重量',
-  `length` decimal(15,2) NOT NULL DEFAULT '0.00',
-  `width` decimal(15,2) NOT NULL DEFAULT '0.00',
-  `height` decimal(15,2) NOT NULL DEFAULT '0.00',
+  `bulk` decimal(10,2) NOT NULL DEFAULT '0.00',
   `create_time` varchar(40) NOT NULL DEFAULT '' COMMENT '新增时间',
   `update_time` varchar(40) NOT NULL DEFAULT '' COMMENT '修改的时间',
   `sort_order` int(11) NOT NULL DEFAULT '1',
   `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1上架0下架',
   PRIMARY KEY (`goods_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 COMMENT='商品信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8 COMMENT='商品信息表';
 
 -- ----------------------------
 -- Records of osc_goods
 -- ----------------------------
-INSERT INTO `osc_goods` VALUES ('2', '1', '13', 'images/osc1/2/2.jpg', '品茗陶瓷茶盏瓷杯6个', '79.00', '0', '0', '500.00', '20.00', '20.00', '10.00', '2016-08-17 23:10:22', '2017-12-14 10:39:59', '2', '1');
-INSERT INTO `osc_goods` VALUES ('3', '1', '1', 'images/osc1/3/2.jpg', '公道杯茶海分茶器陶瓷', '39.00', '54678', '0', '200.00', '20.00', '20.00', '20.00', '2016-08-19 20:22:43', '0000-00-00 00:00:00', '3', '1');
-INSERT INTO `osc_goods` VALUES ('4', '1', '2', 'images/osc1/4/1.jpg', '青花功夫茶具陶瓷配件', '30.00', '787', '0', '200.00', '20.00', '20.00', '20.00', '2016-08-19 20:37:55', '2017-12-14 10:38:54', '4', '1');
-INSERT INTO `osc_goods` VALUES ('5', '1', '13', 'images/osc1/5/1.jpg', '旅行套装便携功夫茶具', '19.90', '5654', '0', '200.00', '20.00', '20.00', '20.00', '2016-08-19 20:57:05', '2017-12-19 15:21:43', '5', '1');
-INSERT INTO `osc_goods` VALUES ('6', '1', '5', 'images/osc1/6/1.jpg', '定窑白荷花大号茶个', '39.00', '0', '0', '100.00', '20.00', '20.00', '20.00', '2016-08-19 21:12:02', '2017-12-19 15:20:15', '6', '1');
-INSERT INTO `osc_goods` VALUES ('7', '1', '3', 'images/osc1/7/1.jpg', '功夫茶具手拉坯柴烧', '30.00', '785', '0', '200.00', '20.00', '20.00', '20.00', '2016-08-19 21:29:39', '0000-00-00 00:00:00', '7', '1');
-INSERT INTO `osc_goods` VALUES ('8', '1', '1', 'images/osc1/8/1.jpg', '青瓷手绘荷花陶瓷茶叶罐', '58.00', '323', '0', '200.00', '20.00', '20.00', '20.00', '2016-08-19 21:42:42', '0000-00-00 00:00:00', '8', '1');
-INSERT INTO `osc_goods` VALUES ('9', '1', '13', 'images/osc1/9/1.jpg', '定窑白瓷手绘胭红整套', '198.00', '746', '0', '2.00', '20.00', '20.00', '20.00', '2016-08-19 22:00:25', '2017-12-14 10:42:43', '9', '1');
-INSERT INTO `osc_goods` VALUES ('10', '1', '2', 'images/osc1/10/1.jpg', '定窑白瓷手绘山水整套', '158.00', '323', '0', '2.00', '20.00', '20.00', '20.00', '2016-08-19 22:08:17', '2017-12-18 09:51:59', '10', '1');
-INSERT INTO `osc_goods` VALUES ('11', '1', '2', 'images/osc1/11/1.jpg', '222手工粗陶柴烧整套', '450.00', '23', '0', '1001.56', '10.00', '20.00', '10.01', '2016-08-19 22:15:27', '2017-12-14 09:31:15', '11', '1');
-INSERT INTO `osc_goods` VALUES ('12', '1', '2', 'images/osc1/product/2@theme.png', '青花白瓷手绘荷花', '168.50', '2323', '0', '2.00', '20.00', '20.00', '20.00', '2016-08-19 22:24:54', '2017-12-14 10:38:17', '12', '1');
-INSERT INTO `osc_goods` VALUES ('13', '1', '3', 'images/osc1/product/product-dryfruit@4.png', '贵妃笑', '200.00', '2323', '0', '100.00', '10.00', '10.00', '10.00', '2017-12-13 17:29:40', '2017-12-14 09:38:36', '0', '1');
-INSERT INTO `osc_goods` VALUES ('14', '1', '5', 'images/osc1/fruit/product-dryfruit@2.png', '春生龙眼', '20.00', '2323', '0', '0.00', '0.00', '0.00', '0.00', '2017-12-13 17:36:52', '', '0', '1');
-INSERT INTO `osc_goods` VALUES ('15', '1', '5', 'images/osc1/fruit/product-dryfruit@1.png', '梨花带雨', '0.01', '232', '0', '0.00', '0.00', '0.00', '0.00', '2017-12-13 17:38:52', '', '1', '1');
-INSERT INTO `osc_goods` VALUES ('16', '1', '29', 'images/osc1/product/product-cake@2.png', '小明的猪耳朵', '9.90', '232', '0', '0.00', '0.00', '0.00', '0.00', '2017-12-14 09:44:17', '2017-12-14 09:48:41', '1', '0');
-INSERT INTO `osc_goods` VALUES ('17', '1', '5', 'images/osc1/fruit/product-dryfruit@3.png', '夏日芒果', '0.01', '232', '999', '100.00', '10.00', '10.00', '10.00', '2017-12-14 09:53:03', '2017-12-14 09:53:03', '1', '1');
-INSERT INTO `osc_goods` VALUES ('18', '1', '1', 'images/osc1/product/product-rice@2.png', '有机绿豆', '0.01', '232', '999', '100.00', '10.00', '10.00', '10.00', '2017-12-14 10:02:24', '2017-12-14 10:02:24', '1', '1');
-INSERT INTO `osc_goods` VALUES ('19', '1', '1', 'images/osc1/fruit/product-rice@4.png', '现摘猴头菇', '0.01', '323', '999', '500.00', '10.00', '60.00', '10.00', '2017-12-14 10:08:44', '2017-12-14 10:08:44', '1', '1');
-INSERT INTO `osc_goods` VALUES ('20', '1', '2', 'images/osc1/product/product-tea@3.png', '西湖龙井', '888.00', '999', '212', '100.00', '10.00', '10.00', '10.00', '2017-12-14 10:16:05', '2017-12-14 10:16:05', '1', '1');
-INSERT INTO `osc_goods` VALUES ('21', '1', '3', 'images/osc1/product/product-tea@3.png', '碧螺春100g', '666.00', '546354', '977', '100.00', '10.00', '10.00', '10.00', '2017-12-14 10:17:32', '2017-12-14 10:17:32', '1', '1');
-INSERT INTO `osc_goods` VALUES ('22', '0', '2', 'images/osc1/product/product-tea@1.png', '红袖枸杞6g*3袋', '666.00', '777', '988', '100.00', '10.00', '10.00', '10.00', '2017-12-14 10:25:28', '2017-12-14 13:30:49', '1', '0');
-INSERT INTO `osc_goods` VALUES ('25', '0', '29', 'images/osc1/fruit/product-cake-a@3.png', '比利时华夫饼', '30.00', '988', '0', '100.00', '10.00', '10.00', '10.00', '2017-12-15 10:00:04', '', '1', '1');
-INSERT INTO `osc_goods` VALUES ('30', '1', '3', 'images/osc1/fruit/product-cake@1.png', '李大爷的妙脆角', '9.90', '998', '0', '100.00', '10.00', '10.00', '10.00', '2017-12-15 10:13:43', '2017-12-16 08:58:24', '1', '1');
-INSERT INTO `osc_goods` VALUES ('32', '1', '3', 'images/osc1/fruit/product-cake-a@3.png', '好吃的饼干', '30.00', '992', '0', '100.00', '10.00', '10.00', '10.00', '2017-12-15 10:19:07', '2017-12-17 17:02:17', '1', '1');
-INSERT INTO `osc_goods` VALUES ('34', '0', '1', 'images/osc1/product/2@theme.png', '八宝莲子200克', '9.91', '9991', '0', '100.00', '10.00', '10.00', '10.00', '2017-12-16 09:25:07', '2017-12-18 13:06:26', '1', '1');
-INSERT INTO `osc_goods` VALUES ('36', '1', '5', 'images/osc1/fruit/product-vg@3.png', '我吃西红柿', '10.00', '999', '0', '100.00', '10.00', '10.00', '10.00', '2017-12-19 14:10:35', '', '1', '1');
+INSERT INTO `osc_goods` VALUES ('2', '1', '13', 'images/osc1/2/2.jpg', '品茗陶瓷茶盏瓷杯6个', '79.00', '0', '0', '500.00', '0.01', '2016-08-17 23:10:22', '2017-12-14 10:39:59', '2', '1');
+INSERT INTO `osc_goods` VALUES ('3', '1', '1', 'images/osc1/3/2.jpg', '公道杯茶海分茶器陶瓷', '39.00', '54678', '0', '200.00', '0.01', '2016-08-19 20:22:43', '0000-00-00 00:00:00', '3', '1');
+INSERT INTO `osc_goods` VALUES ('4', '1', '2', 'images/osc1/4/1.jpg', '青花功夫茶具陶瓷配件', '30.00', '787', '0', '200.00', '0.01', '2016-08-19 20:37:55', '2017-12-14 10:38:54', '4', '1');
+INSERT INTO `osc_goods` VALUES ('5', '1', '13', 'images/osc1/5/1.jpg', '旅行套装便携功夫茶具', '19.90', '5654', '0', '200.00', '0.01', '2016-08-19 20:57:05', '2017-12-19 15:21:43', '5', '1');
+INSERT INTO `osc_goods` VALUES ('6', '1', '5', 'images/osc1/6/1.jpg', '定窑白荷花大号茶个', '39.00', '0', '0', '100.00', '0.02', '2016-08-19 21:12:02', '2017-12-19 15:20:15', '6', '1');
+INSERT INTO `osc_goods` VALUES ('7', '1', '3', 'images/osc1/7/1.jpg', '功夫茶具手拉坯柴烧', '30.00', '785', '0', '200.00', '0.02', '2016-08-19 21:29:39', '0000-00-00 00:00:00', '7', '1');
+INSERT INTO `osc_goods` VALUES ('8', '1', '1', 'images/osc1/8/1.jpg', '青瓷手绘荷花陶瓷茶叶罐', '58.00', '323', '0', '200.00', '0.02', '2016-08-19 21:42:42', '0000-00-00 00:00:00', '8', '1');
+INSERT INTO `osc_goods` VALUES ('9', '1', '13', 'images/osc1/9/1.jpg', '定窑白瓷手绘胭红整套', '198.00', '746', '0', '2.00', '0.02', '2016-08-19 22:00:25', '2017-12-14 10:42:43', '9', '1');
+INSERT INTO `osc_goods` VALUES ('10', '1', '2', 'images/osc1/10/1.jpg', '定窑白瓷手绘山水整套', '158.00', '323', '0', '2.00', '0.01', '2016-08-19 22:08:17', '2017-12-18 09:51:59', '10', '1');
+INSERT INTO `osc_goods` VALUES ('11', '1', '2', 'images/osc1/11/1.jpg', '222手工粗陶柴烧整套', '450.00', '23', '0', '1001.56', '0.02', '2016-08-19 22:15:27', '2017-12-14 09:31:15', '11', '1');
+INSERT INTO `osc_goods` VALUES ('12', '1', '2', 'images/osc1/product/2@theme.png', '青花白瓷手绘荷花', '168.50', '2323', '0', '2.00', '0.02', '2016-08-19 22:24:54', '2017-12-14 10:38:17', '12', '1');
+INSERT INTO `osc_goods` VALUES ('13', '1', '3', 'images/osc1/product/product-dryfruit@4.png', '贵妃笑', '200.00', '2323', '0', '100.00', '0.01', '2017-12-13 17:29:40', '2017-12-14 09:38:36', '0', '1');
+INSERT INTO `osc_goods` VALUES ('14', '1', '5', 'images/osc1/fruit/product-dryfruit@2.png', '春生龙眼', '20.00', '2323', '0', '0.00', '0.02', '2017-12-13 17:36:52', '', '0', '1');
+INSERT INTO `osc_goods` VALUES ('15', '1', '5', 'images/osc1/fruit/product-dryfruit@1.png', '梨花带雨', '0.01', '232', '0', '0.00', '0.02', '2017-12-13 17:38:52', '', '1', '1');
+INSERT INTO `osc_goods` VALUES ('16', '1', '29', 'images/osc1/product/product-cake@2.png', '小明的猪耳朵', '9.90', '232', '0', '0.00', '0.01', '2017-12-14 09:44:17', '2017-12-14 09:48:41', '1', '0');
+INSERT INTO `osc_goods` VALUES ('17', '1', '5', 'images/osc1/fruit/product-dryfruit@3.png', '夏日芒果', '0.01', '232', '999', '100.00', '0.02', '2017-12-14 09:53:03', '2017-12-14 09:53:03', '1', '1');
+INSERT INTO `osc_goods` VALUES ('18', '1', '1', 'images/osc1/product/product-rice@2.png', '有机绿豆', '0.01', '232', '999', '100.00', '0.02', '2017-12-14 10:02:24', '2017-12-14 10:02:24', '1', '1');
+INSERT INTO `osc_goods` VALUES ('19', '1', '1', 'images/osc1/fruit/product-rice@4.png', '现摘猴头菇', '0.01', '323', '999', '500.00', '0.01', '2017-12-14 10:08:44', '2017-12-14 10:08:44', '1', '1');
+INSERT INTO `osc_goods` VALUES ('20', '1', '2', 'images/osc1/product/product-tea@3.png', '西湖龙井', '888.00', '999', '212', '100.00', '0.02', '2017-12-14 10:16:05', '2017-12-14 10:16:05', '1', '1');
+INSERT INTO `osc_goods` VALUES ('21', '1', '3', 'images/osc1/product/product-tea@3.png', '碧螺春100g', '666.00', '546354', '977', '100.00', '0.02', '2017-12-14 10:17:32', '2017-12-14 10:17:32', '1', '1');
+INSERT INTO `osc_goods` VALUES ('22', '0', '2', 'images/osc1/product/product-tea@1.png', '红袖枸杞6g*3袋', '666.00', '777', '988', '100.00', '0.01', '2017-12-14 10:25:28', '2017-12-14 13:30:49', '1', '0');
+INSERT INTO `osc_goods` VALUES ('25', '0', '29', 'images/osc1/fruit/product-cake-a@3.png', '比利时华夫饼', '30.00', '988', '0', '100.00', '0.01', '2017-12-15 10:00:04', '', '1', '1');
+INSERT INTO `osc_goods` VALUES ('30', '1', '3', 'images/osc1/fruit/product-cake@1.png', '李大爷的妙脆角', '9.90', '998', '0', '100.00', '0.02', '2017-12-15 10:13:43', '2017-12-16 08:58:24', '1', '1');
+INSERT INTO `osc_goods` VALUES ('32', '1', '3', 'images/osc1/fruit/product-cake-a@3.png', '好吃的饼干', '30.00', '992', '0', '100.00', '0.02', '2017-12-15 10:19:07', '2017-12-17 17:02:17', '1', '1');
+INSERT INTO `osc_goods` VALUES ('34', '0', '1', 'images/osc1/product/2@theme.png', '八宝莲子200克', '9.91', '9991', '0', '100.00', '0.01', '2017-12-16 09:25:07', '2017-12-18 13:06:26', '1', '1');
+INSERT INTO `osc_goods` VALUES ('36', '1', '5', 'images/osc1/fruit/product-vg@3.png', '我吃西红柿', '10.00', '999', '0', '100.00', '0.01', '2017-12-19 14:10:35', '', '1', '1');
 
 -- ----------------------------
 -- Table structure for `osc_goods_attribute`
@@ -3954,7 +3952,7 @@ CREATE TABLE `osc_goods_discount` (
   `discount` tinyint(4) NOT NULL DEFAULT '0' COMMENT '商品折扣',
   PRIMARY KEY (`product_discount_id`),
   KEY `product_id` (`goods_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='数量折扣';
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COMMENT='数量折扣';
 
 -- ----------------------------
 -- Records of osc_goods_discount
@@ -3982,7 +3980,7 @@ CREATE TABLE `osc_goods_image` (
   `image` varchar(100) NOT NULL DEFAULT '',
   `sort_order` int(3) NOT NULL DEFAULT '0',
   PRIMARY KEY (`goods_image_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8 COMMENT='商品图片表';
+) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8 COMMENT='商品图片表';
 
 -- ----------------------------
 -- Records of osc_goods_image
@@ -4063,7 +4061,7 @@ CREATE TABLE `osc_goods_mobile_description_image` (
   `description` varchar(255) NOT NULL DEFAULT '',
   `sort_order` int(5) NOT NULL DEFAULT '0',
   PRIMARY KEY (`mdi_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=136 DEFAULT CHARSET=utf8 COMMENT='手机商品描述图片';
+) ENGINE=InnoDB AUTO_INCREMENT=138 DEFAULT CHARSET=utf8 COMMENT='手机商品描述图片';
 
 -- ----------------------------
 -- Records of osc_goods_mobile_description_image
@@ -4208,7 +4206,7 @@ CREATE TABLE `osc_goods_option` (
   `stock` int(11) NOT NULL DEFAULT '0' COMMENT '库存',
   `sort` int(11) NOT NULL DEFAULT '1' COMMENT '排序',
   PRIMARY KEY (`goods_option_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of osc_goods_option
@@ -4257,7 +4255,7 @@ CREATE TABLE `osc_goods_param` (
   `param_name` varchar(50) NOT NULL DEFAULT '',
   `param_value` varchar(100) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COMMENT='产品参数';
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COMMENT='产品参数';
 
 -- ----------------------------
 -- Records of osc_goods_param
@@ -4320,8 +4318,8 @@ CREATE TABLE `osc_member` (
 -- ----------------------------
 -- Records of osc_member
 -- ----------------------------
-INSERT INTO `osc_member` VALUES ('2', 'oMgsK0VdN3Q43P-zIeC0IiVvd_fw', '哈哈哈', '18121029523', '22.00', '3.62', '1', '1512608799', '1513574261');
-INSERT INTO `osc_member` VALUES ('3', 'wx-iuyifghgf6345re221', '嘿嘿嘿', '13355556666', '111.00', '1500.00', '1', '1512633763', '1513393824');
+INSERT INTO `osc_member` VALUES ('2', 'oMgsK0VdN3Q43P-zIeC0IiVvd_fw', '哈哈哈', '18121029523', '4000.00', '500.00', '1', '1512608799', '1513760596');
+INSERT INTO `osc_member` VALUES ('3', 'wx-iuyifghgf6345re221', '嘿嘿嘿', '13355556666', '300.00', '666.00', '0', '1512633763', '1513761045');
 
 -- ----------------------------
 -- Table structure for `osc_member_collect`
@@ -4568,7 +4566,7 @@ CREATE TABLE `osc_order` (
 -- ----------------------------
 -- Records of osc_order
 -- ----------------------------
-INSERT INTO `osc_order` VALUES ('3', 'wx2017120753575710', '2', 'images/osc1/5/1.jpg', '旅行套装便携功夫茶具等', '2', '哈哈哈22', '18121029523', '北京市国家图书馆111号', '1', '邮政快递', '9891770403677', '98.70', '10.00', '98.70', '10.00', '108.70', '0', '1513402181', '1513574159');
+INSERT INTO `osc_order` VALUES ('3', 'wx2017120753575710', '2', 'images/osc1/5/1.jpg', '旅行套装便携功夫茶具等', '2', '哈哈哈22', '18121029523', '北京市国家图书馆111号', '1', '邮政快递', '9891770403677', '98.70', '10.00', '98.70', '10.00', '108.70', '0', '1513402181', '1513759963');
 INSERT INTO `osc_order` VALUES ('4', 'wx2017121253555353', '4', 'images/osc1/product/2@theme.png', '青花白瓷手绘荷花', '2', '哈哈哈22', '18121029523', '江苏省南京市玄武区人民路XX小区1栋101', '3', '顺丰速递', '426530659301', '7235.00', '15.00', '7235.00', '15.00', '7250.00', '0', '1513411181', '1513479809');
 
 -- ----------------------------
@@ -4609,7 +4607,7 @@ CREATE TABLE `osc_promotion` (
   `start_time` int(11) NOT NULL DEFAULT '0' COMMENT '活动开始时间',
   `end_time` int(11) NOT NULL DEFAULT '0' COMMENT '活动结束时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='促销类型';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='促销类型';
 
 -- ----------------------------
 -- Records of osc_promotion
@@ -4617,7 +4615,7 @@ CREATE TABLE `osc_promotion` (
 INSERT INTO `osc_promotion` VALUES ('2', '限时满500打8折', '1', '500.00', '80', '1513753284', '1519974087');
 INSERT INTO `osc_promotion` VALUES ('3', '限时满500返现60', '2', '500.00', '60', '1513754327', '1520611200');
 INSERT INTO `osc_promotion` VALUES ('4', '限时满300返现30', '2', '300.00', '30', '1513754470', '1516809600');
-INSERT INTO `osc_promotion` VALUES ('7', '限时满100返现5', '2', '100.00', '5', '1512316800', '1513267200');
+INSERT INTO `osc_promotion` VALUES ('8', '限时满100返现5', '2', '100.00', '5', '1512316800', '1513267200');
 
 -- ----------------------------
 -- Table structure for `osc_transport`
@@ -4686,7 +4684,7 @@ CREATE TABLE `osc_user_action` (
   `info` varchar(255) DEFAULT NULL COMMENT '行为描述',
   `add_time` int(10) NOT NULL DEFAULT '0' COMMENT '加入时间',
   PRIMARY KEY (`ua_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=687 DEFAULT CHARSET=utf8 COMMENT='用户行为';
+) ENGINE=InnoDB AUTO_INCREMENT=742 DEFAULT CHARSET=utf8 COMMENT='用户行为';
 
 -- ----------------------------
 -- Records of osc_user_action
@@ -4850,3 +4848,58 @@ INSERT INTO `osc_user_action` VALUES ('683', '1', 'admin', '后台系统用户',
 INSERT INTO `osc_user_action` VALUES ('684', '1', 'admin', '后台系统用户', '修改了促销管理', '1513755561');
 INSERT INTO `osc_user_action` VALUES ('685', '1', 'admin', '后台系统用户', '修改了促销管理', '1513755576');
 INSERT INTO `osc_user_action` VALUES ('686', '1', 'admin', '后台系统用户', '修改了促销管理', '1513755646');
+INSERT INTO `osc_user_action` VALUES ('687', '1', 'admin', '后台系统用户', '修改了促销管理', '1513756529');
+INSERT INTO `osc_user_action` VALUES ('688', '1', 'admin', '后台系统用户', '修改了促销管理', '1513756542');
+INSERT INTO `osc_user_action` VALUES ('689', '1', 'admin', '后台系统用户', '新增了商品', '1513758835');
+INSERT INTO `osc_user_action` VALUES ('690', '1', 'admin', '后台系统用户', '更新商品基本信息', '1513759085');
+INSERT INTO `osc_user_action` VALUES ('691', '1', 'admin', '后台系统用户', '更新商品基本信息', '1513759085');
+INSERT INTO `osc_user_action` VALUES ('692', '1', 'admin', '后台系统用户', '更新商品基本信息', '1513759110');
+INSERT INTO `osc_user_action` VALUES ('693', '1', 'admin', '后台系统用户', '更新商品基本信息', '1513759179');
+INSERT INTO `osc_user_action` VALUES ('694', '1', 'admin', '后台系统用户', '更新商品基本信息', '1513759245');
+INSERT INTO `osc_user_action` VALUES ('695', '1', 'admin', '后台系统用户', '更新商品基本信息', '1513759593');
+INSERT INTO `osc_user_action` VALUES ('696', '1', 'admin', '后台系统用户', '更新商品20', '1513759619');
+INSERT INTO `osc_user_action` VALUES ('697', '1', 'admin', '后台系统用户', '更新商品20', '1513759629');
+INSERT INTO `osc_user_action` VALUES ('698', '1', 'admin', '后台系统用户', '更新了物流单号', '1513759736');
+INSERT INTO `osc_user_action` VALUES ('699', '1', 'admin', '后台系统用户', '更新了物流单号', '1513759772');
+INSERT INTO `osc_user_action` VALUES ('700', '1', 'admin', '后台系统用户', '更新了物流单号', '1513759779');
+INSERT INTO `osc_user_action` VALUES ('701', '1', 'admin', '后台系统用户', '更新了物流单号', '1513759882');
+INSERT INTO `osc_user_action` VALUES ('702', '1', 'admin', '后台系统用户', '更新了物流单号', '1513759916');
+INSERT INTO `osc_user_action` VALUES ('703', '1', 'admin', '后台系统用户', '更新了物流单号', '1513759963');
+INSERT INTO `osc_user_action` VALUES ('704', '1', 'admin', '后台系统用户', '更新会员账户金额', '1513760081');
+INSERT INTO `osc_user_action` VALUES ('705', '1', 'admin', '后台系统用户', '编辑了会员', '1513760098');
+INSERT INTO `osc_user_action` VALUES ('706', '1', 'admin', '后台系统用户', '编辑了会员', '1513760185');
+INSERT INTO `osc_user_action` VALUES ('707', '1', 'admin', '后台系统用户', '编辑了会员', '1513760482');
+INSERT INTO `osc_user_action` VALUES ('708', '1', 'admin', '后台系统用户', '编辑了会员', '1513760527');
+INSERT INTO `osc_user_action` VALUES ('709', '1', 'admin', '后台系统用户', '编辑了会员', '1513760540');
+INSERT INTO `osc_user_action` VALUES ('710', '1', 'admin', '后台系统用户', '编辑了会员', '1513760543');
+INSERT INTO `osc_user_action` VALUES ('711', '1', 'admin', '后台系统用户', '编辑了会员', '1513760550');
+INSERT INTO `osc_user_action` VALUES ('712', '1', 'admin', '后台系统用户', '编辑了会员', '1513760557');
+INSERT INTO `osc_user_action` VALUES ('713', '1', 'admin', '后台系统用户', '编辑了会员', '1513760596');
+INSERT INTO `osc_user_action` VALUES ('714', '1', 'admin', '后台系统用户', '更新会员账户金额', '1513760637');
+INSERT INTO `osc_user_action` VALUES ('715', '1', 'admin', '后台系统用户', '更新会员账户金额', '1513760692');
+INSERT INTO `osc_user_action` VALUES ('716', '1', 'admin', '后台系统用户', '更新会员账户金额', '1513760703');
+INSERT INTO `osc_user_action` VALUES ('717', '1', 'admin', '后台系统用户', '更新会员账户金额', '1513760775');
+INSERT INTO `osc_user_action` VALUES ('718', '1', 'admin', '后台系统用户', '更新会员账户金额', '1513760779');
+INSERT INTO `osc_user_action` VALUES ('719', '1', 'admin', '后台系统用户', '更新会员账户金额', '1513760799');
+INSERT INTO `osc_user_action` VALUES ('720', '1', 'admin', '后台系统用户', '更新会员账户金额', '1513760904');
+INSERT INTO `osc_user_action` VALUES ('721', '1', 'admin', '后台系统用户', '更新会员账户金额', '1513760926');
+INSERT INTO `osc_user_action` VALUES ('722', '1', 'admin', '后台系统用户', '更新会员账户金额', '1513760934');
+INSERT INTO `osc_user_action` VALUES ('723', '1', 'admin', '后台系统用户', '更新会员账户金额', '1513760939');
+INSERT INTO `osc_user_action` VALUES ('724', '1', 'admin', '后台系统用户', '编辑了会员', '1513761045');
+INSERT INTO `osc_user_action` VALUES ('725', '1', 'admin', '后台系统用户', '登录了后台系统', '1513817908');
+INSERT INTO `osc_user_action` VALUES ('726', '1', 'admin', '后台系统用户', '更新商品基本信息', '1513819383');
+INSERT INTO `osc_user_action` VALUES ('727', '1', 'admin', '后台系统用户', '更新商品基本信息', '1513819398');
+INSERT INTO `osc_user_action` VALUES ('728', '1', 'admin', '后台系统用户', '更新商品基本信息', '1513819431');
+INSERT INTO `osc_user_action` VALUES ('729', '1', 'admin', '后台系统用户', '更新商品基本信息', '1513819498');
+INSERT INTO `osc_user_action` VALUES ('730', '1', 'admin', '后台系统用户', '更新商品基本信息', '1513819525');
+INSERT INTO `osc_user_action` VALUES ('731', '1', 'admin', '后台系统用户', '更新商品基本信息', '1513819570');
+INSERT INTO `osc_user_action` VALUES ('732', '1', 'admin', '后台系统用户', '更新商品基本信息', '1513819595');
+INSERT INTO `osc_user_action` VALUES ('733', '1', 'admin', '后台系统用户', '修改了banner', '1513820059');
+INSERT INTO `osc_user_action` VALUES ('734', '1', 'admin', '后台系统用户', '更新商品基本信息', '1513820136');
+INSERT INTO `osc_user_action` VALUES ('735', '1', 'admin', '后台系统用户', '更新商品基本信息', '1513820147');
+INSERT INTO `osc_user_action` VALUES ('736', '1', 'admin', '后台系统用户', '更新商品基本信息', '1513820155');
+INSERT INTO `osc_user_action` VALUES ('737', '1', 'admin', '后台系统用户', '更新商品基本信息', '1513820174');
+INSERT INTO `osc_user_action` VALUES ('738', '1', 'admin', '后台系统用户', '更新商品基本信息', '1513820725');
+INSERT INTO `osc_user_action` VALUES ('739', '1', 'admin', '后台系统用户', '新增了商品', '1513820763');
+INSERT INTO `osc_user_action` VALUES ('740', '1', 'admin', '后台系统用户', '删除商品', '1513820829');
+INSERT INTO `osc_user_action` VALUES ('741', '1', 'admin', '后台系统用户', '删除商品', '1513820832');
