@@ -573,3 +573,20 @@ function getTranportInfo($shipping_method,$shipping_num){
         return '';
     }
 }
+/**
+ * 返回促销活动类型
+ */
+function getPromotionType($type){
+    switch ($type) {
+        case '1':
+            return '满额打折';
+            break;
+        case '2':
+            return '满额返现';
+            break;
+        
+        default:
+            return '满额打折';
+            break;
+    }
+}

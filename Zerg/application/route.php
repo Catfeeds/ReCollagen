@@ -68,11 +68,10 @@ Route::get('api/:version/address', 'api/:version.Address/getUserAddress');
 
 //Order
 Route::post('api/:version/order', 'api/:version.Order/placeOrder');
-Route::get('api/:version/order/:id', 'api/:version.Order/getDetail',[], ['id'=>'\d+']);
+Route::get('api/:version/order/:id', 'api/:version.Order/getDetail',[], ['id'=>'\d+']); //根据订单id获取订单详情
 Route::put('api/:version/order/delivery', 'api/:version.Order/delivery');
-
 //不想把所有查询都写在一起，所以增加by_user，很好的REST与RESTFul的区别
-Route::get('api/:version/order/by_user', 'api/:version.Order/getSummaryByUser');
+Route::get('api/:version/order/by_user', 'api/:version.Order/getSummaryByUser');        //根据用户id获取订单列表（简要信息）
 Route::get('api/:version/order/paginate', 'api/:version.Order/getSummary');
 
 //Pay

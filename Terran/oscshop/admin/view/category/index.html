@@ -11,11 +11,7 @@
 	</h1>
 </div>
 <div class="page-header">
-	{if condition="$Request.param.pid"}
-		<a href="{:url('Category/add',array('pid'=>input('param.pid')))}" class="btn btn-primary">新增</a>
-	{else/}
-		<a href="{:url('Category/add')}" class="btn btn-primary">新增</a>
-	{/if}
+	<a href="{:url('Category/add')}" class="btn btn-primary">新增</a>
 </div>	
 	
 <div class="row">

@@ -1,0 +1,68 @@
+{extend name="public:base" /}
+{block name="content"}
+
+<div class="page-header">
+	<h1>	
+		{$breadcrumb1}
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			{$breadcrumb2}
+		</small>
+	</h1>
+</div>
+<div class="page-header">
+	<a href="{:url('Promotion/add')}" class="btn btn-primary">新增</a>
+</div>	
+	
+<div class="row">
+	<div class="col-xs-12">	
+		<div class="table-responsive">
+			<table class="table table-striped table-bordered table-hover">
+				<thead>
+					<tr>
+						<th>ID</th> 		
+						<th>活动名称</th> 		
+						<th>活动类型</th> 									
+						<th>开始时间</th>
+						<th>结束时间</th>					
+						<th>操作</th>				
+					</tr>
+				</thead>
+				<tbody>
+					{volist name="list" id="promotion" empty="$empty"}
+					<tr>
+						<td>{$promotion.id}</td>
+						<td>{$promotion.name}</td>
+						<td>{$promotion.type|getPromotionType}</td>
+						<td>{$promotion.start_time|date="Y-m-d H:i:s",###}</td>
+						<td>{$promotion.end_time|date="Y-m-d H:i:s",###}</td>
+
+						<td>
+							<a  class="btn btn-xs btn-info" href='{:url("Promotion/edit",array("id"=>$promotion["id"]))}'>
+								<i class="fa fa-edit bigger-120"></i>
+							</a> 
+							<a class="delete btn btn-xs btn-danger" href='{:url("Promotion/del",array("id"=>$promotion["id"]))}' >
+								<i class="fa fa-trash bigger-120"></i>
+							</a>
+						</td>
+					</tr>	
+					{/volist}
+					
+					<tr>
+						<td colspan="20" class="page">{$list->render()}</td>
+					</tr>
+					<tr>
+						<td colspan="20">总计 {$list->total()|default="0"} 个活动</td>
+					</tr>	
+				</tbody>
+				
+			</table>
+		</div>
+	</div>
+</div>
+{/block}
+{block name="javascript"}
+<script>
+
+</script>
+{/block}
