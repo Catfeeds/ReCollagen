@@ -110,6 +110,19 @@ class Order extends BaseController
             return new SuccessMessage();
         }
     }
+    /**
+     * 根据订单id查询物流进度
+     */
+    public function getTransInfo($id){
+
+        $orderDetail = $this->getDetail($id)->toArray();
+        $shippingCode = getShippingCode($orderDetail['shipping_method']);
+
+        $url = 'https://m.kuaidi100.com/query?type='.$shippingCode.'&postid='.$orderDetail['shipping_num'];
+        $info = curl_post($url);
+
+        return $info;
+    }
 }
 
 

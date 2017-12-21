@@ -93,5 +93,20 @@ function fromArrayToModel($m , $array)
     }
     return $m;
 }
+/**
+ * 获取快递公司代码
+ */
+function getShippingCode($shipping_method){
+    $code = ['圆通'=>'yuantong','申通'=>'shentong','中通'=>'zhongtong','邮政'=>'youzhengguonei','顺丰'=>'shunfeng','韵达'=>'yunda','天天'=>'tiantian','德邦'=>'debangwuliu'];
+    
+    $shippingCode = '';
+    foreach ($code as $k => $v) {
+        if (strpos($shipping_method, $k) !== false) {
+            $shippingCode = $v;
+            break;
+        }
+    }
 
+    return $shippingCode;
+}
 

@@ -130,7 +130,7 @@
                     <td>{$data.order.shipping_method}</td>
                 </tr>
 
-                <?php if($data['order']['order_status'] == 2 || $data['order']['order_status'] == 3){ ?>
+                <?php if($data['order']['order_status'] == 2 || $data['order']['order_status'] == 3 || $data['order']['order_status'] == 4){ ?>
                 <tr>
                     <td>物流单号</td>
                     <td>
@@ -141,6 +141,8 @@
                     <td>跟踪信息</td>
                     <td><iframe src="{$data.order.transportInfo}" width="580"height="380"><br/></iframe></td>
                 </tr>
+
+                <?php if($data['order']['order_status'] == 2 || $data['order']['order_status'] == 3){ ?>
                 <tr>
                    	<td colspan="2">
                         <div class="text-right">
@@ -151,6 +153,8 @@
             		    </div>
         		    </td>
                 </tr>
+                <?php } ?>  
+
                 <?php } ?>  
             </table>
         </div>	
