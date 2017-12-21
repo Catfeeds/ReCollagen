@@ -76,10 +76,8 @@ class Goods extends AdminBase{
 				return $this->error($validate);	
 			}
 			$data['weight'] = empty($data['weight'])? '100' : $data['weight'];
-			$data['length'] = empty($data['length'])? '10' : $data['length'];
-			$data['width']  = empty($data['width'])? '10' : $data['width'];
-			$data['height'] = empty($data['height'])? '10' : $data['height'];
-			
+			$data['bulk']   = empty($data['bulk'])? '0.01' : $data['bulk'];
+
 			$res = $this->goodsModel->update($data,false,true);
 			if ($res) {
 				storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'更新商品基本信息');							

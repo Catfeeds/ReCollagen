@@ -20,12 +20,10 @@ class Goods extends Model{
 		$goods['isMainGoods'] = $data['isMainGoods'];
 		$goods['status']      = $data['status'];
 		$goods['create_time'] = date('Y-m-d H:i:s',time());
-
-		$goods['weight']   = empty($data['weight'])? '100' : $data['weight'];
-		$goods['length']   = empty($data['length'])? '10' : $data['length'];
-		$goods['width']    = empty($data['width'])? '10' : $data['width'];
-		$goods['height']   = empty($data['height'])? '10' : $data['height'];
 		
+		$goods['weight']      = empty($data['weight'])? '100' : $data['weight'];
+		$goods['bulk']        = empty($data['bulk'])? '0.01' : $data['bulk'];
+
 		$goods_id = $this->insert($goods,false,true);
 
 		if($goods_id){
