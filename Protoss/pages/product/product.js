@@ -17,7 +17,7 @@ Page({
         optionid: -1,
     },
     onLoad: function (option) {
-      var id = 12;
+      var id = 30;
         this.data.id=id;
         this._loadData();
     },
@@ -90,7 +90,7 @@ Page({
           });
           for (var key in discounts) {
             if (counts >= discounts[key].quantity) {
-              tempPrice = discounts[key].price;
+              tempPrice = (this.data.product.price * discounts[key].discount / 100).toFixed(2);
               float = true;
             }
           }
@@ -141,7 +141,7 @@ Page({
 
     /*将商品数据添加到内存中*/
     addToCart:function(){
-      var tempObj = {}, keys = ['goods_id', 'name', 'image', 'price', 'isMainGoods', 'stock', 'weight', 'length', 'length', 'width', 'height', 'options','discounts'];
+      var tempObj = {}, keys = ['goods_id', 'name', 'image', 'price', 'isMainGoods', 'stock', 'weight', 'bulk', 'haveCollect','options','discounts'];
         for(var key in this.data.product){
             if(keys.indexOf(key)>=0){
                 tempObj[key]=this.data.product[key];
