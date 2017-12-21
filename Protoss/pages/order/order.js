@@ -35,12 +35,24 @@ Page({
                 address.getAddress((res)=> {
                     that._bindAddressInfo(res);
                 });
+
+              /*显示主商品优惠*/
+                var accountMain = this._calcTotalMainAndCounts(this.data.productsArr).account;
+                order.getMainDiscount(accountMain, (data) => {
+                  that.setData({
+                    productsArr: cart.getCartDataFromLocal(true),
+                    account: options.account,
+                    orderStatus: 0
+                  });
+                });
+                
             }
 
             //旧订单
             else{
                 this.data.id=options.id;
             }
+
         },
 
         onShow:function(){
@@ -65,6 +77,23 @@ Page({
                     that._bindAddressInfo(addressInfo);
                 });
             }
+        },
+
+        /*
+        * 计算主商品总金额
+        * */
+        _calcTotalMainAndCounts: function (data) {
+          var len = data.length,
+            account = 0;
+          let multiple = 100;
+          for (let i = 0; i < len; i++) {
+            if (data[i].selectStatus && data[i].isMainGoods==1) {
+              account += data[i].counts * multiple * Number(data[i].currentPrice) * multiple;
+            }
+          }
+          return {
+            account: (account / (multiple * multiple)).toFixed(2)
+          }
         },
 
         /*修改或者添加地址信息*/
