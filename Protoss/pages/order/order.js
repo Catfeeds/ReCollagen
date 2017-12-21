@@ -37,15 +37,29 @@ Page({
                 });
 
               /*显示主商品优惠*/
-                var accountMain = this._calcTotalMainAndCounts(this.data.productsArr).account;
-                order.getMainDiscount(accountMain, (data) => {
-                  that.setData({
-                    productsArr: cart.getCartDataFromLocal(true),
-                    account: options.account,
-                    orderStatus: 0
-                  });
+                // var accountMain = this._calcTotalMainAndCounts(this.data.productsArr).account;
+                order.getMainPromotion(1,(data) => {
+                  console.log(data)
+
+                 
+                  // data.sort(function (a, b) {
+                  //   return a.money - b.money;
+                  // });
+                  
+                  // for (var key in discounts) {
+                  //   if (counts >= discounts[key].quantity) {
+                  //     tempPrice = (this.data.product.price * discounts[key].discount / 100).toFixed(2);
+                  //     float = true;
+                  //   }
+                  // }
+
+
+                  // that.setData({
+                  //   promotionArr: data
+                  // });
+
+
                 });
-                
             }
 
             //旧订单

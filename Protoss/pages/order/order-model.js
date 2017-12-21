@@ -79,11 +79,9 @@ class Order extends Base{
     }
 
     /*获得所有主商品优惠价*/
-    getMainDiscount(pageIndex, callback){
+    getMainPromotion(callback){
       var allParams = {
-        url: 'order/by_user',
-        data: { page: pageIndex },
-        type: 'get',
+        url: 'promotion/all',
         sCallback: function (data) {
           callback && callback(data);
         }
