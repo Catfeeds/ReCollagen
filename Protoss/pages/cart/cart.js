@@ -28,7 +28,8 @@ Page({
         this.setData({
             selectedCounts:countsInfo.counts1,
             selectedTypeCounts:countsInfo.counts2,
-            account:this._calcTotalAccountAndCounts(cartData).account,
+            accountmain:this._calcTotalAccountAndCounts(cartData,1).account,
+            accountAuxiliary: this._calcTotalAccountAndCounts(cartData,0).account,
             loadingHidden:true,
             cartData:cartData
         });
@@ -53,7 +54,7 @@ Page({
     /*
     * 计算总金额和选择的商品总数
     * */
-    _calcTotalAccountAndCounts:function(data){
+    _calcTotalAccountAndCounts:function(data,start){
         var len=data.length,
             account=0,
             selectedCounts=0,
@@ -61,7 +62,7 @@ Page({
         let multiple=100;
         for(let i=0;i<len;i++){
             //避免 0.05 + 0.01 = 0.060 000 000 000 000 005 的问题，乘以 100 *100
-            if(data[i].selectStatus) {
+          if (data[i].selectStatus && data[i].isMainGoods == start) {
               account += data[i].counts * multiple * Number(data[i].currentPrice)*multiple;
                 selectedCounts+=data[i].counts;
                 selectedTypeCounts++;

@@ -86,7 +86,7 @@ class Order extends Base{
                 callback &&callback(data);
             },
             eCallback:function(){
-
+              
             }
         };
         this.request(allParams);
