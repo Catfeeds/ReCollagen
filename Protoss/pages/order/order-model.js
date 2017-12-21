@@ -28,6 +28,7 @@ class Order extends Base{
         this.request(allParams);
     }
 
+
     /*
     * 拉起微信支付
     * params:
@@ -75,6 +76,19 @@ class Order extends Base{
              }
         };
         this.request(allParams);
+    }
+
+    /*获得所有主商品优惠价*/
+    getMainDiscount(pageIndex, callback){
+      var allParams = {
+        url: 'order/by_user',
+        data: { page: pageIndex },
+        type: 'get',
+        sCallback: function (data) {
+          callback && callback(data);
+        }
+      };
+      this.request(allParams);
     }
 
     /*获得订单的具体内容*/
