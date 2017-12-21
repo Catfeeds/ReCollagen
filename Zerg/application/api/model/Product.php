@@ -104,11 +104,26 @@ class Product extends BaseModel
             ->find($id);
         return $product;
     }
-
+    /**
+     * 获取最近商品
+     */
     public static function getMostRecent(){
 
-        $products = self::where(['status'=>1])->order('create_time desc')->select();
-
+        $products = self::with(
+                ['options' => function ($query){
+                        $query->order('sort');
+                }])
+            ->where(['status'=>1])
+            ->order('create_time desc')
+            ->select();
+        //如果商品有选项，默认价格为第一个选项的价格
+        if (empty($products)) {
+            foreach ($products as $key => $product) {
+                if (condition) {
+                    # code...
+                }
+            }
+        }
         return $products;
     }
 

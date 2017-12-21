@@ -106,9 +106,10 @@ class Product extends Controller
         }
         $data = $pagingProducts->hidden(
             [
-                'cat_id','weight','length','width','height','stock','create_time','update_time'
+                'cat_id','weight','bulk','stock'
             ])
             ->toArray();
+halt($data);
 
         return $data;
 
