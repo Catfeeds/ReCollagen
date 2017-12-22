@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2017-12-21 10:02:34
+Date: 2017-12-22 13:16:50
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -24,10 +24,12 @@ CREATE TABLE `osc_address` (
   `uid` int(11) NOT NULL DEFAULT '0',
   `name` varchar(30) NOT NULL DEFAULT '',
   `telephone` varchar(20) NOT NULL DEFAULT '',
-  `province_id` int(11) NOT NULL DEFAULT '0' COMMENT '省',
-  `city_id` int(11) NOT NULL DEFAULT '0' COMMENT '市',
-  `country_id` int(11) NOT NULL DEFAULT '0' COMMENT '县乡',
+  `province_id` int(11) NOT NULL DEFAULT '0',
+  `province` varchar(50) NOT NULL DEFAULT '' COMMENT '省',
+  `city` varchar(50) NOT NULL DEFAULT '' COMMENT '市',
+  `country` varchar(50) NOT NULL DEFAULT '' COMMENT '县乡',
   `address` varchar(255) NOT NULL DEFAULT '' COMMENT '地址',
+  `create_time` int(11) NOT NULL DEFAULT '0',
   `update_time` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`address_id`),
   KEY `customer_id` (`uid`)
@@ -36,8 +38,8 @@ CREATE TABLE `osc_address` (
 -- ----------------------------
 -- Records of osc_address
 -- ----------------------------
-INSERT INTO `osc_address` VALUES ('2', '2', '哈哈哈', '18121029523', '12', '193', '2273', '明珠广场1号', '0');
-INSERT INTO `osc_address` VALUES ('3', '3', '嘿嘿嘿', '13355556666', '1', '36', '49', '国家图书馆11号', '0');
+INSERT INTO `osc_address` VALUES ('2', '2', '哈哈哈', '13333333333', '10', '江苏省', '南京市', '玄武区', '明珠广场22号', '0', '1513912152');
+INSERT INTO `osc_address` VALUES ('3', '3', '嘿嘿嘿', '13355556666', '1', '北京市', '北京市', '东城区', '国家图书馆11号', '0', '1513911666');
 
 -- ----------------------------
 -- Table structure for `osc_admin`
@@ -64,7 +66,7 @@ CREATE TABLE `osc_admin` (
 -- ----------------------------
 -- Records of osc_admin
 -- ----------------------------
-INSERT INTO `osc_admin` VALUES ('1', 'admin', 'MDAwMDAwMDAwMLO6d61/iaja', '', '', 'admin@admin.com', '32', '127.0.0.1', '', '1505270345', '1513412152', '1513817908', '1', '2');
+INSERT INTO `osc_admin` VALUES ('1', 'admin', 'MDAwMDAwMDAwMLO6d61/iaja', '', '', 'admin@admin.com', '33', '127.0.0.1', '', '1505270345', '1513412152', '1513903834', '1', '2');
 INSERT INTO `osc_admin` VALUES ('2', 'orderAdmin', 'MDAwMDAwMDAwMLO6d61/iaja', '', '', null, '15', '127.0.0.1', null, '1512538804', '1513575692', '1513578428', '1', '3');
 INSERT INTO `osc_admin` VALUES ('3', 'memberAdmin', 'MDAwMDAwMDAwMLO6d61/iaja', '', '', null, '0', null, null, '1513577469', '1513577592', '0', '1', '4');
 
@@ -85,15 +87,15 @@ CREATE TABLE `osc_area` (
 -- ----------------------------
 -- Records of osc_area
 -- ----------------------------
-INSERT INTO `osc_area` VALUES ('1', '北京', '0', '0', '1');
-INSERT INTO `osc_area` VALUES ('2', '天津', '0', '0', '1');
+INSERT INTO `osc_area` VALUES ('1', '北京市', '0', '0', '1');
+INSERT INTO `osc_area` VALUES ('2', '天津市', '0', '0', '1');
 INSERT INTO `osc_area` VALUES ('3', '河北省', '0', '0', '1');
 INSERT INTO `osc_area` VALUES ('4', '山西省', '0', '0', '1');
 INSERT INTO `osc_area` VALUES ('5', '内蒙古自治区', '0', '0', '1');
 INSERT INTO `osc_area` VALUES ('6', '辽宁省', '0', '0', '1');
 INSERT INTO `osc_area` VALUES ('7', '吉林省', '0', '0', '1');
 INSERT INTO `osc_area` VALUES ('8', '黑龙江省', '0', '0', '1');
-INSERT INTO `osc_area` VALUES ('9', '上海', '0', '0', '1');
+INSERT INTO `osc_area` VALUES ('9', '上海市', '0', '0', '1');
 INSERT INTO `osc_area` VALUES ('10', '江苏省', '0', '0', '1');
 INSERT INTO `osc_area` VALUES ('11', '浙江省', '0', '0', '1');
 INSERT INTO `osc_area` VALUES ('12', '安徽省', '0', '0', '1');
@@ -106,7 +108,7 @@ INSERT INTO `osc_area` VALUES ('18', '湖南省', '0', '0', '1');
 INSERT INTO `osc_area` VALUES ('19', '广东省', '0', '0', '1');
 INSERT INTO `osc_area` VALUES ('20', '广西壮族自治区', '0', '0', '1');
 INSERT INTO `osc_area` VALUES ('21', '海南省', '0', '0', '1');
-INSERT INTO `osc_area` VALUES ('22', '重庆', '0', '0', '1');
+INSERT INTO `osc_area` VALUES ('22', '重庆市', '0', '0', '1');
 INSERT INTO `osc_area` VALUES ('23', '四川省', '0', '0', '1');
 INSERT INTO `osc_area` VALUES ('24', '贵州省', '0', '0', '1');
 INSERT INTO `osc_area` VALUES ('25', '云南省', '0', '0', '1');
@@ -3677,10 +3679,10 @@ CREATE TABLE `osc_banner` (
 -- ----------------------------
 -- Records of osc_banner
 -- ----------------------------
-INSERT INTO `osc_banner` VALUES ('2', 'images/osc1/2/d04.jpg', '7', '1');
+INSERT INTO `osc_banner` VALUES ('2', 'images/osc1/category/banner-1a.png', '7', '1');
 INSERT INTO `osc_banner` VALUES ('3', 'images/osc1/category/banner-3a.png', '11', '2');
-INSERT INTO `osc_banner` VALUES ('4', 'images/osc1/category/category-dryfruit.png', '12', '5');
-INSERT INTO `osc_banner` VALUES ('6', 'images/osc1/category/category-fry-a.png', '19', '0');
+INSERT INTO `osc_banner` VALUES ('4', 'images/osc1/category/banner-4a.png', '12', '5');
+INSERT INTO `osc_banner` VALUES ('6', 'images/osc1/category/banner-2a.png', '19', '0');
 
 -- ----------------------------
 -- Table structure for `osc_brand`
@@ -3878,7 +3880,7 @@ INSERT INTO `osc_goods` VALUES ('25', '0', '29', 'images/osc1/fruit/product-cake
 INSERT INTO `osc_goods` VALUES ('30', '1', '3', 'images/osc1/fruit/product-cake@1.png', '李大爷的妙脆角', '9.90', '998', '0', '100.00', '0.02', '2017-12-15 10:13:43', '2017-12-16 08:58:24', '1', '1');
 INSERT INTO `osc_goods` VALUES ('32', '1', '3', 'images/osc1/fruit/product-cake-a@3.png', '好吃的饼干', '30.00', '992', '0', '100.00', '0.02', '2017-12-15 10:19:07', '2017-12-17 17:02:17', '1', '1');
 INSERT INTO `osc_goods` VALUES ('34', '0', '1', 'images/osc1/product/2@theme.png', '八宝莲子200克', '9.91', '9991', '0', '100.00', '0.01', '2017-12-16 09:25:07', '2017-12-18 13:06:26', '1', '1');
-INSERT INTO `osc_goods` VALUES ('36', '1', '5', 'images/osc1/fruit/product-vg@3.png', '我吃西红柿', '10.00', '999', '0', '100.00', '0.01', '2017-12-19 14:10:35', '', '1', '1');
+INSERT INTO `osc_goods` VALUES ('36', '1', '5', 'images/osc1/fruit/product-vg@3.png', '我吃西红柿', '10.00', '999', '0', '100.00', '0.01', '2017-12-19 14:10:35', '2017-12-21 16:04:07', '1', '1');
 
 -- ----------------------------
 -- Table structure for `osc_goods_attribute`
@@ -4206,7 +4208,7 @@ CREATE TABLE `osc_goods_option` (
   `stock` int(11) NOT NULL DEFAULT '0' COMMENT '库存',
   `sort` int(11) NOT NULL DEFAULT '1' COMMENT '排序',
   PRIMARY KEY (`goods_option_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of osc_goods_option
@@ -4216,10 +4218,12 @@ INSERT INTO `osc_goods_option` VALUES ('5', '15', '3个装', '0.03', '55', '3');
 INSERT INTO `osc_goods_option` VALUES ('6', '15', '一箱整装', '30.00', '770', '5');
 INSERT INTO `osc_goods_option` VALUES ('7', '15', '5个装', '0.05', '50', '4');
 INSERT INTO `osc_goods_option` VALUES ('8', '30', '500g', '6.60', '999', '2');
-INSERT INTO `osc_goods_option` VALUES ('9', '30', '1000g', '8.80', '996', '3');
+INSERT INTO `osc_goods_option` VALUES ('9', '30', '1000g', '8.80', '996', '1');
 INSERT INTO `osc_goods_option` VALUES ('12', '34', '礼盒装', '12.20', '988', '2');
 INSERT INTO `osc_goods_option` VALUES ('13', '34', '简装', '11.10', '9651', '1');
 INSERT INTO `osc_goods_option` VALUES ('14', '6', '优雅白', '39.00', '966', '0');
+INSERT INTO `osc_goods_option` VALUES ('17', '36', '500g', '8.80', '0', '0');
+INSERT INTO `osc_goods_option` VALUES ('18', '36', '1000g', '15.00', '0', '0');
 
 -- ----------------------------
 -- Table structure for `osc_goods_option_value`
@@ -4305,8 +4309,6 @@ DROP TABLE IF EXISTS `osc_member`;
 CREATE TABLE `osc_member` (
   `uid` mediumint(8) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户id',
   `openId` varchar(40) NOT NULL DEFAULT '',
-  `username` varchar(30) NOT NULL DEFAULT '' COMMENT '收货人',
-  `tel` varchar(20) NOT NULL DEFAULT '',
   `mainAccount` decimal(11,2) NOT NULL DEFAULT '0.00' COMMENT '主账户',
   `secondAccount` decimal(11,2) NOT NULL DEFAULT '0.00' COMMENT '辅账户',
   `checked` tinyint(1) NOT NULL DEFAULT '1' COMMENT '用户状态：0待审核，1正常',
@@ -4318,8 +4320,8 @@ CREATE TABLE `osc_member` (
 -- ----------------------------
 -- Records of osc_member
 -- ----------------------------
-INSERT INTO `osc_member` VALUES ('2', 'oMgsK0VdN3Q43P-zIeC0IiVvd_fw', '哈哈哈', '18121029523', '4000.00', '500.00', '1', '1512608799', '1513760596');
-INSERT INTO `osc_member` VALUES ('3', 'wx-iuyifghgf6345re221', '嘿嘿嘿', '13355556666', '300.00', '666.00', '0', '1512633763', '1513761045');
+INSERT INTO `osc_member` VALUES ('2', 'oMgsK0VdN3Q43P-zIeC0IiVvd_fw', '4000.00', '500.00', '1', '1512608799', '1513919725');
+INSERT INTO `osc_member` VALUES ('3', 'wx-iuyifghgf6345re221', '300.00', '666.00', '0', '1512633763', '1513761045');
 
 -- ----------------------------
 -- Table structure for `osc_member_collect`
@@ -4601,21 +4603,22 @@ DROP TABLE IF EXISTS `osc_promotion`;
 CREATE TABLE `osc_promotion` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(60) NOT NULL DEFAULT '' COMMENT '活动名称',
-  `type` int(2) NOT NULL DEFAULT '0' COMMENT '活动类型',
-  `money` float(10,2) DEFAULT '0.00' COMMENT '最小金额',
-  `expression` varchar(100) DEFAULT NULL COMMENT '优惠体现',
+  `type` int(2) NOT NULL DEFAULT '1' COMMENT '1满额打折；2满额返现；3满额赠送商品',
+  `money` float(10,2) NOT NULL DEFAULT '0.00' COMMENT '最小金额',
+  `expression` varchar(100) NOT NULL DEFAULT '' COMMENT '优惠体现',
   `start_time` int(11) NOT NULL DEFAULT '0' COMMENT '活动开始时间',
   `end_time` int(11) NOT NULL DEFAULT '0' COMMENT '活动结束时间',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COMMENT='促销类型';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='促销类型';
 
 -- ----------------------------
 -- Records of osc_promotion
 -- ----------------------------
-INSERT INTO `osc_promotion` VALUES ('2', '限时满500打8折', '1', '500.00', '80', '1513753284', '1519974087');
-INSERT INTO `osc_promotion` VALUES ('3', '限时满500返现60', '2', '500.00', '60', '1513754327', '1520611200');
-INSERT INTO `osc_promotion` VALUES ('4', '限时满300返现30', '2', '300.00', '30', '1513754470', '1516809600');
+INSERT INTO `osc_promotion` VALUES ('2', '新年大狂欢满500打8折', '1', '500.00', '80', '1513753284', '1519974087');
+INSERT INTO `osc_promotion` VALUES ('3', '限时满500返现60', '2', '500.00', '60', '1513322327', '1520611200');
+INSERT INTO `osc_promotion` VALUES ('4', '周年庆限时满300返现30', '2', '300.00', '30', '1513754470', '1516809600');
 INSERT INTO `osc_promotion` VALUES ('8', '限时满100返现5', '2', '100.00', '5', '1512316800', '1513267200');
+INSERT INTO `osc_promotion` VALUES ('9', '限时满200赠送悦寇霖智美白防晒霜一瓶', '3', '200.00', '限时满200赠送悦寇霖智美白防晒霜一瓶', '1512489600', '1514563200');
 
 -- ----------------------------
 -- Table structure for `osc_transport`
@@ -4631,9 +4634,9 @@ CREATE TABLE `osc_transport` (
 -- ----------------------------
 -- Records of osc_transport
 -- ----------------------------
-INSERT INTO `osc_transport` VALUES ('1', '圆通快递', '1513574898');
+INSERT INTO `osc_transport` VALUES ('1', '圆通快递', '1513905194');
 INSERT INTO `osc_transport` VALUES ('4', '德邦物流', '1513500750');
-INSERT INTO `osc_transport` VALUES ('5', '顺丰速递', '1513404504');
+INSERT INTO `osc_transport` VALUES ('5', '顺丰速递', '1513905203');
 
 -- ----------------------------
 -- Table structure for `osc_transport_extend`
@@ -4652,25 +4655,23 @@ CREATE TABLE `osc_transport_extend` (
   `transport_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '运费模板ID',
   `transport_title` varchar(60) NOT NULL DEFAULT '' COMMENT '运费模板',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=308 DEFAULT CHARSET=utf8 COMMENT='运费模板扩展表';
+) ENGINE=InnoDB AUTO_INCREMENT=336 DEFAULT CHARSET=utf8 COMMENT='运费模板扩展表';
 
 -- ----------------------------
 -- Records of osc_transport_extend
 -- ----------------------------
-INSERT INTO `osc_transport_extend` VALUES ('258', '', '', '全国', '1', '20.00', '1', '8.00', '1', '5', '顺丰速递');
-INSERT INTO `osc_transport_extend` VALUES ('259', ',11,14,12,10,9,15,', '', '浙江,江西,安徽,江苏,上海,山东', '1', '15.00', '1', '5.00', '2', '5', '顺丰速递');
-INSERT INTO `osc_transport_extend` VALUES ('260', ',17,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,16,243,257,256,255,254,244,245,246,247,248,249,250,251,252,253,242,240,241,18,283,284,285,286,287,288,282,281,280,275,276,277,278,279,20,310,311,312,313,314,315,316,317,318,319,320,321,322,323,21,334,335,336,337,338,339,340,341,342,343,333,332,331,324,325,326,327,328,329,330,344,19,294,308,309,307,306,305,295,296,297,298,299,300,301,302,303,304,289,290,291,292,293,13,205,206,207,208,209,210,211,204,203,', ',17,16,18,20,21,19,13,', '湖北,河南,湖南,广西,海南,广东,福建', '1', '18.00', '1', '8.00', '2', '5', '顺丰速递');
-INSERT INTO `osc_transport_extend` VALUES ('261', ',30,474,470,471,472,473,31,489,490,491,492,488,477,478,479,480,481,482,483,484,485,486,476,475,487,29,462,463,464,465,466,467,468,469,28,451,452,453,454,455,456,457,458,459,460,450,449,448,461,27,438,439,440,441,442,443,444,445,446,447,24,406,407,408,409,410,411,412,413,414,26,431,432,433,434,435,436,437,25,426,427,428,429,430,425,424,423,415,416,417,418,419,420,421,422,23,399,400,401,402,403,404,405,398,397,386,387,388,389,390,391,392,393,394,395,396,385,22,62,', ',30,31,29,28,27,24,26,25,23,22,', '宁夏,新疆,青海,甘肃,陕西,贵州,西藏,云南,四川,重庆', '1', '20.00', '1', '10.00', '2', '5', '顺丰速递');
-INSERT INTO `osc_transport_extend` VALUES ('262', ',34,33,32,', '', '澳门,香港,台湾', '1', '200.00', '1', '100.00', '2', '5', '顺丰速递');
 INSERT INTO `osc_transport_extend` VALUES ('296', '', '', '全国', '1', '12.00', '1', '10.00', '1', '4', '德邦物流');
 INSERT INTO `osc_transport_extend` VALUES ('297', ',11,180,181,182,183,184,185,179,178,177,175,176,14,212,213,214,215,216,217,218,219,220,221,222,12,186,187,188,189,190,191,202,192,193,194,195,196,197,198,199,200,201,10,162,163,164,165,166,167,168,169,170,171,172,173,174,9,39,15,231,232,233,234,235,236,237,238,239,230,229,228,223,224,225,226,227,5,95,106,96,97,98,99,100,101,102,103,104,105,4,84,85,86,87,88,89,90,91,92,93,94,1,36,3,83,82,81,80,73,74,75,76,77,78,79,2,40,', ',11,14,12,10,9,15,5,4,1,3,2,', '浙江,江西,安徽,江苏,上海,山东,内蒙古,山西,北京,河北,天津', '1', '7.00', '1', '6.00', '2', '4', '德邦物流');
 INSERT INTO `osc_transport_extend` VALUES ('298', ',17,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,16,243,257,256,255,254,244,245,246,247,248,249,250,251,252,253,242,240,241,18,283,284,285,286,287,288,282,281,280,275,276,277,278,279,20,310,311,312,313,314,315,316,317,318,319,320,321,322,323,21,334,335,336,337,338,339,340,341,342,343,333,332,331,324,325,326,327,328,329,330,344,19,294,308,309,307,306,305,295,296,297,298,299,300,301,302,303,304,289,290,291,292,293,13,205,206,207,208,209,210,211,204,203,', ',17,16,18,20,21,19,13,', '湖北,河南,湖南,广西,海南,广东,福建', '1', '8.00', '1', '7.00', '2', '4', '德邦物流');
 INSERT INTO `osc_transport_extend` VALUES ('299', ',30,474,470,471,472,473,31,489,490,491,492,488,477,478,479,480,481,482,483,484,485,486,476,475,487,29,462,463,464,465,466,467,468,469,28,451,452,453,454,455,456,457,458,459,460,450,449,448,461,27,438,439,440,441,442,443,444,445,446,447,24,406,407,408,409,410,411,412,413,414,26,431,432,433,434,435,436,437,25,426,427,428,429,430,425,424,423,415,416,417,418,419,420,421,422,23,399,400,401,402,403,404,405,398,397,386,387,388,389,390,391,392,393,394,395,396,385,22,62,', ',30,31,29,28,27,24,26,25,23,22,', '宁夏,新疆,青海,甘肃,陕西,贵州,西藏,云南,四川,重庆', '1', '10.00', '1', '8.00', '2', '4', '德邦物流');
-INSERT INTO `osc_transport_extend` VALUES ('303', '', '', '全国', '1', '15.00', '1', '8.00', '1', '1', '圆通快递');
-INSERT INTO `osc_transport_extend` VALUES ('304', ',11,14,12,10,9,15,17,16,18,', '', '浙江,江西,安徽,江苏,上海,山东,湖北,河南,湖南', '1', '8.00', '1', '5.00', '2', '1', '圆通快递');
-INSERT INTO `osc_transport_extend` VALUES ('305', ',5,4,1,3,2,20,21,19,13,7,8,6,', '', '内蒙古,山西,北京,河北,天津,广西,海南,广东,福建,吉林,黑龙江,辽宁', '1', '10.00', '1', '8.00', '2', '1', '圆通快递');
-INSERT INTO `osc_transport_extend` VALUES ('306', ',30,31,29,28,27,24,26,25,23,22,', '', '宁夏,新疆,青海,甘肃,陕西,贵州,西藏,云南,四川,重庆', '1', '15.00', '1', '10.00', '2', '1', '圆通快递');
-INSERT INTO `osc_transport_extend` VALUES ('307', ',34,33,32,', '', '澳门,香港,台湾', '1', '50.00', '1', '20.00', '2', '1', '圆通快递');
+INSERT INTO `osc_transport_extend` VALUES ('322', '', '', '全国', '1', '15.00', '1', '8.00', '1', '1', '圆通快递');
+INSERT INTO `osc_transport_extend` VALUES ('323', ',11,14,12,10,9,15,17,16,18,', '', '浙江,江西,安徽,江苏,上海,山东,湖北,河南,湖南', '1', '8.00', '1', '5.00', '2', '1', '圆通快递');
+INSERT INTO `osc_transport_extend` VALUES ('324', ',5,4,1,3,2,20,21,19,13,7,8,6,', '', '内蒙古,山西,北京,河北,天津,广西,海南,广东,福建,吉林,黑龙江,辽宁', '1', '10.00', '1', '8.00', '2', '1', '圆通快递');
+INSERT INTO `osc_transport_extend` VALUES ('325', ',30,31,29,28,27,24,26,25,23,22,', '', '宁夏,新疆,青海,甘肃,陕西,贵州,西藏,云南,四川,重庆', '1', '15.00', '1', '10.00', '2', '1', '圆通快递');
+INSERT INTO `osc_transport_extend` VALUES ('329', '', '', '全国', '1', '20.00', '1', '8.00', '1', '5', '顺丰速递');
+INSERT INTO `osc_transport_extend` VALUES ('330', ',11,14,12,10,9,15,', '', '浙江,江西,安徽,江苏,上海,山东', '1', '15.00', '1', '5.00', '2', '5', '顺丰速递');
+INSERT INTO `osc_transport_extend` VALUES ('331', ',17,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,16,243,257,256,255,254,244,245,246,247,248,249,250,251,252,253,242,240,241,18,283,284,285,286,287,288,282,281,280,275,276,277,278,279,20,310,311,312,313,314,315,316,317,318,319,320,321,322,323,21,334,335,336,337,338,339,340,341,342,343,333,332,331,324,325,326,327,328,329,330,344,19,294,308,309,307,306,305,295,296,297,298,299,300,301,302,303,304,289,290,291,292,293,13,205,206,207,208,209,210,211,204,203,', ',17,16,18,20,21,19,13,', '湖北,河南,湖南,广西,海南,广东,福建', '1', '18.00', '1', '8.00', '2', '5', '顺丰速递');
+INSERT INTO `osc_transport_extend` VALUES ('332', ',30,474,470,471,472,473,31,489,490,491,492,488,477,478,479,480,481,482,483,484,485,486,476,475,487,29,462,463,464,465,466,467,468,469,28,451,452,453,454,455,456,457,458,459,460,450,449,448,461,27,438,439,440,441,442,443,444,445,446,447,24,406,407,408,409,410,411,412,413,414,26,431,432,433,434,435,436,437,25,426,427,428,429,430,425,424,423,415,416,417,418,419,420,421,422,23,399,400,401,402,403,404,405,398,397,386,387,388,389,390,391,392,393,394,395,396,385,22,62,', ',30,31,29,28,27,24,26,25,23,22,', '宁夏,新疆,青海,甘肃,陕西,贵州,西藏,云南,四川,重庆', '1', '20.00', '1', '10.00', '2', '5', '顺丰速递');
 
 -- ----------------------------
 -- Table structure for `osc_user_action`
@@ -4684,7 +4685,7 @@ CREATE TABLE `osc_user_action` (
   `info` varchar(255) DEFAULT NULL COMMENT '行为描述',
   `add_time` int(10) NOT NULL DEFAULT '0' COMMENT '加入时间',
   PRIMARY KEY (`ua_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=742 DEFAULT CHARSET=utf8 COMMENT='用户行为';
+) ENGINE=InnoDB AUTO_INCREMENT=770 DEFAULT CHARSET=utf8 COMMENT='用户行为';
 
 -- ----------------------------
 -- Records of osc_user_action
@@ -4903,3 +4904,31 @@ INSERT INTO `osc_user_action` VALUES ('738', '1', 'admin', '后台系统用户',
 INSERT INTO `osc_user_action` VALUES ('739', '1', 'admin', '后台系统用户', '新增了商品', '1513820763');
 INSERT INTO `osc_user_action` VALUES ('740', '1', 'admin', '后台系统用户', '删除商品', '1513820829');
 INSERT INTO `osc_user_action` VALUES ('741', '1', 'admin', '后台系统用户', '删除商品', '1513820832');
+INSERT INTO `osc_user_action` VALUES ('742', '1', 'admin', '后台系统用户', '更新商品36', '1513823046');
+INSERT INTO `osc_user_action` VALUES ('743', '1', 'admin', '后台系统用户', '更新商品36', '1513823048');
+INSERT INTO `osc_user_action` VALUES ('744', '1', 'admin', '后台系统用户', '更新商品9', '1513827520');
+INSERT INTO `osc_user_action` VALUES ('745', '1', 'admin', '后台系统用户', '修改了促销管理', '1513834693');
+INSERT INTO `osc_user_action` VALUES ('746', '1', 'admin', '后台系统用户', '修改了促销管理', '1513834708');
+INSERT INTO `osc_user_action` VALUES ('747', '1', 'admin', '后台系统用户', '修改了促销管理', '1513835728');
+INSERT INTO `osc_user_action` VALUES ('748', '1', 'admin', '后台系统用户', '修改了促销管理', '1513835752');
+INSERT INTO `osc_user_action` VALUES ('749', '1', 'admin', '后台系统用户', '新增了促销管理', '1513841221');
+INSERT INTO `osc_user_action` VALUES ('750', '1', 'admin', '后台系统用户', '修改了促销管理', '1513841456');
+INSERT INTO `osc_user_action` VALUES ('751', '1', 'admin', '后台系统用户', '修改了促销管理', '1513841497');
+INSERT INTO `osc_user_action` VALUES ('752', '1', 'admin', '后台系统用户', '更新商品基本信息', '1513843322');
+INSERT INTO `osc_user_action` VALUES ('753', '1', 'admin', '后台系统用户', '更新商品基本信息', '1513843447');
+INSERT INTO `osc_user_action` VALUES ('754', '1', 'admin', '后台系统用户', '修改了banner', '1513843503');
+INSERT INTO `osc_user_action` VALUES ('755', '1', 'admin', '后台系统用户', '修改了banner', '1513843759');
+INSERT INTO `osc_user_action` VALUES ('756', '1', 'admin', '后台系统用户', '修改了banner', '1513843793');
+INSERT INTO `osc_user_action` VALUES ('757', '1', 'admin', '后台系统用户', '登录了后台系统', '1513903834');
+INSERT INTO `osc_user_action` VALUES ('758', '1', 'admin', '后台系统用户', '更新了运费模板', '1513904988');
+INSERT INTO `osc_user_action` VALUES ('759', '1', 'admin', '后台系统用户', '更新了运费模板', '1513905010');
+INSERT INTO `osc_user_action` VALUES ('760', '1', 'admin', '后台系统用户', '更新了运费模板', '1513905194');
+INSERT INTO `osc_user_action` VALUES ('761', '1', 'admin', '后台系统用户', '更新了运费模板', '1513905203');
+INSERT INTO `osc_user_action` VALUES ('762', '1', 'admin', '后台系统用户', '修改了促销管理', '1513913587');
+INSERT INTO `osc_user_action` VALUES ('763', '1', 'admin', '后台系统用户', '修改了促销管理', '1513913668');
+INSERT INTO `osc_user_action` VALUES ('764', '1', 'admin', '后台系统用户', '修改了促销管理', '1513913680');
+INSERT INTO `osc_user_action` VALUES ('765', '1', 'admin', '后台系统用户', '修改了用户状态', '1513919269');
+INSERT INTO `osc_user_action` VALUES ('766', '1', 'admin', '后台系统用户', '修改了用户状态', '1513919270');
+INSERT INTO `osc_user_action` VALUES ('767', '1', 'admin', '后台系统用户', '编辑了会员', '1513919710');
+INSERT INTO `osc_user_action` VALUES ('768', '1', 'admin', '后台系统用户', '编辑了会员', '1513919718');
+INSERT INTO `osc_user_action` VALUES ('769', '1', 'admin', '后台系统用户', '编辑了会员', '1513919725');

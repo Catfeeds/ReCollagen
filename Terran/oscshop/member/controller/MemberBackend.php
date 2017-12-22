@@ -21,11 +21,11 @@ class MemberBackend extends AdminBase{
 		$param=input('param.');
 		$map = $query = [];
 		if(isset($param['condition'])){		
-			$map['m.openId|m.username|m.tel']=['like',"%".trim($param['condition'])."%"];
+			$map['m.openId|a.name|a.telephone']=['like',"%".trim($param['condition'])."%"];
 		}
 
-		$list=[];
-		$list=Db::name('member')->alias('m')
+		$list=Db::name('member')->alias('m')->field('m.*,a.name,a.telephone')
+			->join('__ADDRESS__ a','a.uid=m.uid','left')
 			->where($map)
 			->order('m.create_time desc')
 			->paginate(config('page_num'));		
@@ -55,11 +55,12 @@ class MemberBackend extends AdminBase{
 			}
 		}
 		
-		$list=[
-			'info'=>Db::name('member')->find(input('param.id')),
-			'address'=>Db::name('address')->where('uid',input('param.id'))->select()
-		];
-		$this->assign('data',$list);
+		$data = Db::name('member')->alias('m')->field('m.*,a.name,a.telephone,a.province,a.city,a.country,a.address')
+			->join('__ADDRESS__ a','a.uid=m.uid','left')
+			->where(['m.uid'=>input('param.id/d')])
+			->find();
+
+		$this->assign('data',$data);
 		$this->assign('crumbs','会员资料');
 	 	return $this->fetch('info');
 	}
