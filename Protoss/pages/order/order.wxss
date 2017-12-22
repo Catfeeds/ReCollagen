@@ -116,15 +116,16 @@
     background-color: #fff;
 }
 .order-accounts>view{
-    display: flex;
     align-items: center;
 }
 .total-account{
     flex: 1;
     color:#333;
     padding-left: 20rpx;
+    padding-top: 5rpx;
 }
 .pay{
+    display: flex;
     flex-basis: 240rpx;
     background-color: #75bb0b;
     color: #fff;
@@ -136,4 +137,11 @@
 .pay.disabled{
     background: rgba(117,187,11,0.6);
     pointer-events: auto;
+}
+
+.product-youh{
+    color: #6D6D6D;
+    border-bottom: 1rpx solid #E9E9E9;
+    padding:20rpx;
+    text-align: right;
 }
