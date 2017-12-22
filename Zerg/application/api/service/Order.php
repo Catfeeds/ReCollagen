@@ -41,16 +41,16 @@ class Order
     public function place($uid, $oProducts)
     {
         $this->oProducts = $oProducts;
-        $this->products = $this->getProductsByOrder($oProducts);
-        $this->uid = $uid;
-        $status = $this->getOrderStatus();
+        $this->products  = $this->getProductsByOrder($oProducts);
+        $this->uid       = $uid;
+        $status          = $this->getOrderStatus();
         if (!$status['pass']) {
             $status['order_id'] = -1;
             return $status;
         }
 
-        $orderSnap = $this->snapOrder();
-        $status = self::createOrderByTrans($orderSnap);
+        $orderSnap      = $this->snapOrder();
+        $status         = self::createOrderByTrans($orderSnap);
         $status['pass'] = true;
         return $status;
     }
@@ -157,7 +157,9 @@ class Order
     }
 
 
-    // 根据订单查找真实商品
+    /**
+     * 根据订单查找真实商品
+     */
     private function getProductsByOrder($oProducts)
     {
         $oPIDs = [];
@@ -170,7 +172,9 @@ class Order
             ->toArray();
         return $products;
     }
-
+    /**
+     * 获取用户的收货地址
+     */
     private function getUserAddress()
     {
         $userAddress = UserAddress::where('user_id', '=', $this->uid)
@@ -220,7 +224,9 @@ class Order
         }
     }
 
-    // 预检测并生成订单快照
+    /**
+      * 预检测并生成订单快照
+      */ 
     private function snapOrder()
     {
         // status可以单独定义一个类
@@ -250,9 +256,10 @@ class Order
         return $snap;
     }
 
-    // 单个商品库存检测
-    private function snapProduct($product, $oCount)
-    {
+    /**
+      * 单个商品库存检测
+      */ 
+    private function snapProduct($product, $oCount){
         $pStatus = [
             'id'           => null,
             'name'         => null,
