@@ -31,10 +31,10 @@
               </view>
               <view class="mobile-box">
                 <image src="../../imgs/icon/mobile.png"></image>
-                <text  class="val">{{addressInfo.mobile}}</text>
+                <text  class="val">{{addressInfo.telephone}}</text>
               </view>
           </view>
-          <view class="detail">{{addressInfo.region}}{{addressInfo.detail}}</view>
+          <view class="detail">{{region}} {{addressInfo.address}}</view>
         </view>
         <view class="contact-icon" wx:if="{{orderStatus==0}}">
             <image src="../../imgs/icon/arrow@right.png"></image>

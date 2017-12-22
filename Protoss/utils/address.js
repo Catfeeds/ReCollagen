@@ -30,9 +30,8 @@ class Address extends Base{
             type:'post',
             data:data,
             sCallback:function(res){
-                callback && callback(true,res);
+                callback && callback(res);
             },eCallback(res){
-                callback && callback(false,res);
             }
         };
         this.request(param);
