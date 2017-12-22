@@ -172,8 +172,10 @@ Page({
             for(let i=0;i<procuctInfo.length;i++){
                 orderInfo.push({
                     product_id: procuctInfo[i].goods_id,
-                    count:procuctInfo[i].counts
-                    
+                    count:procuctInfo[i].counts,
+                    currentPrice: procuctInfo[i].currentPrice,
+                    isMainGoods: procuctInfo[i].isMainGoods,
+                    bulk: procuctInfo[i].bulk,
                 });
             }
 
