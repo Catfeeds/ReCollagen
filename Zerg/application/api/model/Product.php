@@ -143,5 +143,27 @@ class Product extends BaseModel
         }
         return $products;
     }
+    /**
+     * 获取已收藏的商品列表
+     */
+    public static function getcollectGoodsList($goodsIds){
+
+        $products = self::with(
+                ['options' => function ($query){
+                        $query->order('sort');
+                }])
+            ->where(['goods_id'=>['in',$goodsIds]])
+            ->select();
+        //如果商品有选项，默认价格为第一个选项的价格
+        if (!empty($products)) {
+            foreach ($products as $key => $product) {
+                if (!empty($product['options'][0])) {
+                    $products[$key]['price'] = $product['options'][0]['option_price'];
+                }
+                unset($product['options']);
+            }
+        }
+        return $products;
+    }
 
 }

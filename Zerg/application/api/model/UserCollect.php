@@ -12,6 +12,7 @@ class UserCollect extends BaseModel{
     protected $table = 'osc_member_collect';
     protected $autoWriteTimestamp = true;
 
+
 }
 
 
