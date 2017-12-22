@@ -42,15 +42,20 @@ class Address extends BaseController
      */
     public function createOrUpdateAddress()
     {
+        $data = input('post.');
+        $data['region'] = '';
         $validate = new AddressNew();
+
         $validate->goCheck();
 
         $uid = TokenService::getCurrentUid();
         $user = User::get($uid);
+halt($user);
+        
         if(!$user){
             throw new UserException([
                 'code' => 404,
-                'msg' => '用户收货地址不存在',
+                'msg' => '用户不存在',
                 'errorCode' => 60001
             ]);
         }
