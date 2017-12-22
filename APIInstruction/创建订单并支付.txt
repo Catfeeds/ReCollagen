@@ -1,0 +1,34 @@
+﻿Request:
+    /api/v1/order
+
+Method:
+    Post
+
+Params:
+    {
+        "goods_id"          :  "商品id", 
+        "count"             :  "商品数量", 
+        "isMainGoods"       :  "商品类型(1主商品，0辅销品)", 
+    }
+
+    "mainGoodsPrice"        :  "主商品价格", 
+    "otherGoodsPrice"       :  "辅销品价格", 
+    "shippingPrice"         :  "运费", 
+    "promotionId"           :  "当前促销活动的id，无则返回0", 
+
+
+
+Callback: 编码一律utf-8
+
++-------------------------------------------------------+
+
+    {  
+        "errorCode"     :  0, 
+        "msg"           : "支付成功",    
+    }
+
++-------------------------------------------------------+
+    {  
+        "errorCode"     :  "错误码", 
+        "msg"           : "错误提示",        
+    }

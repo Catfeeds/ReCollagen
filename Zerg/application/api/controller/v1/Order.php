@@ -52,7 +52,7 @@ class Order extends BaseController
         }
 
         return $orderDetail
-            ->hidden(['pay_subject_img','pay_subject']);
+            ->hidden(['pay_subject_img','pay_subject','promotionType','expression']);
     }
 
     /**

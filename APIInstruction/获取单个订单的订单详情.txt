@@ -24,9 +24,11 @@ Callback: 编码一律utf-8
         "shipping_num"          :  "快递单号", 
         "mainPay"               :  "主账户消费金额", 
         "secondPay"             :  "辅账户消费金额", 
-        "goodsPrice"            :  "商品总价", 
+        "mainGoodsPrice"        :  "主商品价格", 
+        "otherGoodsPrice"       :  "辅销品价格", 
         "shippingPrice"         :  "运费价格", 
         "total"                 :  "总计", 
+        "promotionName"         :  "促销活动名称(空则无促销活动)",
         "create_time"           :  "下单时间", 
 
 

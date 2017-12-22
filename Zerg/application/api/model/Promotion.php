@@ -6,6 +6,6 @@ use think\Model;
 
 class Promotion extends BaseModel
 {
-    protected $hidden = ['id','start_time','end_time'];
+    protected $hidden = ['start_time','end_time'];
 
 }
