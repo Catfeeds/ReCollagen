@@ -34,7 +34,7 @@
                 <text  class="val">{{addressInfo.mobile}}</text>
               </view>
           </view>
-          <view class="detail">{{addressInfo.totalDetail}}</view>
+          <view class="detail">{{addressInfo.region}}{{addressInfo.detail}}</view>
         </view>
         <view class="contact-icon" wx:if="{{orderStatus==0}}">
             <image src="../../imgs/icon/arrow@right.png"></image>
@@ -69,12 +69,21 @@
         </view>
       </view>
     </block>
+    <view class="product-youh" wx:if="{{PromotionInfo.length>0}}">
+      <block wx:for="{{PromotionInfo}}">
+          <view>{{item.name}}</view>
+      </block>
+    </view> 
+    <view class="product-youh">
+      <view>主商品价格：{{PromotionPrice}}元</view>
+      <view>辅销品价格：{{accountFain}}元</view>
+      <view>运费：6元</view>
     </view>
+  </view>
 
   <!--结算-->
   <view class="footer-account-box order-accounts">
     <view class="total-account">
-      付款合计：￥{{account}}
     </view>
     <view wx:if="{{orderStatus<=1}}" class="pay {{!addressInfo?'disabled':''}}" ontap="pay">去付款</view>
   </view>

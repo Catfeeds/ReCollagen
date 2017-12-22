@@ -32,34 +32,34 @@ Page({
                 });
 
                 /*显示收获地址*/
-                address.getAddress((res)=> {
-                    that._bindAddressInfo(res);
-                });
+                // address.getAddress((res) => {
+                //   self.setData({
+                //     addressInfo: res.data
+                //   })
+                // });
 
               /*显示主商品优惠*/
-                // var accountMain = this._calcTotalMainAndCounts(this.data.productsArr).account;
-                order.getMainPromotion(1,(data) => {
-                  console.log(data)
-
-                 
-                  // data.sort(function (a, b) {
-                  //   return a.money - b.money;
-                  // });
-                  
-                  // for (var key in discounts) {
-                  //   if (counts >= discounts[key].quantity) {
-                  //     tempPrice = (this.data.product.price * discounts[key].discount / 100).toFixed(2);
-                  //     float = true;
-                  //   }
-                  // }
+                var accountMain = this._calcTotalMainAndCounts(this.data.productsArr,1).account;
+                var accountFain = this._calcTotalMainAndCounts(this.data.productsArr,0).account;
 
 
-                  // that.setData({
-                  //   promotionArr: data
-                  // });
 
-
-                });
+                order.getMainPromotion((data) => {
+                  var Promotion = [];
+                  for (let i = 1; i < 4; i++) {
+                    var dataArr = this.getMainPromotionTypeInfo(data, i, accountMain)
+                    if (dataArr){
+                      Promotion.push(dataArr);
+                    }
+                  }
+                  var getPromotionPrice = this.getMainPromotionTypePrice(Promotion, accountMain);
+                  this.setData({
+                    accountMain: accountMain,
+                    accountFain: accountFain,
+                    PromotionInfo: Promotion,
+                    PromotionPrice: (accountMain - getPromotionPrice).toFixed(2),
+                  });
+                })
             }
 
             //旧订单
@@ -84,11 +84,6 @@ Page({
                             orderNo: data.order_no
                         },
                     });
-
-                    // 快照地址
-                    var addressInfo=data.snap_address;
-                    addressInfo.totalDetail = address.setAddressInfo(addressInfo);
-                    that._bindAddressInfo(addressInfo);
                 });
             }
         },
@@ -96,12 +91,12 @@ Page({
         /*
         * 计算主商品总金额
         * */
-        _calcTotalMainAndCounts: function (data) {
+        _calcTotalMainAndCounts: function (data, types) {
           var len = data.length,
             account = 0;
           let multiple = 100;
           for (let i = 0; i < len; i++) {
-            if (data[i].selectStatus && data[i].isMainGoods==1) {
+            if (data[i].selectStatus && data[i].isMainGoods==types) {
               account += data[i].counts * multiple * Number(data[i].currentPrice) * multiple;
             }
           }
@@ -110,34 +105,48 @@ Page({
           }
         },
 
+   
+        /*根据类型获取优惠信息*/
+        getMainPromotionTypeInfo: function (data, types, accountMain) {
+          var PromotionList = [],
+          tempPrice='', 
+          len = data.length;
+          for (let i = 0; i < len; i++) {
+            if (data[i].type == types) {
+              PromotionList.push(data[i]);
+            }
+          }
+          PromotionList.sort(function (a, b) {
+            return a.money - b.money;
+          });
+          for (var key in PromotionList) {
+            if (accountMain >= PromotionList[key].money) {
+              tempPrice = PromotionList[key];
+            }
+          }
+          return tempPrice;
+        },
+
+        /*根据类型获取优惠价格*/
+        getMainPromotionTypePrice: function (data, accountMain) {
+          var tempPrice=0,
+          len = data.length;
+          for (let i = 0; i < len; i++) {
+            if (data[i].type == 1) {
+              tempPrice = (accountMain * data[i].expression / 100).toFixed(2);
+            }
+          }
+          return tempPrice;
+        },
+
         /*修改或者添加地址信息*/
-        editAddress:function(){
-            var that=this;
-            wx.chooseAddress({
-                success: function (res) {
-                    var addressInfo = {
-                        name:res.userName,
-                        mobile:res.telNumber,
-                        totalDetail:address.setAddressInfo(res)
-                    };
-                    that._bindAddressInfo(addressInfo);
-
-                    //保存地址
-                    address.submitAddress(res,(flag)=>{
-                        if(!flag) {
-                            that.showTips('操作提示','地址信息更新失败！');
-                        }
-                    });
-                }
-            })
+        editAddress: function () {
+          var that = this;
+          wx.navigateTo({
+            url: '../address/address'
+          });
         },
 
-        /*绑定地址信息*/
-        _bindAddressInfo:function(addressInfo){
-            this.setData({
-                addressInfo: addressInfo
-            });
-        },
 
         /*下单和付款*/
         pay:function(){
