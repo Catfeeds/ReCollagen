@@ -5,7 +5,7 @@
           <input name="name" value="{{addressInfo.name}}" auto-focus placeholder="姓名" bindinput="bindName" />
         </view>
         <view class="section">
-          <input type="number" value="{{addressInfo.mobile}}" name="mobile" placeholder="手机号码" bindinput="bindPhone" />
+          <input type="number" value="{{addressInfo.telephone}}" name="mobile" placeholder="手机号码" bindinput="bindPhone" />
         </view>
         <view class="section">
           <text class='title-box'>地区:</text>
@@ -14,7 +14,7 @@
           </picker>
         </view>
         <view class="section">
-          <input name="detail" value="{{addressInfo.detail}}" placeholder="详细地址、如街道、楼牌号等" bindinput="bindDetail" />
+          <input name="detail" value="{{addressInfo.address}}" placeholder="详细地址、如街道、楼牌号等" bindinput="bindDetail" />
         </view>
         <button  class="submit-btn" formType="submit">保存</button>
       </form>

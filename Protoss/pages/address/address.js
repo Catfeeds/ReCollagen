@@ -20,23 +20,35 @@ Page({
     address.getAddress((res) => {
       console.log(res)
       self.setData({
-        addressInfo: res.data
+        addressInfo: res,
+        region: [res.province, res.city, res.country]
       })
     });
   },
   formSubmit(){
     var self = this;
+    var phone = self.data.addressInfo.telephone;
+    var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1})|(17[0-9]{1}))+\d{8})$/;
+    if (!myreg.test(phone)) {
+      if (phone.length != 11) {
+        self.showToast('手机号有误！');
+        return;
+      }
+    }
     if (self.data.addressInfo.name && self.data.addressInfo.telephone && self.data.addressInfo.address){
       /*保存收货地址*/
       address.submitAddress(self.data.addressInfo, (data) => {
-
-        console.log(data)
-
+        if (data.errorCode!=0) {
+          self.showToast('更新失败！');
+          return;
+        } 
+        self.showToast('更新成功。');
+        wx.navigateBack();
       });
     }
     else
     {
-      self.showTips('提示', '请填写完整资料');
+      self.showToast('请填写完整资料');
     }
   },
 
@@ -47,7 +59,7 @@ Page({
   },
   bindPhone(e){
     this.setData({
-      'addressInfo.telephone' : e.detail.value
+      'addressInfo.telephone': e.detail.value
     })
   },
   bindDetail(e){
@@ -68,14 +80,12 @@ Page({
   * 提示窗口
   * params:
   * title - {string}标题
-  * content - {string}内容
-  * flag - {bool}是否跳转到 "我的页面"
   */
-  showTips: function (title, content) {
-    wx.showModal({
+  showToast: function (title) {
+    wx.showToast({
       title: title,
-      content: content,
-      showCancel: false,
-    });
+      icon: 'success',
+      duration: 2000
+    })
   },
 })

@@ -32,11 +32,13 @@ Page({
                 });
 
                 /*显示收获地址*/
-                // address.getAddress((res) => {
-                //   self.setData({
-                //     addressInfo: res.data
-                //   })
-                // });
+                address.getAddress((res) => {
+                  
+                  that.setData({
+                    addressInfo: res,
+                    region: [res.province, res.city, res.country]
+                  })
+                });
 
               /*显示主商品优惠*/
                 var accountMain = this._calcTotalMainAndCounts(this.data.productsArr,1).account;
@@ -166,10 +168,12 @@ Page({
             var orderInfo=[],
                 procuctInfo=this.data.productsArr,
                 order=new Order();
+            console.log(procuctInfo)
             for(let i=0;i<procuctInfo.length;i++){
                 orderInfo.push({
                     product_id: procuctInfo[i].goods_id,
                     count:procuctInfo[i].counts
+                    
                 });
             }
 
