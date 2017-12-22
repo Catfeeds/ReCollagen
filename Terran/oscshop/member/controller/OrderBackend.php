@@ -29,7 +29,7 @@ class OrderBackend extends AdminBase{
      		//获取快递公司代码
 	     	$shippingCode = getShippingCode($info['order']['shipping_method']);
 	     	//查询物流进度
-	     	$info['order']['transportInfo'] = getTranportInfo($shippingCode,$info['order']['shipping_num']);
+	     	$info['order']['transportInfo'] = getTransInfo($shippingCode,$info['order']['shipping_num']);
      	}
      	
 

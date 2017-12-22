@@ -552,7 +552,7 @@ function getShippingCode($shipping_method){
  *  http://api.kuaidi100.com/api?id=f0306948c9ecf939&com=youzhengguonei&nu=9891770403677(返回json)
  *  https://m.kuaidi100.com/query?type=shentong&postid=3345307575167(返回json,支持的快递公司更多)
  */
-function getTranportInfo($shipping_method,$shipping_num){
+function getTransInfo($shipping_method,$shipping_num){
     if(isset($shipping_method)&&isset($shipping_num)){
         $AppKey ='f0306948c9ecf939';
         $url    = 'http://www.kuaidi100.com/applyurl?key='.$AppKey.'&com='.$shipping_method.'&nu='.$shipping_num;//生成完整的请求URL
@@ -583,6 +583,9 @@ function getPromotionType($type){
             break;
         case '2':
             return '满额返现';
+            break;
+        case '3':
+            return '满额赠送商品';
             break;
         
         default:

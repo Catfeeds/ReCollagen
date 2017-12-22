@@ -1,0 +1,34 @@
+Request:
+    /api/v1/address
+
+Method:
+    Post
+
+Params:
+    "name"          :   "姓名"
+    "telephone"     :   "手机"
+    "province"      :   "省"
+    "city"          :   "市"
+    "country"       :   "区县"
+    "address"       :   "具体地址"
+
+
+
+Callback: 编码一律utf-8
+
++-------------------------------------------------------+
+
+    {  
+
+        "code"          :   201,
+        "msg"           :   "ok",
+        "errorCode"     :   0,
+        "shouldToClient":   true                        
+
+    }
+
++-------------------------------------------------------+
+    {  
+        "errorCode"     :  "错误码", 
+        "msg"           : "错误提示",        
+    }

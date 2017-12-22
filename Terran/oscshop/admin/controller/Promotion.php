@@ -38,15 +38,21 @@ class Promotion extends AdminBase{
 	public function add(){
 		if(request()->isPost()){
 			$data = input('post.');
-
+			if (isset($data['expression']) && $data['expression'] == '') {
+				$this->error('请输入折扣/优惠金额');
+			}
 			$validate = $this->validate($data,'Promotion');
 			if ($validate !== true) {
 				$this->error($validate);
 			}
+
 			$data['start_time'] = strtotime($data['start_time']);
 			$data['end_time']   = strtotime($data['end_time']);
 			if($data['start_time']>=$data['end_time']){
 				$this->error('开始时间不得大于结束时间');
+            }
+            if ($data['type'] == 3) {
+				$data['expression'] = $data['name'];
             }
 
 			$result = $this->model->save($data);
@@ -71,6 +77,9 @@ class Promotion extends AdminBase{
 		
 		if(request()->isPost()){
 			$data = input('post.');
+			if (isset($data['expression']) && $data['expression'] == '') {
+				$this->error('请输入折扣/优惠金额');
+			}
 			$validate = $this->validate($data,'Promotion');
 			if ($validate !== true) {
 				$this->error($validate);
@@ -80,7 +89,9 @@ class Promotion extends AdminBase{
 			if($data['start_time']>=$data['end_time']){
 				$this->error('开始时间不得大于结束时间');
             }
-
+            if ($data['type'] == 3) {
+				$data['expression'] = $data['name'];
+            }
 			$result = $this->model->update($data);
 			
 			if(!$result){	

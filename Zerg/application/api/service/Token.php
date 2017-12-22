@@ -42,7 +42,9 @@ class Token
         }
     }
 
-    // 用户专有权限
+    /**
+      * 用户专有权限
+      */ 
     public static function needExclusiveScope()
     {
         $scope = self::getCurrentTokenVar('scope');
@@ -56,7 +58,9 @@ class Token
             throw new TokenException();
         }
     }
-
+    /**
+      * 管理员专有权限
+      */ 
     public static function needSuperScope()
     {
         $scope = self::getCurrentTokenVar('scope');
