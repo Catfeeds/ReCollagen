@@ -27,7 +27,7 @@ class Address extends BaseController
     public function getUserAddress(){
         $uid = Token::getCurrentUid();
 
-        $userAddress = UserAddress::where('uid', $uid)
+        $userAddress = UserAddress::field('name,telephone,province,city,country,address')->where('uid', $uid)
             ->find();
         if(!$userAddress){
             throw new UserException([

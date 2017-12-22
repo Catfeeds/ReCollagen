@@ -183,5 +183,30 @@ class Product extends Controller
         return $UserCollectModel->where($where)->find();
 
     }
+    /**
+     * 获取已收藏的商品列表
+     */
+    public function getcollectGoodsList(){
+
+        $currentUid = TokenService::getCurrentUid();
+        $where = ['uid'=>$currentUid];
+
+        $collect = UserCollectModel::where($where)->order('create_time desc')->select();
+        if ($collect->isEmpty()){
+            return [];
+        }
+        $goodsIds = array_column($collect->toArray(),'goods_id');
+
+       
+        $list = ProductModel::getcollectGoodsList($goodsIds);
+        $list = $list->hidden(
+            [
+                'cat_id','stock','weight','bulk'
+            ])
+            ->toArray();
+
+        return $list;
+
+    }
 
 }

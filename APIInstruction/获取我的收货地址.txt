@@ -15,7 +15,6 @@ Callback: 编码一律utf-8
 
     {  
 
-        "uid"           : "用户id"     
         "name"          : "收货人"                
         "telephone"     : "联系电话"    
         "province"      : "省"                               

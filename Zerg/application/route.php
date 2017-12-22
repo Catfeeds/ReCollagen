@@ -48,6 +48,8 @@ Route::get('api/:version/product/by_category/:id', 'api/:version.Product/getProd
 Route::get('api/:version/product/:id', 'api/:version.Product/getOne',[],['id'=>'\d+']);         //获取商品详情
 Route::get('api/:version/product/recent', 'api/:version.Product/getRecent');                    //首页最新新品列表
 Route::post('api/:version/product/collect','api/:version.Product/collectGoods');                //收藏或取消收藏商品
+Route::get('api/:version/product/collect','api/:version.Product/getcollectGoodsList');          //获取已收藏的商品列表
+
 
 //Promotion
 Route::get('api/:version/promotion/all', 'api/:version.Promotion/getPromotions');                    //正在进行中的促销活动
