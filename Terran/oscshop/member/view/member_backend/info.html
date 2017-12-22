@@ -24,37 +24,37 @@
 			<table class="table table-binfoed">
 				<tr>
 				    <td>ID</td>
-				    <td>{$data.info.uid}</td>
+				    <td>{$data.uid}</td>
 				</tr>
 				<tr>
 					<td>微信openId</td>
 					<td>				
-					{$data.info.openId}					
+					{$data.openId}					
 					</td>
 				</tr>
                 <tr>
                     <td>收货人</td>
                     <td>                
-                    {$data.info.username}                 
+                    {$data.name}                 
                     </td>
                 </tr>
                 <tr>
                     <td>联系电话</td>
                     <td>                
-                    {$data.info.tel}                 
+                    {$data.telephone}                 
                     </td>
                 </tr>
 				<tr>
 				    <td>主账户金额（元）</td>
-				    <td><input name="mainAccount" type="text" style="width:200px;" value="{$data.info.mainAccount}" /></td>
+				    <td><input name="mainAccount" type="text" style="width:200px;" value="{$data.mainAccount}" /></td>
 				</tr> 
  				<tr>
 				    <td>辅账户金额（元）</td>
-				    <td><input name="secondAccount" type="text" style="width:200px;" value="{$data.info.secondAccount}" /></td>
+				    <td><input name="secondAccount" type="text" style="width:200px;" value="{$data.secondAccount}" /></td>
 				</tr> 
 				<tr>
 					<td>创建时间</td>
-					<td>{$data.info.create_time|date="Y-m-d H:i:s",###}</td>
+					<td>{$data.create_time|date="Y-m-d H:i:s",###}</td>
 				</tr>
 				<tr>
 					<td>状态</td>
@@ -76,22 +76,16 @@
 		
 		<div class="tab-pane" id="tab-shipping">
             <table class="table table-binfoed">
-          {volist name="data.address" id="vo"}
-          <tr>
-            <td>收货人姓名: {$vo.name}</td>          
-            <td>所在地:</td>
-            <td>
-            	<?php echo get_area_name($vo['province_id']); ?>，
-            	<?php echo get_area_name($vo['city_id']); ?>，
-            	<?php echo get_area_name($vo['country_id']); ?>
-            </td>         
-            <td>地址:</td>
-            <td>{$vo.address}</td>        
-          	<td>联系电话:</td>
-          	<td>{$vo.telephone}</td>
-          </tr>
-          {/volist}  
-        </table>        
+              <tr>
+                <td>收货人姓名: {$data.name}</td>          
+                <td>所在地:</td>
+                <td>{$data.province},{$data.city},{$data.country}</td>         
+                <td>地址:</td>
+                <td>{$data.address}</td>        
+              	<td>联系电话:</td>
+              	<td>{$data.telephone}</td>
+              </tr>
+            </table>        
       </div>	
 	
 	</div>
@@ -120,7 +114,7 @@
     
     $(function(){	
     	{if condition="$Request.param.id"}
-    			Oscshop.setValue("checked", {$data.info.checked|default=1});		
+    			Oscshop.setValue("checked", {$data.checked|default=1});		
     	{/if}
     });
 </script>							
