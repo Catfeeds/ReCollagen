@@ -31,6 +31,9 @@ Page({
                     orderStatus:0
                 });
 
+                /*显示收获地址*/
+                this._addressInfo();
+
                 /*主商品价格和辅销品价格*/
                 var accountMain = this._calcTotalMainAndCounts(this.data.productsArr,1).account;
                 var accountFain = this._calcTotalMainAndCounts(this.data.productsArr,0).account;
@@ -85,12 +88,17 @@ Page({
                 });
             }
             /*显示收获地址*/
-            address.getAddress((res) => {
-              this.setData({
-                addressInfo: res,
-                region: [res.province, res.city, res.country]
-              })
-            });
+            this._addressInfo();
+        },
+
+        /*显示收获地址*/
+        _addressInfo: function () {
+          address.getAddress((res) => {
+            this.setData({
+              addressInfo: res,
+              region: [res.province, res.city, res.country]
+            })
+          });
         },
 
         /*
@@ -138,7 +146,7 @@ Page({
           len = data.length;
           for (let i = 0; i < len; i++) {
             if (data[i].type == 1) {
-              tempPrice = (accountMain * data[i].expression / 100).toFixed(2);
+              tempPrice = (accountMain * data[i].expression / 1000).toFixed(2);
             }
           }
           return tempPrice;

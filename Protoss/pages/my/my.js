@@ -16,6 +16,9 @@ Page({
     },
     onLoad:function(){
         this._loadData();
+
+        /*显示收获地址*/
+        this._addressInfo();
     },
 
     onShow:function(){
@@ -26,12 +29,7 @@ Page({
         }
 
         /*显示收获地址*/
-        address.getAddress((res) => {
-          this.setData({
-            addressInfo: res,
-            region: [res.province, res.city, res.country]
-          })
-        });
+        this._addressInfo();
     },
 
     _loadData:function(){
@@ -46,6 +44,15 @@ Page({
         order.execSetStorageSync(false);  //更新标志位
     },
     
+    /*显示收获地址*/
+    _addressInfo: function () {
+      address.getAddress((res) => {
+        this.setData({
+          addressInfo: res,
+          region: [res.province, res.city, res.country]
+        })
+      });
+    },
 
     /*修改或者添加地址信息*/
     editAddress: function () {
