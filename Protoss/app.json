@@ -1,7 +1,10 @@
 {
   "pages":[
+    "pages/my/my",
     "pages/cart/cart",
     "pages/address/address",
+    
+    
     
     
     "pages/home/home",
@@ -11,7 +14,7 @@
     
     "pages/category/category",
     "pages/order/order",
-    "pages/my/my",
+    
     "pages/theme/theme",
     "pages/pay-result/pay-result"
   ],
