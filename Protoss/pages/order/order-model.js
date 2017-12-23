@@ -13,6 +13,7 @@ class Order extends Base{
 
     /*下订单*/
     doOrder(param,callback){
+      console.log(param)
         var that=this;
         var allParams = {
             url: 'order',

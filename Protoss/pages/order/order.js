@@ -188,7 +188,7 @@ Page({
                 goodsArr.push({
                     goods_id: procuctInfo[i].goods_id,
                     count:procuctInfo[i].counts,
-                    options: procuctInfo[i].options,
+                    option_id: procuctInfo[i].optionsid,
                 })
               }
               for (let i = 0; i < PromotionInfo.length; i++) {
@@ -203,7 +203,7 @@ Page({
                   shippingPrice:6,
                   promotionId: PromoArr,
               };
-
+              
             var that=this;
             //支付分两步，第一步是生成订单号，然后根据订单号支付
             order.doOrder(orderInfo,(data)=>{
