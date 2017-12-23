@@ -7,6 +7,7 @@ use app\api\model\Product;
 use app\api\model\Order as OrderModel;
 use app\api\model\UserAddress;
 use app\api\model\ProductOption;
+use app\api\model\Promotion;
 
 use app\lib\enum\OrderStatusEnum;
 use app\lib\exception\OrderException;
@@ -168,12 +169,21 @@ class Order
             $order->shipping_tel    = $userAddress['telephone'];
             $order->shipping_addr   = $userAddress['province'].$userAddress['city'].$userAddress['country'].$userAddress['address'];
 
-            $order->dispatch_id     = '111';     //发货仓id
-            $order->shipping_method = '物流公司';     //物流公司
+            $order->dispatch_id     = '1';     //发货仓id
+            $order->shipping_method = '物流公司名称';     //物流公司
             $order->mainGoodsPrice  = $this->postData['mainGoodsPrice'];     //主商品价格
             $order->otherGoodsPrice = $this->postData['otherGoodsPrice'];     //辅销品价格
             $order->shippingPrice   = $this->postData['shippingPrice'];  //运费
             $order->total           = $order->mainGoodsPrice + $order->otherGoodsPrice + $order->shippingPrice;     //总计
+
+            //促销活动
+            if (!empty($this->postData['promotionId'])) {
+                $promotionIds = [];
+                foreach ($this->postData['promotionId'] as $item) {
+                    array_push($promotionIds, $item['id']);
+                }
+                $order->promotion = Promotion::all($promotionIds)->hidden(['id'])->toJson();
+            }
 
             $order->save();
             

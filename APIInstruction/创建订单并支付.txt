@@ -14,7 +14,7 @@ Params:
     "mainGoodsPrice"        :  "主商品价格", 
     "otherGoodsPrice"       :  "辅销品价格", 
     "shippingPrice"         :  "运费", 
-    "promotionId"           :  "当前促销活动的id，无则返回0", 
+    "promotionId"           :  "当前促销活动的id，无则返回空", 
 
 
 

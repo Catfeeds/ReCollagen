@@ -15,11 +15,11 @@ use think\Controller;
 
 class Order extends BaseController
 {
-    // protected $beforeActionList = [
-    //     'checkExclusiveScope' => ['only' => 'createOrder'],
-    //     'checkPrimaryScope' => ['only' => 'getDetail,getSummaryByUser'],
-    //     'checkSuperScope' => ['only' => 'delivery,getSummary']
-    // ];
+    protected $beforeActionList = [
+        'checkExclusiveScope' => ['only' => 'createOrder'],
+        'checkPrimaryScope' => ['only' => 'getDetail,getSummaryByUser'],
+        'checkSuperScope' => ['only' => 'delivery,getSummary']
+    ];
     
     /**
      * 下单
@@ -31,8 +31,7 @@ class Order extends BaseController
         (new OrderPlace())->goCheck();
         $postData = input('post.');
         $products = input('post.goodsArrInfo/a');
-        // $uid      = Token::getCurrentUid();
-        $uid      = 2;
+        $uid      = Token::getCurrentUid();
 
         $order    = new OrderService();
         $status   = $order->place($uid, $products,$postData);
@@ -53,9 +52,10 @@ class Order extends BaseController
         if (!$orderDetail){
             throw new OrderException();
         }
-
-        return $orderDetail
-            ->hidden(['pay_subject_img','pay_subject','promotionType','expression']);
+        $orderDetail = $orderDetail
+            ->hidden(['pay_subject_img','pay_subject','mainPay','secondPay','promotion'])->toArray();
+        
+        return $orderDetail;
     }
 
     /**
@@ -66,13 +66,12 @@ class Order extends BaseController
     public function getSummaryByUser(){
         
         $uid = Token::getCurrentUid();
-        
         $orders = OrderModel::getSummaryByUser($uid);
         if ($orders->isEmpty()){
             return [];
         }
 
-        $data = $orders->hidden(['shipping_name','shipping_tel','shipping_addr','shipping_method','shipping_num','mainPay','secondPay','goodsPrice','shippingPrice','products'])
+        $data = $orders->hidden(['shipping_name','shipping_tel','shipping_addr','shipping_method','shipping_num','mainPay','secondPay','mainGoodsPrice','otherGoodsPrice','shippingPrice','promotion','create_time','products'])
             ->toArray();
 
         return $data;
