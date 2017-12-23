@@ -20,7 +20,6 @@ class Category extends Base {
     }
     /*获得某种分类的商品*/
     getProductsByCategory(id,callback) {
-     
         var param = {
           url: 'product/by_category/'+id,
             sCallback: function (data) {
