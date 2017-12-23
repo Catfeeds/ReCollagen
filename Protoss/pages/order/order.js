@@ -38,6 +38,7 @@ Page({
                 var accountMain = this._calcTotalMainAndCounts(this.data.productsArr,1).account;
                 var accountFain = this._calcTotalMainAndCounts(this.data.productsArr,0).account;
 
+
                 /*获取促销套餐*/
                 order.getMainPromotion((data) => {
                   var Promotion = [];
@@ -53,10 +54,10 @@ Page({
                     }
                   }
                   /*获取满额打折价格*/
-                  var getPromotionPrice = this.getMainPromotionTypePrice(Promotion, accountMain);
+                  var getPromotionPrice = this.getMainPromotionTypePrice(Promotion);
 
                   this.setData({
-                    accountMain: (accountMain - getPromotionPrice).toFixed(2),
+                    accountMain: (accountMain * getPromotionPrice).toFixed(2),
                     accountFain: accountFain,
                     PromotionInfo: Promotion,
                   });
@@ -122,7 +123,7 @@ Page({
         /*根据类型获取优惠信息*/
         getMainPromotionTypeInfo: function (data, types, accountMain) {
           var PromotionList = [],
-          tempPrice='', 
+            tempList='', 
           len = data.length;
           for (let i = 0; i < len; i++) {
             if (data[i].type == types) {
@@ -134,19 +135,19 @@ Page({
           });
           for (var key in PromotionList) {
             if (accountMain >= PromotionList[key].money) {
-              tempPrice = PromotionList[key];
+              tempList = PromotionList[key];
             }
           }
-          return tempPrice;
+          return tempList;
         },
 
         /*根据类型获取优惠价格*/
-        getMainPromotionTypePrice: function (data, accountMain) {
+        getMainPromotionTypePrice: function (data) {
           var tempPrice=0,
           len = data.length;
           for (let i = 0; i < len; i++) {
             if (data[i].type == 1) {
-              tempPrice = (accountMain * data[i].expression / 1000).toFixed(2);
+              tempPrice = (data[i].expression / 100).toFixed(2);
             }
           }
           return tempPrice;
