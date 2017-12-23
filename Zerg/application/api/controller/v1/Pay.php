@@ -18,8 +18,11 @@ class Pay extends BaseController
     {
         (new IDMustBePositiveInt()) -> goCheck();
         $pay= new PayService($id);
-        return $pay->pay();
+        // return $pay->pay();
+        return $pay->orderPay();
+
     }
+
 
     public function redirectNotify()
     {

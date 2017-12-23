@@ -6,6 +6,7 @@ use app\api\controller\BaseController;
 use app\api\model\Order as OrderModel;
 use app\api\service\Order as OrderService;
 use app\api\service\Token;
+
 use app\api\validate\IDMustBePositiveInt;
 use app\api\validate\OrderPlace;
 use app\api\validate\PagingParameter;
@@ -27,7 +28,6 @@ class Order extends BaseController
      * @HTTP POST
      */
     public function createOrder(){
-
         (new OrderPlace())->goCheck();
         $postData = input('post.');
         $products = input('post.goodsArrInfo/a');
@@ -35,6 +35,7 @@ class Order extends BaseController
 
         $order    = new OrderService();
         $status   = $order->place($uid, $products,$postData);
+
         return $status;
     }
 
