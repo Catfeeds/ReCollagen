@@ -88,6 +88,7 @@ Page({
                     });
                 });
             }
+            
             /*显示收获地址*/
             this._addressInfo();
         },
@@ -187,11 +188,12 @@ Page({
                 goodsArr.push({
                     goods_id: procuctInfo[i].goods_id,
                     count:procuctInfo[i].counts,
+                    options: procuctInfo[i].options,
                 })
               }
               for (let i = 0; i < PromotionInfo.length; i++) {
                 PromoArr.push({
-                  id:PromotionInfo[i].id,
+                    id: PromotionInfo[i].id,
                 })
               }
               orderInfo = {
@@ -201,8 +203,6 @@ Page({
                   shippingPrice:6,
                   promotionId: PromoArr,
               };
-            
-            console.log(orderInfo)
 
             var that=this;
             //支付分两步，第一步是生成订单号，然后根据订单号支付

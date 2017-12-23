@@ -42,7 +42,7 @@
                 <text>全选({{selectedCounts}})</text>
             </view>
             <view class="all-price-submit {{account==0?'disabled':''}}" bindtap="submitOrder">
-                <view class="price-text">￥{{account}}</view>
+                <view class="price-text">合计：￥{{account}}</view>
                 <view class="accounts-btn">下单</view>
                 <view class="arrow-icon">
                     <image wx:if="{{account==0}}" src="../../imgs/icon/arrow@grey.png"></image>
