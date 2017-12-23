@@ -203,7 +203,7 @@ Page({
                   shippingPrice:6,
                   promotionId: PromoArr,
               };
-              
+
             var that=this;
             //支付分两步，第一步是生成订单号，然后根据订单号支付
             order.doOrder(orderInfo,(data)=>{
