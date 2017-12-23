@@ -8,7 +8,7 @@ Params:
     {
         "goods_id"          :  "商品id", 
         "count"             :  "商品数量", 
-        "isMainGoods"       :  "商品类型(1主商品，0辅销品)", 
+        "option_id"         :  "商品选项id", 
     }
 
     "mainGoodsPrice"        :  "主商品价格", 

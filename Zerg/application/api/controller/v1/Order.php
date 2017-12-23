@@ -15,24 +15,27 @@ use think\Controller;
 
 class Order extends BaseController
 {
-    protected $beforeActionList = [
-        'checkExclusiveScope' => ['only' => 'createOrder'],
-        'checkPrimaryScope' => ['only' => 'getDetail,getSummaryByUser'],
-        'checkSuperScope' => ['only' => 'delivery,getSummary']
-    ];
+    // protected $beforeActionList = [
+    //     'checkExclusiveScope' => ['only' => 'createOrder'],
+    //     'checkPrimaryScope' => ['only' => 'getDetail,getSummaryByUser'],
+    //     'checkSuperScope' => ['only' => 'delivery,getSummary']
+    // ];
     
     /**
      * 下单
      * @url /order
      * @HTTP POST
      */
-    public function createOrder()
-    {
+    public function createOrder(){
+
         (new OrderPlace())->goCheck();
-        $products = input('post.products/a');
-        $uid      = Token::getCurrentUid();
+        $postData = input('post.');
+        $products = input('post.goodsArrInfo/a');
+        // $uid      = Token::getCurrentUid();
+        $uid      = 2;
+
         $order    = new OrderService();
-        $status   = $order->place($uid, $products);
+        $status   = $order->place($uid, $products,$postData);
         return $status;
     }
 

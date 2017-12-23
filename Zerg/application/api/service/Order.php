@@ -6,6 +6,8 @@ use app\api\model\OrderProduct;
 use app\api\model\Product;
 use app\api\model\Order as OrderModel;
 use app\api\model\UserAddress;
+use app\api\model\ProductOption;
+
 use app\lib\enum\OrderStatusEnum;
 use app\lib\exception\OrderException;
 use app\lib\exception\UserException;
@@ -24,6 +26,7 @@ use think\Exception;
  */
 class Order
 {
+    protected $postData;
     protected $oProducts;
     protected $products;
     protected $uid;
@@ -38,12 +41,13 @@ class Order
      * @return array 订单商品状态
      * @throws Exception
      */
-    public function place($uid, $oProducts)
-    {
+    public function place($uid, $oProducts,$postData){
+        $this->postData  = $postData;
         $this->oProducts = $oProducts;
         $this->products  = $this->getProductsByOrder($oProducts);
         $this->uid       = $uid;
-        $status          = $this->getOrderStatus();
+        //库存检测
+        $status = $this->getOrderStatus();
         if (!$status['pass']) {
             $status['order_id'] = -1;
             return $status;
@@ -54,7 +58,9 @@ class Order
         $status['pass'] = true;
         return $status;
     }
-
+    /**
+     * 库存检测
+     */
     private function getOrderStatus()
     {
         $status = [
@@ -62,10 +68,11 @@ class Order
             'orderPrice'   => 0,
             'pStatusArray' => []
         ];
+
         foreach ($this->oProducts as $oProduct) {
             $pStatus =
                 $this->getProductStatus(
-                    $oProduct['product_id'], $oProduct['count'], $this->products);
+                    $oProduct['goods_id'], $oProduct['count'], $this->products);
             if (!$pStatus['haveStock']) {
                 $status['pass'] = false;
             }
@@ -79,7 +86,7 @@ class Order
     {
         $pIndex = -1;
         $pStatus = [
-            'id'         => null,
+            'goods_id'         => null,
             'haveStock'  => false,
             'count'      => 0,
             'name'       => '',
@@ -87,7 +94,7 @@ class Order
         ];
 
         for ($i = 0; $i < count($products); $i++) {
-            if ($oPID == $products[$i]['id']) {
+            if ($oPID == $products[$i]['goods_id']) {
                 $pIndex = $i;
             }
         }
@@ -100,7 +107,7 @@ class Order
                 ]);
         } else {
             $product = $products[$pIndex];
-            $pStatus['id']         = $product['id'];
+            $pStatus['goods_id']   = $product['goods_id'];
             $pStatus['name']       = $product['name'];
             $pStatus['count']      = $oCount;
             $pStatus['totalPrice'] = $product['price'] * $oCount;
@@ -116,43 +123,69 @@ class Order
      */
     private function getProductsByOrder($oProducts)
     {
-        $oPIDs = [];
+        $oPIDs = $optionIds = [];
         foreach ($oProducts as $item) {
-            array_push($oPIDs, $item['product_id']);
+            array_push($oPIDs, $item['goods_id']);
+            $item['option_id'] && array_push($optionIds, $item['option_id']);
         }
+
         // 为了避免循环查询数据库
         $products = Product::all($oPIDs)
-            ->visible(['id', 'price', 'stock', 'name', 'main_img_url'])
+            ->visible(['goods_id', 'isMainGoods', 'price', 'stock', 'name', 'image'])
             ->toArray();
+        if (!empty($optionIds)) {
+            $options = ProductOption::all($optionIds)->toArray();
+
+            foreach ($products as $k => $v) {
+                foreach ($options as $k2 => $v2) {
+                    if ($v['goods_id'] == $v2['goods_id']) {
+                        $products[$k]['price']       = $v2['option_price'];
+                        $products[$k]['stock']       = $v2['stock'];
+                        $products[$k]['option_name'] = $v2['option_name'];
+                    }
+                }
+            }
+        }
+
         return $products;
     }
 
     // 创建订单时没有预扣除库存量，简化处理
     // 如果预扣除了库存量需要队列支持，且需要使用锁机制
-    private function createOrderByTrans($snap)
-    {
+    private function createOrderByTrans($snap){
+
         try {
             //创建订单
-            $orderNo = $this->makeOrderNo();
             $order   = new OrderModel();
-            $order->user_id      = $this->uid;
-            $order->order_no     = $orderNo;
-            $order->total_price  = $snap['orderPrice'];
-            $order->total_count  = $snap['totalCount'];
-            $order->snap_img     = $snap['snapImg'];
-            $order->snap_name    = $snap['snapName'];
-            $order->snap_address = $snap['snapAddress'];
-            $order->snap_items   = json_encode($snap['pStatus']);
+            $orderNo = $this->makeOrderNo();                //生成订单号
+            $order->order_num_alias = $orderNo;     
+            $order->pay_subject_img = $snap['snapImg'];     //快照商品图片
+            $order->pay_subject     = $snap['snapName'];    //快照商品名称
+            $order->uid             = $this->uid;
+            //收货人信息
+            $userAddress = $this->getUserAddress();
+            $order->shipping_name   = $userAddress['name'];
+            $order->shipping_tel    = $userAddress['telephone'];
+            $order->shipping_addr   = $userAddress['province'].$userAddress['city'].$userAddress['country'].$userAddress['address'];
+
+            $order->dispatch_id     = '111';     //发货仓id
+            $order->shipping_method = '物流公司';     //物流公司
+            $order->mainGoodsPrice  = $this->postData['mainGoodsPrice'];     //主商品价格
+            $order->otherGoodsPrice = $this->postData['otherGoodsPrice'];     //辅销品价格
+            $order->shippingPrice   = $this->postData['shippingPrice'];  //运费
+            $order->total           = $order->mainGoodsPrice + $order->otherGoodsPrice + $order->shippingPrice;     //总计
+
             $order->save();
             
             //保存订单商品
-            $orderID     = $order->id;
+            $orderID     = $order->order_id;
             $create_time = $order->create_time;
-            foreach ($this->oProducts as &$p) {
+            foreach ($snap['pStatus'] as &$p) {
                 $p['order_id'] = $orderID;
             }
+
             $orderProduct = new OrderProduct();
-            $orderProduct->saveAll($this->oProducts);
+            $orderProduct->saveAll($snap['pStatus']);
 
             return [
                 'order_no' => $orderNo,
@@ -167,30 +200,26 @@ class Order
     /**
       * 预检测并生成订单快照
       */ 
-    private function snapOrder()
-    {
+    private function snapOrder(){
         // status可以单独定义一个类
         $snap = [
-            'orderPrice'  => 0,
-            'totalCount'  => 0,
-            'pStatus'     => [],
-            'snapAddress' => json_encode($this->getUserAddress()),
+            'mainGoodsPrice'  => 0,
+            'otherGoodsPrice' => 0,
             'snapName'    => $this->products[0]['name'],
-            'snapImg'     => $this->products[0]['main_img_url'],
+            'snapImg'     => $this->products[0]['image'],
+            'pStatus'     => [],
         ];
 
         if (count($this->products) > 1) {
             $snap['snapName'] .= '等';
         }
 
-
         for ($i = 0; $i < count($this->products); $i++) {
             $product = $this->products[$i];
             $oProduct = $this->oProducts[$i];
 
             $pStatus = $this->snapProduct($product, $oProduct['count']);
-            $snap['orderPrice'] += $pStatus['totalPrice'];
-            $snap['totalCount'] += $pStatus['count'];
+
             array_push($snap['pStatus'], $pStatus);
         }
         return $snap;
@@ -201,21 +230,24 @@ class Order
       */ 
     private function snapProduct($product, $oCount){
         $pStatus = [
-            'id'           => null,
+            'goods_id'     => null,
+            'isMainGoods'  => null,
+            'image'        => null,
             'name'         => null,
-            'main_img_url' => null,
-            'count'        => $oCount,
-            'totalPrice'   => 0,
-            'price'        => 0
+            'option_name'  => null,
+            'quantity'     => $oCount,
+            'price'        => 0,
+            'total'        => 0,
         ];
 
-        $pStatus['counts']       = $oCount;
-        // 以服务器价格为准，生成订单
-        $pStatus['totalPrice']   = $oCount * $product['price'];
+        $pStatus['goods_id']     = $product['goods_id'];
+        $pStatus['isMainGoods']  = $product['isMainGoods'];
+        $pStatus['image']        = $product['image'];
         $pStatus['name']         = $product['name'];
-        $pStatus['id']           = $product['id'];
-        $pStatus['main_img_url'] = $product['main_img_url'];
+        $pStatus['option_name']  = isset($product['option_name']) ? $product['option_name'] :'';
+        $pStatus['quantity']     = $oCount;
         $pStatus['price']        = $product['price'];
+        $pStatus['total']        = $oCount * $product['price'];
         return $pStatus;
     }
     /**
@@ -223,7 +255,7 @@ class Order
      */
     private function getUserAddress()
     {
-        $userAddress = UserAddress::where('user_id', '=', $this->uid)
+        $userAddress = UserAddress::where('uid', '=', $this->uid)
             ->find();
         if (!$userAddress) {
             throw new UserException(
