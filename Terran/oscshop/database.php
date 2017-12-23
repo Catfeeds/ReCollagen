@@ -5,7 +5,7 @@ return [
     'hostname'    => '127.0.0.1',  
     'database'    => 'oscshop2',   
     'username'    => 'root',    
-    'password'    => 'wxl2work',    
+    'password'    => 'root',    
     'hostport'    => '3306',    
     'params'      => [],   
     'charset'     => 'utf8',    
