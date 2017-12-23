@@ -9,6 +9,7 @@
     <view class="category-main">
       <block wx:for="{{categoryInfo.procucts}}">
         <view class="category-goods-items {{index%3==1?'middle':''}}" data-id="{{item.goods_id}}" bindtap="onProductsItemTap">
+          <view class='products-isMainGoods' wx:if="{{item.isMainGoods==0}}">辅</view>
           <image src="{{item.image}}" mode="aspectFill"></image>
           <view>{{item.name}}</view>
         </view>

@@ -172,6 +172,17 @@
 .basic-info-box .name{
   font-size: 40rpx;
 }
+.products-isMainGoods{
+    width: 40rpx;
+    line-height: 40rpx;
+    font-size: 24rpx;
+    color: white ;
+    text-align: center;
+    background: red;
+    display: inline-block;
+    vertical-align: top;
+    margin-right: -40rpx;
+}
 .basic-info-box .price{
   font-size: 38rpx;
 }

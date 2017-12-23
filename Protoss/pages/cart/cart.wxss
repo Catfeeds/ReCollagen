@@ -125,26 +125,26 @@
 .all-price-submit.disabled{
     color: #e6e6e6;
 }
+.all-accounts-box>.all-price-submit{
+    justify-content: space-between;
+}
 .accounts-btn,.price-text,.arrow-icon{
     display: flex;
     align-items: center;
-    justify-content: center;
     height: 32rpx;
 }
 .accounts-btn{
-    width: 50%;
     font-size: 28rpx;
     border-left: 3rpx dotted #fff;
+    padding-left: 30rpx;
 }
 
 .price-text{
-    width: 20%;
-    font-size: 28rpx;
-    margin-left: 10rpx;
-
+    width: 60%;
+    font-size: 28rpx;   
 }
 .arrow-icon{
-    width: 30%;
+    margin-right: 20rpx;
 }
 .arrow-icon image{
     height: 32rpx;

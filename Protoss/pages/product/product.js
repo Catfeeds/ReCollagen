@@ -17,7 +17,7 @@ Page({
         optionid: -1,
     },
     onLoad: function (option) {
-        this.data.id = option.id;
+        this.data.id = 13;
         this._loadData();
     },
 
@@ -49,6 +49,12 @@ Page({
                 price: data.price,
                 product:data,
                 loadingHidden:true
+            });
+
+            var haveData = product.getHaveDataFromLocal(),
+                index=this._getProductIndexById(haveData,this.data.id);
+            this.setData({
+              'product.haveCollect': haveData[index].haveCollect
             });
             
             /*默认商品选项数量、价格、ID*/
@@ -134,12 +140,33 @@ Page({
       });
     },
 
+    /*根据商品id得到 商品所在下标*/
+    _getProductIndexById: function (data,id) {
+      var len = data.length;
+      for (let i = 0; i < len; i++) {
+        if (data[i].goods_id == id) {
+          return i;
+        }
+      }
+    },
+
     //切换详情面板
     onTabsItemTap:function(event){
         var index=product.getDataSet(event,'index');
         this.setData({
             currentTabsIndex:index
         });
+    },
+
+    /*添加到收藏*/
+    onAddingToHaveTap: function (events) {
+      //是否已经收藏
+      var haveCollect = this.data.product.haveCollect,
+          have=!haveCollect == true?1:0;
+      this.setData({
+        'product.haveCollect': have
+      });
+      this.addToCart(1);
     },
 
     /*添加到购物车*/
@@ -149,18 +176,22 @@ Page({
             return;
         }
         this._flyToCartEffect(events);
-        this.addToCart();
+        this.addToCart(0);
     },
 
     /*将商品数据添加到内存中*/
-    addToCart:function(){
+    addToCart:function(start){
       var tempObj = {}, keys = ['goods_id', 'name', 'image', 'price', 'isMainGoods', 'stock', 'weight', 'bulk', 'haveCollect','options','discounts'];
         for(var key in this.data.product){
             if(keys.indexOf(key)>=0){
                 tempObj[key]=this.data.product[key];
             }
         }
-        cart.add(tempObj, this.data.productCounts, this.data.price, this.data.optionid);
+        if (start==1){
+          product.add(tempObj);
+        }else{
+          cart.add(tempObj, this.data.productCounts, this.data.price, this.data.optionid);
+        }
     },
 
     /*加入购物车动效*/

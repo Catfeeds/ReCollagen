@@ -1,21 +1,13 @@
 {
   "pages":[
     "pages/cart/cart",
-    "pages/my/my",
-    
-    "pages/address/address",
-    
-    
-    
-    
-    "pages/home/home",
-   
-    
     "pages/product/product",
+    "pages/home/home",
     
+    "pages/my/my",
+    "pages/address/address",
     "pages/category/category",
     "pages/order/order",
-    
     "pages/theme/theme",
     "pages/pay-result/pay-result"
   ],

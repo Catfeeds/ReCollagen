@@ -2,6 +2,7 @@
     <view class="products-box">
         <block wx:for="{{productsArr}}">
             <view class="products-item" bindtap="onProductsItemTap" data-id="{{item.goods_id}}">
+                <view class='products-isMainGoods' wx:if="{{item.isMainGoods==0}}">辅</view>
                 <image class="products-image" src="{{item.image}}" mode="aspectFill"></image>
                 <view class="products-item-bottom">
                     <text class="name">{{item.name}}</text>
