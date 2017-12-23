@@ -26,13 +26,15 @@ class Order extends BaseController
      * @url /order
      * @HTTP POST
      */
-    public function createOrder()
-    {
+    public function createOrder(){
+
         (new OrderPlace())->goCheck();
-        $products = input('post.products/a');
+        $postData = input('post.');
+        $products = input('post.goodsArrInfo/a');
         $uid      = Token::getCurrentUid();
+
         $order    = new OrderService();
-        $status   = $order->place($uid, $products);
+        $status   = $order->place($uid, $products,$postData);
         return $status;
     }
 
@@ -50,9 +52,10 @@ class Order extends BaseController
         if (!$orderDetail){
             throw new OrderException();
         }
-
-        return $orderDetail
-            ->hidden(['pay_subject_img','pay_subject','promotionType','expression']);
+        $orderDetail = $orderDetail
+            ->hidden(['pay_subject_img','pay_subject','mainPay','secondPay','promotion'])->toArray();
+        
+        return $orderDetail;
     }
 
     /**
@@ -63,13 +66,12 @@ class Order extends BaseController
     public function getSummaryByUser(){
         
         $uid = Token::getCurrentUid();
-        
         $orders = OrderModel::getSummaryByUser($uid);
         if ($orders->isEmpty()){
             return [];
         }
 
-        $data = $orders->hidden(['shipping_name','shipping_tel','shipping_addr','shipping_method','shipping_num','mainPay','secondPay','goodsPrice','shippingPrice','products'])
+        $data = $orders->hidden(['shipping_name','shipping_tel','shipping_addr','shipping_method','shipping_num','mainPay','secondPay','mainGoodsPrice','otherGoodsPrice','shippingPrice','promotion','create_time','products'])
             ->toArray();
 
         return $data;

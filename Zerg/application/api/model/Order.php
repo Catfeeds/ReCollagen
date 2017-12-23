@@ -9,13 +9,6 @@ class Order extends BaseModel
     protected $hidden = ['uid','update_time','dispatch_id','pay_time'];
     protected $autoWriteTimestamp = true;
 
-    /**
-     * 修改图片路径
-     */
-    public function getPaySubjectImgAttr($value, $data){
-        return $this->prefixImgUrl($value, $data);
-    }
-
     // public function getSnapItemsAttr($value)
     // {
     //     if(empty($value)){
@@ -62,7 +55,10 @@ class Order extends BaseModel
     public static function getDetail($id){
 
         $orderDetail = self::with('products')->find($id);
-
+        if (!empty($orderDetail['promotion'])) {
+            $promotion = json_decode($orderDetail['promotion'],true);
+            $orderDetail['promotionName'] = array_column($promotion,'name');
+        }
         return $orderDetail;
     }
 

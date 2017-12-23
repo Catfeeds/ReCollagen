@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2017-12-22 13:16:50
+Date: 2017-12-23 15:49:47
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -66,7 +66,7 @@ CREATE TABLE `osc_admin` (
 -- ----------------------------
 -- Records of osc_admin
 -- ----------------------------
-INSERT INTO `osc_admin` VALUES ('1', 'admin', 'MDAwMDAwMDAwMLO6d61/iaja', '', '', 'admin@admin.com', '33', '127.0.0.1', '', '1505270345', '1513412152', '1513903834', '1', '2');
+INSERT INTO `osc_admin` VALUES ('1', 'admin', 'MDAwMDAwMDAwMLO6d61/iaja', '', '', 'admin@admin.com', '34', '127.0.0.1', '', '1505270345', '1513412152', '1513992988', '1', '2');
 INSERT INTO `osc_admin` VALUES ('2', 'orderAdmin', 'MDAwMDAwMDAwMLO6d61/iaja', '', '', null, '15', '127.0.0.1', null, '1512538804', '1513575692', '1513578428', '1', '3');
 INSERT INTO `osc_admin` VALUES ('3', 'memberAdmin', 'MDAwMDAwMDAwMLO6d61/iaja', '', '', null, '0', null, null, '1513577469', '1513577592', '0', '1', '4');
 
@@ -3856,7 +3856,7 @@ CREATE TABLE `osc_goods` (
 -- Records of osc_goods
 -- ----------------------------
 INSERT INTO `osc_goods` VALUES ('2', '1', '13', 'images/osc1/2/2.jpg', '品茗陶瓷茶盏瓷杯6个', '79.00', '0', '0', '500.00', '0.01', '2016-08-17 23:10:22', '2017-12-14 10:39:59', '2', '1');
-INSERT INTO `osc_goods` VALUES ('3', '1', '1', 'images/osc1/3/2.jpg', '公道杯茶海分茶器陶瓷', '39.00', '54678', '0', '200.00', '0.01', '2016-08-19 20:22:43', '0000-00-00 00:00:00', '3', '1');
+INSERT INTO `osc_goods` VALUES ('3', '1', '1', 'images/osc1/3/2.jpg', '公道杯茶海分茶器陶瓷', '39.00', '50', '0', '200.00', '0.01', '2016-08-19 20:22:43', '0000-00-00 00:00:00', '3', '1');
 INSERT INTO `osc_goods` VALUES ('4', '1', '2', 'images/osc1/4/1.jpg', '青花功夫茶具陶瓷配件', '30.00', '787', '0', '200.00', '0.01', '2016-08-19 20:37:55', '2017-12-14 10:38:54', '4', '1');
 INSERT INTO `osc_goods` VALUES ('5', '1', '13', 'images/osc1/5/1.jpg', '旅行套装便携功夫茶具', '19.90', '5654', '0', '200.00', '0.01', '2016-08-19 20:57:05', '2017-12-19 15:21:43', '5', '1');
 INSERT INTO `osc_goods` VALUES ('6', '1', '5', 'images/osc1/6/1.jpg', '定窑白荷花大号茶个', '39.00', '0', '0', '100.00', '0.02', '2016-08-19 21:12:02', '2017-12-19 15:20:15', '6', '1');
@@ -4213,7 +4213,7 @@ CREATE TABLE `osc_goods_option` (
 -- ----------------------------
 -- Records of osc_goods_option
 -- ----------------------------
-INSERT INTO `osc_goods_option` VALUES ('3', '11', '300ml', '50.00', '9999', '1');
+INSERT INTO `osc_goods_option` VALUES ('3', '11', '300ml', '50.00', '9991', '1');
 INSERT INTO `osc_goods_option` VALUES ('5', '15', '3个装', '0.03', '55', '3');
 INSERT INTO `osc_goods_option` VALUES ('6', '15', '一箱整装', '30.00', '770', '5');
 INSERT INTO `osc_goods_option` VALUES ('7', '15', '5个装', '0.05', '50', '4');
@@ -4335,11 +4335,13 @@ CREATE TABLE `osc_member_collect` (
   `update_time` int(11) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `uid` (`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='收藏的商品';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='收藏的商品';
 
 -- ----------------------------
 -- Records of osc_member_collect
 -- ----------------------------
+INSERT INTO `osc_member_collect` VALUES ('1', '2', '30', '121212765', '1212143565');
+INSERT INTO `osc_member_collect` VALUES ('2', '2', '36', '121212765', '0');
 
 -- ----------------------------
 -- Table structure for `osc_menu`
@@ -4544,8 +4546,8 @@ DROP TABLE IF EXISTS `osc_order`;
 CREATE TABLE `osc_order` (
   `order_id` int(11) NOT NULL AUTO_INCREMENT,
   `order_num_alias` varchar(40) NOT NULL DEFAULT '' COMMENT '订单编号',
-  `order_status` tinyint(4) NOT NULL DEFAULT '1',
-  `pay_subject_img` varchar(100) NOT NULL DEFAULT '' COMMENT '订单快照图片',
+  `order_status` tinyint(4) NOT NULL DEFAULT '1' COMMENT '1待付款;2待发货;3已发货;4已收货;5取消订单',
+  `pay_subject_img` varchar(150) NOT NULL DEFAULT '' COMMENT '订单快照图片',
   `pay_subject` varchar(255) NOT NULL DEFAULT '' COMMENT '订单快照名称',
   `uid` int(11) NOT NULL DEFAULT '0',
   `shipping_name` varchar(32) NOT NULL DEFAULT '' COMMENT '收货人姓名',
@@ -4556,20 +4558,23 @@ CREATE TABLE `osc_order` (
   `shipping_num` varchar(30) NOT NULL DEFAULT '' COMMENT '物流单号',
   `mainPay` decimal(11,2) NOT NULL DEFAULT '0.00' COMMENT '主账户付款金额',
   `secondPay` decimal(11,2) NOT NULL DEFAULT '0.00' COMMENT '辅账户付款金额',
-  `goodsPrice` decimal(11,2) NOT NULL DEFAULT '0.00' COMMENT '商品价格',
+  `mainGoodsPrice` decimal(11,2) NOT NULL DEFAULT '0.00',
+  `otherGoodsPrice` decimal(11,2) NOT NULL DEFAULT '0.00',
   `shippingPrice` decimal(11,2) NOT NULL DEFAULT '0.00' COMMENT '运费',
   `total` decimal(11,2) NOT NULL DEFAULT '0.00',
+  `promotion` text,
   `pay_time` int(11) NOT NULL DEFAULT '0' COMMENT '付款时间',
   `create_time` int(11) NOT NULL DEFAULT '0',
   `update_time` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of osc_order
 -- ----------------------------
-INSERT INTO `osc_order` VALUES ('3', 'wx2017120753575710', '2', 'images/osc1/5/1.jpg', '旅行套装便携功夫茶具等', '2', '哈哈哈22', '18121029523', '北京市国家图书馆111号', '1', '邮政快递', '9891770403677', '98.70', '10.00', '98.70', '10.00', '108.70', '0', '1513402181', '1513759963');
-INSERT INTO `osc_order` VALUES ('4', 'wx2017121253555353', '4', 'images/osc1/product/2@theme.png', '青花白瓷手绘荷花', '2', '哈哈哈22', '18121029523', '江苏省南京市玄武区人民路XX小区1栋101', '3', '顺丰速递', '426530659301', '7235.00', '15.00', '7235.00', '15.00', '7250.00', '0', '1513411181', '1513479809');
+INSERT INTO `osc_order` VALUES ('3', 'wx2017120753575710', '2', 'images/osc1/5/1.jpg', '旅行套装便携功夫茶具等', '2', '哈哈哈22', '18121029523', '北京市国家图书馆111号', '1', '邮政快递', '9891770403677', '98.70', '10.00', '98.70', '0.00', '10.00', '108.70', null, '0', '1513402181', '1513759963');
+INSERT INTO `osc_order` VALUES ('4', 'wx2017121253555353', '4', 'images/osc1/product/2@theme.png', '青花白瓷手绘荷花', '2', '哈哈哈22', '18121029523', '江苏省南京市玄武区人民路XX小区1栋101', '3', '顺丰速递', '426530659301', '7235.00', '15.00', '7235.00', '0.00', '15.00', '7250.00', null, '0', '1513411181', '1513479809');
+INSERT INTO `osc_order` VALUES ('18', 'AC23128906334088', '1', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/3/2.jpg', '公道杯茶海分茶器陶瓷等', '2', '哈哈哈', '13333333333', '江苏省南京市玄武区明珠广场22号', '1', '物流公司名称', '', '0.00', '0.00', '317.00', '9.91', '6.00', '332.91', '[{\"name\":\"周年庆限时满300返现30\",\"type\":2,\"money\":300,\"expression\":\"30\"},{\"name\":\"限时满200赠送悦寇霖智美白防晒霜一瓶\",\"type\":3,\"money\":200,\"expression\":\"限时满200赠送悦寇霖智美白防晒霜一瓶\"}]', '0', '1514012890', '1514012890');
 
 -- ----------------------------
 -- Table structure for `osc_order_goods`
@@ -4586,15 +4591,20 @@ CREATE TABLE `osc_order_goods` (
   `quantity` int(4) NOT NULL DEFAULT '0' COMMENT '数量',
   `price` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '单价',
   `total` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '单个商品总价',
+  `create_time` int(11) NOT NULL DEFAULT '0',
+  `update_time` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`order_goods_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of osc_order_goods
 -- ----------------------------
-INSERT INTO `osc_order_goods` VALUES ('13', '3', '5', '1', 'images/osc1/5/1.jpg', '旅行套装便携功夫茶具', '', '3', '19.90', '59.70');
-INSERT INTO `osc_order_goods` VALUES ('14', '3', '6', '1', 'images/osc1/6/1.jpg', '定窑白荷花大号茶个', '优雅白', '1', '39.00', '39.00');
-INSERT INTO `osc_order_goods` VALUES ('15', '4', '12', '1', 'images/osc1/product/2@theme.png', '青花白瓷手绘荷花', '', '10', '723.50', '7235.00');
+INSERT INTO `osc_order_goods` VALUES ('13', '3', '5', '1', 'images/osc1/5/1.jpg', '旅行套装便携功夫茶具', '', '3', '19.90', '59.70', '0', '0');
+INSERT INTO `osc_order_goods` VALUES ('14', '3', '6', '1', 'images/osc1/6/1.jpg', '定窑白荷花大号茶个', '优雅白', '1', '39.00', '39.00', '0', '0');
+INSERT INTO `osc_order_goods` VALUES ('15', '4', '12', '1', 'images/osc1/product/2@theme.png', '青花白瓷手绘荷花', '', '10', '723.50', '7235.00', '0', '0');
+INSERT INTO `osc_order_goods` VALUES ('25', '18', '3', '1', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/3/2.jpg', '公道杯茶海分茶器陶瓷', '', '7', '39.00', '273.00', '1514012890', '1514012890');
+INSERT INTO `osc_order_goods` VALUES ('26', '18', '30', '1', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/fruit/product-cake@1.png', '李大爷的妙脆角', '1000g', '5', '8.80', '44.00', '1514012890', '1514012890');
+INSERT INTO `osc_order_goods` VALUES ('27', '18', '34', '0', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/product/2@theme.png', '八宝莲子200克', '', '1', '9.91', '9.91', '1514012890', '1514012890');
 
 -- ----------------------------
 -- Table structure for `osc_promotion`
@@ -4605,7 +4615,7 @@ CREATE TABLE `osc_promotion` (
   `name` varchar(60) NOT NULL DEFAULT '' COMMENT '活动名称',
   `type` int(2) NOT NULL DEFAULT '1' COMMENT '1满额打折；2满额返现；3满额赠送商品',
   `money` float(10,2) NOT NULL DEFAULT '0.00' COMMENT '最小金额',
-  `expression` varchar(100) NOT NULL DEFAULT '' COMMENT '优惠体现',
+  `expression` varchar(60) NOT NULL DEFAULT '' COMMENT '优惠体现',
   `start_time` int(11) NOT NULL DEFAULT '0' COMMENT '活动开始时间',
   `end_time` int(11) NOT NULL DEFAULT '0' COMMENT '活动结束时间',
   PRIMARY KEY (`id`)
@@ -4685,7 +4695,7 @@ CREATE TABLE `osc_user_action` (
   `info` varchar(255) DEFAULT NULL COMMENT '行为描述',
   `add_time` int(10) NOT NULL DEFAULT '0' COMMENT '加入时间',
   PRIMARY KEY (`ua_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=770 DEFAULT CHARSET=utf8 COMMENT='用户行为';
+) ENGINE=InnoDB AUTO_INCREMENT=771 DEFAULT CHARSET=utf8 COMMENT='用户行为';
 
 -- ----------------------------
 -- Records of osc_user_action
@@ -4932,3 +4942,4 @@ INSERT INTO `osc_user_action` VALUES ('766', '1', 'admin', '后台系统用户',
 INSERT INTO `osc_user_action` VALUES ('767', '1', 'admin', '后台系统用户', '编辑了会员', '1513919710');
 INSERT INTO `osc_user_action` VALUES ('768', '1', 'admin', '后台系统用户', '编辑了会员', '1513919718');
 INSERT INTO `osc_user_action` VALUES ('769', '1', 'admin', '后台系统用户', '编辑了会员', '1513919725');
+INSERT INTO `osc_user_action` VALUES ('770', '1', 'admin', '后台系统用户', '登录了后台系统', '1513992988');
