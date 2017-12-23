@@ -191,7 +191,7 @@ Page({
               }
               for (let i = 0; i < PromotionInfo.length; i++) {
                 PromoArr.push({
-                  PromotionInfo[i].id,
+                  id:PromotionInfo[i].id,
                 })
               }
               orderInfo = {
