@@ -26,7 +26,7 @@ class OrderPlace extends BaseValidate
     protected $singleRule = [
         'goods_id'  => 'require|isPositiveInteger',
         'count'     => 'require|isPositiveInteger',
-        'option_id' => 'isPositiveInteger',
+        'option_id' => 'number',
     ];
     /**
      * 验证商品

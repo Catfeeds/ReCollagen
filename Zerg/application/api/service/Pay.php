@@ -123,7 +123,7 @@ class Pay
         }
         if($order->status != 1){
             throw new OrderException([
-                'msg' => '订单已支付过啦',
+                'msg' => '订单状态异常',
                  'errorCode' => 80003,
                 'code' => 400
             ]);

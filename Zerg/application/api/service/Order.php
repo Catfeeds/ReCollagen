@@ -154,7 +154,7 @@ class Order
     // 创建订单时没有预扣除库存量，简化处理
     // 如果预扣除了库存量需要队列支持，且需要使用锁机制
     private function createOrderByTrans($snap){
-
+        Db::startTrans();
         try {
             //创建订单
             $order   = new OrderModel();
@@ -196,13 +196,15 @@ class Order
 
             $orderProduct = new OrderProduct();
             $orderProduct->saveAll($snap['pStatus']);
-
+            
+            Db::commit();
             return [
                 'order_no' => $orderNo,
                 'order_id' => $orderID,
                 'create_time' => $create_time
             ];
         } catch (Exception $ex) {
+            Db::rollback();
             throw $ex;
         }
     }
@@ -319,7 +321,7 @@ class Order
         }
         if ($order->status != OrderStatusEnum::PAID) {
             throw new OrderException([
-                'msg' => '还没付款呢，想干嘛？或者你已经更新过订单了，不要再刷了',
+                'msg' => '订单未支付',
                 'errorCode' => 80002,
                 'code' => 403
             ]);
