@@ -186,12 +186,11 @@ Page({
                 goodsArr.push({
                     goods_id: procuctInfo[i].goods_id,
                     count:procuctInfo[i].counts,
-                    isMainGoods: procuctInfo[i].isMainGoods,
                 })
               }
               for (let i = 0; i < PromotionInfo.length; i++) {
                 PromoArr.push({
-                  id: PromotionInfo[i].id,
+                  PromotionInfo[i].id,
                 })
               }
               orderInfo = {
