@@ -41,69 +41,25 @@ class Order
     public function place($uid, $oProducts)
     {
         $this->oProducts = $oProducts;
-        $this->products = $this->getProductsByOrder($oProducts);
-        $this->uid = $uid;
-        $status = $this->getOrderStatus();
+        $this->products  = $this->getProductsByOrder($oProducts);
+        $this->uid       = $uid;
+        $status          = $this->getOrderStatus();
         if (!$status['pass']) {
             $status['order_id'] = -1;
             return $status;
         }
 
-        $orderSnap = $this->snapOrder();
-        $status = self::createOrderByTrans($orderSnap);
+        $orderSnap      = $this->snapOrder();
+        $status         = self::createOrderByTrans($orderSnap);
         $status['pass'] = true;
         return $status;
-    }
-
-    /**
-     * @param string $orderNo 订单号
-     * @return array 订单商品状态
-     * @throws Exception
-     */
-    public function checkOrderStock($orderID)
-    {
-        //        if (!$orderNo)
-        //        {
-        //            throw new Exception('没有找到订单号');
-        //        }
-
-        // 一定要从订单商品表中直接查询
-        // 不能从商品表中查询订单商品
-        // 这将导致被删除的商品无法查询出订单商品来
-        $oProducts = OrderProduct::where('order_id', '=', $orderID)
-            ->select();
-        $this->products = $this->getProductsByOrder($oProducts);
-        $this->oProducts = $oProducts;
-        $status = $this->getOrderStatus();
-        return $status;
-    }
-
-    public function delivery($orderID, $jumpPage = '')
-    {
-        $order = OrderModel::where('id', '=', $orderID)
-            ->find();
-        if (!$order) {
-            throw new OrderException();
-        }
-        if ($order->status != OrderStatusEnum::PAID) {
-            throw new OrderException([
-                'msg' => '还没付款呢，想干嘛？或者你已经更新过订单了，不要再刷了',
-                'errorCode' => 80002,
-                'code' => 403
-            ]);
-        }
-        $order->status = OrderStatusEnum::DELIVERED;
-        $order->save();
-//            ->update(['status' => OrderStatusEnum::DELIVERED]);
-        $message = new DeliveryMessage();
-        return $message->sendDeliveryMessage($order, $jumpPage);
     }
 
     private function getOrderStatus()
     {
         $status = [
-            'pass' => true,
-            'orderPrice' => 0,
+            'pass'         => true,
+            'orderPrice'   => 0,
             'pStatusArray' => []
         ];
         foreach ($this->oProducts as $oProduct) {
@@ -155,9 +111,9 @@ class Order
         }
         return $pStatus;
     }
-
-
-    // 根据订单查找真实商品
+    /**
+     * 根据订单查找真实商品
+     */
     private function getProductsByOrder($oProducts)
     {
         $oPIDs = [];
@@ -171,27 +127,14 @@ class Order
         return $products;
     }
 
-    private function getUserAddress()
-    {
-        $userAddress = UserAddress::where('user_id', '=', $this->uid)
-            ->find();
-        if (!$userAddress) {
-            throw new UserException(
-                [
-                    'msg' => '用户收货地址不存在，下单失败',
-                    'errorCode' => 60001,
-                ]);
-        }
-        return $userAddress->toArray();
-    }
-
     // 创建订单时没有预扣除库存量，简化处理
     // 如果预扣除了库存量需要队列支持，且需要使用锁机制
     private function createOrderByTrans($snap)
     {
         try {
+            //创建订单
             $orderNo = $this->makeOrderNo();
-            $order = new OrderModel();
+            $order   = new OrderModel();
             $order->user_id      = $this->uid;
             $order->order_no     = $orderNo;
             $order->total_price  = $snap['orderPrice'];
@@ -201,15 +144,16 @@ class Order
             $order->snap_address = $snap['snapAddress'];
             $order->snap_items   = json_encode($snap['pStatus']);
             $order->save();
-
-            $orderID = $order->id;
+            
+            //保存订单商品
+            $orderID     = $order->id;
             $create_time = $order->create_time;
-
             foreach ($this->oProducts as &$p) {
                 $p['order_id'] = $orderID;
             }
             $orderProduct = new OrderProduct();
             $orderProduct->saveAll($this->oProducts);
+
             return [
                 'order_no' => $orderNo,
                 'order_id' => $orderID,
@@ -220,7 +164,9 @@ class Order
         }
     }
 
-    // 预检测并生成订单快照
+    /**
+      * 预检测并生成订单快照
+      */ 
     private function snapOrder()
     {
         // status可以单独定义一个类
@@ -250,9 +196,10 @@ class Order
         return $snap;
     }
 
-    // 单个商品库存检测
-    private function snapProduct($product, $oCount)
-    {
+    /**
+      * 单个商品库存检测
+      */ 
+    private function snapProduct($product, $oCount){
         $pStatus = [
             'id'           => null,
             'name'         => null,
@@ -272,6 +219,22 @@ class Order
         return $pStatus;
     }
     /**
+     * 获取用户的收货地址
+     */
+    private function getUserAddress()
+    {
+        $userAddress = UserAddress::where('user_id', '=', $this->uid)
+            ->find();
+        if (!$userAddress) {
+            throw new UserException(
+                [
+                    'msg' => '用户收货地址不存在，下单失败',
+                    'errorCode' => 60001,
+                ]);
+        }
+        return $userAddress->toArray();
+    }
+    /**
      * 生成订单号
      */
     private static function makeOrderNo(){
@@ -281,5 +244,48 @@ class Order
                 'd') . substr(time(), -5) . substr(microtime(), 2, 5) . sprintf(
                 '%02d', rand(0, 99));
         return $orderSn;
+    }
+    /**
+     * @param string $orderNo 订单号
+     * @return array 订单商品状态
+     * @throws Exception
+     */
+    public function checkOrderStock($orderID)
+    {
+        //        if (!$orderNo)
+        //        {
+        //            throw new Exception('没有找到订单号');
+        //        }
+
+        // 一定要从订单商品表中直接查询
+        // 不能从商品表中查询订单商品
+        // 这将导致被删除的商品无法查询出订单商品来
+        $oProducts = OrderProduct::where('order_id', '=', $orderID)
+            ->select();
+        $this->products = $this->getProductsByOrder($oProducts);
+        $this->oProducts = $oProducts;
+        $status = $this->getOrderStatus();
+        return $status;
+    }
+
+    public function delivery($orderID, $jumpPage = '')
+    {
+        $order = OrderModel::where('id', '=', $orderID)
+            ->find();
+        if (!$order) {
+            throw new OrderException();
+        }
+        if ($order->status != OrderStatusEnum::PAID) {
+            throw new OrderException([
+                'msg' => '还没付款呢，想干嘛？或者你已经更新过订单了，不要再刷了',
+                'errorCode' => 80002,
+                'code' => 403
+            ]);
+        }
+        $order->status = OrderStatusEnum::DELIVERED;
+        $order->save();
+//            ->update(['status' => OrderStatusEnum::DELIVERED]);
+        $message = new DeliveryMessage();
+        return $message->sendDeliveryMessage($order, $jumpPage);
     }
 }
