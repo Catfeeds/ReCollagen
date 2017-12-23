@@ -16,7 +16,6 @@ Page({
     },
     onLoad:function(){
         this._loadData();
-        this._getAddressInfo();
     },
 
     onShow:function(){
@@ -25,6 +24,14 @@ Page({
         if(this.data.loadingHidden &&newOrderFlag){
             this.onPullDownRefresh();
         }
+
+        /*显示收获地址*/
+        address.getAddress((res) => {
+          this.setData({
+            addressInfo: res,
+            region: [res.province, res.city, res.country]
+          })
+        });
     },
 
     _loadData:function(){
@@ -33,46 +40,19 @@ Page({
             that.setData({
                 userInfo:data
             });
-
         });
 
         this._getOrders();
         order.execSetStorageSync(false);  //更新标志位
     },
-
-    /**地址信息**/
-    _getAddressInfo:function(){
-        var that=this;
-        address.getAddress((addressInfo)=>{
-            that._bindAddressInfo(addressInfo);
-        });
-    },
+    
 
     /*修改或者添加地址信息*/
-    editAddress:function(){
-        var that=this;
-        wx.chooseAddress({
-            success: function (res) {
-                var addressInfo = {
-                    name:res.userName,
-                    mobile:res.telNumber,
-                    totalDetail:address.setAddressInfo(res)
-                };
-                if(res.telNumber) {
-                    that._bindAddressInfo(addressInfo);
-                    //保存地址
-                    address.submitAddress(res, (flag)=> {
-                        if (!flag) {
-                            that.showTips('操作提示', '地址信息更新失败！');
-                        }
-                    });
-                }
-                //模拟器上使用
-                else{
-                    that.showTips('操作提示', '地址信息更新失败,手机号码信息为空！');
-                }
-            }
-        })
+    editAddress: function () {
+      var that = this;
+      wx.navigateTo({
+        url: '../address/address'
+      });
     },
 
     /*绑定地址信息*/
@@ -82,11 +62,11 @@ Page({
         });
     },
 
+
     /*订单信息*/
     _getOrders:function(callback){
         var that=this;
-        order.getOrders(this.data.pageIndex,(res)=>{
-            var data=res.data;
+        order.getOrders(this.data.pageIndex,(data)=>{
             that.setData({
                 loadingHidden: true
             });

@@ -26,18 +26,18 @@ class My extends Base{
                     fail:function(res){
                         typeof cb == "function" && cb({
                             avatarUrl:'../../imgs/icon/user@default.png',
-                            nickName:'零食小贩'
+                            nickName:'悦寇霖智'
                         });
                     }
                 });
             },
-
         })
     }
 
     /*更新用户信息到服务器*/
     _updateUserInfo(res){
         var nickName=res.nickName;
+        console.log(res)
         delete res.avatarUrl;  //将昵称去除
         delete res.nickName;  //将昵称去除
         var allParams = {

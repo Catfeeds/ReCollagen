@@ -17,8 +17,7 @@ Page({
         optionid: -1,
     },
     onLoad: function (option) {
-      var id = 3;
-        this.data.id=id;
+        this.data.id = option.id;
         this._loadData();
     },
 
@@ -26,19 +25,33 @@ Page({
     _loadData:function(callback){
         var that = this;
         product.getDetailInfo(this.data.id,(data)=>{
+          /*获取数量*/
           var stockArray = [],
             stockArr = data.stock<52?data.stock:52;
             for (let i = 1; i <= stockArr; i++) {
               stockArray.push(i);
             }
+            /*重构商品折扣*/
+            var discountsArray = [],
+              discountsArr = data.discounts;
+            for (var key in discountsArr) {
+              var discount = (data.price * discountsArr[key].discount / 100).toFixed(2);
+                discountsArray.push({
+                  discount: discount,
+                  quantity: discountsArr[key].quantity
+                });
+            }
+
             that.setData({
                 cartTotalCounts:cart.getCartTotalCounts().counts1,
                 countsArray: stockArray,
+                discountsArray: discountsArray,
                 price: data.price,
                 product:data,
                 loadingHidden:true
             });
-
+            
+            /*默认商品选项数量、价格、ID*/
             var optionsArr = data.options;
             if (optionsArr.length > 0){
               var stockArray = [], 

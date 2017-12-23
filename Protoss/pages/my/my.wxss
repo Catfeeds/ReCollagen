@@ -4,7 +4,7 @@
     background-color:#EDEDED;
 }
 .my-header{
-    background-color: #AB956D;
+    background-color: #00a1e9;
     color: #fff;
     display: flex;
     align-items: center;

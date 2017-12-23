@@ -7,10 +7,13 @@
             </view>
         </view>
         <swiper indicator-dots="true" autoplay="true" indicator-active-color="#00a1e9" indicator-color="#d6d0c7" class="swiper">
-            <block wx:for="{{product.imgs}}">
-                <swiper-item class="banner-item">
+            <block  wx:if="{{product.imgs.length>0}}">
+                <swiper-item class="banner-item" wx:for="{{product.imgs}}">
                     <image class="item-image" src="{{item.image}}" mode="aspectFill" />
                 </swiper-item>
+            </block>
+            <block wx:else>
+              <image class="item-image" src="{{product.image}}" mode="aspectFill" />
             </block>
         </swiper>
         <view class="cart-box">
@@ -47,8 +50,8 @@
               </block>
             </view>
             <view class="discounts" wx:if="{{product.discounts.length>0}}">促销：
-              <block wx:for="{{product.discounts}}">
-              <text class='discounts_list_li'> 数量：{{item.quantity}} 价格：{{item.price}} </text>
+              <block wx:for="{{discountsArray}}">
+              <text class='discounts_list_li'> 数量：{{item.quantity}} 价格：{{item.discount}} </text>
               </block>
             </view>
         </view>

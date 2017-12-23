@@ -18,7 +18,6 @@ Page({
     var self = this;
     /*显示收获地址*/
     address.getAddress((res) => {
-      console.log(res)
       self.setData({
         addressInfo: res,
         region: [res.province, res.city, res.country]

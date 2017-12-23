@@ -42,7 +42,7 @@
       </view>
     </block>
     <block wx:else>
-      <view class="add-new-address">
+      <view class="add-new-address" ontap="editAddress">
         <text class="icon">+</text>
         <text>添加地址</text></view>
     </block>
@@ -75,7 +75,7 @@
       </block>
     </view> 
     <view class="product-youh">
-      <view>主商品价格：{{PromotionPrice}}元</view>
+      <view>主商品价格：{{accountMain}}元</view>
       <view>辅销品价格：{{accountFain}}元</view>
       <view>运费：6元</view>
     </view>

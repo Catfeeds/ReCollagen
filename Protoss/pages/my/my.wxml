@@ -16,10 +16,10 @@
             <input disabled name="name" placeholder="姓名" value="{{addressInfo.name}}" />
           </view>
           <view class="section">
-            <input disabled type="number" name="mobile" placeholder="手机号码" value="{{addressInfo.mobile}}"/>
+            <input disabled type="number" name="mobile" placeholder="手机号码" value="{{addressInfo.telephone}}"/>
           </view>
           <view class="section">
-            <input disabled name="detail" placeholder="收货地址" value="{{addressInfo.totalDetail}}"/>
+            <input disabled name="detail" placeholder="收货地址" value="{{region}} {{addressInfo.address}}"/>
           </view>
       </view>
     </block>

@@ -31,35 +31,31 @@ Page({
                     orderStatus:0
                 });
 
-                /*显示收获地址*/
-                address.getAddress((res) => {
-                  
-                  that.setData({
-                    addressInfo: res,
-                    region: [res.province, res.city, res.country]
-                  })
-                });
-
-              /*显示主商品优惠*/
+                /*主商品价格和辅销品价格*/
                 var accountMain = this._calcTotalMainAndCounts(this.data.productsArr,1).account;
                 var accountFain = this._calcTotalMainAndCounts(this.data.productsArr,0).account;
 
-
-
+                /*获取促销套餐*/
                 order.getMainPromotion((data) => {
                   var Promotion = [];
                   for (let i = 1; i < 4; i++) {
-                    var dataArr = this.getMainPromotionTypeInfo(data, i, accountMain)
+                    var dataArr = this.getMainPromotionTypeInfo(data, i, accountMain);
                     if (dataArr){
-                      Promotion.push(dataArr);
+                      Promotion.push({
+                        id: dataArr.id,
+                        name: dataArr.name,
+                        type: dataArr.type,
+                        expression: dataArr.expression,
+                      });
                     }
                   }
+                  /*获取满额打折价格*/
                   var getPromotionPrice = this.getMainPromotionTypePrice(Promotion, accountMain);
+
                   this.setData({
-                    accountMain: accountMain,
+                    accountMain: (accountMain - getPromotionPrice).toFixed(2),
                     accountFain: accountFain,
                     PromotionInfo: Promotion,
-                    PromotionPrice: (accountMain - getPromotionPrice).toFixed(2),
                   });
                 })
             }
@@ -88,6 +84,13 @@ Page({
                     });
                 });
             }
+            /*显示收获地址*/
+            address.getAddress((res) => {
+              this.setData({
+                addressInfo: res,
+                region: [res.province, res.city, res.country]
+              })
+            });
         },
 
         /*
@@ -165,19 +168,33 @@ Page({
 
         /*第一次支付*/
         _firstTimePay:function(){
-            var orderInfo=[],
-                procuctInfo=this.data.productsArr,
-                order=new Order();
-            console.log(procuctInfo)
-            for(let i=0;i<procuctInfo.length;i++){
-                orderInfo.push({
-                    product_id: procuctInfo[i].goods_id,
+          var orderInfo = {},
+              goodsArr=[],
+              PromoArr = [],
+              procuctInfo=this.data.productsArr,
+              PromotionInfo=this.data.PromotionInfo,
+              order=new Order();
+              for(let i=0;i<procuctInfo.length;i++){
+                goodsArr.push({
+                    goods_id: procuctInfo[i].goods_id,
                     count:procuctInfo[i].counts,
-                    currentPrice: procuctInfo[i].currentPrice,
                     isMainGoods: procuctInfo[i].isMainGoods,
-                    bulk: procuctInfo[i].bulk,
-                });
-            }
+                })
+              }
+              for (let i = 0; i < PromotionInfo.length; i++) {
+                PromoArr.push({
+                  id: PromotionInfo[i].id,
+                })
+              }
+              orderInfo = {
+                  goodsArrInfo: goodsArr,
+                  mainGoodsPrice: this.data.accountMain,
+                  otherGoodsPrice: this.data.accountFain,
+                  shippingPrice:6,
+                  promotionId: PromoArr,
+              };
+            
+            console.log(orderInfo)
 
             var that=this;
             //支付分两步，第一步是生成订单号，然后根据订单号支付
