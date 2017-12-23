@@ -9,30 +9,37 @@ use think\Exception;
 class OrderPlace extends BaseValidate
 {
     protected $rule = [
-        'products' => 'checkProducts'
+        'goodsArrInfo'    => 'require|checkProducts',
+        'mainGoodsPrice'  => 'require|float',
+        'otherGoodsPrice' => 'require|float',
+        'shippingPrice'   => 'float'
+    ];
+    protected $message = [
+        'goodsArrInfo.require'    => '商品列表不能为空',
+        'mainGoodsPrice.require'  => '主商品价格不能为空',
+        'mainGoodsPrice.float'    => '主商品价格必须是数字',
+        'otherGoodsPrice.require' => '辅销品价格不能为空',
+        'otherGoodsPrice.float'   => '辅销品价格必须是数字',
+        'shippingPrice.float'     => '运费必须是数字',
     ];
 
     protected $singleRule = [
-        'product_id' => 'require|isPositiveInteger',
-        'count' => 'require|isPositiveInteger',
+        'goods_id' => 'require|isPositiveInteger',
+        'count'    => 'require|isPositiveInteger',
     ];
-
-    protected function checkProducts($values)
-    {
-        if(empty($values)){
-            throw new ParameterException([
-                'msg' => '商品列表不能为空'
-            ]);
-        }
-        foreach ($values as $value)
-        {
+    /**
+     * 验证商品
+     */
+    protected function checkProducts($values){
+        foreach ($values as $value){
             $this->checkProduct($value);
         }
         return true;
     }
-
-    private function checkProduct($value)
-    {
+    /**
+     * 逐一验证商品参数
+     */
+    private function checkProduct($value){
         $validate = new BaseValidate($this->singleRule);
         $result = $validate->check($value);
         if(!$result){
@@ -41,4 +48,5 @@ class OrderPlace extends BaseValidate
             ]);
         }
     }
+
 }
