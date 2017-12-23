@@ -9,13 +9,12 @@ use think\Exception;
 class OrderPlace extends BaseValidate
 {
     protected $rule = [
-        'goodsArrInfo'    => 'require|checkProducts',
+        'goodsArrInfo'    => 'checkProducts',
         'mainGoodsPrice'  => 'require|float',
         'otherGoodsPrice' => 'require|float',
         'shippingPrice'   => 'float'
     ];
     protected $message = [
-        'goodsArrInfo.require'    => '商品列表不能为空',
         'mainGoodsPrice.require'  => '主商品价格不能为空',
         'mainGoodsPrice.float'    => '主商品价格必须是数字',
         'otherGoodsPrice.require' => '辅销品价格不能为空',
@@ -32,6 +31,11 @@ class OrderPlace extends BaseValidate
      * 验证商品
      */
     protected function checkProducts($values){
+        if(empty($values)){
+            throw new ParameterException([
+                'msg' => '商品列表不能为空'
+            ]);
+        }
         foreach ($values as $value){
             $this->checkProduct($value);
         }
