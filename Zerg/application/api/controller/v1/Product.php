@@ -170,10 +170,11 @@ class Product extends Controller
         $haveCollect = $this->haveCollectGoods($where);
         if (!$haveCollect) {
             $UserCollectModel->save($where);
+            return new SuccessMessage(['msg'=>'collect success']);
         }else{
             UserCollectModel::destroy($where);
+            return new SuccessMessage(['code'=>202,'msg'=>'cancel success']);
         }
-        return new SuccessMessage();
 
     }
     /**
