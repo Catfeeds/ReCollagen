@@ -64,13 +64,10 @@
       <?php foreach ($order['order_product'] as $product) { ?>
       <tr>
         <td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">
-        	<?php echo $product['name']; ?>
-        	<?php if($option_list=Db::query('select * from '.config('database.prefix').'order_option where order_goods_id='.$product['order_goods_id'].' and order_id='.$product['order_id'])){ ?>
-				<?php foreach ($option_list as $option) { ?>
-                <br />
-                &nbsp;<small> - <?php echo $option['name']; ?>: <?php echo $option['value']; ?></small>
-                <?php } ?>
-                <?php } ?>
+            {$product['name']}
+            {if condition="$product['option_name'] neq null"}
+                <br />&nbsp;<small>({$product['option_name']})</small>
+            {/if}
         </td>
        
         <td style="font-size: 12px;	border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;"><?php echo $product['quantity']; ?></td>
@@ -83,13 +80,28 @@
 
     <tfoot>
         <tr>
-            <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;" colspan="3"><b>商品价格</b></td>
-            <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">￥{$order.order.goodsPrice}</td>
+            <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;" colspan="3"><b>主商品价格</b></td>
+            <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">￥{$order.order.mainGoodsPrice}</td>
+        </tr>
+        <tr>
+            <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;" colspan="3"><b>辅销品价格</b></td>
+            <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">￥{$order.order.otherGoodsPrice}</td>
         </tr>
         <tr>
             <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;" colspan="3"><b>运费</b></td>
             <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">￥{$order.order.shippingPrice}</td>
         </tr>
+    {if $order['order']['promotion']}
+        <tr>
+            <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;" colspan="3"><b>促销活动</b></td>
+            <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">
+        {volist name="order['order']['promotion']" id="vo"}
+            <font color="red">{$vo.name}</font><br>
+        {/volist}
+            </td>
+        </tr>
+    {/if}
+
         <tr>
             <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;" colspan="3"><b>总价</b></td>
             <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: right; padding: 7px;">￥{$order.order.total}</td>
@@ -104,6 +116,6 @@
 </div>
 </body>
 <script>
-window.print();
+    window.print();
 </script>
 </html>
