@@ -129,11 +129,11 @@ class Product extends Controller
         if (!$product){
             throw new ProductException();
         }
-        // //判断用户是否已收藏
-        // $currentUid  = TokenService::getCurrentUid();
-        // $where       = ['uid'=>$currentUid,'goods_id'=>$id];
-        // $haveCollect = $this->haveCollectGoods($where);
-        // $product['haveCollect'] = $haveCollect ? 1:0;
+        //判断用户是否已收藏
+        $currentUid  = TokenService::getCurrentUid();
+        $where       = ['uid'=>$currentUid,'goods_id'=>$id];
+        $haveCollect = $this->haveCollectGoods($where);
+        $product['haveCollect'] = $haveCollect ? 1:0;
 
         return $product;
     }
