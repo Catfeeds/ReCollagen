@@ -19,7 +19,7 @@
             <input disabled type="number" name="mobile" placeholder="手机号码" value="{{addressInfo.telephone}}"/>
           </view>
           <view class="section">
-            <input disabled name="detail" placeholder="收货地址" value="{{region}} {{addressInfo.address}}"/>
+            <input disabled name="detail" placeholder="收货地址" value="{{addressInfo.address}}"/>
           </view>
       </view>
     </block>
@@ -52,7 +52,7 @@
             </view>
           </view>
           <view class="order-bottom" wx:if="{{item.order_status==1}}">
-            <text>实付:￥{{item.total}}</text>
+            <text>实付:￥{{item.account}}</text>
             <view class="pay" ontap="rePay" data-id="{{item.order_id}}" data-index="{{index}}">付款</view>
           </view>
         </view>

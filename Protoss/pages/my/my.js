@@ -46,7 +46,7 @@ Page({
       address.getAddress((res) => {
         this.setData({
           addressInfo: res,
-          region: [res.province, res.city, res.country]
+          'addressInfo.address': res.province + res.city + res.country + res.address
         })
       });
     },
