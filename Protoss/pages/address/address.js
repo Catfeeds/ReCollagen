@@ -40,7 +40,7 @@ Page({
         if (data.errorCode!=0) {
           self.showToast('更新失败！');
           return;
-        } 
+        }
         self.showToast('更新成功。');
         wx.navigateBack();
       });

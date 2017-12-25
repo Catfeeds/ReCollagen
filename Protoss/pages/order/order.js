@@ -9,7 +9,7 @@ var address=new Address();
 Page({
         data: {
             fromCartFlag:true,
-            addressInfo:null
+            addressInfo:null,
         },
 
         /*
@@ -38,7 +38,6 @@ Page({
                 var accountMain = this._calcTotalMainAndCounts(this.data.productsArr,1).account;
                 var accountFain = this._calcTotalMainAndCounts(this.data.productsArr,0).account;
 
-
                 /*获取促销套餐*/
                 order.getMainPromotion((data) => {
                   var Promotion = [];
@@ -55,13 +54,20 @@ Page({
                   }
                   /*获取满额打折价格*/
                   var getPromotionPrice = this.getMainPromotionTypePrice(Promotion);
-
+                  
                   this.setData({
+                    mainGoodsPrice: (accountMain * getPromotionPrice).toFixed(2),
+                    otherGoodsPrice: accountFain,
+                    shippingPrice:6,
                     PromotionInfo: Promotion,
-                    accountMain: (accountMain * getPromotionPrice).toFixed(2),
-                    accountFain: accountFain,
-                    account: (accountMain + accountFain + 6).toFixed(2),
                   });
+
+                  /*获取商品总价格*/
+                  var ResultTotal = this.getResultTotal(this.data.mainGoodsPrice, this.data.otherGoodsPrice, this.data.shippingPrice);
+                  this.setData({
+                    total: ResultTotal
+                  });
+
                 })
             }
 
@@ -77,26 +83,27 @@ Page({
                 var that = this;
                 //下单后，支付成功或者失败后，点左上角返回时能够更新订单状态 所以放在onshow中
                 var id = this.data.id;
-                // order.getOrderInfoById(id, (data)=> {
-                //     that.setData({
-                //         orderStatus: data.order_status,
-                //         productsArr: data.products,
-                //         account: data.total,
-                //         basicInfo: {
-                //             orderTime: data.create_time,
-                //             orderNo: data.order_num_alias
-                //         },
-                //         addressInfo: {
-                //           name: data.shipping_name,
-                //           telephone: data.shipping_tel,
-                //           address: data.shipping_addr,
-                //         },
-                //         PromotionInfo: data.promotionName,
-                //         accountMain: data.mainGoodsPrice,
-                //         accountFain: data.otherGoodsPrice,
-                //         shippingPrice: data.shippingPrice
-                //     });
-                // });
+                order.getOrderInfoById(id, (data)=> {
+                  console.log(data)
+                    that.setData({
+                        orderStatus: data.order_status,
+                        productsArr: data.products,
+                        basicInfo: {
+                            orderTime: data.create_time,
+                            orderNo: data.order_num_alias
+                        },
+                        addressInfo: {
+                          name: data.shipping_name,
+                          telephone: data.shipping_tel,
+                          address: data.shipping_addr,
+                        },
+                        PromotionInfo: data.promotionName,
+                        mainGoodsPrice: data.mainGoodsPrice,
+                        otherGoodsPrice: data.otherGoodsPrice,
+                        shippingPrice: data.shippingPrice,
+                        total: data.total,
+                    });
+                });
             }
             else
             {
@@ -113,6 +120,13 @@ Page({
               'addressInfo.address': res.province + res.city + res.country + res.address
             })
           });
+        },
+
+        /*
+        * 计算商品总金额
+        * */
+        getResultTotal: function (num1, num2, num3){
+          return (parseInt(num1) + parseInt(num2) + parseInt(num3)).toFixed(2)
         },
 
         /*
@@ -156,7 +170,7 @@ Page({
 
         /*根据类型获取优惠价格*/
         getMainPromotionTypePrice: function (data) {
-          var tempPrice=0,
+          var tempPrice=1,
           len = data.length;
           for (let i = 0; i < len; i++) {
             if (data[i].type == 1) {
@@ -200,7 +214,7 @@ Page({
                 goodsArr.push({
                     goods_id: procuctInfo[i].goods_id,
                     quantity:procuctInfo[i].counts,
-                    option_id: procuctInfo[i].optionsid,
+                    option_id: procuctInfo[i].option_id
                 })
               }
               for (let i = 0; i < PromotionInfo.length; i++) {
@@ -210,9 +224,9 @@ Page({
               }
               orderInfo = {
                   goodsArrInfo: goodsArr,
-                  mainGoodsPrice: this.data.accountMain,
-                  otherGoodsPrice: this.data.accountFain,
-                  shippingPrice:6,
+                  mainGoodsPrice: this.data.mainGoodsPrice,
+                  otherGoodsPrice: this.data.otherGoodsPrice,
+                  shippingPrice: this.data.shippingPrice,
                   promotionId: PromoArr,
               };
 
@@ -307,13 +321,14 @@ Page({
         _execPay:function(id){
             var that=this;
             order.execPay(id,(statusCode)=>{
-                if(statusCode!=0){
-                    that.deleteProducts(); //将已经下单的商品从购物车删除   当状态为0时，表示
-                    var flag = statusCode == 2;
-                    wx.navigateTo({
-                        url: '../pay-result/pay-result?id=' + id + '&flag=' + flag + '&from=order'
-                    });
-                }
+              if (statusCode.errorCode != 0) {
+                that.showTips('支付提示', statusCode.msg);
+                return;
+              }
+              that.deleteProducts(); //将已经下单的商品从购物车删除
+              wx.navigateTo({
+                  url: '../pay-result/pay-result?id=' + id + '&from=order'
+              });
             });
         },
 

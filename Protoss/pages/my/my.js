@@ -71,6 +71,7 @@ Page({
     _getOrders:function(callback){
         var that=this;
         order.getOrders(this.data.pageIndex,(data)=>{
+          console.log(data)
             that.setData({
                 loadingHidden: true
             });

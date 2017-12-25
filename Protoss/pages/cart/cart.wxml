@@ -24,10 +24,8 @@
                                 </view>
                                 <view class="delete" data-id="{{item.goods_id}}"  data-guid="{{item.optionsid}}" bindtap="delete">×</view>
                             </view>
-                            <view class="bottom-box" wx:if="{{item.options.length>0}}">规格：
-                                <block  wx:for="{{item.options}}" wx:for-index="idx" wx:for-item="itemName" wx:if="{{itemName.goods_option_id==item.optionsid}}">
-                                    {{itemName.option_name}}
-                                </block>
+                            <view class="bottom-box" wx:if="{{item.option_name}}">规格：
+                                {{item.option_name}}
                             </view>
                         </view>
                     </view>

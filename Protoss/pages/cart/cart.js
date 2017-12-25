@@ -11,7 +11,6 @@ Page({
         loadingHidden:false,
         selectedCounts:0, //总的商品数
         selectedTypeCounts:0, //总的商品类型数
-        
     },
 
     onLoad: function () {
@@ -112,7 +111,7 @@ Page({
         });
         for (var key in discounts) {
           if (counts >= discounts[key].quantity) {
-            tempPrice = discounts[key].price;
+            tempPrice = (this.data.cartData[index].price * discounts[key].discount / 100).toFixed(2);
             float = true;
           }
         }

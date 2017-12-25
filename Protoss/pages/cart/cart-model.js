@@ -88,11 +88,13 @@ class Cart extends Base{
             cartData=[];
         }
         var isHadInfo = this._isHasThatOne(item.goods_id, guid,cartData);
+        var optionName = this._MainPromotion(item.options, guid);
         //新商品
         if(isHadInfo.index==-2) {
             item.counts = counts;
             item.currentPrice = price;
-            item.optionsid = guid;
+            item.option_id = guid;
+            item.option_name = optionName;
             item.selectStatus=true;  //默认在购物车中为选中状态
             cartData.push(item);
         }
@@ -100,10 +102,12 @@ class Cart extends Base{
         else{
             cartData[isHadInfo.index].counts += counts;
             cartData[isHadInfo.index].currentPrice = price;
+            cartData[isHadInfo.index].option_name = optionName;
         }
         this.execSetStorageSync(cartData);  //更新本地缓存
         return cartData;
     };
+    
 
     /*
     * 修改商品数目
@@ -143,7 +147,7 @@ class Cart extends Base{
             result={index:-2};
         for (let i = 0; i < arr.length; i++) {
           item = arr[i];
-          if (item.goods_id == id && item.optionsid == guid){
+          if (item.goods_id == id && item.option_id == guid){
             result = {
               index: i,
               data: item
@@ -152,8 +156,21 @@ class Cart extends Base{
           }
         }
         return result;
-    }
+    };
 
+    //获取商品规格名称
+    _MainPromotion(options,guid) {
+      var item,
+          result='';
+      for (let i = 0; i < options.length; i++) {
+        item = options[i];
+        if (item.goods_option_id == guid) {
+          result = item.option_name;
+          break;
+        }
+      }
+      return result;
+    };
     
     /*
     * 删除某些商品
