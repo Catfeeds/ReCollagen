@@ -73,8 +73,10 @@ Route::get('api/:version/address', 'api/:version.Address/getUserAddress');
 //Order
 Route::post('api/:version/order', 'api/:version.Order/createOrder');                    //创建订单
 Route::post('api/:version/order/cancel', 'api/:version.Order/cancelOrder');             //取消订单
-Route::get('api/:version/order/:id', 'api/:version.Order/getDetail',[], ['id'=>'\d+']); //根据订单id获取订单详情
+Route::get('api/:version/order/:id', 'api/:version.Order/getDetail',[], ['id'=>'\d+']); //获取订单详情
 Route::get('api/:version/order/transinfo/:id', 'api/:version.Order/getTransInfo',[], ['id'=>'\d+']); //根据订单id查询物流进度
+Route::post('api/:version/order/transfee', 'api/:version.Order/getTransFee');           //根据商品重量匹配物流公司和运费
+
 
 Route::put('api/:version/order/delivery', 'api/:version.Order/delivery');
 //不想把所有查询都写在一起，所以增加by_user，很好的REST与RESTFul的区别
