@@ -28,11 +28,9 @@ class Order extends Base{
 
 
     /*
-    * 拉起微信支付
+    * 余额、小金库支付
     * params:
     * norderNumber - {int} 订单id
-    * return：
-    * callback - {obj} 回调方法 ，返回参数 可能值 0:商品缺货等原因导致订单不能支付;  1: 支付失败或者支付取消； 2:支付成功；
     * */
     execPay(orderNumber,callback){
         var allParams = {
@@ -40,24 +38,10 @@ class Order extends Base{
             type:'post',
             data:{id:orderNumber},
             sCallback: function (data) {
-                var timeStamp= data.timeStamp;
-                if(timeStamp) { //可以支付
-                    wx.requestPayment({
-                        'timeStamp': timeStamp.toString(),
-                        'nonceStr': data.nonceStr,
-                        'package': data.package,
-                        'signType': data.signType,
-                        'paySign': data.paySign,
-                        success: function () {
-                            callback && callback(2);
-                        },
-                        fail: function () {
-                            callback && callback(1);
-                        }
-                    });
-                }else{
-                    callback && callback(0);
-                }
+              callback && callback(data);
+            },
+            eCallback: function (data) {
+              callback && callback(data);
             }
         };
         this.request(allParams);

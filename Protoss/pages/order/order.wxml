@@ -57,34 +57,32 @@
         </view>
         <view class="item-middle">
           <view>{{item.name}}</view>
-          <view>￥{{item.currentPrice}}</view>
-          <view wx:if="{{item.options.length>0}}">规格：
-            <block  wx:for="{{item.options}}" wx:for-index="idx" wx:for-item="itemName" wx:if="{{itemName.goods_option_id==item.optionsid}}">
-                {{itemName.option_name}}
-            </block>
-            </view>
+          <view>￥{{item.currentPrice || item.price}}</view>
+          <view wx:if="{{item.option_name}}">规格：
+             {{item.option_name}}
+          </view>
         </view>
         <view class="item-right">
-          ×{{item.counts}}
+          ×{{item.counts || item.quantity}}
         </view>
       </view>
     </block>
     <view class="product-youh" wx:if="{{PromotionInfo.length>0}}">
       <block wx:for="{{PromotionInfo}}">
-          <view>{{item.name}}</view>
+          <view>{{item.name || item}}</view>
       </block>
-    </view> 
+    </view>
     <view class="product-youh">
-      <view>主商品价格：{{accountMain}}元</view>
-      <view>辅销品价格：{{accountFain}}元</view>
-      <view>运费：6元</view>
+      <view>主商品价格：{{mainGoodsPrice}}元</view>
+      <view>辅销品价格：{{otherGoodsPrice}}元</view>
+      <view>运费：{{shippingPrice}}元</view>
     </view>
   </view>
 
   <!--结算-->
   <view class="footer-account-box order-accounts">
     <view class="total-account">
-      实付:￥{{account}}
+      实付:￥{{total}}
     </view>
     <view wx:if="{{orderStatus<=1}}" class="pay {{!addressInfo?'disabled':''}}" ontap="pay">去付款</view>
   </view>

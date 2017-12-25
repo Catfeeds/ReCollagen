@@ -14,7 +14,7 @@ Page({
         currentTabsIndex:0,
         cartTotalCounts:0,
         currentAttrIndex:-1,
-        optionid: -1,
+        option_id: -1,
     },
     onLoad: function (option) {
       this.data.id = option.id;
@@ -61,7 +61,7 @@ Page({
                 stockArray.push(i);
               }
               that.setData({
-                optionid: options.id,
+                option_id: options.id,
                 price: options.price,
                 currentAttrIndex: options.index,
                 countsArray: stockArray,
@@ -128,7 +128,7 @@ Page({
       }
       this.setData({
         countsArray: stockArray,
-        optionid:id,
+        option_id:id,
         price: price,
         currentAttrIndex: index
       });
@@ -173,22 +173,18 @@ Page({
             return;
         }
         this._flyToCartEffect(events);
-        this.addToCart(0);
+        this.addToCart();
     },
 
     /*将商品数据添加到内存中*/
-    addToCart:function(start){
-      var tempObj = {}, keys = ['goods_id', 'name', 'image', 'price', 'isMainGoods', 'stock', 'weight', 'bulk', 'haveCollect','options','discounts'];
+    addToCart:function(){
+      var tempObj = {}, keys = ['goods_id', 'name', 'image', 'price', 'isMainGoods', 'haveCollect', 'options','discounts'];
         for(var key in this.data.product){
             if(keys.indexOf(key)>=0){
                 tempObj[key]=this.data.product[key];
             }
         }
-        if (start==1){
-          product.add(tempObj);
-        }else{
-          cart.add(tempObj, this.data.productCounts, this.data.price, this.data.optionid);
-        }
+        cart.add(tempObj, this.data.productCounts, this.data.price, this.data.option_id);
     },
 
     /*加入购物车动效*/
