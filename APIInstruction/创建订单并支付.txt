@@ -7,7 +7,7 @@ Method:
 Params:
     {
         "goods_id"          :  "商品id", 
-        "count"             :  "商品数量", 
+        "quantity"          :  "商品数量", 
         "option_id"         :  "商品选项id", 
     }
 

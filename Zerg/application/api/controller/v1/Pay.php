@@ -18,9 +18,10 @@ class Pay extends BaseController
     {
         (new IDMustBePositiveInt()) -> goCheck();
         $pay= new PayService($id);
+        //微信支付
         // return $pay->pay();
-        return $pay->orderPay();
 
+        return $pay->orderPay();
     }
 
 

@@ -199,7 +199,7 @@ Page({
               for(let i=0;i<procuctInfo.length;i++){
                 goodsArr.push({
                     goods_id: procuctInfo[i].goods_id,
-                    count:procuctInfo[i].counts,
+                    quantity:procuctInfo[i].counts,
                     option_id: procuctInfo[i].optionsid,
                 })
               }

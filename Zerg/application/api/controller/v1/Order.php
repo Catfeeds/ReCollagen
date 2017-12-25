@@ -18,8 +18,8 @@ class Order extends BaseController
 {
     protected $beforeActionList = [
         'checkExclusiveScope' => ['only' => 'createOrder'],
-        'checkPrimaryScope' => ['only' => 'getDetail,getSummaryByUser'],
-        'checkSuperScope' => ['only' => 'delivery,getSummary']
+        'checkPrimaryScope'   => ['only' => 'getDetail,getSummaryByUser'],
+        'checkSuperScope'     => ['only' => 'delivery,getSummary']
     ];
     
     /**
