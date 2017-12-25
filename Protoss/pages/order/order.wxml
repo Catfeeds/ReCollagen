@@ -34,7 +34,7 @@
                 <text  class="val">{{addressInfo.telephone}}</text>
               </view>
           </view>
-          <view class="detail">{{region}} {{addressInfo.address}}</view>
+          <view class="detail">{{addressInfo.address}}</view>
         </view>
         <view class="contact-icon" wx:if="{{orderStatus==0}}">
             <image src="../../imgs/icon/arrow@right.png"></image>
@@ -84,6 +84,7 @@
   <!--结算-->
   <view class="footer-account-box order-accounts">
     <view class="total-account">
+      实付:￥{{account}}
     </view>
     <view wx:if="{{orderStatus<=1}}" class="pay {{!addressInfo?'disabled':''}}" ontap="pay">去付款</view>
   </view>

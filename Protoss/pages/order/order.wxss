@@ -116,6 +116,7 @@
     background-color: #fff;
 }
 .order-accounts>view{
+    display: flex;
     align-items: center;
 }
 .total-account{

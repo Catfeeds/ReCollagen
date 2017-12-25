@@ -57,9 +57,10 @@ Page({
                   var getPromotionPrice = this.getMainPromotionTypePrice(Promotion);
 
                   this.setData({
+                    PromotionInfo: Promotion,
                     accountMain: (accountMain * getPromotionPrice).toFixed(2),
                     accountFain: accountFain,
-                    PromotionInfo: Promotion,
+                    account: (accountMain + accountFain + 6).toFixed(2),
                   });
                 })
             }
@@ -76,21 +77,32 @@ Page({
                 var that = this;
                 //下单后，支付成功或者失败后，点左上角返回时能够更新订单状态 所以放在onshow中
                 var id = this.data.id;
-                order.getOrderInfoById(id, (data)=> {
-                    that.setData({
-                        orderStatus: data.status,
-                        productsArr: data.snap_items,
-                        account: data.total_price,
-                        basicInfo: {
-                            orderTime: data.create_time,
-                            orderNo: data.order_no
-                        },
-                    });
-                });
+                // order.getOrderInfoById(id, (data)=> {
+                //     that.setData({
+                //         orderStatus: data.order_status,
+                //         productsArr: data.products,
+                //         account: data.total,
+                //         basicInfo: {
+                //             orderTime: data.create_time,
+                //             orderNo: data.order_num_alias
+                //         },
+                //         addressInfo: {
+                //           name: data.shipping_name,
+                //           telephone: data.shipping_tel,
+                //           address: data.shipping_addr,
+                //         },
+                //         PromotionInfo: data.promotionName,
+                //         accountMain: data.mainGoodsPrice,
+                //         accountFain: data.otherGoodsPrice,
+                //         shippingPrice: data.shippingPrice
+                //     });
+                // });
             }
-            
-            /*显示收获地址*/
-            this._addressInfo();
+            else
+            {
+              /*显示收获地址*/
+              this._addressInfo();
+            }
         },
 
         /*显示收获地址*/
@@ -98,7 +110,7 @@ Page({
           address.getAddress((res) => {
             this.setData({
               addressInfo: res,
-              region: [res.province, res.city, res.country]
+              'addressInfo.address': res.province + res.city + res.country + res.address
             })
           });
         },
