@@ -3,7 +3,10 @@
 namespace app\api\service;
 
 use app\api\model\Order as OrderModel;
-use app\api\model\User;
+use app\api\service\Order as OrderService;
+use app\api\model\User as UserModel;
+use app\api\model\Product as ProductModel;
+use app\api\model\ProductOption as ProductOption;
 
 use app\lib\exception\OrderException;
 use app\lib\exception\TokenException;
@@ -103,20 +106,18 @@ class Pay
     }
 
     /**
-     * @return bool
-     * @throws OrderException
-     * @throws TokenException
+     * 订单状态检测
      */
     private function checkOrderValid()
     {
-        $order = OrderModel::where('id', '=', $this->orderID)
+        $order = OrderModel::where('order_id', '=', $this->orderID)
             ->find();
         if (!$order)
         {
             throw new OrderException();
         }
 //        $currentUid = Token::getCurrentUid();
-        if(!Token::isValidOperate($order->user_id))
+        if(!Token::isValidOperate($order->uid))
         {
             throw new TokenException(
                 [
@@ -127,7 +128,7 @@ class Pay
         if($order->status != 1){
             throw new OrderException([
                 'msg' => '订单状态异常',
-                 'errorCode' => 80003,
+                'errorCode' => 80003,
                 'code' => 400
             ]);
         }
@@ -139,21 +140,40 @@ class Pay
      * 支付订单
      */
     public function orderPay(){
+        $this->checkOrderValid();
+        //检测库存
+        $service = new OrderService();
+        $status = $service->checkOrderStock($this->orderID);
+
         $uid  = Token::getCurrentUid();
-        $user = User::get($uid);
+        $user = UserModel::get($uid);
         $order = OrderModel::get($this->orderID);
         $mainAccountNeedPay   = $order['mainGoodsPrice'];
         $secondAccountNeedPay = $order['otherGoodsPrice'] + $order['shippingPrice'];
 
         //判断用户主账户和小金库的余额是否充足
         $this->getUserAccountStatus($user,$mainAccountNeedPay,$secondAccountNeedPay);
-        
+
         Db::startTrans();
         try {
-            OrderModel::where('order_id', '=', $this->orderID)->update(['order_status' => 2]);
-            
+            //修改订单状态
+            OrderModel::where('order_id', '=', $this->orderID)->update(['order_status'=>2,'pay_time'=>2,'mainPay'=>$mainAccountNeedPay,'secondPay'=>$secondAccountNeedPay]);
+            //减库存
+            foreach ($status['pStatusArray'] as $singlePStatus) {
+                if ($singlePStatus['option_id'] > 0) {
+                    //商品有多选项，减对应选项的商品库存
+                    ProductOption::where('goods_id', '=', $singlePStatus['goods_id'])->setDec('stock', $singlePStatus['quantity']);
+                }else{
+                    //商品无选项，直接减
+                    ProductModel::where('goods_id', '=', $singlePStatus['goods_id'])->setDec('stock', $singlePStatus['quantity']);
+                }
+            }
+            //减账户金额
+            UserModel::where(['uid'=>$uid])->setDec('mainAccount',$mainAccountNeedPay);
+            UserModel::where(['uid'=>$uid])->setDec('secondAccount',$secondAccountNeedPay);
+
             Db::commit();
-            return ['code' => 0,'msg'=>'支付成功'];
+            return ['errorCode' => 0,'msg'=>'支付成功'];
         } catch (Exception $e) {
             Db::rollback();
             throw $ex;

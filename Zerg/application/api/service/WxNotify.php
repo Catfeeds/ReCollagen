@@ -5,6 +5,7 @@ namespace app\api\service;
 use app\api\model\Order;
 use app\api\model\Product;
 use app\api\service\Order as OrderService;
+
 use app\lib\enum\OrderStatusEnum;
 use app\lib\order\OrderStatus;
 use think\Db;
@@ -68,7 +69,9 @@ class WxNotify extends \WxPayNotify
         return true;
     }
 
-
+    /**
+     * 成功响应微信回调后减库存
+     */
     private function reduceStock($status)
     {
 //        $pIDs = array_keys($status['pStatus']);
@@ -77,7 +80,9 @@ class WxNotify extends \WxPayNotify
                 ->setDec('stock', $singlePStatus['count']);
         }
     }
-
+    /**
+     * 成功响应微信回调后更新订单状态
+     */
     private function updateOrderStatus($orderID, $success)
     {
         $status = $success ? OrderStatusEnum::PAID : OrderStatusEnum::PAID_BUT_OUT_OF;

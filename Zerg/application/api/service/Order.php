@@ -66,18 +66,16 @@ class Order
     {
         $status = [
             'pass'         => true,
-            'orderPrice'   => 0,
+            // 'orderPrice'   => 0,
             'pStatusArray' => []
         ];
 
-        foreach ($this->oProducts as $oProduct) {
-            $pStatus =
-                $this->getProductStatus(
-                    $oProduct['goods_id'], $oProduct['count'], $this->products);
+        foreach ($this->oProducts as $oProduct) {            
+            $pStatus = $this->getProductStatus($oProduct['goods_id'], $oProduct['quantity'], $this->products);
             if (!$pStatus['haveStock']) {
                 $status['pass'] = false;
             }
-            $status['orderPrice'] += $pStatus['totalPrice'];
+            // $status['orderPrice'] += $pStatus['totalPrice'];
             array_push($status['pStatusArray'], $pStatus);
         }
         return $status;
@@ -85,11 +83,13 @@ class Order
 
     private function getProductStatus($oPID, $oCount, $products)
     {
+
         $pIndex = -1;
         $pStatus = [
-            'goods_id'         => null,
+            'goods_id'   => null,
+            'goods_id'   => -1,
             'haveStock'  => false,
-            'count'      => 0,
+            'quantity'   => 0,
             'name'       => '',
             'totalPrice' => 0
         ];
@@ -109,8 +109,9 @@ class Order
         } else {
             $product = $products[$pIndex];
             $pStatus['goods_id']   = $product['goods_id'];
+            $pStatus['option_id']  = isset($product['option_id']) ? $product['option_id'] : -1;
             $pStatus['name']       = $product['name'];
-            $pStatus['count']      = $oCount;
+            $pStatus['quantity']   = $oCount;
             $pStatus['totalPrice'] = $product['price'] * $oCount;
 
             if ($product['stock'] - $oCount >= 0) {
@@ -127,7 +128,7 @@ class Order
         $oPIDs = $optionIds = [];
         foreach ($oProducts as $item) {
             array_push($oPIDs, $item['goods_id']);
-            $item['option_id'] && array_push($optionIds, $item['option_id']);
+            $item['option_id']>0 && array_push($optionIds, $item['option_id']);
         }
 
         // 为了避免循环查询数据库
@@ -142,6 +143,7 @@ class Order
                     if ($v['goods_id'] == $v2['goods_id']) {
                         $products[$k]['price']       = $v2['option_price'];
                         $products[$k]['stock']       = $v2['stock'];
+                        $products[$k]['option_id']   = $v2['goods_option_id'];
                         $products[$k]['option_name'] = $v2['option_name'];
                     }
                 }
@@ -227,10 +229,10 @@ class Order
         }
 
         for ($i = 0; $i < count($this->products); $i++) {
-            $product = $this->products[$i];
+            $product  = $this->products[$i];
             $oProduct = $this->oProducts[$i];
-
-            $pStatus = $this->snapProduct($product, $oProduct['count']);
+            
+            $pStatus  = $this->snapProduct($product, $oProduct['quantity']);
 
             array_push($snap['pStatus'], $pStatus);
         }
@@ -246,6 +248,7 @@ class Order
             'isMainGoods'  => null,
             'image'        => null,
             'name'         => null,
+            'option_id'    => -1,
             'option_name'  => null,
             'quantity'     => $oCount,
             'price'        => 0,
@@ -256,6 +259,7 @@ class Order
         $pStatus['isMainGoods']  = $product['isMainGoods'];
         $pStatus['image']        = $product['image'];
         $pStatus['name']         = $product['name'];
+        $pStatus['option_id']    = isset($product['option_id']) ? $product['option_id'] : -1;
         $pStatus['option_name']  = isset($product['option_name']) ? $product['option_name'] :'';
         $pStatus['quantity']     = $oCount;
         $pStatus['price']        = $product['price'];
@@ -305,10 +309,11 @@ class Order
         // 不能从商品表中查询订单商品
         // 这将导致被删除的商品无法查询出订单商品来
         $oProducts = OrderProduct::where('order_id', '=', $orderID)
-            ->select();
-        $this->products = $this->getProductsByOrder($oProducts);
+            ->select();            
+        $this->products = $this->getProductsByOrder($oProducts);        
         $this->oProducts = $oProducts;
         $status = $this->getOrderStatus();
+
         return $status;
     }
 
