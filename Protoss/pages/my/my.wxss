@@ -151,7 +151,7 @@
     width: 170rpx;
     height: 60rpx;
     margin-right: 30rpx;
-    background-color:#B42F2D;
+    background-color:#75bb0b;
     border-radius: 4rpx;
     color: #fff;
     text-align: center;

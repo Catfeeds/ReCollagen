@@ -1,10 +1,11 @@
 {
   "pages":[
-    "pages/cart/cart",
-    "pages/product/product",
-    "pages/home/home",
-    
     "pages/my/my",
+    "pages/product/product",
+    
+    "pages/cart/cart",
+    
+    "pages/home/home",
     "pages/address/address",
     "pages/category/category",
     "pages/order/order",

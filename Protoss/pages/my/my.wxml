@@ -33,27 +33,27 @@
     <view class="item-main">
       <block wx:for="{{orderArr}}">
         <view class="order-item">
-          <view class="order-header" ontap="showOrderDetailInfo" data-id="{{item.id}}">
+          <view class="order-header" ontap="showOrderDetailInfo" data-id="{{item.order_id}}">
             <text>订单编号:</text>
-            <text class="order-no-txt">{{item.order_no}}</text>
+            <text class="order-no-txt">{{item.order_num_alias}}</text>
           </view>
-          <view class="order-main" ontap="showOrderDetailInfo" data-id="{{item.id}}">
+          <view class="order-main" ontap="showOrderDetailInfo" data-id="{{item.order_id}}">
             <view class="item-left">
-              <image src="{{item.snap_img}}"></image>
+              <image src="{{item.pay_subject_img}}"></image>
             </view>
             <view class="item-middle">
-              <view>{{item.snap_name}}</view>
-              <view>{{item.total_count}}件商品</view>
+              <view>{{item.pay_subject}}</view>
+              <view>{{item.productCount}}件商品</view>
             </view>
             <view class="item-right">
-              <text class="order-status-txt unpay" wx:if="{{item.status==1}}">待付款</text>
-              <text class="order-status-txt payed" wx:if="{{item.status==2}}">已付款</text>
-              <text class="order-status-txt done" wx:if="{{item.status==3}}">已发货</text>
+              <text class="order-status-txt unpay" wx:if="{{item.order_status==1}}">待付款</text>
+              <text class="order-status-txt payed" wx:if="{{item.order_status==2}}">已付款</text>
+              <text class="order-status-txt done" wx:if="{{item.order_status==3}}">已发货</text>
             </view>
           </view>
-          <view class="order-bottom" wx:if="{{item.status==1}}">
-            <text>实付:￥{{item.total_price}}</text>
-            <view class="pay" ontap="rePay" data-id="{{item.id}}" data-index="{{index}}">付款</view>
+          <view class="order-bottom" wx:if="{{item.order_status==1}}">
+            <text>实付:￥{{item.total}}</text>
+            <view class="pay" ontap="rePay" data-id="{{item.order_id}}" data-index="{{index}}">付款</view>
           </view>
         </view>
       </block>

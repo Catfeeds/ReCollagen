@@ -8,7 +8,6 @@ class Order extends Base{
 
     constructor(){
         super();
-        this._storageKeyName='newOrder';
     }
 
     /*下订单*/
@@ -19,7 +18,6 @@ class Order extends Base{
             type:'post',
             data: param,
             sCallback: function (data) {
-                that.execSetStorageSync(true);
                 callback && callback(data);
             },
             eCallback:function(){
@@ -71,7 +69,6 @@ class Order extends Base{
             url: 'order/by_user',
             type:'get',
             sCallback: function (data) {
-              console.log(data)
                 callback && callback(data);  //1 未支付  2，已支付  3，已发货，4已支付，但库存不足
              }
         };
@@ -102,17 +99,6 @@ class Order extends Base{
             }
         };
         this.request(allParams);
-    }
-
-    /*本地缓存 保存／更新*/
-    execSetStorageSync(data){
-        wx.setStorageSync(this._storageKeyName,data);
-    };
-
-    /*是否有新的订单*/
-    hasNewOrder(){
-       var flag = wx.getStorageSync(this._storageKeyName);
-       return flag==true;
     }
 }
 

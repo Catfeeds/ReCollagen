@@ -17,7 +17,7 @@ Page({
         optionid: -1,
     },
     onLoad: function (option) {
-        this.data.id = 13;
+      this.data.id = option.id;
         this._loadData();
     },
 
@@ -50,13 +50,7 @@ Page({
                 product:data,
                 loadingHidden:true
             });
-
-            var haveData = product.getHaveDataFromLocal(),
-                index=this._getProductIndexById(haveData,this.data.id);
-            this.setData({
-              'product.haveCollect': haveData[index].haveCollect
-            });
-            
+                        
             /*默认商品选项数量、价格、ID*/
             var optionsArr = data.options;
             if (optionsArr.length > 0){
@@ -160,13 +154,16 @@ Page({
 
     /*添加到收藏*/
     onAddingToHaveTap: function (events) {
-      //是否已经收藏
-      var haveCollect = this.data.product.haveCollect,
-          have=!haveCollect == true?1:0;
-      this.setData({
-        'product.haveCollect': have
-      });
-      this.addToCart(1);
+      if (this.data.id) {
+        var id = this.data.id,
+        haveCollect = this.data.product.haveCollect,
+        have = !haveCollect == true ? 1 : 0;
+        product.doHaveCollect(id, (data) => {
+          this.setData({
+            'product.haveCollect': data
+          });
+        });
+      }
     },
 
     /*添加到购物车*/

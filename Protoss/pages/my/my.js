@@ -22,9 +22,7 @@ Page({
     },
 
     onShow:function(){
-        //更新订单,相当自动下拉刷新,只有  非第一次打开 “我的”页面，且有新的订单时 才调用。
-        var newOrderFlag=order.hasNewOrder();
-        if(this.data.loadingHidden &&newOrderFlag){
+        if(this.data.loadingHidden){
             this.onPullDownRefresh();
         }
 
@@ -41,7 +39,6 @@ Page({
         });
 
         this._getOrders();
-        order.execSetStorageSync(false);  //更新标志位
     },
     
     /*显示收获地址*/
@@ -78,7 +75,7 @@ Page({
                 loadingHidden: true
             });
             if(data.length>0) {
-                that.data.orderArr.push.apply(that.data.orderArr,res.data);  //数组合并
+                that.data.orderArr.push.apply(that.data.orderArr,data);  //数组合并                
                 that.setData({
                     orderArr: that.data.orderArr
                 });
@@ -144,17 +141,16 @@ Page({
             that.data.isLoadedAll=false;  //是否加载完全
             that.data.pageIndex=1;
             wx.stopPullDownRefresh();
-            order.execSetStorageSync(false);  //更新标志位
         });
     },
 
 
-    onReachBottom:function(){
-        if(!this.data.isLoadedAll) {
-            this.data.pageIndex++;
-            this._getOrders();
-        }
-    },
+    // onReachBottom:function(){
+    //     if(!this.data.isLoadedAll) {
+    //         this.data.pageIndex++;
+    //         this._getOrders();
+    //     }
+    // },
 
     /*
      * 提示窗口
