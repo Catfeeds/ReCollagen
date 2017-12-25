@@ -156,7 +156,7 @@ class Product extends Controller
      * 收藏或取消收藏商品
      */
     public function collectGoods(){
-        
+
         (new IDMustBePositiveInt())->goCheck();
 
         $id = input('post.id/d');
