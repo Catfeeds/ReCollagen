@@ -12,6 +12,7 @@ use app\api\validate\PagingParameter;
 use app\lib\exception\ParameterException;
 use app\lib\exception\ProductException;
 use app\lib\exception\ThemeException;
+use app\lib\exception\SuccessMessage;
 use think\Controller;
 use think\Exception;
 
@@ -128,11 +129,11 @@ class Product extends Controller
         if (!$product){
             throw new ProductException();
         }
-        //判断用户是否已收藏
-        $currentUid  = TokenService::getCurrentUid();
-        $where       = ['uid'=>$currentUid,'goods_id'=>$id];
-        $haveCollect = $this->haveCollectGoods($where);
-        $product['haveCollect'] = $haveCollect ? 1:0;
+        // //判断用户是否已收藏
+        // $currentUid  = TokenService::getCurrentUid();
+        // $where       = ['uid'=>$currentUid,'goods_id'=>$id];
+        // $haveCollect = $this->haveCollectGoods($where);
+        // $product['haveCollect'] = $haveCollect ? 1:0;
 
         return $product;
     }
@@ -163,6 +164,7 @@ class Product extends Controller
         $UserCollectModel = new UserCollectModel();
 
         $currentUid = TokenService::getCurrentUid();
+
         $where = ['uid'=>$currentUid,'goods_id'=>$id];
 
         $haveCollect = $this->haveCollectGoods($where);
@@ -171,6 +173,7 @@ class Product extends Controller
         }else{
             UserCollectModel::destroy($where);
         }
+        return new SuccessMessage();
 
     }
     /**
