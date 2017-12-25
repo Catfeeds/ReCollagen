@@ -18,7 +18,7 @@ class Order extends BaseController
 {
     protected $beforeActionList = [
         'checkExclusiveScope' => ['only' => 'createOrder'],
-        'checkPrimaryScope'   => ['only' => 'getDetail,getSummaryByUser'],
+        'checkPrimaryScope'   => ['only' => 'getDetail,getSummaryByUser,cancelOrder'],
         'checkSuperScope'     => ['only' => 'delivery,getSummary']
     ];
     
@@ -125,6 +125,18 @@ class Order extends BaseController
         $info = curl_post($url);
 
         return $info;
+    }
+    /**
+     * 取消订单
+     */
+    public function cancelOrder($id){
+        (new IDMustBePositiveInt()) -> goCheck();
+        $order = new OrderService();
+        $success = $order->cancel($id);
+        if($success){
+            return new SuccessMessage();
+        }
+
     }
 }
 
