@@ -3,11 +3,14 @@
 namespace app\api\service;
 
 use app\api\model\Order as OrderModel;
+use app\api\model\User;
+
 use app\lib\exception\OrderException;
 use app\lib\exception\TokenException;
 use think\Exception;
 use think\Loader;
 use think\Log;
+use think\Db;
 
 //Loader::import('WxPay.WxPay', EXTEND_PATH, '.Data.php');
 Loader::import('WxPay.WxPay', EXTEND_PATH, '.Api.php');
@@ -130,5 +133,50 @@ class Pay
         }
         $this->orderNo = $order->order_no;
         return true;
+    }
+
+    /**
+     * 支付订单
+     */
+    public function orderPay(){
+        $uid  = Token::getCurrentUid();
+        $user = User::get($uid);
+        $order = OrderModel::get($this->orderID);
+        $mainAccountNeedPay   = $order['mainGoodsPrice'];
+        $secondAccountNeedPay = $order['otherGoodsPrice'] + $order['shippingPrice'];
+
+        //判断用户主账户和小金库的余额是否充足
+        $this->getUserAccountStatus($user,$mainAccountNeedPay,$secondAccountNeedPay);
+        
+        Db::startTrans();
+        try {
+            OrderModel::where('order_id', '=', $this->orderID)->update(['order_status' => 2]);
+            
+            Db::commit();
+            return ['code' => 0,'msg'=>'支付成功'];
+        } catch (Exception $e) {
+            Db::rollback();
+            throw $ex;
+        }
+    }
+    /**
+     * 判断用户主账户和小金库的余额是否充足
+     */
+    private function getUserAccountStatus($user,$mainAccountNeedPay,$secondAccountNeedPay){
+        $mainAccountStatus = $user['mainAccount'] - $mainAccountNeedPay;
+        $secondAccountStatus = $user['secondAccount'] - $secondAccountNeedPay;
+        if ($mainAccountStatus < 0) {
+            throw new OrderException([
+                'msg' => '主账户余额不足,需最低充值'.abs($mainAccountStatus).'元',
+                'errorCode' => 60002,
+                'code' => 403
+            ]);
+        }elseif ($secondAccountStatus < 0) {
+            throw new OrderException([
+                'msg' => '小金库余额不足,需最低充值'.abs($secondAccountStatus).'元',
+                'errorCode' => 60003,
+                'code' => 403
+            ]);
+        }
     }
 }

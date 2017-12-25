@@ -98,13 +98,29 @@
 
             <tbody>
                 <tr>
-                  	<td colspan="3" class="right">商品价格</td>
-                  	<td class="right">￥{$data.order.goodsPrice}</td>
+                  	<td colspan="3" class="right">主商品价格</td>
+                  	<td class="right">￥{$data.order.mainGoodsPrice}</td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="right">辅销品价格</td>
+                    <td class="right">￥{$data.order.otherGoodsPrice}</td>
                 </tr>
                 <tr>
                     <td colspan="3" class="right">运费</td>
                     <td class="right">￥{$data.order.shippingPrice}</td>
                 </tr>
+            
+            {if $data['order']['promotion']}
+                <tr>
+                    <td colspan="3" class="right">促销活动</td>
+                    <td class="right">
+                {volist name="data['order']['promotion']" id="vo"}
+                    <font color="red">{$vo.name}</font><br/>
+                {/volist}
+                    </td>
+                </tr>
+            {/if}
+
                 <tr>
                     <td colspan="3" class="right">总价</td>
                     <td class="right">￥{$data.order.total}</td>

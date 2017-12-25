@@ -31,7 +31,7 @@ class OrderBackend extends AdminBase{
 	     	//查询物流进度
 	     	$info['order']['transportInfo'] = getTransInfo($shippingCode,$info['order']['shipping_num']);
      	}
-     	
+     	$info['order']['promotion'] = json_decode($info['order']['promotion'],true);
 
 		$this->assign('data',$info);		
 		$this->assign('crumbs','订单详情');
@@ -42,11 +42,11 @@ class OrderBackend extends AdminBase{
 	 * 打印订单
 	 */
 	public function print_order(){
+	 	$order = osc_order()->order_info(input('param.id/d'));
+     	$order['order']['promotion'] = json_decode($order['order']['promotion'],true);
 	 	
-		$this->assign('order',osc_order()->order_info(input('param.id')));
-
+		$this->assign('order',$order);
 		return $this->fetch('order');
-	
 	 }
 	/**
 	 * 删除订单
