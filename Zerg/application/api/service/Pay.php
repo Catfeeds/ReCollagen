@@ -132,7 +132,7 @@ class Pay
                 'code' => 400
             ]);
         }
-        $this->orderNo = $order->order_no;
+        $this->orderNo = $order->order_num_alias;
         return true;
     }
 
