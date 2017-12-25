@@ -9,7 +9,7 @@ class Product extends BaseModel
     protected $table = 'osc_goods';
     protected $autoWriteTimestamp = 'datetime';
     protected $hidden = [
-        'pivot','sale_count','status', 'sort_order', 'create_time', 'update_time'
+        'pivot','sale_count', 'sort_order', 'create_time', 'update_time'
     ];
 
     /**
@@ -62,7 +62,7 @@ class Product extends BaseModel
         
         $query = self::with(
                 ['options' => function ($query){
-                        $query->order('sort');
+                    $query->order('sort');
                 }])
             ->where('cat_id', '=', $categoryID);
 
@@ -105,12 +105,12 @@ class Product extends BaseModel
 
         $product = self::with(
                 ['options' => function ($query){
-                        $query->order('sort');
+                    $query->order('sort');
                 }])
             ->with('discounts')
             ->with(
                 ['imgs' => function ($query){
-                        $query->order('sort_order');
+                    $query->order('sort_order');
                 }])
             ->with(
                 ['detail' => function ($query){
@@ -127,7 +127,7 @@ class Product extends BaseModel
 
         $products = self::with(
                 ['options' => function ($query){
-                        $query->order('sort');
+                    $query->order('sort');
                 }])
             ->where(['status'=>1])
             ->order('create_time desc')
@@ -150,7 +150,7 @@ class Product extends BaseModel
 
         $products = self::with(
                 ['options' => function ($query){
-                        $query->order('sort');
+                    $query->order('sort');
                 }])
             ->where(['goods_id'=>['in',$goodsIds]])
             ->select();

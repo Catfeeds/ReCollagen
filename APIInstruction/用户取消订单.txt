@@ -1,0 +1,28 @@
+﻿Request:
+    /api/v1/order/cancel
+
+Method:
+    Post
+
+Params:
+
+    "id"        :  "订单id", 
+
+
+
+Callback: 编码一律utf-8
+
++-------------------------------------------------------+
+
+    {  
+        "code"          : 201,
+        "msg"           : "ok",
+        "errorCode"     : 0,
+        "shouldToClient": true
+    }
+
++-------------------------------------------------------+
+    {  
+        "errorCode"     :  "错误码", 
+        "msg"           : "错误提示",        
+    }

@@ -316,9 +316,10 @@ class Order
 
         return $status;
     }
-
-    public function delivery($orderID, $jumpPage = '')
-    {
+    /**
+     * 发货
+     */
+    public function delivery($orderID, $jumpPage = ''){
         $order = OrderModel::where('id', '=', $orderID)
             ->find();
         if (!$order) {
@@ -326,9 +327,9 @@ class Order
         }
         if ($order->status != OrderStatusEnum::PAID) {
             throw new OrderException([
-                'msg' => '订单未支付',
+                'msg'       => '订单未支付',
                 'errorCode' => 80002,
-                'code' => 403
+                'code'      => 403
             ]);
         }
         $order->status = OrderStatusEnum::DELIVERED;
@@ -336,5 +337,25 @@ class Order
 //            ->update(['status' => OrderStatusEnum::DELIVERED]);
         $message = new DeliveryMessage();
         return $message->sendDeliveryMessage($order, $jumpPage);
+    }
+    /**
+     * 取消订单
+     */
+    public function cancel($orderID){
+        $order = OrderModel::where('order_id', '=', $orderID)
+            ->find();
+        if (!$order) {
+            throw new OrderException();
+        }
+        if ($order->order_status != 1) {
+            throw new OrderException([
+                'msg'       => '订单状态异常',
+                'errorCode' => 80003,
+                'code'      => 400
+            ]);
+        }
+        $order->order_status = 5;
+
+        return $order->save();
     }
 }
