@@ -125,7 +125,7 @@ class Pay
                     'errorCode' => 10003
                 ]);
         }
-        if($order->status != 1){
+        if($order->order_status != 1){
             throw new OrderException([
                 'msg' => '订单状态异常',
                 'errorCode' => 80003,
