@@ -8,7 +8,8 @@
     color: #fff;
     display: flex;
     align-items: center;
-    padding: 30rpx;
+    padding: 38rpx;
+    padding-top: 0;
     font-size: 28rpx;
 }
 .my-header image{
@@ -19,10 +20,28 @@
 .my-header text{
     margin-left: 20rpx;
 }
+.mblist{
+  display:flex;
+  background-color: #00a1e9;
+}
+.mblist text,.mblist view{
+  flex: 11%;
+  color: #fff;
+  text-align: center;
+  font-size:28rpx;
+  height: 26rpx;
+  line-height: 26rpx;
+  margin-top: 12rpx;
+  margin-bottom: 36rpx;
+  border-right: 1rpx solid #76e6ff;
+}
+.mblist view{
+  flex:1;
+  border-right: 0;
+}
 .my-address{
     background-color: #fff;
 }
-
 .section{
     border-bottom:1rpx solid #E9E9E9;
     margin-left:30rpx;
@@ -98,12 +117,19 @@
     margin-bottom:0;
 }
 .order-header{
-    margin-left: 30rpx;
     border-bottom: 1rpx solid #EDEDED;
-    padding: 25rpx 0;
+    padding: 25rpx 30rpx;
+    display:flex;
 }
 .order-header text:last-child{
     margin-left: 10rpx;
+}
+.order-header .order-no{
+  flex: 1;
+}
+.order-header .order-wul{
+  align-items: center;
+  justify-content:flex-end;
 }
 .order-main{
     display: flex;
@@ -133,11 +159,9 @@
 }
 .order-main .item-right{
     display: flex;
-    flex-basis: 120rpx;
     align-items: center;
     justify-content:flex-end;
 }
-
 .order-bottom{
     margin-left: 30rpx;
     border-top: 1rpx solid #EDEDED;

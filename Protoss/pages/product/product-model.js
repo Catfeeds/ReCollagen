@@ -22,15 +22,15 @@ class Product extends Base {
 
   /*收藏取消商品*/
   doHaveCollect(id, callback) {
-    var that = this;
     var allParams = {
       url: 'product/collect',
       type: 'post',
-      data: id,
+      data: {id:id},
       sCallback: function (data) {
         callback && callback(data);
       },
       eCallback: function () {
+        callback && callback(data);
       }
     };
     this.request(allParams);

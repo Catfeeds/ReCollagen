@@ -66,12 +66,10 @@ Page({
         });
     },
 
-
     /*订单信息*/
     _getOrders:function(callback){
         var that=this;
         order.getOrders(this.data.pageIndex,(data)=>{
-          console.log(data)
             that.setData({
                 loadingHidden: true
             });
@@ -96,6 +94,21 @@ Page({
         });
     },
 
+    /*显示收藏商品*/
+    showCollectList: function (event) {
+      wx.navigateTo({
+        url: '../collect/collect'
+      });
+    },
+
+    /*查看物流*/
+    showOrderWul: function (event) {
+      var id = order.getDataSet(event, 'id');
+      wx.navigateTo({
+        url: '../transinfo/transinfo?id=' + id
+      });
+    },
+
     /*未支付订单再次支付*/
     rePay:function(event){
         var id=order.getDataSet(event,'id'),
@@ -105,7 +118,7 @@ Page({
         if(order.onPay) {
             this._execPay(id,index);
         }else {
-            this.showTips('支付提示','本产品仅用于演示，支付系统已屏蔽');
+            this.showTips('支付提示','用户已被禁用');
         }
     },
 
@@ -113,24 +126,17 @@ Page({
     _execPay:function(id,index){
         var that=this;
         order.execPay(id,(statusCode)=>{
-            if(statusCode>0){
-                var flag=statusCode==2;
-
-                //更新订单显示状态
-                if(flag){
-                    that.data.orderArr[index].status=2;
-                    that.setData({
-                        orderArr: that.data.orderArr
-                    });
-                }
-
-                //跳转到 成功页面
-                wx.navigateTo({
-                    url: '../pay-result/pay-result?id='+id+'&flag='+flag+'&from=my'
-                });
-            }else{
-                that.showTips('支付失败','商品已下架或库存不足');
-            }
+          if (statusCode.errorCode != 0) {
+            that.showTips('支付提示', statusCode.msg);
+            return;
+          }
+          that.data.orderArr[index].status = 2;
+          that.setData({
+            orderArr: that.data.orderArr
+          });
+          wx.navigateTo({
+            url: '../pay-result/pay-result?id=' + id + '&from=my'
+          });
         });
     },
 

@@ -22,8 +22,6 @@
   height: 100%;
   width: 100%;
 }
-
-
 .fixed-btns-box{
   position: fixed;
   top:50rpx;

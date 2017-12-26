@@ -92,6 +92,10 @@ Page({
                             orderTime: data.create_time,
                             orderNo: data.order_num_alias
                         },
+                        wuliuInfo: {
+                          orderMethod: data.shipping_method,
+                          orderNum: data.shipping_num
+                        },
                         addressInfo: {
                           name: data.shipping_name,
                           telephone: data.shipping_tel,
@@ -110,6 +114,7 @@ Page({
               /*显示收获地址*/
               this._addressInfo();
             }
+            this.deleteProducts();
         },
 
         /*显示收获地址*/
@@ -336,9 +341,12 @@ Page({
         deleteProducts:function() {
             var ids=[],arr=this.data.productsArr;
             for(let i=0;i<arr.length;i++){
-                ids.push(arr[i].id);
+              ids.push({
+                id: arr[i].goods_id,
+                guid:arr[i].option_id
+              });
             }
-            cart.delete(ids);
+            
         },
 
 

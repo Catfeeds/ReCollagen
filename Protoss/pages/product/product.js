@@ -18,7 +18,7 @@ Page({
     },
     onLoad: function (option) {
       this.data.id = option.id;
-        this._loadData();
+      this._loadData();
     },
 
     /*加载所有数据*/
@@ -155,12 +155,11 @@ Page({
     /*添加到收藏*/
     onAddingToHaveTap: function (events) {
       if (this.data.id) {
-        var id = this.data.id,
-        haveCollect = this.data.product.haveCollect,
-        have = !haveCollect == true ? 1 : 0;
+        var id = this.data.id;
         product.doHaveCollect(id, (data) => {
+          var haveCollect = data.code == 201 ? 1 : 0;
           this.setData({
-            'product.haveCollect': data
+            'product.haveCollect': haveCollect
           });
         });
       }

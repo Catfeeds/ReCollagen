@@ -4,6 +4,11 @@
     <image src="{{userInfo.avatarUrl}}"></image>
     <text class="name">{{userInfo.nickName}}</text>
   </view>
+  <view class='mblist'>
+    <text>余额：￥100</text>
+    <text>小金库：￥100</text>
+    <view ontap="showCollectList">收藏商品</view>
+  </view>
   <!--地址管理-->
   <view class="my-address">
     <block wx:if="{{addressInfo}}">
@@ -33,9 +38,12 @@
     <view class="item-main">
       <block wx:for="{{orderArr}}">
         <view class="order-item">
-          <view class="order-header" ontap="showOrderDetailInfo" data-id="{{item.order_id}}">
-            <text>订单编号:</text>
-            <text class="order-no-txt">{{item.order_num_alias}}</text>
+          <view class="order-header">
+            <view class='order-no' ontap="showOrderDetailInfo" data-id="{{item.order_id}}">
+              <text>订单编号:</text>
+              <text class="order-no-txt">{{item.order_num_alias}}</text>
+            </view>
+            <view class='order-wul' ontap="showOrderWul" data-id="{{item.order_id}}">查看物流</view>
           </view>
           <view class="order-main" ontap="showOrderDetailInfo" data-id="{{item.order_id}}">
             <view class="item-left">

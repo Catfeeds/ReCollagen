@@ -29,6 +29,12 @@
     align-items: center;
     justify-content: flex-end;
 }
+.order-status{
+    display: flex;
+    flex-basis: 110rpx;
+    align-items: center;
+    justify-content: flex-end;
+}
 .order-time-no view:first-child{
    margin-bottom:15rpx ;
 }

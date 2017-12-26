@@ -48,6 +48,21 @@
     </block>
   </view>
 
+  <view class="order-basic-info" wx:if="{{orderStatus==3}}" >
+    <view class="order-time-no">
+      <view>
+        <text class="key">物流公司:</text>
+        <text class="val">{{wuliuInfo.orderMethod}}</text>
+      </view>
+    </view>
+    <view class="order-time-no">
+      <view>
+        <text class="key">快递单号:</text>
+        <text class="order-no-txt val">{{wuliuInfo.orderNum}}</text>
+      </view>
+    </view>
+  </view>
+
   <!--列表-->
   <view class="order-main">
     <block wx:for="{{productsArr}}">
