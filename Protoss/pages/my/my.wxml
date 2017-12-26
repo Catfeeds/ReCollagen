@@ -43,7 +43,7 @@
               <text>订单编号:</text>
               <text class="order-no-txt">{{item.order_num_alias}}</text>
             </view>
-            <view class='order-wul' ontap="showOrderWul" data-id="{{item.order_id}}">查看物流</view>
+            <view class='order-wul' wx:if="{{item.order_status==3}}" ontap="showOrderWul" data-id="{{item.order_id}}">查看物流</view>
           </view>
           <view class="order-main" ontap="showOrderDetailInfo" data-id="{{item.order_id}}">
             <view class="item-left">

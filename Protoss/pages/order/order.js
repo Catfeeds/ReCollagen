@@ -10,6 +10,7 @@ Page({
         data: {
             fromCartFlag:true,
             addressInfo:null,
+            shippingPrice:0
         },
 
         /*
@@ -32,18 +33,19 @@ Page({
                 });
 
                 /*显示收获地址*/
-                this._addressInfo();
+                this._addressInfo();                
 
                 /*主商品价格和辅销品价格*/
                 var accountMain = this._calcTotalMainAndCounts(this.data.productsArr,1).account;
                 var accountFain = this._calcTotalMainAndCounts(this.data.productsArr,0).account;
+                
 
                 /*获取促销套餐*/
                 order.getMainPromotion((data) => {
                   var Promotion = [];
                   for (let i = 1; i < 4; i++) {
-                    var dataArr = this.getMainPromotionTypeInfo(data, i, accountMain);
-                    if (dataArr){
+                    var dataArr = that.getMainPromotionTypeInfo(data, i, accountMain);
+                    if (dataArr) {
                       Promotion.push({
                         id: dataArr.id,
                         name: dataArr.name,
@@ -53,24 +55,33 @@ Page({
                     }
                   }
                   /*获取满额打折价格*/
-                  var getPromotionPrice = this.getMainPromotionTypePrice(Promotion);
-                  
-                  this.setData({
-                    mainGoodsPrice: (accountMain * getPromotionPrice).toFixed(2),
-                    otherGoodsPrice: accountFain,
-                    shippingPrice:6,
-                    PromotionInfo: Promotion,
-                  });
+                  var PromotionPrice = that.getMainPromotionTypePrice(Promotion);
 
-                  /*获取商品总价格*/
-                  var ResultTotal = this.getResultTotal(this.data.mainGoodsPrice, this.data.otherGoodsPrice, this.data.shippingPrice);
-                  this.setData({
-                    total: ResultTotal
+                  /*获取商品重量*/
+                  var weight = this.getResultweight(this.data.productsArr);
+
+                  /*获取运费信息*/
+                  order.getTransFee(weight, (res) => {
+
+                    /*设置总参数*/
+                    that.setData({
+                      mainGoodsPrice: (accountMain * PromotionPrice).toFixed(2),
+                      otherGoodsPrice: accountFain,
+                      shippingPrice: res.fee,
+                      shippingtransId: res.transId,
+                      PromotionInfo: Promotion,
+                    });
+
+                    /*获取商品总价格*/
+                    var ResultTotal = that.getResultTotal(that.data.mainGoodsPrice, that.data.otherGoodsPrice, that.data.shippingPrice);
+                    that.setData({
+                      total: ResultTotal
+                    });
+
                   });
 
                 })
             }
-
             //旧订单
             else{
                 this.data.id=options.id;
@@ -84,7 +95,6 @@ Page({
                 //下单后，支付成功或者失败后，点左上角返回时能够更新订单状态 所以放在onshow中
                 var id = this.data.id;
                 order.getOrderInfoById(id, (data)=> {
-                  console.log(data)
                     that.setData({
                         orderStatus: data.order_status,
                         productsArr: data.products,
@@ -127,6 +137,14 @@ Page({
           });
         },
 
+        /*修改或者添加地址信息*/
+        editAddress: function () {
+          var that = this;
+          wx.navigateTo({
+            url: '../address/address'
+          });
+        },
+
         /*
         * 计算商品总金额
         * */
@@ -135,7 +153,7 @@ Page({
         },
 
         /*
-        * 计算主商品总金额
+        * 计算主、辅商品总金额
         * */
         _calcTotalMainAndCounts: function (data, types) {
           var len = data.length,
@@ -150,9 +168,8 @@ Page({
             account: (account / (multiple * multiple)).toFixed(2)
           }
         },
-
    
-        /*根据类型获取优惠信息*/
+        /*根据类型获取每种优惠内容*/
         getMainPromotionTypeInfo: function (data, types, accountMain) {
           var PromotionList = [],
             tempList='', 
@@ -185,14 +202,15 @@ Page({
           return tempPrice;
         },
 
-        /*修改或者添加地址信息*/
-        editAddress: function () {
-          var that = this;
-          wx.navigateTo({
-            url: '../address/address'
-          });
+        /*计算商品总重量*/
+        getResultweight: function (data) {
+          var len = data.length,
+            account = 0;
+          for (let i = 0; i < len; i++) {
+            account += parseInt(data[i].weight);
+          }
+          return (account).toFixed(2);
         },
-
 
         /*下单和付款*/
         pay:function(){
@@ -232,6 +250,7 @@ Page({
                   mainGoodsPrice: this.data.mainGoodsPrice,
                   otherGoodsPrice: this.data.otherGoodsPrice,
                   shippingPrice: this.data.shippingPrice,
+                  transId: this.data.shippingtransId,
                   promotionId: PromoArr,
               };
 
@@ -252,7 +271,6 @@ Page({
                 }
             });
         },
-
 
         /*
         * 提示窗口

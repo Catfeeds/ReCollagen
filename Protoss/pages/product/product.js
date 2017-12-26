@@ -177,7 +177,7 @@ Page({
 
     /*将商品数据添加到内存中*/
     addToCart:function(){
-      var tempObj = {}, keys = ['goods_id', 'name', 'image', 'price', 'isMainGoods', 'haveCollect', 'options','discounts'];
+      var tempObj = {}, keys = ['goods_id', 'name', 'image', 'price', 'isMainGoods', 'haveCollect', 'options', 'discounts', 'weight'];
         for(var key in this.data.product){
             if(keys.indexOf(key)>=0){
                 tempObj[key]=this.data.product[key];

@@ -47,6 +47,26 @@ class Order extends Base{
         this.request(allParams);
     }
 
+    /*
+    * 匹配物流公司并计算运费
+    * params:
+    * weight - 商品总重量(单位：kg)
+    * */
+    getTransFee(param, callback) {
+      var allParams = {
+        url: 'order/transfee',
+        type: 'post',
+        data: { weight: param },
+        sCallback: function (data) {
+          callback && callback(data);
+        },
+        eCallback: function (data) {
+          callback && callback(data);
+        }
+      };
+      this.request(allParams);
+    }
+
     /*获得所有订单,pageIndex 从1开始*/
     getOrders(pageIndex,callback){
         var allParams = {
@@ -84,6 +104,7 @@ class Order extends Base{
         };
         this.request(allParams);
     }
+    
 }
 
 export {Order};
