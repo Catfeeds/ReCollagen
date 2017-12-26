@@ -124,7 +124,7 @@ class Order extends BaseController
         $url = 'https://m.kuaidi100.com/query?type='.$shippingCode.'&postid='.$orderDetail['shipping_num'];
         $info = curl_post($url);
 
-        return $info;
+        return json_decode($info);
     }
     /**
      * 取消订单
