@@ -8,13 +8,15 @@ use app\api\model\Order as OrderModel;
 use app\api\model\UserAddress;
 use app\api\model\ProductOption;
 use app\api\model\Promotion;
+use app\api\model\Dispatch;
+use app\api\model\Transport;
 
 use app\lib\enum\OrderStatusEnum;
 use app\lib\exception\OrderException;
 use app\lib\exception\UserException;
 use think\Db;
 use think\Exception;
-
+use think\Validate;
 /**
  * 订单类
  * 订单做了以下简化：
@@ -171,11 +173,11 @@ class Order
             $order->shipping_tel    = $userAddress['telephone'];
             $order->shipping_addr   = $userAddress['province'].$userAddress['city'].$userAddress['country'].$userAddress['address'];
 
-            $order->dispatch_id     = '1';     //发货仓id
-            $order->shipping_method = '物流公司名称';     //物流公司
+            $order->dispatch_id     = $this->getDispatchIdByAddr();     //发货仓id
+            $order->shipping_method = '物流公司名称';                      //物流公司
             $order->mainGoodsPrice  = $this->postData['mainGoodsPrice'];     //主商品价格
             $order->otherGoodsPrice = $this->postData['otherGoodsPrice'];     //辅销品价格
-            $order->shippingPrice   = $this->postData['shippingPrice'];  //运费
+            $order->shippingPrice   = $this->postData['shippingPrice'];     //运费
             $order->total           = $order->mainGoodsPrice + $order->otherGoodsPrice + $order->shippingPrice;     //总计
 
             //促销活动
@@ -201,8 +203,8 @@ class Order
             
             Db::commit();
             return [
-                'order_no' => $orderNo,
-                'order_id' => $orderID,
+                'order_no'    => $orderNo,
+                'order_id'    => $orderID,
                 'create_time' => $create_time
             ];
         } catch (Exception $ex) {
@@ -269,18 +271,40 @@ class Order
     /**
      * 获取用户的收货地址
      */
-    private function getUserAddress()
-    {
+    private function getUserAddress(){
         $userAddress = UserAddress::where('uid', '=', $this->uid)
             ->find();
         if (!$userAddress) {
             throw new UserException(
                 [
-                    'msg' => '用户收货地址不存在，下单失败',
+                    'msg' => '用户收货地址不存在',
                     'errorCode' => 60001,
                 ]);
         }
         return $userAddress->toArray();
+    }
+    /**
+     * 根据用户地址匹配发货仓id
+     */
+    private function getDispatchIdByAddr(){
+        $userAddress = $this->getUserAddress();
+        $dispatchs = Dispatch::all()->toArray();
+
+        $dispath_id = '';
+        foreach ($dispatchs as $key => $v) {
+            if (strpos($v['top_area_id'],",".$userAddress['province_id'].",") !== false){
+                $dispath_id = $v['id'];
+            }
+        }
+        if ($dispath_id == '') {
+            throw new UserException(
+                [
+                    'msg' => '该地址不在配送区域',
+                    'errorCode' => 90002,
+                ]);
+        }
+
+        return $dispath_id;
     }
     /**
      * 生成订单号
@@ -294,9 +318,7 @@ class Order
         return $orderSn;
     }
     /**
-     * @param string $orderNo 订单号
-     * @return array 订单商品状态
-     * @throws Exception
+     * 检测订单库存
      */
     public function checkOrderStock($orderID)
     {
@@ -357,5 +379,84 @@ class Order
         $order->order_status = 5;
 
         return $order->save();
+    }
+    /**
+     * 根据商品重量匹配物流公司和运费
+     */
+    public function getTransFee($data){
+        $rule = [
+            ['weight','require|float','商品重量不能为空|商品重量必须是数字']
+        ];
+        $validate = new Validate($rule);
+        $result   = $validate->check($data);
+        if(!$result){
+            throw new OrderException([
+                'msg'       => $validate->getError(),
+                'errorCode' => 90001,
+                'code'      => 400
+                ]);
+        }
+        $this->uid   = Token::getCurrentUid();
+        $userAddress = UserAddress::where('uid', '=', $this->uid)
+            ->find();
+        if (!$userAddress) {
+            $trans['fee'] = 0;
+            $trans['transId'] = 0;
+            return $trans;
+        }
+
+        //匹配设置了配送区域的物流公司
+        $transports = Transport::all(['is_default'=>2])->toArray();
+        $supportTrans = []; //支持配送到用户地址的物流公司
+        foreach ($transports as $key => $v) {
+            if (strpos($v['area_id'],",".$userAddress['province_id'].",") !== false){
+                $supportTrans[] = $v; 
+            }
+        }
+        //计算匹配到的物流公司需要的运费和对应的物流公司id
+        $feeArr = $transIdArr = [];
+        $fee = $transId = 0;
+
+        if (!empty($supportTrans)) {
+            foreach ($supportTrans as $key => $v) {
+
+                $transIdArr[] = $v['transport_id'];
+
+                if ($data['weight'] <= $v['snum']){
+                    //在首重数量范围内
+                    $feeArr[] = $v['sprice'];
+                }else{
+                    //超出首重数量范围，需要计算续重
+                    $feeArr[] = sprintf('%.2f',($v['sprice'] + ceil(($data['weight']-$v['snum'])/$v['xnum'])*$v['xprice']));
+                }
+            }
+            $fee     = min($feeArr);
+            $transId = $transIdArr[array_keys($feeArr,min($feeArr))[0]];
+
+        }else{
+            //如果没有设置配送到用户地址的物流公司，选择默认的全国运费
+            $transports2 = Transport::all(['is_default'=>1])->toArray();
+            foreach ($transports2 as $key => $v) {
+
+                $transIdArr[] = $v['transport_id'];
+
+                if ($data['weight'] <= $v['snum']){
+                    //在首重数量范围内
+                    $feeArr[] = $v['sprice'];
+                }else{
+                    //超出首重数量范围，需要计算续重
+                    $feeArr[] = sprintf('%.2f',($v['sprice'] + ceil(($data['weight']-$v['snum'])/$v['xnum'])*$v['xprice']));
+                }
+            }
+            $fee     = min($feeArr);
+            $transId = $transIdArr[array_keys($feeArr,min($feeArr))[0]];
+
+        }
+        $trans['fee'] = $fee;
+        $trans['transId'] = $transId;
+
+        return $trans;
+        // halt('费用：'.$fee.'物流公司id：'.$transId);
+
     }
 }

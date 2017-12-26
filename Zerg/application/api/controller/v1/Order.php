@@ -32,6 +32,7 @@ class Order extends BaseController
         $postData = input('post.');
         $products = input('post.goodsArrInfo/a');
         $uid      = Token::getCurrentUid();
+        // $uid      = 2;
 
         $order    = new OrderService();
         $status   = $order->place($uid, $products,$postData);
@@ -136,7 +137,13 @@ class Order extends BaseController
         if($success){
             return new SuccessMessage();
         }
-
+    }
+    /**
+     * 根据商品重量匹配物流公司和运费
+     */
+    public function getTransFee(){
+        $order = new OrderService();
+        return $order->getTransFee(input('post.'));
     }
 }
 
