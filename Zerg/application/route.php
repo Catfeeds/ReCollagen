@@ -76,6 +76,7 @@ Route::get('api/:version/address', 'api/:version.Address/getUserAddress');
 //Order
 Route::post('api/:version/order', 'api/:version.Order/createOrder');                    //创建订单
 Route::post('api/:version/order/cancel', 'api/:version.Order/cancelOrder');             //取消订单
+Route::post('api/:version/order/receive', 'api/:version.Order/receiveOrder');           //确认收货
 Route::get('api/:version/order/:id', 'api/:version.Order/getDetail',[], ['id'=>'\d+']); //获取订单详情
 Route::get('api/:version/order/transinfo/:id', 'api/:version.Order/getTransInfo',[], ['id'=>'\d+']); //根据订单id查询物流进度
 Route::post('api/:version/order/transfee', 'api/:version.Order/getTransFee');           //根据商品重量匹配物流公司和运费
