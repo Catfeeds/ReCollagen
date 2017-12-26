@@ -10,6 +10,7 @@ use app\api\model\ProductOption as ProductOption;
 
 use app\lib\exception\OrderException;
 use app\lib\exception\TokenException;
+use app\lib\exception\UserException;
 use think\Exception;
 use think\Loader;
 use think\Log;
@@ -140,12 +141,14 @@ class Pay
      * 支付订单
      */
     public function orderPay(){
+        //订单状态检测
         $this->checkOrderValid();
         //检测库存
         $service = new OrderService();
         $status = $service->checkOrderStock($this->orderID);
 
         $uid  = Token::getCurrentUid();
+        // $uid  = 2;
         $user = UserModel::get($uid);
         $order = OrderModel::get($this->orderID);
         $mainAccountNeedPay   = $order['mainGoodsPrice'];
@@ -183,6 +186,11 @@ class Pay
      * 判断用户主账户和小金库的余额是否充足
      */
     private function getUserAccountStatus($user,$mainAccountNeedPay,$secondAccountNeedPay){
+        if ($user['checked'] != 1) {
+            throw new UserException([
+                'msg' => '账号已被禁用'
+                ]);
+        }
         $mainAccountStatus = $user['mainAccount'] - $mainAccountNeedPay;
         $secondAccountStatus = $user['secondAccount'] - $secondAccountNeedPay;
         if ($mainAccountStatus < 0) {

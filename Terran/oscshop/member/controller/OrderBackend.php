@@ -15,9 +15,9 @@ class OrderBackend extends AdminBase{
     public function index(){     	
 		$this->assign('list',osc_order()->order_list(input('param.'),20));
 		$this->assign('empty','<tr><td colspan="20">没有数据</td></tr>');
-		
+
     	return $this->fetch();
-	 }
+	}
 	/**
 	 * 订单详情
 	 */
@@ -101,8 +101,8 @@ class OrderBackend extends AdminBase{
 	 */
 	public function update_shipping(){
 		
-		$data = input();
-		$res  = Db::name('order')->where(['order_id'=>$data['id']])->update(['shipping_num'=>$data['shipping_num'],'update_time'=>time()]);
+		$data = input('');
+		$res  = Db::name('order')->where(['order_id'=>$data['id']])->update(['order_status'=>3,'shipping_num'=>$data['shipping_num'],'update_time'=>time()]);
 
 		if($res){
 			storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'更新了物流单号');
