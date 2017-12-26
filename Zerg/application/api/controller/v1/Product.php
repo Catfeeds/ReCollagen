@@ -12,6 +12,7 @@ use app\api\validate\PagingParameter;
 use app\lib\exception\ParameterException;
 use app\lib\exception\ProductException;
 use app\lib\exception\ThemeException;
+use app\lib\exception\SuccessMessage;
 use think\Controller;
 use think\Exception;
 
@@ -155,7 +156,7 @@ class Product extends Controller
      * 收藏或取消收藏商品
      */
     public function collectGoods(){
-        
+
         (new IDMustBePositiveInt())->goCheck();
 
         $id = input('post.id/d');
@@ -163,13 +164,16 @@ class Product extends Controller
         $UserCollectModel = new UserCollectModel();
 
         $currentUid = TokenService::getCurrentUid();
+
         $where = ['uid'=>$currentUid,'goods_id'=>$id];
 
         $haveCollect = $this->haveCollectGoods($where);
         if (!$haveCollect) {
             $UserCollectModel->save($where);
+            return new SuccessMessage(['msg'=>'collect success']);
         }else{
             UserCollectModel::destroy($where);
+            return new SuccessMessage(['code'=>202,'msg'=>'cancel success']);
         }
 
     }

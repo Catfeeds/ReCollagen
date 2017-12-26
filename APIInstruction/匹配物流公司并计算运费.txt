@@ -1,11 +1,11 @@
 Request:
-    /api/v1/product/collect
+    /api/v1/order/transfee
 
 Method:
     Post
 
 Params:
-    "id"        :   "商品id"
+    "weight"        :   "商品总重量(单位：kg)"
 
 
 
@@ -14,8 +14,10 @@ Callback: 编码一律utf-8
 
 +-------------------------------------------------------+
 
-    "收藏成功"        {"code":201,"msg":"collect success","errorCode":0,"shouldToClient":true}
-    "取消收藏成功"    {"code":202,"msg":"cancel success","errorCode":0,"shouldToClient":true}
+    {
+        "fee"       :   "运费",
+        "transId"   :   "物流公司id"
+    }
     
 +-------------------------------------------------------+
     {  
