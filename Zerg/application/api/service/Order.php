@@ -10,6 +10,7 @@ use app\api\model\ProductOption;
 use app\api\model\Promotion;
 use app\api\model\Dispatch;
 use app\api\model\Transport;
+use app\api\model\User as UserModel;
 
 use app\lib\enum\OrderStatusEnum;
 use app\lib\exception\OrderException;
@@ -49,6 +50,8 @@ class Order
         $this->oProducts = $oProducts;
         $this->products  = $this->getProductsByOrder($oProducts);
         $this->uid       = $uid;
+        //用户状态检测
+        $this->getUserStatus();
         //库存检测
         $status = $this->getOrderStatus();
         if (!$status['pass']) {
@@ -60,6 +63,18 @@ class Order
         $status         = self::createOrderByTrans($orderSnap);
         $status['pass'] = true;
         return $status;
+    }
+    /**
+     * 用户状态检测
+     */
+    private function getUserStatus(){
+        $user = UserModel::get($this->uid);
+        if ($user['checked'] != 1) {
+            throw new UserException([
+                'msg' => '账号已被禁用'
+                ]);
+        }
+
     }
     /**
      * 库存检测
