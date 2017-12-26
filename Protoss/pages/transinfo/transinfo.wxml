@@ -1,0 +1,20 @@
+<view class="container transinfo-container">
+    <block wx:if="{{transinfoData.length>0}}">
+        <view class="transinfo-box">
+            <block wx:for="{{transinfoData}}">
+                <view class="transinfo-item">
+                    <view class="transinfo-item-main">
+                       
+000
+                    </view>
+                </view>
+            </block>
+        </view>
+    </block>
+    <view  wx:else class="no-data">
+        您还没有任何物流信息
+    </view>
+    <loading hidden="{{loadingHidden}}">
+        加载中...
+    </loading>
+</view>
