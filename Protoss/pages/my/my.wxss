@@ -182,7 +182,7 @@
     line-height: 60rpx;
 }
 .order-bottom .pay:active{
-    background-color:#9a211f;
+    background-color:#75bb0b;
 }
 .no-data{
     background: #fff;

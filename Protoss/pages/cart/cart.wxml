@@ -4,7 +4,7 @@
             <block wx:for="{{cartData}}">
                 <view class="cart-item {{deleteFlag&&index==currentIndex?'showDeleteBtn':'hideDeleteBtn'}}">
                     <view class="cart-item-main" data-id="{{item.goods_id}}" data-index="{{index}}">
-                        <view  class="cart-item-checkbox" ontap="toggleSelect" data-id="{{item.goods_id}}" data-guid="{{item.optionsid}}" data-status="{{item.selectStatus}}">
+                        <view  class="cart-item-checkbox" ontap="toggleSelect" data-id="{{item.goods_id}}" data-guid="{{item.option_id}}" data-status="{{item.selectStatus}}">
                             <image wx:if="{{item.selectStatus}}" src="../../imgs/icon/circle@selected.png"></image>
                             <image wx:else src="../../imgs/icon/circle@noselected.png"></image>
                         </view>
@@ -18,11 +18,11 @@
                             </view>
                             <view class="bottom-box">
                                 <view class="cart-item-counts">
-                                    <view class="btns {{item.counts==1?'disabled':''}}" bindtap="changeCounts" data-id="{{item.goods_id}}" data-guid="{{item.optionsid}}" data-type="cut">-</view>
+                                    <view class="btns {{item.counts==1?'disabled':''}}" bindtap="changeCounts" data-id="{{item.goods_id}}" data-guid="{{item.option_id}}" data-type="cut">-</view>
                                     <view class="counts">{{item.counts}}</view>
-                                    <view class="btns" bindtap="changeCounts" data-id="{{item.goods_id}}"  data-guid="{{item.optionsid}}" data-type="add">+</view>
+                                    <view class="btns" bindtap="changeCounts" data-id="{{item.goods_id}}"  data-guid="{{item.option_id}}" data-type="add">+</view>
                                 </view>
-                                <view class="delete" data-id="{{item.goods_id}}"  data-guid="{{item.optionsid}}" bindtap="delete">×</view>
+                                <view class="delete" data-id="{{item.goods_id}}"  data-guid="{{item.option_id}}" bindtap="delete">×</view>
                             </view>
                             <view class="bottom-box" wx:if="{{item.option_name}}">规格：
                                 {{item.option_name}}

@@ -121,6 +121,40 @@ Page({
       });
     },
 
+    /*取消订单*/
+    cancel: function (event) {
+      var that = this, 
+        id = order.getDataSet(event, 'id'),
+        index = order.getDataSet(event, 'index');
+      order.cancel(id, (statusCode) => {
+        if (statusCode.errorCode != 0) {
+          that.showTips('订单提示', statusCode.msg);
+          return;
+        }
+        that.data.orderArr[index].order_status = 5;
+        that.setData({
+          orderArr: that.data.orderArr
+        });
+      });
+    },
+
+    /*确认收货*/
+    receive: function (event) {
+      var that = this,
+        id = order.getDataSet(event, 'id'),
+        index = order.getDataSet(event, 'index');
+      order.receive(id, (statusCode) => {
+        if (statusCode.errorCode != 0) {
+          that.showTips('订单提示', statusCode.msg);
+          return;
+        }
+        that.data.orderArr[index].order_status = 4;
+        that.setData({
+          orderArr: that.data.orderArr
+        });
+      });
+    },
+
     /*未支付订单再次支付*/
     rePay:function(event){
         var id=order.getDataSet(event,'id'),
@@ -142,7 +176,7 @@ Page({
             that.showTips('支付提示', statusCode.msg);
             return;
           }
-          that.data.orderArr[index].status = 2;
+          that.data.orderArr[index].order_status = 2;
           that.setData({
             orderArr: that.data.orderArr
           });

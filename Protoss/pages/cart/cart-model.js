@@ -175,14 +175,12 @@ class Cart extends Base{
     /*
     * 删除某些商品
     */
-    delete(ids, guid){
-        if(!(ids instanceof Array)){
-            ids=[ids];
-            guid=[guid];
-        }
+    delete(ids){
         var cartData=this.getCartDataFromLocal();
         for(let i=0;i<ids.length;i++) {
-          var hasInfo = this._isHasThatOne(ids[i], guid[i], cartData);
+          var id = ids[i].id;
+          var guid = ids[i].guid;
+          var hasInfo = this._isHasThatOne(id, guid, cartData);
             if (hasInfo.index != -2) {
                 cartData.splice(hasInfo.index, 1);  //删除数组某一项
             }

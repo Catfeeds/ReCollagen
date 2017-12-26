@@ -48,6 +48,47 @@ class Order extends Base{
     }
 
     /*
+    * 取消订单
+    * params:
+    * norderNumber - {int} 订单id
+    * */
+    cancel(orderNumber, callback) {
+      var allParams = {
+        url: 'order/cancel',
+        type: 'post',
+        data: { id: orderNumber },
+        sCallback: function (data) {
+          callback && callback(data);
+        },
+        eCallback: function (data) {
+          callback && callback(data);
+        }
+      };
+      this.request(allParams);
+    }
+
+    /*
+    * 确认收货
+    * params:
+    * norderNumber - {int} 订单id
+    * */
+    receive(orderNumber, callback) {
+      console.log(orderNumber)
+      var allParams = {
+        url: 'order/receive',
+        type: 'post',
+        data: { id: orderNumber },
+        sCallback: function (data) {
+          callback && callback(data);
+        },
+        eCallback: function (data) {
+          callback && callback(data);
+        }
+      };
+      this.request(allParams);
+    }
+
+    /*
     * 匹配物流公司并计算运费
     * params:
     * weight - 商品总重量(单位：kg)

@@ -125,7 +125,7 @@ Page({
         var data=this.data.cartData,
             len=data.length;
         for(let i=0;i<len;i++){
-          if (data[i].goods_id == id && data[i].optionsid == guid){
+          if (data[i].goods_id == id && data[i].option_id == guid){
                 return i;
             }
         }
@@ -133,15 +133,17 @@ Page({
 
     /*删除商品*/
     delete:function(event){
-        var id=cart.getDataSet(event,'id'),
+      var ids = [],
+        id=cart.getDataSet(event,'id'),
         guid = cart.getDataSet(event, 'guid'),
         index = this._getProductIndexById(id, guid);
         this.data.cartData.splice(index,1);//删除某一项商品
-
         this._resetCartData();
-        //this.toggleSelectAll();
-
-        cart.delete(id, guid);  //内存中删除该商品
+        ids.push({
+          id: id,
+          guid: guid
+        });
+        cart.delete(ids);  //内存中删除该商品
     },
 
     /*选择商品*/

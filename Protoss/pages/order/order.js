@@ -60,8 +60,6 @@ Page({
                   /*获取商品重量*/
                   var weight = this.getResultweight(this.data.productsArr);
 
-                  console.log(weight)
-
                   /*获取运费信息*/
                   order.getTransFee(weight, (res) => {
 
@@ -126,7 +124,6 @@ Page({
               /*显示收获地址*/
               this._addressInfo();
             }
-            this.deleteProducts();
         },
 
         /*显示收获地址*/
@@ -330,6 +327,7 @@ Page({
                 guid:arr[i].option_id
               });
             }
+            cart.delete(ids);
         },
     }
 )
