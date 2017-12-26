@@ -25,7 +25,7 @@
   background-color: #00a1e9;
 }
 .mblist text,.mblist view{
-  flex: 11%;
+  flex: 2;
   color: #fff;
   text-align: center;
   font-size:28rpx;

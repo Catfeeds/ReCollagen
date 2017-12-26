@@ -37,7 +37,6 @@ class My extends Base{
     /*更新用户信息到服务器*/
     _updateUserInfo(res){
         var nickName=res.nickName;
-        console.log(res)
         delete res.avatarUrl;  //将昵称去除
         delete res.nickName;  //将昵称去除
         var allParams = {
@@ -49,6 +48,18 @@ class My extends Base{
         };
         this.request(allParams);
 
+    }
+
+    
+    /*获取我的账户金额*/
+    getUserAccount(callback) {
+      var param = {
+        url: 'account',
+        sCallback: function (data) {
+          callback && callback(data);
+        }
+      };
+      this.request(param);
     }
 }
 

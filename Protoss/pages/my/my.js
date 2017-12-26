@@ -38,6 +38,18 @@ Page({
             });
         });
 
+        my.getUserInfo((data) => {
+          that.setData({
+            userInfo: data
+          });
+        });
+
+        my.getUserAccount((data) => {
+          that.setData({
+            UserAccount: data
+          });
+        });
+
         this._getOrders();
     },
     
