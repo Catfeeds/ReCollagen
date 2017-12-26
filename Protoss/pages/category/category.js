@@ -99,7 +99,7 @@ Page({
   //分享效果
   onShareAppMessage: function () {
     return {
-      title: '零食商贩 Pretty Vendor',
+      title: '悦寇霖智',
       path: 'pages/category/category'
     }
   }
