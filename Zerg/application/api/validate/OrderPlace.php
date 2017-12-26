@@ -12,7 +12,8 @@ class OrderPlace extends BaseValidate
         'goodsArrInfo'    => 'checkProducts',
         'mainGoodsPrice'  => 'require|float',
         'otherGoodsPrice' => 'require|float',
-        'shippingPrice'   => 'float'
+        'shippingPrice'   => 'float',
+        'transId'         => 'number',
     ];
     protected $message = [
         'mainGoodsPrice.require'  => '主商品价格不能为空',
@@ -20,6 +21,7 @@ class OrderPlace extends BaseValidate
         'otherGoodsPrice.require' => '辅销品价格不能为空',
         'otherGoodsPrice.float'   => '辅销品价格必须是数字',
         'shippingPrice.float'     => '运费必须是数字',
+        'transId.number'          => '物流ID必须是数字',
     ];
 
     protected $singleRule = [

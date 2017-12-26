@@ -5,16 +5,20 @@ Method:
     Post
 
 Params:
-    {
+    "goodsArrInfo":[{
         "goods_id"          :  "商品id", 
         "quantity"          :  "商品数量", 
-        "option_id"         :  "商品选项id", 
-    }
+        "option_id"         :  "商品选项id，无则返回-1", 
+    }]
 
     "mainGoodsPrice"        :  "主商品价格", 
     "otherGoodsPrice"       :  "辅销品价格", 
     "shippingPrice"         :  "运费", 
-    "promotionId"           :  "当前促销活动的id，无则返回空", 
+    "transId"               :  "匹配到的物流公司ID", 
+
+    "promotionId" :[{
+        "id"    :   "当前促销活动的id，无则返回空"
+    }]
 
 
 

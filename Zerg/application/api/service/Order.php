@@ -157,7 +157,7 @@ class Order
 
     // 创建订单时没有预扣除库存量，简化处理
     // 如果预扣除了库存量需要队列支持，且需要使用锁机制
-    private function createOrderByTrans($snap){
+    private function createOrderByTrans($snap){        
         Db::startTrans();
         try {
             //创建订单
@@ -174,7 +174,7 @@ class Order
             $order->shipping_addr   = $userAddress['province'].$userAddress['city'].$userAddress['country'].$userAddress['address'];
 
             $order->dispatch_id     = $this->getDispatchIdByAddr();     //发货仓id
-            $order->shipping_method = '物流公司名称';                      //物流公司
+            $order->shipping_method = Db::name('transport')->getFieldById($this->postData['transId'],'title'); //物流公司
             $order->mainGoodsPrice  = $this->postData['mainGoodsPrice'];     //主商品价格
             $order->otherGoodsPrice = $this->postData['otherGoodsPrice'];     //辅销品价格
             $order->shippingPrice   = $this->postData['shippingPrice'];     //运费
@@ -397,6 +397,8 @@ class Order
                 ]);
         }
         $this->uid   = Token::getCurrentUid();
+        // $this->uid   = 2;
+
         $userAddress = UserAddress::where('uid', '=', $this->uid)
             ->find();
         if (!$userAddress) {

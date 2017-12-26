@@ -3,6 +3,6 @@
 
 ThinkPHP5.0 + Mini Program Mall
 
-Protoss	-- Mini Program Mall
+Protoss	-- SmartApp Client
 Terran	-- Admin System
 Zerg	-- API interface
