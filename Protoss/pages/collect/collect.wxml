@@ -1,0 +1,32 @@
+<view class="container collect-container">
+    <block wx:if="{{collectData.length>0}}">
+        <view class="collect-box">
+            <block wx:for="{{collectData}}">
+                <view class="collect-item">
+                    <view class="collect-item-main">
+                        <view class="collect-item-img" bindtap="onProductsItemTap"  data-id="{{item.goods_id}}">
+                            <image class="good-image" src="{{item.image}}"></image>
+                        </view>
+                        <view class="collect-item-word">
+                            <view class="title-box" bindtap="onProductsItemTap"  data-id="{{item.goods_id}}">
+                                <text class="title">{{item.name}}</text>
+                            </view>
+                            <view class="bottom-box">
+                                <view class="collect-item-counts">
+                                    <view class="counts">￥{{item.price}}</view>
+                                </view>
+                                <view class="delete" data-id="{{item.goods_id}}" data-index="{{index}}" bindtap="onDeleteToHaveTap">删除</view>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+            </block>
+        </view>
+    </block>
+    <view  wx:else class="no-data">
+        您还没有收藏任何商品
+    </view>
+    <loading hidden="{{loadingHidden}}">
+        加载中...
+    </loading>
+</view>
