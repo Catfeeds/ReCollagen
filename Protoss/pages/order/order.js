@@ -60,6 +60,8 @@ Page({
                   /*获取商品重量*/
                   var weight = this.getResultweight(this.data.productsArr);
 
+                  console.log(weight)
+
                   /*获取运费信息*/
                   order.getTransFee(weight, (res) => {
 
@@ -205,11 +207,11 @@ Page({
         /*计算商品总重量*/
         getResultweight: function (data) {
           var len = data.length,
-            account = 0;
+            weight = 0;
           for (let i = 0; i < len; i++) {
-            account += parseInt(data[i].weight);
+            weight += parseInt(data[i].weight) * data[i].counts / 1000;
           }
-          return (account).toFixed(2);
+          return (weight).toFixed(2);
         },
 
         /*下单和付款*/
