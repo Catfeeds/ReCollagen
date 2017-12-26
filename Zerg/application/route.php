@@ -40,6 +40,9 @@ Route::group('api/:version/theme',function(){
 //Route::post('api/:version/theme/:t_id/product/:p_id', 'api/:version.Theme/addThemeProduct');
 //Route::delete('api/:version/theme/:t_id/product/:p_id', 'api/:version.Theme/deleteThemeProduct');
 
+//User
+Route::get('api/:version/account','api/:version.User/getUserAccount');          //获取已收藏的商品列表
+
 //Product
 Route::post('api/:version/product', 'api/:version.Product/createOne');
 Route::delete('api/:version/product/:id', 'api/:version.Product/deleteOne');
