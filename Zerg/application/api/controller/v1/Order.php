@@ -119,9 +119,8 @@ class Order extends BaseController
      */
     public function getTransInfo($id){
 
-        $orderDetail = $this->getDetail($id)->toArray();
+        $orderDetail = $this->getDetail($id);
         $shippingCode = getShippingCode($orderDetail['shipping_method']);
-
         $url = 'https://m.kuaidi100.com/query?type='.$shippingCode.'&postid='.$orderDetail['shipping_num'];
         $info = curl_post($url);
 
