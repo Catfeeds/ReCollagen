@@ -17,8 +17,8 @@ use think\Controller;
 class Order extends BaseController
 {
     protected $beforeActionList = [
-        'checkExclusiveScope' => ['only' => 'createOrder'],
-        'checkPrimaryScope'   => ['only' => 'getDetail,getSummaryByUser,cancelOrder'],
+        'checkExclusiveScope' => ['only' => 'createOrder,cancelOrder,receiveOrder'],
+        'checkPrimaryScope'   => ['only' => 'getDetail,getSummaryByUser'],
         'checkSuperScope'     => ['only' => 'delivery,getSummary']
     ];
     
@@ -124,15 +124,30 @@ class Order extends BaseController
         $url = 'https://m.kuaidi100.com/query?type='.$shippingCode.'&postid='.$orderDetail['shipping_num'];
         $info = curl_post($url);
 
-        return $info;
+        return json_decode($info);
     }
     /**
      * 取消订单
      */
     public function cancelOrder($id){
         (new IDMustBePositiveInt()) -> goCheck();
+        $uid = Token::getCurrentUid();
+
         $order = new OrderService();
-        $success = $order->cancel($id);
+        $success = $order->cancel($id,$uid);
+        if($success){
+            return new SuccessMessage();
+        }
+    }
+    /**
+     * 确认收货
+     */
+    public function receiveOrder($id){
+        (new IDMustBePositiveInt()) -> goCheck();
+        $uid = Token::getCurrentUid();
+
+        $order = new OrderService();
+        $success = $order->receive($id,$uid);
         if($success){
             return new SuccessMessage();
         }

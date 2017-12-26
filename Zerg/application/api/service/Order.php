@@ -378,8 +378,8 @@ class Order
     /**
      * 取消订单
      */
-    public function cancel($orderID){
-        $order = OrderModel::where('order_id', '=', $orderID)
+    public function cancel($orderID,$uid){
+        $order = OrderModel::where(['order_id'=>$orderID,'uid'=>$uid])
             ->find();
         if (!$order) {
             throw new OrderException();
@@ -392,6 +392,26 @@ class Order
             ]);
         }
         $order->order_status = 5;
+
+        return $order->save();
+    }
+    /**
+     * 确认收货
+     */
+    public function receive($orderID,$uid){
+        $order = OrderModel::where(['order_id'=>$orderID,'uid'=>$uid])
+            ->find();
+        if (!$order) {
+            throw new OrderException();
+        }
+        if ($order->order_status != 3) {
+            throw new OrderException([
+                'msg'       => '订单状态异常',
+                'errorCode' => 80003,
+                'code'      => 400
+            ]);
+        }
+        $order->order_status = 4;
 
         return $order->save();
     }
