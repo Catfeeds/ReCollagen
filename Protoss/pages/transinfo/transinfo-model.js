@@ -12,7 +12,6 @@ class Transinfo extends Base{
 
     /*获得物流*/
     getTransinfo(id, callback) {
-      console.log(id)
       var param = {
         url: 'order/transinfo/' + id,
         sCallback: function (data) {

@@ -73,7 +73,7 @@ class Order extends Base{
             url: 'order/by_user',
             type:'get',
             sCallback: function (data) {
-                callback && callback(data);  //1 未支付  2，已支付  3，已发货，4已支付，但库存不足
+              callback && callback(data);  //1待付款,2待发货,3已发货,4已收货,5已取消订单
              }
         };
         this.request(allParams);

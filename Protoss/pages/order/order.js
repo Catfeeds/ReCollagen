@@ -60,6 +60,8 @@ Page({
                   /*获取商品重量*/
                   var weight = this.getResultweight(this.data.productsArr);
 
+                  console.log(weight)
+
                   /*获取运费信息*/
                   order.getTransFee(weight, (res) => {
 
@@ -205,11 +207,11 @@ Page({
         /*计算商品总重量*/
         getResultweight: function (data) {
           var len = data.length,
-            account = 0;
+            weight = 0;
           for (let i = 0; i < len; i++) {
-            account += parseInt(data[i].weight);
+            weight += parseInt(data[i].weight) * data[i].counts / 1000;
           }
-          return (account).toFixed(2);
+          return (weight).toFixed(2);
         },
 
         /*下单和付款*/
@@ -267,8 +269,9 @@ Page({
                     //开始支付
                     that._execPay(id);
                 }else{
-                    that._orderFail(data);  // 下单失败
+                    that.showTips('下单提示', data.msg);
                 }
+
             });
         },
 
@@ -290,43 +293,6 @@ Page({
                             url: '/pages/my/my'
                         });
                     }
-                }
-            });
-        },
-
-        /*
-        *下单失败
-        * params:
-        * data - {obj} 订单结果信息
-        * */
-        _orderFail:function(data){
-            var nameArr=[],
-                name='',
-                str='',
-                pArr=data.pStatusArray;
-            for(let i=0;i<pArr.length;i++){
-                if(!pArr[i].haveStock){
-                    name=pArr[i].name;
-                    if(name.length>15){
-                        name = name.substr(0,12)+'...';
-                    }
-                    nameArr.push(name);
-                    if(nameArr.length>=2){
-                        break;
-                    }
-                }
-            }
-            str+=nameArr.join('、');
-            if(nameArr.length>2){
-                str+=' 等';
-            }
-            str+=' 缺货';
-            wx.showModal({
-                title: '下单失败',
-                content: str,
-                showCancel:false,
-                success: function(res) {
-
                 }
             });
         },
@@ -364,9 +330,6 @@ Page({
                 guid:arr[i].option_id
               });
             }
-            
         },
-
-
     }
 )
