@@ -31,7 +31,7 @@
 }
 .order-status{
     display: flex;
-    flex-basis: 110rpx;
+    flex-basis: 130rpx;
     align-items: center;
     justify-content: flex-end;
 }

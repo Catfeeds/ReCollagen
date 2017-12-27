@@ -33,7 +33,7 @@ Page({
       Index = collect.getDataSet(event, 'index');
     if (id) {
       product.doHaveCollect(id, (data) => {
-        if (data.code==201){
+        if (data.code!=202){
           that.showToast('删除失败');
           return;
         }

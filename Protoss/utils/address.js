@@ -31,7 +31,9 @@ class Address extends Base{
             data:data,
             sCallback:function(res){
                 callback && callback(res);
-            },eCallback(res){
+            },
+            eCallback(res){
+                callback && callback(res);
             }
         };
         this.request(param);

@@ -61,11 +61,13 @@
               <text class="order-status-txt cancel" wx:if="{{item.order_status==5}}">已取消订单</text>
             </view>
           </view>
-          <view class="order-bottom" wx:if="{{item.order_status==1}}">
+          <view class="order-bottom">
             <text>实付:￥{{item.total}}</text>
-            <view class="pay" ontap="cancel" data-id="{{item.order_id}}" data-index="{{index}}">取消订单</view>
-            <view class="pay" ontap="receive" data-id="{{item.order_id}}" data-index="{{index}}">确认收货</view>
-            <view class="pay" ontap="rePay" data-id="{{item.order_id}}" data-index="{{index}}">付款</view>
+            <view class="orde-status">
+              <view class="pay" ontap="rePay" data-id="{{item.order_id}}" data-index="{{index}}" wx:if="{{item.order_status==1}}">付款</view>
+              <view class="pay" ontap="receive" data-id="{{item.order_id}}" data-index="{{index}}" wx:if="{{item.order_status==3}}">确认收货</view>
+              <view class="pay" ontap="cancel" data-id="{{item.order_id}}" data-index="{{index}}"  wx:if="{{item.order_status==1}}">取消订单</view>
+            </view>
           </view>
         </view>
       </block>

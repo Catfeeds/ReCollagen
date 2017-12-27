@@ -211,6 +211,36 @@ Page({
           return (weight).toFixed(2);
         },
 
+        /*取消订单*/
+        cancel: function (event) {
+          var that = this,
+            id = this.data.id;
+          order.cancel(id, (statusCode) => {
+            if (statusCode.errorCode != 0) {
+              that.showTips('订单提示', statusCode.msg);
+              return;
+            }
+            that.setData({
+              orderStatus: 5
+            });
+          });
+        },
+
+        /*确认收货*/
+        receive: function (event) {
+          var that = this,
+            id = this.data.id;
+          order.receive(id, (statusCode) => {
+            if (statusCode.errorCode != 0) {
+              that.showTips('订单提示', statusCode.msg);
+              return;
+            }
+            that.setData({
+              orderStatus: 4
+            });
+          });
+        },
+
         /*下单和付款*/
         pay:function(){
             if(!this.data.addressInfo){

@@ -1,12 +1,9 @@
 {
   "pages":[
+    "pages/home/home",
+    "pages/transinfo/transinfo",
     "pages/my/my",
     "pages/cart/cart",
-    
-    "pages/home/home",
-    
-    
-    "pages/transinfo/transinfo",
     "pages/collect/collect",
     "pages/product/product",
     "pages/address/address",

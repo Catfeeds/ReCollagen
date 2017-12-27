@@ -1,14 +1,25 @@
 <view class="container transinfo-container">
-    <block wx:if="{{transinfoData.length>0}}">
+    <block wx:if="{{transinfoData}}">
+        <view class='transinfo-title'>
+          <view>订单跟踪</view>
+          <view>订单号：222213131020</view>
+        </view>
         <view class="transinfo-box">
+            <view></view>
+            <view class="transinfo-main">
             <block wx:for="{{transinfoData}}">
-                <view class="transinfo-item">
-                    <view class="transinfo-item-main">
-                       
-000
-                    </view>
+                <view class="transinfo-item {{state==index?'transinfo-item-selected':''}}">
+                  <view class='main-line'></view>
+                  <view class='main-context'>
+                    <view class='main-yuan'></view>
+                    {{item.context}}
+                  </view>
+                  <view class='main-time'>
+                    {{item.time}}
+                  </view>
                 </view>
             </block>
+            </view>
         </view>
     </block>
     <view  wx:else class="no-data">

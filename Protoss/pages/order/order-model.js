@@ -21,7 +21,8 @@ class Order extends Base{
                 callback && callback(data);
             },
             eCallback:function(){
-                }
+                callback && callback(data);
+            }
             };
         this.request(allParams);
     }

@@ -38,10 +38,9 @@ Page({
       /*保存收货地址*/
       address.submitAddress(self.data.addressInfo, (data) => {
         if (data.errorCode!=0) {
-          self.showToast('更新失败！');
+          self.showToast(data.msg);
           return;
         }
-        self.showToast('更新成功。');
         wx.navigateBack();
       });
     }

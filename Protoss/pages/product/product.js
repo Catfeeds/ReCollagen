@@ -154,11 +154,16 @@ Page({
 
     /*添加到收藏*/
     onAddingToHaveTap: function (events) {
+      var that = this;
       if (this.data.id) {
         var id = this.data.id;
         product.doHaveCollect(id, (data) => {
+          if (data.errorCode != 0) {
+            that.showTips('收藏提示', data.msg);
+            return;
+          }
           var haveCollect = data.code == 201 ? 1 : 0;
-          this.setData({
+          that.setData({
             'product.haveCollect': haveCollect
           });
         });
@@ -214,6 +219,23 @@ Page({
                 });
             },200);
         },1000);
+    },
+
+    /*
+        * 提示窗口
+        * params:
+        * title - {string}标题
+        * content - {string}内容
+        * flag - {bool}是否跳转到 "我的页面"
+        */
+    showTips: function (title, content) {
+      wx.showModal({
+        title: title,
+        content: content,
+        showCancel: false,
+        success: function (res) {
+        }
+      });
     },
 
     /*跳转到购物车*/

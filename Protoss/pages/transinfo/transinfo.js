@@ -16,16 +16,15 @@ Page({
     var that = this;
     
     /*获取物流信息*/
-    transinfo.getTransinfo(this.data.id,(data) => {
+    transinfo.getTransinfo(57,(res) => {
       that.setData({
-        transinfoData: data,
+        transinfoData: res.data,
+        state: res.state,
         loadingHidden: true
       });
       callback && callback();
     });
   },
-
-
 
   /*下拉刷新页面*/
   onPullDownRefresh: function () {
