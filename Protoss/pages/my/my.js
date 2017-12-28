@@ -85,9 +85,6 @@ Page({
       this.setData({
         currentTabsIndex: index
       });
-      that.setData({
-        orderArr: 0
-      });
     },
 
     /*订单信息*/
