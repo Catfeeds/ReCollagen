@@ -19,7 +19,7 @@ Page({
     transinfo.getTransinfo(57,(res) => {
       that.setData({
         transinfoData: res.data,
-        state: res.state,
+        state: res.ischeck,
         loadingHidden: true
       });
       callback && callback();

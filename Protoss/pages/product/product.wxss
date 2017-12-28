@@ -170,13 +170,13 @@
 .basic-info-box .name{
   font-size: 40rpx;
 }
-.products-isMainGoods{
+.products-isMainGood-ful{
     width: 40rpx;
     line-height: 40rpx;
     font-size: 24rpx;
     color: white ;
     text-align: center;
-    background: red;
+    background-color: #75bb0b;
     display: inline-block;
     vertical-align: top;
     margin-right: -40rpx;
@@ -185,14 +185,26 @@
   font-size: 38rpx;
 }
 .basic-info-box .attr_list{
+  display: flex;
+  line-height: 45rpx;
   font-size: 34rpx;
-  padding:5px 0px;
+  padding:0 45rpx;
+  justify-content: center;
+  text-align: center;
+}
+.basic-info-box .attr_list .options-title{
+  white-space:nowrap;
+  align-items: center;
+  text-align: right;
+}
+.basic-info-box .attr_list>view{
+  text-align: left;
 }
 .attr_list_li{
   display: inline-block;
   padding:0px 6px;
   border:1px solid #ddd;
-  margin-right:3px;
+  margin-right:10rpx;
 }
 .attr_list_li.on{
   border:1px solid #ff0000;
@@ -202,26 +214,38 @@
 .attr_list_li.disabled {
   border:1px dotted #ddd;
 }
-
 .basic-info-box .cuxiao{
+  height: 45rpx;
+  line-height: 45rpx;
   font-size: 28rpx;
   color: #fff;
-  padding: 4px 8px;
-  text-align: center;
+  padding: 0 8px;
   background-color: #74bb0c;
   border-radius: 100rpx;
-  vertical-align: 5rpx;
+  vertical-align: top;
+  display: inline-block;
+  margin-right:-45rpx; 
 }
 .basic-info-box .discounts{
-  text-align: left;
+  display: flex;
+  line-height: 45rpx;
   font-size: 28rpx;
   color: #999;
   padding: 0 45rpx;
+  justify-content: center;
+}
+.basic-info-box .discounts .discounts-title{
+  white-space:nowrap;
+  align-items: center;
+  text-align: right;
+}
+.basic-info-box .discounts>view{
+  text-align: left;
 }
 .discounts_list_li{
-  margin-right:8px;
+  margin-right:10rpx;
+  display: inline-block;
 }
-
 /*商品详情*/
 .detail-bottom-box{
   margin-top: 30rpx;
@@ -254,11 +278,9 @@
   height:400rpx;
   float: left;
 }
-
 .product-detail-properties,.product-detail-protect{
   min-height: 80vh;
 }
-
 .properties-item{
   display: flex;
   margin: 25rpx 0;

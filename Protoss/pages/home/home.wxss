@@ -1,8 +1,5 @@
 @import "../tpls/base.wxss";
 @import "../tpls/products/products-tpl.wxss";
-.food-container{
-
-}
 .swiper{
   height: 400rpx;
   width: 100%;

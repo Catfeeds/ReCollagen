@@ -43,6 +43,7 @@
     height: 100%;
     background-color: #F5F6F5;
     border-radius: 4rpx;
+    position: relative;
 }
 .cart-item-img image{
     width: 100%;

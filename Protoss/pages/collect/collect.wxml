@@ -5,7 +5,9 @@
                 <view class="collect-item">
                     <view class="collect-item-main">
                         <view class="collect-item-img" bindtap="onProductsItemTap"  data-id="{{item.goods_id}}">
-                            <image class="good-image" src="{{item.image}}"></image>
+                            <view class='products-isMainGoods' wx:if="{{item.isMainGoods==0}}">辅</view>
+                            <image wx:if="{{item.image!=''}}" class="good-image" src="{{item.image}}"></image>
+                            <image wx:else src="../../imgs/icon/default_img.png"></image>
                         </view>
                         <view class="collect-item-word">
                             <view class="title-box" bindtap="onProductsItemTap"  data-id="{{item.goods_id}}">

@@ -41,18 +41,6 @@
     text-align: center;
     position: relative;
 }
-.category-goods-items
-.products-isMainGoods{
-    width: 40rpx;
-    line-height: 40rpx;
-    font-size: 24rpx;
-    color: white ;
-    text-align: center;
-    position: absolute;
-    right: 0;
-    top: 0;
-    background: red;
-}
 .category-goods-items.middle{
     margin:0 20rpx;
 }

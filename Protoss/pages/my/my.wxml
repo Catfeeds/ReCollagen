@@ -35,6 +35,13 @@
 
   <view class="my-order">
     <view class="item-title">我的订单</view>
+    <view class='tabs-box'>
+      <block wx:for="{{['待付款' ,'待发货' ,'已发货' ,'已收货' ,'已取消订单']}}">
+          <view class="tabs-item {{currentTabsIndex==index?'selected':''}}" bindtap="onTabsItemTap" data-id="2" data-index="{{index}}">
+              {{item}}
+          </view>
+      </block>
+    </view>
     <view class="item-main">
       <block wx:for="{{orderArr}}">
         <view class="order-item">
@@ -43,11 +50,13 @@
               <text>订单编号:</text>
               <text class="order-no-txt">{{item.order_num_alias}}</text>
             </view>
-            <view class='order-wul' wx:if="{{item.order_status==3}}" ontap="showOrderWul" data-id="{{item.order_id}}">查看物流</view>
+            <view class='order-wul' wx:if="{{item.order_status>2 && item.order_status<5}}" ontap="showOrderWul" data-id="{{item.order_id}}">查看物流</view>
           </view>
           <view class="order-main" ontap="showOrderDetailInfo" data-id="{{item.order_id}}">
             <view class="item-left">
-              <image src="{{item.pay_subject_img}}"></image>
+              <view class='products-isMainGoods' wx:if="{{item.isMainGoods==0}}">辅</view>
+              <image wx:if="{{item.pay_subject_img!=''}}" src="{{item.pay_subject_img}}" mode="aspectFill" />
+              <image wx:else src="../../imgs/icon/default_img.png" mode="aspectFill" />
             </view>
             <view class="item-middle">
               <view>{{item.pay_subject}}</view>

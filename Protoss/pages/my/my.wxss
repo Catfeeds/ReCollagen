@@ -106,7 +106,26 @@
     width: 48rpx;
     right: 10rpx;
 }
-
+.tabs-box{
+  height: 90rpx;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15rpx;
+  background-color: #fff;
+}
+.tabs-item{
+  width: 100vw;
+  color: #999999;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 1rpx solid #D0D0D7;
+}
+.tabs-item.selected{
+  color: #00a0ea;
+  border-bottom: 2px solid #00a0ea;
+}
 .order-item{
     margin-bottom: 15rpx;
     color: #777777;
@@ -142,6 +161,7 @@
     height: 100%;
     background-color: #F5F6F5;
     border-radius: 4rpx;
+    position: relative;
 }
 .order-main .item-left image{
     height: 100%;

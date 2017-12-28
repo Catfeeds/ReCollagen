@@ -144,6 +144,14 @@ Page({
           });
         },
 
+        /*查看物流*/
+        showOrderWul: function (event) {
+          var id = this.data.id;
+          wx.navigateTo({
+            url: '../transinfo/transinfo?id=' + id
+          });
+        },
+
         /*
         * 计算商品总金额
         * */
@@ -215,29 +223,37 @@ Page({
         cancel: function (event) {
           var that = this,
             id = this.data.id;
-          order.cancel(id, (statusCode) => {
-            if (statusCode.errorCode != 0) {
-              that.showTips('订单提示', statusCode.msg);
-              return;
+          this.showTipsReturn('提示', '你确定要取消订单吗？', (statusConfirm) => {
+            if (statusConfirm) {
+              order.cancel(id, (statusCode) => {
+                if (statusCode.errorCode != 0) {
+                  that.showTips('订单提示', statusCode.msg);
+                  return;
+                }
+                that.setData({
+                  orderStatus: 5
+                });
+              });
             }
-            that.setData({
-              orderStatus: 5
-            });
-          });
+          })
         },
 
         /*确认收货*/
         receive: function (event) {
           var that = this,
             id = this.data.id;
-          order.receive(id, (statusCode) => {
-            if (statusCode.errorCode != 0) {
-              that.showTips('订单提示', statusCode.msg);
-              return;
+          this.showTipsReturn('提示', '你确认要收货吗？', (statusConfirm) => {
+            if (statusConfirm) {
+              order.receive(id, (statusCode) => {
+                if (statusCode.errorCode != 0) {
+                  that.showTips('订单提示', statusCode.msg);
+                  return;
+                }
+                that.setData({
+                  orderStatus: 4
+                });
+              });
             }
-            that.setData({
-              orderStatus: 4
-            });
           });
         },
 
@@ -269,10 +285,12 @@ Page({
                     option_id: procuctInfo[i].option_id
                 })
               }
-              for (let i = 0; i < PromotionInfo.length; i++) {
-                PromoArr.push({
-                    id: PromotionInfo[i].id,
-                })
+              if (PromotionInfo){
+                for (let i = 0; i < PromotionInfo.length; i++) {
+                  PromoArr.push({
+                      id: PromotionInfo[i].id,
+                  })
+                }
               }
               orderInfo = {
                   goodsArrInfo: goodsArr,
@@ -282,7 +300,6 @@ Page({
                   transId: this.data.shippingtransId,
                   promotionId: PromoArr,
               };
-
             var that=this;
             //支付分两步，第一步是生成订单号，然后根据订单号支付
             order.doOrder(orderInfo,(data)=>{
@@ -292,11 +309,10 @@ Page({
                     var id=data.order_id;
                     that.data.id=id;
                     that.data.fromCartFlag=false;
-
                     //开始支付
                     that._execPay(id);
                 }else{
-                    that.showTips('下单提示', data.msg);
+                    that._orderFail(data);  // 下单失败
                 }
 
             });
@@ -322,6 +338,61 @@ Page({
                     }
                 }
             });
+        },
+
+        /*
+        * 提示窗口 - 返回值
+        * params:
+        * title - {string}标题
+        * content - {string}内容
+        * callback - {bool}返回值
+        */
+        showTipsReturn: function (title, content, callback) {
+          wx.showModal({
+            title: title,
+            content: content,
+            showCancel: true,
+            success: function (res) {
+              callback && callback(res.confirm);
+            }
+          });
+        },
+
+        /*
+        *下单失败
+        * params:
+        * data - {obj} 订单结果信息
+        * */
+        _orderFail: function (data) {
+          var nameArr = [],
+            name = '',
+            str = '',
+            pArr = data.pStatusArray;
+          for (let i = 0; i < pArr.length; i++) {
+            if (!pArr[i].haveStock) {
+              name = pArr[i].name;
+              if (name.length > 15) {
+                name = name.substr(0, 12) + '...';
+              }
+              nameArr.push(name);
+              if (nameArr.length >= 2) {
+                break;
+              }
+            }
+          }
+          str += nameArr.join('、');
+          if (nameArr.length > 2) {
+            str += ' 等';
+          }
+          str += ' 缺货';
+          wx.showModal({
+            title: '下单失败',
+            content: str,
+            showCancel: false,
+            success: function (res) {
+
+            }
+          });
         },
 
         /* 再次次支付*/
