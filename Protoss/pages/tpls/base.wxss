@@ -35,6 +35,19 @@
     pointer-events: none;
 }
 
+/*辅产品标志*/
+.products-isMainGoods{
+  width: 40rpx;
+  line-height: 40rpx;
+  font-size: 24rpx;
+  color: white !important;
+  text-align: center;
+  background-color: #75bb0b;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
 /*订单三种状态*/
 .order-status-txt{
     font-size: 24rpx;

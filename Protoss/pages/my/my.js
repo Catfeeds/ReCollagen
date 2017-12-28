@@ -9,6 +9,7 @@ var my=new My();
 Page({
     data: {
         pageIndex:1,
+        currentTabsIndex: 0,
         isLoadedAll:false,
         loadingHidden:false,
         orderArr:[],
@@ -71,11 +72,22 @@ Page({
       });
     },
 
-    /*绑定地址信息*/
+    /*绑定地址信息*/ 
     _bindAddressInfo:function(addressInfo){
         this.setData({
             addressInfo: addressInfo
         });
+    },
+
+    /*切换订单面板*/
+    onTabsItemTap: function (event) {
+      var index = order.getDataSet(event, 'index');
+      this.setData({
+        currentTabsIndex: index
+      });
+      that.setData({
+        orderArr: 0
+      });
     },
 
     /*订单信息*/
@@ -126,16 +138,20 @@ Page({
       var that = this, 
         id = order.getDataSet(event, 'id'),
         index = order.getDataSet(event, 'index');
-      order.cancel(id, (statusCode) => {
-        if (statusCode.errorCode != 0) {
-          that.showTips('订单提示', statusCode.msg);
-          return;
+      this.showTipsReturn('提示', '你确定要取消订单吗？', (statusConfirm) => {
+        if (statusConfirm){
+          order.cancel(id, (statusCode) => {
+            if (statusCode.errorCode != 0) {
+              that.showTips('订单提示', statusCode.msg);
+              return;
+            }
+            that.data.orderArr[index].order_status = 5;
+            that.setData({
+              orderArr: that.data.orderArr
+            });
+          });
         }
-        that.data.orderArr[index].order_status = 5;
-        that.setData({
-          orderArr: that.data.orderArr
-        });
-      });
+      })
     },
 
     /*确认收货*/
@@ -143,15 +159,19 @@ Page({
       var that = this,
         id = order.getDataSet(event, 'id'),
         index = order.getDataSet(event, 'index');
-      order.receive(id, (statusCode) => {
-        if (statusCode.errorCode != 0) {
-          that.showTips('订单提示', statusCode.msg);
-          return;
+      this.showTipsReturn('提示', '你确认要收货吗？', (statusConfirm) => {
+        if (statusConfirm) {
+          order.receive(id, (statusCode) => {
+            if (statusCode.errorCode != 0) {
+              that.showTips('订单提示', statusCode.msg);
+              return;
+            }
+            that.data.orderArr[index].order_status = 4;
+            that.setData({
+              orderArr: that.data.orderArr
+            });
+          });
         }
-        that.data.orderArr[index].order_status = 4;
-        that.setData({
-          orderArr: that.data.orderArr
-        });
       });
     },
 
@@ -159,13 +179,7 @@ Page({
     rePay:function(event){
         var id=order.getDataSet(event,'id'),
             index=order.getDataSet(event,'index');
-
-        //online 上线实例，屏蔽支付功能
-        if(order.onPay) {
-            this._execPay(id,index);
-        }else {
-            this.showTips('支付提示','用户已被禁用');
-        }
+        this._execPay(id,index);
     },
 
     /*支付*/
@@ -210,7 +224,6 @@ Page({
      * params:
      * title - {string}标题
      * content - {string}内容
-     * flag - {bool}是否跳转到 "我的页面"
      */
     showTips:function(title,content){
         wx.showModal({
@@ -223,4 +236,21 @@ Page({
         });
     },
 
+    /*
+     * 提示窗口 - 返回值
+     * params:
+     * title - {string}标题
+     * content - {string}内容
+     * callback - {bool}返回值
+     */
+    showTipsReturn: function (title, content, callback) {
+      wx.showModal({
+        title: title,
+        content: content,
+        showCancel: true,
+        success: function (res) {
+          callback && callback(res.confirm);
+        }
+      });
+    },
 })

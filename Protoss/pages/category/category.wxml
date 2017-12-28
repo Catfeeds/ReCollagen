@@ -3,20 +3,16 @@
   <view class="category-box">
     <scroll-view scroll-y="true" class="left-box">
       <block wx:for="{{categoryTypeArr}}">
-        <view class="menu-item {{currentMenuIndex==index?'selected':''}}" data-id="{{item.id}}" data-index="{{index}}" bindtap="changeCategory" data-title-name="{{item.name}}">
+        <view class="menu-item {{currentMenuIndex==index?'selected':''}}" data-id="{{item.id}}" data-index="{{index}}" bindtap="changeCategory">
           {{item.name}}
         </view>
       </block>
     </scroll-view>
-
-    <view class="right-box" style="transform:translate(0,-{{currentMenuIndex*100}}vh);">  
-     <block wx:for="{{categoryInfo}}">
+    <view class="right-box">  
       <scroll-view scroll-y="true" class="foods-type-box">
-          <template is="categorydetail" data="{{categoryInfo:item}}"/>
+          <template is="categorydetail" data="{{categoryInfo:categoryInfo}}"/>
       </scroll-view>
-     </block>
     </view>
-
   </view>
   <loading hidden="{{loadingHidden}}">
     加载中...

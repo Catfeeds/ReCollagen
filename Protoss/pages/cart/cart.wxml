@@ -9,7 +9,9 @@
                             <image wx:else src="../../imgs/icon/circle@noselected.png"></image>
                         </view>
                         <view class="cart-item-img" bindtap="onProductsItemTap" data-id="{{item.goods_id}}">
-                            <image class="good-image" src="{{item.image}}"></image>
+                            <view class='products-isMainGoods' wx:if="{{item.isMainGoods==0}}">辅</view>
+                            <image wx:if="{{item.image!=''}}" class="good-image" src="{{item.image}}"></image>
+                            <image wx:else class="good-image" src="../../imgs/icon/default_img.png"></image>
                         </view>
                         <view class="cart-item-word">
                             <view class="title-box">

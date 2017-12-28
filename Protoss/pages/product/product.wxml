@@ -7,26 +7,27 @@
             </view>
         </view>
         <swiper indicator-dots="true" autoplay="true" indicator-active-color="#00a1e9" indicator-color="#d6d0c7" class="swiper">
-            <block  wx:if="{{product.imgs.length>0}}">
+            <block wx:if="{{product.imgs.length>0}}">
                 <swiper-item class="banner-item" wx:for="{{product.imgs}}">
                     <image class="item-image" src="{{item.image}}" mode="aspectFill" />
                 </swiper-item>
             </block>
             <block wx:else>
-              <image class="item-image" src="{{product.image}}" mode="aspectFill" />
+              <image wx:if="{{product.image!=''}}" class="item-image" src="{{product.image}}" mode="aspectFill" />
+              <image wx:else src="../../imgs/icon/default_img.png" mode="aspectFill"></image>
             </block>
         </swiper>
         <view class="cart-box">
             <view class="add-cart-btn add-Collection-btn" bindtap="onAddingToHaveTap">
                 <block  wx:if="{{product.haveCollect==0}}">
-                  <image class="cart-icon" src="../../imgs/icon/Collection.png"></image>
+                  <image class="cart-icon" src="../../imgs/icon/collection.png"></image>
                 </block>
               <block wx:else>
                 <image class="cart-icon" src="../../imgs/icon/collection@selectd.png"></image>
               </block>
             </view>
             <view class="product-counts">
-                <picker class="{{product.stock==0?'disabled':''}}" bindchange="bindPickerChange" value="{{index}}" range="{{countsArray}}">
+                <picker class="{{stockCount<1?'disabled':''}}" bindchange="bindPickerChange" value="{{index}}" range="{{countsArray}}">
                     <!--因为picker对flex支持不好，所以加了一层view-->
                     <view>
                         <text class="counts-tips">数量</text>
@@ -36,7 +37,7 @@
                 </picker>
             </view>
             <view class="middle-border"></view>
-            <view class="add-cart-btn {{product.stock==0 ?'disabled':''}}" bindtap="onAddingToCartTap">
+            <view class="add-cart-btn {{stockCount<1 ?'disabled':''}}" bindtap="onAddingToCartTap">
                 <text>加入购物车</text>
                 <image class="cart-icon" src="../../imgs/icon/cart.png"></image>
                 <image id="small-top-img" class="small-top-img {{isFly?'animate':''}}"
@@ -44,20 +45,26 @@
             </view>
         </view>
         <view class="basic-info-box">
-            <view class="stock" wx:if="{{product.stock>0}}">有货</view>
+            <view class="stock" wx:if="{{stockCount>0}}">有货</view>
             <view class="stock no" wx:else>缺货</view>
-            <view class="name">{{product.name}} <view class='products-isMainGoods' wx:if="{{product.isMainGoods==0}}">辅</view></view>
+            <view class="name">{{product.name}} <view class='products-isMainGood-ful' wx:if="{{product.isMainGoods==0}}">辅</view></view>
             <view class="price">￥{{price}}
             <text class='cuxiao' wx:if="{{product.discounts.length>0 && product.options.length<1}}">促销</text></view>
-            <view class="attr_list" wx:if="{{product.options.length>0}}">规格：
-              <block wx:for="{{product.options}}">
-              <text class="attr_list_li {{currentAttrIndex==index?'on':''}} {{item.stock==0?'disabled':''}}" data-index="{{index}}" data-id="{{item.goods_option_id}}" data-price="{{item.option_price}}" data-stock="{{item.stock}}" bindtap='onClickAttr'>{{item.option_name}}</text>
-              </block>
+            <view class="attr_list" wx:if="{{product.options.length>0}}">
+              <view class='options-title'>规格：</view>
+              <view>
+                <block wx:for="{{product.options}}">
+                <text class="attr_list_li {{currentAttrIndex==index?'on':''}} {{item.stock==0?'disabled':''}}" data-index="{{index}}" data-id="{{item.goods_option_id}}" data-price="{{item.option_price}}" data-stock="{{item.stock}}" bindtap='onClickAttr'>{{item.option_name}}</text>
+                </block>
+              </view>
             </view>
-            <view class="discounts" wx:if="{{product.discounts.length>0 && product.options.length<1}}">促销：
-              <block wx:for="{{discountsArray}}">
-              <text class='discounts_list_li'> 数量：{{item.quantity}} 价格：{{item.discount}} </text>
-              </block>
+            <view class="discounts" wx:if="{{product.discounts.length>0 && product.options.length<1}}">
+              <view class='discounts-title'>促销：</view>
+              <view>
+                <block wx:for="{{discountsArray}}">
+                <text class='discounts_list_li'> 数量：{{item.quantity}} 价格：{{item.discount}} </text>
+                </block>
+              </view>
             </view>
         </view>
     </view>

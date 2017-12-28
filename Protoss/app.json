@@ -1,16 +1,16 @@
 {
   "pages":[
-    "pages/home/home",
-    "pages/transinfo/transinfo",
     "pages/my/my",
-    "pages/cart/cart",
-    "pages/collect/collect",
+    "pages/home/home",
     "pages/product/product",
-    "pages/address/address",
     "pages/category/category",
-    "pages/order/order",
     "pages/theme/theme",
-    "pages/pay-result/pay-result"
+    "pages/cart/cart",
+    "pages/order/order",
+    "pages/pay-result/pay-result",
+    "pages/address/address",
+    "pages/collect/collect",
+    "pages/transinfo/transinfo"
   ],
   "window":{
     "navigationBarTitleText": "",

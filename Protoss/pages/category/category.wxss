@@ -1,8 +1,5 @@
+@import "../tpls/base.wxss";
 @import "../tpls/category/category-tpl.wxss";
-
-.category-container{
-    /*min-height: 100vh;*/
-}
 .category-box{
     display: flex;
     height: 100vh;

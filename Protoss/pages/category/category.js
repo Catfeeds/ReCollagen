@@ -13,71 +13,71 @@ Page({
   /*加载所有数据*/
   _loadData:function(callback){
     var that = this;
+
+    /*获取分类信息*/
     category.getCategoryType((categoryData)=>{
+
       that.setData({
-        categoryTypeArr: categoryData,
-        loadingHidden: true
+        categoryTypeArr: categoryData
       });
       
-      that.getProductsByCategory(categoryData[0].id,(data)=>{
-        var dataObj= [{
-          procucts: data,
-          id: categoryData[0].id,
-          topImgUrl: categoryData[0].image,
-          title: categoryData[0].name
-        }];
-        that.setData({
+      /*缓存中是否有该商品*/
+      var isHadInfo = category._isHasThatOne(categoryData[0].id);
+      if (isHadInfo.index != -1) {
+        this.setData({
           loadingHidden: true,
-          categoryInfo: dataObj
+          categoryInfo: isHadInfo.data
         });
-        callback&& callback();
-      });
+      }
+      else {
+        /*获取第一个分类下对应的商品*/
+        this.getProductsByCategory(categoryData[0].id, 0);
+      }
+
     });
   },
 
   /*切换分类*/
   changeCategory:function(event){
     var index=category.getDataSet(event,'index'),
-        id=category.getDataSet(event,'id')//获取data-set
+        id=category.getDataSet(event,'id');
+
     this.setData({
-      currentMenuIndex: index
+      loadingHidden: false,
+      currentMenuIndex: index,
     });
 
-    //如果数据是第一次请求
-    if (!this.isLoadedData(id)) {
-      var that=this;
-      this.getProductsByCategory(id, (data)=> {
-        var baseData = that.data.categoryTypeArr[index];
-        var dataObj = {
-          procucts: data,
-          id: baseData.id,
-          topImgUrl: baseData.image,
-          title: baseData.name
-        };
-        var prData = that.data.categoryInfo;
-        var classData = prData.concat(dataObj);
-        that.setData({
-          loadingHidden: true,
-          categoryInfo: classData
-        });
+    /*缓存中是否有该商品*/
+    var isHadInfo = category._isHasThatOne(id);
+    if (isHadInfo.index != -1) {
+      this.setData({
+        loadingHidden: true,
+        categoryInfo: isHadInfo.data
       });
+    }
+    else
+    {
+      /*获取分类下对应的商品*/
+      this.getProductsByCategory(id,index);
     }
   },
 
-  isLoadedData: function (id){
-    var prData = this.data.categoryInfo;
-    var i = prData.length;
-    while (i--) {
-      if (prData[i].id === id) {
-        return true
-      }
-    }
-    return false
-  },
-  
-  getProductsByCategory:function(id,callback){
+  /*获取分类下对应的商品*/
+  getProductsByCategory: function (id, index){
+    var that = this;
     category.getProductsByCategory(id,(data)=> {
-      callback&&callback(data);
+      var baseData = this.data.categoryTypeArr[index];
+      var dataObj = {
+        procucts: data,
+        topImgUrl: baseData.image,
+        title: baseData.name,
+        id: baseData.id
+      };
+      that.setData({
+        loadingHidden: true,
+        categoryInfo: dataObj
+      });
+      category.addCategory(dataObj);
     });
   },
 
