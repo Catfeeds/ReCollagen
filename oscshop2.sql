@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50540
 File Encoding         : 65001
 
-Date: 2017-12-23 15:49:47
+Date: 2017-12-28 14:14:04
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -66,7 +66,7 @@ CREATE TABLE `osc_admin` (
 -- ----------------------------
 -- Records of osc_admin
 -- ----------------------------
-INSERT INTO `osc_admin` VALUES ('1', 'admin', 'MDAwMDAwMDAwMLO6d61/iaja', '', '', 'admin@admin.com', '34', '127.0.0.1', '', '1505270345', '1513412152', '1513992988', '1', '2');
+INSERT INTO `osc_admin` VALUES ('1', 'admin', 'MDAwMDAwMDAwMLO6d61/iaja', '', '', 'admin@admin.com', '37', '127.0.0.1', '', '1505270345', '1513412152', '1514423415', '1', '2');
 INSERT INTO `osc_admin` VALUES ('2', 'orderAdmin', 'MDAwMDAwMDAwMLO6d61/iaja', '', '', null, '15', '127.0.0.1', null, '1512538804', '1513575692', '1513578428', '1', '3');
 INSERT INTO `osc_admin` VALUES ('3', 'memberAdmin', 'MDAwMDAwMDAwMLO6d61/iaja', '', '', null, '0', null, null, '1513577469', '1513577592', '0', '1', '4');
 
@@ -3848,15 +3848,15 @@ CREATE TABLE `osc_goods` (
   `create_time` varchar(40) NOT NULL DEFAULT '' COMMENT '新增时间',
   `update_time` varchar(40) NOT NULL DEFAULT '' COMMENT '修改的时间',
   `sort_order` int(11) NOT NULL DEFAULT '1',
-  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1上架0下架',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '1正常0下架',
   PRIMARY KEY (`goods_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8 COMMENT='商品信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8 COMMENT='商品信息表';
 
 -- ----------------------------
 -- Records of osc_goods
 -- ----------------------------
 INSERT INTO `osc_goods` VALUES ('2', '1', '13', 'images/osc1/2/2.jpg', '品茗陶瓷茶盏瓷杯6个', '79.00', '0', '0', '500.00', '0.01', '2016-08-17 23:10:22', '2017-12-14 10:39:59', '2', '1');
-INSERT INTO `osc_goods` VALUES ('3', '1', '1', 'images/osc1/3/2.jpg', '公道杯茶海分茶器陶瓷', '39.00', '50', '0', '200.00', '0.01', '2016-08-19 20:22:43', '0000-00-00 00:00:00', '3', '1');
+INSERT INTO `osc_goods` VALUES ('3', '1', '1', 'images/osc1/3/2.jpg', '公道杯茶海分茶器陶瓷', '39.00', '22', '0', '200.00', '0.01', '2016-08-19 20:22:43', '0000-00-00 00:00:00', '3', '1');
 INSERT INTO `osc_goods` VALUES ('4', '1', '2', 'images/osc1/4/1.jpg', '青花功夫茶具陶瓷配件', '30.00', '787', '0', '200.00', '0.01', '2016-08-19 20:37:55', '2017-12-14 10:38:54', '4', '1');
 INSERT INTO `osc_goods` VALUES ('5', '1', '13', 'images/osc1/5/1.jpg', '旅行套装便携功夫茶具', '19.90', '5654', '0', '200.00', '0.01', '2016-08-19 20:57:05', '2017-12-19 15:21:43', '5', '1');
 INSERT INTO `osc_goods` VALUES ('6', '1', '5', 'images/osc1/6/1.jpg', '定窑白荷花大号茶个', '39.00', '0', '0', '100.00', '0.02', '2016-08-19 21:12:02', '2017-12-19 15:20:15', '6', '1');
@@ -3879,7 +3879,7 @@ INSERT INTO `osc_goods` VALUES ('22', '0', '2', 'images/osc1/product/product-tea
 INSERT INTO `osc_goods` VALUES ('25', '0', '29', 'images/osc1/fruit/product-cake-a@3.png', '比利时华夫饼', '30.00', '988', '0', '100.00', '0.01', '2017-12-15 10:00:04', '', '1', '1');
 INSERT INTO `osc_goods` VALUES ('30', '1', '3', 'images/osc1/fruit/product-cake@1.png', '李大爷的妙脆角', '9.90', '998', '0', '100.00', '0.02', '2017-12-15 10:13:43', '2017-12-16 08:58:24', '1', '1');
 INSERT INTO `osc_goods` VALUES ('32', '1', '3', 'images/osc1/fruit/product-cake-a@3.png', '好吃的饼干', '30.00', '992', '0', '100.00', '0.02', '2017-12-15 10:19:07', '2017-12-17 17:02:17', '1', '1');
-INSERT INTO `osc_goods` VALUES ('34', '0', '1', 'images/osc1/product/2@theme.png', '八宝莲子200克', '9.91', '9991', '0', '100.00', '0.01', '2017-12-16 09:25:07', '2017-12-18 13:06:26', '1', '1');
+INSERT INTO `osc_goods` VALUES ('34', '0', '1', 'images/osc1/product/2@theme.png', '八宝莲子200克', '9.91', '9987', '0', '100.00', '0.01', '2017-12-16 09:25:07', '2017-12-18 13:06:26', '1', '1');
 INSERT INTO `osc_goods` VALUES ('36', '1', '5', 'images/osc1/fruit/product-vg@3.png', '我吃西红柿', '10.00', '999', '0', '100.00', '0.01', '2017-12-19 14:10:35', '2017-12-21 16:04:07', '1', '1');
 
 -- ----------------------------
@@ -3954,7 +3954,7 @@ CREATE TABLE `osc_goods_discount` (
   `discount` tinyint(4) NOT NULL DEFAULT '0' COMMENT '商品折扣',
   PRIMARY KEY (`product_discount_id`),
   KEY `product_id` (`goods_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COMMENT='数量折扣';
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COMMENT='数量折扣';
 
 -- ----------------------------
 -- Records of osc_goods_discount
@@ -3982,7 +3982,7 @@ CREATE TABLE `osc_goods_image` (
   `image` varchar(100) NOT NULL DEFAULT '',
   `sort_order` int(3) NOT NULL DEFAULT '0',
   PRIMARY KEY (`goods_image_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=73 DEFAULT CHARSET=utf8 COMMENT='商品图片表';
+) ENGINE=InnoDB AUTO_INCREMENT=71 DEFAULT CHARSET=utf8 COMMENT='商品图片表';
 
 -- ----------------------------
 -- Records of osc_goods_image
@@ -4063,7 +4063,7 @@ CREATE TABLE `osc_goods_mobile_description_image` (
   `description` varchar(255) NOT NULL DEFAULT '',
   `sort_order` int(5) NOT NULL DEFAULT '0',
   PRIMARY KEY (`mdi_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=138 DEFAULT CHARSET=utf8 COMMENT='手机商品描述图片';
+) ENGINE=InnoDB AUTO_INCREMENT=136 DEFAULT CHARSET=utf8 COMMENT='手机商品描述图片';
 
 -- ----------------------------
 -- Records of osc_goods_mobile_description_image
@@ -4217,8 +4217,8 @@ INSERT INTO `osc_goods_option` VALUES ('3', '11', '300ml', '50.00', '9991', '1')
 INSERT INTO `osc_goods_option` VALUES ('5', '15', '3个装', '0.03', '55', '3');
 INSERT INTO `osc_goods_option` VALUES ('6', '15', '一箱整装', '30.00', '770', '5');
 INSERT INTO `osc_goods_option` VALUES ('7', '15', '5个装', '0.05', '50', '4');
-INSERT INTO `osc_goods_option` VALUES ('8', '30', '500g', '6.60', '999', '2');
-INSERT INTO `osc_goods_option` VALUES ('9', '30', '1000g', '8.80', '996', '1');
+INSERT INTO `osc_goods_option` VALUES ('8', '30', '500g', '6.60', '979', '2');
+INSERT INTO `osc_goods_option` VALUES ('9', '30', '1000g', '8.80', '976', '1');
 INSERT INTO `osc_goods_option` VALUES ('12', '34', '礼盒装', '12.20', '988', '2');
 INSERT INTO `osc_goods_option` VALUES ('13', '34', '简装', '11.10', '9651', '1');
 INSERT INTO `osc_goods_option` VALUES ('14', '6', '优雅白', '39.00', '966', '0');
@@ -4259,7 +4259,7 @@ CREATE TABLE `osc_goods_param` (
   `param_name` varchar(50) NOT NULL DEFAULT '',
   `param_value` varchar(100) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8 COMMENT='产品参数';
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8 COMMENT='产品参数';
 
 -- ----------------------------
 -- Records of osc_goods_param
@@ -4311,7 +4311,7 @@ CREATE TABLE `osc_member` (
   `openId` varchar(40) NOT NULL DEFAULT '',
   `mainAccount` decimal(11,2) NOT NULL DEFAULT '0.00' COMMENT '主账户',
   `secondAccount` decimal(11,2) NOT NULL DEFAULT '0.00' COMMENT '辅账户',
-  `checked` tinyint(1) NOT NULL DEFAULT '1' COMMENT '用户状态：0待审核，1正常',
+  `checked` tinyint(1) NOT NULL DEFAULT '1' COMMENT '用户状态：0禁用，1正常',
   `create_time` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '注册时间',
   `update_time` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`uid`)
@@ -4320,7 +4320,7 @@ CREATE TABLE `osc_member` (
 -- ----------------------------
 -- Records of osc_member
 -- ----------------------------
-INSERT INTO `osc_member` VALUES ('2', 'oMgsK0VdN3Q43P-zIeC0IiVvd_fw', '4000.00', '500.00', '1', '1512608799', '1513919725');
+INSERT INTO `osc_member` VALUES ('2', 'oMgsK0VdN3Q43P-zIeC0IiVvd_fw', '7232.00', '536.36', '1', '1512608799', '1513919725');
 INSERT INTO `osc_member` VALUES ('3', 'wx-iuyifghgf6345re221', '300.00', '666.00', '0', '1512633763', '1513761045');
 
 -- ----------------------------
@@ -4340,7 +4340,6 @@ CREATE TABLE `osc_member_collect` (
 -- ----------------------------
 -- Records of osc_member_collect
 -- ----------------------------
-INSERT INTO `osc_member_collect` VALUES ('1', '2', '30', '121212765', '1212143565');
 INSERT INTO `osc_member_collect` VALUES ('2', '2', '36', '121212765', '0');
 
 -- ----------------------------
@@ -4567,14 +4566,20 @@ CREATE TABLE `osc_order` (
   `create_time` int(11) NOT NULL DEFAULT '0',
   `update_time` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`order_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=49 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of osc_order
 -- ----------------------------
-INSERT INTO `osc_order` VALUES ('3', 'wx2017120753575710', '2', 'images/osc1/5/1.jpg', '旅行套装便携功夫茶具等', '2', '哈哈哈22', '18121029523', '北京市国家图书馆111号', '1', '邮政快递', '9891770403677', '98.70', '10.00', '98.70', '0.00', '10.00', '108.70', null, '0', '1513402181', '1513759963');
+INSERT INTO `osc_order` VALUES ('3', 'wx2017120753575710', '3', 'images/osc1/5/1.jpg', '旅行套装便携功夫茶具等', '2', '哈哈哈22', '18121029523', '北京市国家图书馆111号', '1', '邮政快递', '1112', '98.70', '10.00', '98.70', '0.00', '10.00', '108.70', null, '0', '1513402181', '1514265040');
 INSERT INTO `osc_order` VALUES ('4', 'wx2017121253555353', '4', 'images/osc1/product/2@theme.png', '青花白瓷手绘荷花', '2', '哈哈哈22', '18121029523', '江苏省南京市玄武区人民路XX小区1栋101', '3', '顺丰速递', '426530659301', '7235.00', '15.00', '7235.00', '0.00', '15.00', '7250.00', null, '0', '1513411181', '1513479809');
-INSERT INTO `osc_order` VALUES ('18', 'AC23128906334088', '1', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/3/2.jpg', '公道杯茶海分茶器陶瓷等', '2', '哈哈哈', '13333333333', '江苏省南京市玄武区明珠广场22号', '1', '物流公司名称', '', '0.00', '0.00', '317.00', '9.91', '6.00', '332.91', '[{\"name\":\"周年庆限时满300返现30\",\"type\":2,\"money\":300,\"expression\":\"30\"},{\"name\":\"限时满200赠送悦寇霖智美白防晒霜一瓶\",\"type\":3,\"money\":200,\"expression\":\"限时满200赠送悦寇霖智美白防晒霜一瓶\"}]', '0', '1514012890', '1514012890');
+INSERT INTO `osc_order` VALUES ('18', 'AC23128906334088', '2', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/3/2.jpg', '公道杯茶海分茶器陶瓷等', '2', '哈哈哈', '13333333333', '江苏省南京市玄武区明珠广场22号', '1', '物流公司名称', '', '0.00', '0.00', '317.00', '9.91', '6.00', '332.91', '[{\"name\":\"周年庆限时满300返现30\",\"type\":2,\"money\":300,\"expression\":\"30\"},{\"name\":\"限时满200赠送悦寇霖智美白防晒霜一瓶\",\"type\":3,\"money\":200,\"expression\":\"限时满200赠送悦寇霖智美白防晒霜一瓶\"}]', '0', '1514012890', '1514012890');
+INSERT INTO `osc_order` VALUES ('19', 'AC23167222942615', '2', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/3/2.jpg', '公道杯茶海分茶器陶瓷等', '2', '哈哈哈', '13333333333', '江苏省南京市玄武区明珠广场22号', '1', '物流公司名称', '', '317.00', '15.91', '317.00', '9.91', '6.00', '332.91', '[{\"name\":\"周年庆限时满300返现30\",\"type\":2,\"money\":300,\"expression\":\"30\"},{\"name\":\"限时满200赠送悦寇霖智美白防晒霜一瓶\",\"type\":3,\"money\":200,\"expression\":\"限时满200赠送悦寇霖智美白防晒霜一瓶\"}]', '2', '1514016722', '1514179599');
+INSERT INTO `osc_order` VALUES ('44', 'AC26533181578644', '1', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/3/2.jpg', '公道杯茶海分茶器陶瓷等', '2', '哈哈哈', '13333333333', '江苏省南京市玄武区明珠广场22号', '3', '德邦物流', '', '0.00', '0.00', '317.00', '9.91', '6.00', '332.91', '[{\"name\":\"周年庆限时满300返现30\",\"type\":2,\"money\":300,\"expression\":\"30\"},{\"name\":\"限时满200赠送悦寇霖智美白防晒霜一瓶\",\"type\":3,\"money\":200,\"expression\":\"限时满200赠送悦寇霖智美白防晒霜一瓶\"}]', '0', '1514253318', '1514253318');
+INSERT INTO `osc_order` VALUES ('45', 'AC26533831976669', '1', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/3/2.jpg', '公道杯茶海分茶器陶瓷等', '2', '哈哈哈', '13333333333', '江苏省南京市玄武区明珠广场22号', '3', '德邦物流', '', '0.00', '0.00', '317.00', '9.91', '6.00', '332.91', '[{\"name\":\"周年庆限时满300返现30\",\"type\":2,\"money\":300,\"expression\":\"30\"},{\"name\":\"限时满200赠送悦寇霖智美白防晒霜一瓶\",\"type\":3,\"money\":200,\"expression\":\"限时满200赠送悦寇霖智美白防晒霜一瓶\"}]', '0', '1514253383', '1514253383');
+INSERT INTO `osc_order` VALUES ('46', 'AC26726353325355', '1', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/3/2.jpg', '公道杯茶海分茶器陶瓷等', '2', '哈哈哈', '13333333333', '江苏省南京市玄武区明珠广场22号', '3', '德邦物流', '', '0.00', '0.00', '317.00', '9.91', '6.00', '332.91', '[{\"name\":\"周年庆限时满300返现30\",\"type\":2,\"money\":300,\"expression\":\"30\"},{\"name\":\"限时满200赠送悦寇霖智美白防晒霜一瓶\",\"type\":3,\"money\":200,\"expression\":\"限时满200赠送悦寇霖智美白防晒霜一瓶\"}]', '0', '1514272635', '1514272635');
+INSERT INTO `osc_order` VALUES ('47', 'AC26726666689747', '1', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/3/2.jpg', '公道杯茶海分茶器陶瓷等', '2', '哈哈哈', '13333333333', '江苏省南京市玄武区明珠广场22号', '3', '德邦物流', '', '0.00', '0.00', '317.00', '9.91', '6.00', '332.91', '[{\"name\":\"周年庆限时满300返现30\",\"type\":2,\"money\":300,\"expression\":\"30\"},{\"name\":\"限时满200赠送悦寇霖智美白防晒霜一瓶\",\"type\":3,\"money\":200,\"expression\":\"限时满200赠送悦寇霖智美白防晒霜一瓶\"}]', '0', '1514272666', '1514272666');
+INSERT INTO `osc_order` VALUES ('48', 'AC26737461584808', '4', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/3/2.jpg', '公道杯茶海分茶器陶瓷等', '2', '哈哈哈', '13333333333', '江苏省南京市玄武区明珠广场22号', '3', '圆通快递', '100795039572', '0.00', '0.00', '317.00', '9.91', '6.00', '332.91', '[{\"name\":\"周年庆限时满300返现30\",\"type\":2,\"money\":300,\"expression\":\"30\"},{\"name\":\"限时满200赠送悦寇霖智美白防晒霜一瓶\",\"type\":3,\"money\":200,\"expression\":\"限时满200赠送悦寇霖智美白防晒霜一瓶\"}]', '0', '1514273746', '1514280798');
 
 -- ----------------------------
 -- Table structure for `osc_order_goods`
@@ -4587,6 +4592,7 @@ CREATE TABLE `osc_order_goods` (
   `isMainGoods` tinyint(4) NOT NULL DEFAULT '1' COMMENT '是否主商品',
   `image` varchar(100) NOT NULL DEFAULT '',
   `name` varchar(100) NOT NULL DEFAULT '',
+  `option_id` int(11) NOT NULL DEFAULT '-1' COMMENT '选项id,支付时查库存需要用到',
   `option_name` varchar(50) NOT NULL DEFAULT '' COMMENT '商品选项名称',
   `quantity` int(4) NOT NULL DEFAULT '0' COMMENT '数量',
   `price` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '单价',
@@ -4594,17 +4600,35 @@ CREATE TABLE `osc_order_goods` (
   `create_time` int(11) NOT NULL DEFAULT '0',
   `update_time` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`order_goods_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=115 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of osc_order_goods
 -- ----------------------------
-INSERT INTO `osc_order_goods` VALUES ('13', '3', '5', '1', 'images/osc1/5/1.jpg', '旅行套装便携功夫茶具', '', '3', '19.90', '59.70', '0', '0');
-INSERT INTO `osc_order_goods` VALUES ('14', '3', '6', '1', 'images/osc1/6/1.jpg', '定窑白荷花大号茶个', '优雅白', '1', '39.00', '39.00', '0', '0');
-INSERT INTO `osc_order_goods` VALUES ('15', '4', '12', '1', 'images/osc1/product/2@theme.png', '青花白瓷手绘荷花', '', '10', '723.50', '7235.00', '0', '0');
-INSERT INTO `osc_order_goods` VALUES ('25', '18', '3', '1', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/3/2.jpg', '公道杯茶海分茶器陶瓷', '', '7', '39.00', '273.00', '1514012890', '1514012890');
-INSERT INTO `osc_order_goods` VALUES ('26', '18', '30', '1', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/fruit/product-cake@1.png', '李大爷的妙脆角', '1000g', '5', '8.80', '44.00', '1514012890', '1514012890');
-INSERT INTO `osc_order_goods` VALUES ('27', '18', '34', '0', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/product/2@theme.png', '八宝莲子200克', '', '1', '9.91', '9.91', '1514012890', '1514012890');
+INSERT INTO `osc_order_goods` VALUES ('13', '3', '5', '1', 'images/osc1/5/1.jpg', '旅行套装便携功夫茶具', '-1', '', '3', '19.90', '59.70', '0', '0');
+INSERT INTO `osc_order_goods` VALUES ('14', '3', '6', '1', 'images/osc1/6/1.jpg', '定窑白荷花大号茶个', '14', '优雅白', '1', '39.00', '39.00', '0', '0');
+INSERT INTO `osc_order_goods` VALUES ('15', '4', '12', '1', 'images/osc1/product/2@theme.png', '青花白瓷手绘荷花', '-1', '', '10', '723.50', '7235.00', '0', '0');
+INSERT INTO `osc_order_goods` VALUES ('25', '18', '3', '1', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/3/2.jpg', '公道杯茶海分茶器陶瓷', '-1', '', '7', '39.00', '273.00', '1514012890', '1514012890');
+INSERT INTO `osc_order_goods` VALUES ('26', '18', '30', '1', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/fruit/product-cake@1.png', '李大爷的妙脆角', '9', '1000g', '5', '8.80', '44.00', '1514012890', '1514012890');
+INSERT INTO `osc_order_goods` VALUES ('27', '18', '34', '0', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/product/2@theme.png', '八宝莲子200克', '-1', '', '1', '9.91', '9.91', '1514012890', '1514012890');
+INSERT INTO `osc_order_goods` VALUES ('28', '19', '3', '1', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/3/2.jpg', '公道杯茶海分茶器陶瓷', '-1', '', '7', '39.00', '273.00', '1514016722', '1514016722');
+INSERT INTO `osc_order_goods` VALUES ('29', '19', '30', '1', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/fruit/product-cake@1.png', '李大爷的妙脆角', '9', '1000g', '5', '8.80', '44.00', '1514016722', '1514016722');
+INSERT INTO `osc_order_goods` VALUES ('30', '19', '34', '0', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/product/2@theme.png', '八宝莲子200克', '-1', '', '1', '9.91', '9.91', '1514016722', '1514016722');
+INSERT INTO `osc_order_goods` VALUES ('100', '44', '3', '1', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/3/2.jpg', '公道杯茶海分茶器陶瓷', '-1', '', '7', '39.00', '273.00', '1514253318', '1514253318');
+INSERT INTO `osc_order_goods` VALUES ('101', '44', '30', '1', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/fruit/product-cake@1.png', '李大爷的妙脆角', '9', '1000g', '5', '8.80', '44.00', '1514253318', '1514253318');
+INSERT INTO `osc_order_goods` VALUES ('102', '44', '34', '0', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/product/2@theme.png', '八宝莲子200克', '-1', '', '1', '9.91', '9.91', '1514253318', '1514253318');
+INSERT INTO `osc_order_goods` VALUES ('103', '45', '3', '1', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/3/2.jpg', '公道杯茶海分茶器陶瓷', '-1', '', '7', '39.00', '273.00', '1514253383', '1514253383');
+INSERT INTO `osc_order_goods` VALUES ('104', '45', '30', '1', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/fruit/product-cake@1.png', '李大爷的妙脆角', '9', '1000g', '5', '8.80', '44.00', '1514253383', '1514253383');
+INSERT INTO `osc_order_goods` VALUES ('105', '45', '34', '0', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/product/2@theme.png', '八宝莲子200克', '-1', '', '1', '9.91', '9.91', '1514253383', '1514253383');
+INSERT INTO `osc_order_goods` VALUES ('106', '46', '3', '1', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/3/2.jpg', '公道杯茶海分茶器陶瓷', '-1', '', '7', '39.00', '273.00', '1514272635', '1514272635');
+INSERT INTO `osc_order_goods` VALUES ('107', '46', '30', '1', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/fruit/product-cake@1.png', '李大爷的妙脆角', '9', '1000g', '5', '8.80', '44.00', '1514272635', '1514272635');
+INSERT INTO `osc_order_goods` VALUES ('108', '46', '34', '0', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/product/2@theme.png', '八宝莲子200克', '-1', '', '1', '9.91', '9.91', '1514272635', '1514272635');
+INSERT INTO `osc_order_goods` VALUES ('109', '47', '3', '1', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/3/2.jpg', '公道杯茶海分茶器陶瓷', '-1', '', '7', '39.00', '273.00', '1514272666', '1514272666');
+INSERT INTO `osc_order_goods` VALUES ('110', '47', '30', '1', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/fruit/product-cake@1.png', '李大爷的妙脆角', '9', '1000g', '5', '8.80', '44.00', '1514272666', '1514272666');
+INSERT INTO `osc_order_goods` VALUES ('111', '47', '34', '0', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/product/2@theme.png', '八宝莲子200克', '-1', '', '1', '9.91', '9.91', '1514272666', '1514272666');
+INSERT INTO `osc_order_goods` VALUES ('112', '48', '3', '1', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/3/2.jpg', '公道杯茶海分茶器陶瓷', '-1', '', '7', '39.00', '273.00', '1514273746', '1514273746');
+INSERT INTO `osc_order_goods` VALUES ('113', '48', '30', '1', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/fruit/product-cake@1.png', '李大爷的妙脆角', '9', '1000g', '5', '8.80', '44.00', '1514273746', '1514273746');
+INSERT INTO `osc_order_goods` VALUES ('114', '48', '34', '0', 'http://wxadmin.edeapp.com/public/uploads/images/osc1/product/2@theme.png', '八宝莲子200克', '-1', '', '1', '9.91', '9.91', '1514273746', '1514273746');
 
 -- ----------------------------
 -- Table structure for `osc_promotion`
@@ -4644,9 +4668,9 @@ CREATE TABLE `osc_transport` (
 -- ----------------------------
 -- Records of osc_transport
 -- ----------------------------
-INSERT INTO `osc_transport` VALUES ('1', '圆通快递', '1513905194');
-INSERT INTO `osc_transport` VALUES ('4', '德邦物流', '1513500750');
-INSERT INTO `osc_transport` VALUES ('5', '顺丰速递', '1513905203');
+INSERT INTO `osc_transport` VALUES ('1', '圆通快递', '1514250632');
+INSERT INTO `osc_transport` VALUES ('4', '德邦物流', '1514252042');
+INSERT INTO `osc_transport` VALUES ('5', '顺丰速递', '1514250592');
 
 -- ----------------------------
 -- Table structure for `osc_transport_extend`
@@ -4665,23 +4689,23 @@ CREATE TABLE `osc_transport_extend` (
   `transport_id` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '运费模板ID',
   `transport_title` varchar(60) NOT NULL DEFAULT '' COMMENT '运费模板',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=336 DEFAULT CHARSET=utf8 COMMENT='运费模板扩展表';
+) ENGINE=InnoDB AUTO_INCREMENT=435 DEFAULT CHARSET=utf8 COMMENT='运费模板扩展表';
 
 -- ----------------------------
 -- Records of osc_transport_extend
 -- ----------------------------
-INSERT INTO `osc_transport_extend` VALUES ('296', '', '', '全国', '1', '12.00', '1', '10.00', '1', '4', '德邦物流');
-INSERT INTO `osc_transport_extend` VALUES ('297', ',11,180,181,182,183,184,185,179,178,177,175,176,14,212,213,214,215,216,217,218,219,220,221,222,12,186,187,188,189,190,191,202,192,193,194,195,196,197,198,199,200,201,10,162,163,164,165,166,167,168,169,170,171,172,173,174,9,39,15,231,232,233,234,235,236,237,238,239,230,229,228,223,224,225,226,227,5,95,106,96,97,98,99,100,101,102,103,104,105,4,84,85,86,87,88,89,90,91,92,93,94,1,36,3,83,82,81,80,73,74,75,76,77,78,79,2,40,', ',11,14,12,10,9,15,5,4,1,3,2,', '浙江,江西,安徽,江苏,上海,山东,内蒙古,山西,北京,河北,天津', '1', '7.00', '1', '6.00', '2', '4', '德邦物流');
-INSERT INTO `osc_transport_extend` VALUES ('298', ',17,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,16,243,257,256,255,254,244,245,246,247,248,249,250,251,252,253,242,240,241,18,283,284,285,286,287,288,282,281,280,275,276,277,278,279,20,310,311,312,313,314,315,316,317,318,319,320,321,322,323,21,334,335,336,337,338,339,340,341,342,343,333,332,331,324,325,326,327,328,329,330,344,19,294,308,309,307,306,305,295,296,297,298,299,300,301,302,303,304,289,290,291,292,293,13,205,206,207,208,209,210,211,204,203,', ',17,16,18,20,21,19,13,', '湖北,河南,湖南,广西,海南,广东,福建', '1', '8.00', '1', '7.00', '2', '4', '德邦物流');
-INSERT INTO `osc_transport_extend` VALUES ('299', ',30,474,470,471,472,473,31,489,490,491,492,488,477,478,479,480,481,482,483,484,485,486,476,475,487,29,462,463,464,465,466,467,468,469,28,451,452,453,454,455,456,457,458,459,460,450,449,448,461,27,438,439,440,441,442,443,444,445,446,447,24,406,407,408,409,410,411,412,413,414,26,431,432,433,434,435,436,437,25,426,427,428,429,430,425,424,423,415,416,417,418,419,420,421,422,23,399,400,401,402,403,404,405,398,397,386,387,388,389,390,391,392,393,394,395,396,385,22,62,', ',30,31,29,28,27,24,26,25,23,22,', '宁夏,新疆,青海,甘肃,陕西,贵州,西藏,云南,四川,重庆', '1', '10.00', '1', '8.00', '2', '4', '德邦物流');
-INSERT INTO `osc_transport_extend` VALUES ('322', '', '', '全国', '1', '15.00', '1', '8.00', '1', '1', '圆通快递');
-INSERT INTO `osc_transport_extend` VALUES ('323', ',11,14,12,10,9,15,17,16,18,', '', '浙江,江西,安徽,江苏,上海,山东,湖北,河南,湖南', '1', '8.00', '1', '5.00', '2', '1', '圆通快递');
-INSERT INTO `osc_transport_extend` VALUES ('324', ',5,4,1,3,2,20,21,19,13,7,8,6,', '', '内蒙古,山西,北京,河北,天津,广西,海南,广东,福建,吉林,黑龙江,辽宁', '1', '10.00', '1', '8.00', '2', '1', '圆通快递');
-INSERT INTO `osc_transport_extend` VALUES ('325', ',30,31,29,28,27,24,26,25,23,22,', '', '宁夏,新疆,青海,甘肃,陕西,贵州,西藏,云南,四川,重庆', '1', '15.00', '1', '10.00', '2', '1', '圆通快递');
-INSERT INTO `osc_transport_extend` VALUES ('329', '', '', '全国', '1', '20.00', '1', '8.00', '1', '5', '顺丰速递');
-INSERT INTO `osc_transport_extend` VALUES ('330', ',11,14,12,10,9,15,', '', '浙江,江西,安徽,江苏,上海,山东', '1', '15.00', '1', '5.00', '2', '5', '顺丰速递');
-INSERT INTO `osc_transport_extend` VALUES ('331', ',17,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,16,243,257,256,255,254,244,245,246,247,248,249,250,251,252,253,242,240,241,18,283,284,285,286,287,288,282,281,280,275,276,277,278,279,20,310,311,312,313,314,315,316,317,318,319,320,321,322,323,21,334,335,336,337,338,339,340,341,342,343,333,332,331,324,325,326,327,328,329,330,344,19,294,308,309,307,306,305,295,296,297,298,299,300,301,302,303,304,289,290,291,292,293,13,205,206,207,208,209,210,211,204,203,', ',17,16,18,20,21,19,13,', '湖北,河南,湖南,广西,海南,广东,福建', '1', '18.00', '1', '8.00', '2', '5', '顺丰速递');
-INSERT INTO `osc_transport_extend` VALUES ('332', ',30,474,470,471,472,473,31,489,490,491,492,488,477,478,479,480,481,482,483,484,485,486,476,475,487,29,462,463,464,465,466,467,468,469,28,451,452,453,454,455,456,457,458,459,460,450,449,448,461,27,438,439,440,441,442,443,444,445,446,447,24,406,407,408,409,410,411,412,413,414,26,431,432,433,434,435,436,437,25,426,427,428,429,430,425,424,423,415,416,417,418,419,420,421,422,23,399,400,401,402,403,404,405,398,397,386,387,388,389,390,391,392,393,394,395,396,385,22,62,', ',30,31,29,28,27,24,26,25,23,22,', '宁夏,新疆,青海,甘肃,陕西,贵州,西藏,云南,四川,重庆', '1', '20.00', '1', '10.00', '2', '5', '顺丰速递');
+INSERT INTO `osc_transport_extend` VALUES ('417', '', '', '全国', '1', '22.00', '1', '12.00', '1', '5', '顺丰速递');
+INSERT INTO `osc_transport_extend` VALUES ('418', ',11,14,12,10,9,15,5,4,1,3,2,7,8,6,', '', '浙江,江西,安徽,江苏,上海,山东,内蒙古,山西,北京,河北,天津,吉林,黑龙江,辽宁', '1', '15.00', '1', '5.00', '2', '5', '顺丰速递');
+INSERT INTO `osc_transport_extend` VALUES ('419', ',17,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,16,243,257,256,255,254,244,245,246,247,248,249,250,251,252,253,242,240,241,18,283,284,285,286,287,288,282,281,280,275,276,277,278,279,20,310,311,312,313,314,315,316,317,318,319,320,321,322,323,21,334,335,336,337,338,339,340,341,342,343,333,332,331,324,325,326,327,328,329,330,344,19,294,308,309,307,306,305,295,296,297,298,299,300,301,302,303,304,289,290,291,292,293,13,205,206,207,208,209,210,211,204,203,', ',17,16,18,20,21,19,13,', '湖北,河南,湖南,广西,海南,广东,福建', '1', '18.00', '1', '8.00', '2', '5', '顺丰速递');
+INSERT INTO `osc_transport_extend` VALUES ('420', ',30,474,470,471,472,473,31,489,490,491,492,488,477,478,479,480,481,482,483,484,485,486,476,475,487,29,462,463,464,465,466,467,468,469,28,451,452,453,454,455,456,457,458,459,460,450,449,448,461,27,438,439,440,441,442,443,444,445,446,447,24,406,407,408,409,410,411,412,413,414,26,431,432,433,434,435,436,437,25,426,427,428,429,430,425,424,423,415,416,417,418,419,420,421,422,23,399,400,401,402,403,404,405,398,397,386,387,388,389,390,391,392,393,394,395,396,385,22,62,', ',30,31,29,28,27,24,26,25,23,22,', '宁夏,新疆,青海,甘肃,陕西,贵州,西藏,云南,四川,重庆', '1', '20.00', '1', '10.00', '2', '5', '顺丰速递');
+INSERT INTO `osc_transport_extend` VALUES ('424', '', '', '全国', '1', '18.00', '1', '12.00', '1', '1', '圆通快递');
+INSERT INTO `osc_transport_extend` VALUES ('425', ',11,14,12,10,9,15,17,16,18,20,21,19,13,', '', '浙江,江西,安徽,江苏,上海,山东,湖北,河南,湖南,广西,海南,广东,福建', '1', '8.00', '1', '4.00', '2', '1', '圆通快递');
+INSERT INTO `osc_transport_extend` VALUES ('426', ',5,4,1,3,2,7,8,6,', '', '内蒙古,山西,北京,河北,天津,吉林,黑龙江,辽宁', '1', '10.00', '1', '5.00', '2', '1', '圆通快递');
+INSERT INTO `osc_transport_extend` VALUES ('427', ',30,31,29,28,27,24,26,25,23,22,', '', '宁夏,新疆,青海,甘肃,陕西,贵州,西藏,云南,四川,重庆', '1', '15.00', '1', '8.00', '2', '1', '圆通快递');
+INSERT INTO `osc_transport_extend` VALUES ('431', '', '', '全国', '1', '12.00', '1', '10.00', '1', '4', '德邦物流');
+INSERT INTO `osc_transport_extend` VALUES ('432', ',11,14,12,10,9,15,5,4,1,3,2,7,8,6,', '', '浙江,江西,安徽,江苏,上海,山东,内蒙古,山西,北京,河北,天津,吉林,黑龙江,辽宁', '1', '6.00', '1', '5.00', '2', '4', '德邦物流');
+INSERT INTO `osc_transport_extend` VALUES ('433', ',17,258,259,260,261,262,263,264,265,266,267,268,269,270,271,272,273,274,16,243,257,256,255,254,244,245,246,247,248,249,250,251,252,253,242,240,241,18,283,284,285,286,287,288,282,281,280,275,276,277,278,279,20,310,311,312,313,314,315,316,317,318,319,320,321,322,323,21,334,335,336,337,338,339,340,341,342,343,333,332,331,324,325,326,327,328,329,330,344,19,294,308,309,307,306,305,295,296,297,298,299,300,301,302,303,304,289,290,291,292,293,13,205,206,207,208,209,210,211,204,203,', ',17,16,18,20,21,19,13,', '湖北,河南,湖南,广西,海南,广东,福建', '1', '8.00', '1', '7.00', '2', '4', '德邦物流');
+INSERT INTO `osc_transport_extend` VALUES ('434', ',30,474,470,471,472,473,31,489,490,491,492,488,477,478,479,480,481,482,483,484,485,486,476,475,487,29,462,463,464,465,466,467,468,469,28,451,452,453,454,455,456,457,458,459,460,450,449,448,461,27,438,439,440,441,442,443,444,445,446,447,24,406,407,408,409,410,411,412,413,414,26,431,432,433,434,435,436,437,25,426,427,428,429,430,425,424,423,415,416,417,418,419,420,421,422,23,399,400,401,402,403,404,405,398,397,386,387,388,389,390,391,392,393,394,395,396,385,22,62,', ',30,31,29,28,27,24,26,25,23,22,', '宁夏,新疆,青海,甘肃,陕西,贵州,西藏,云南,四川,重庆', '1', '10.00', '1', '8.00', '2', '4', '德邦物流');
 
 -- ----------------------------
 -- Table structure for `osc_user_action`
@@ -4695,7 +4719,7 @@ CREATE TABLE `osc_user_action` (
   `info` varchar(255) DEFAULT NULL COMMENT '行为描述',
   `add_time` int(10) NOT NULL DEFAULT '0' COMMENT '加入时间',
   PRIMARY KEY (`ua_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=771 DEFAULT CHARSET=utf8 COMMENT='用户行为';
+) ENGINE=InnoDB AUTO_INCREMENT=801 DEFAULT CHARSET=utf8 COMMENT='用户行为';
 
 -- ----------------------------
 -- Records of osc_user_action
@@ -4943,3 +4967,33 @@ INSERT INTO `osc_user_action` VALUES ('767', '1', 'admin', '后台系统用户',
 INSERT INTO `osc_user_action` VALUES ('768', '1', 'admin', '后台系统用户', '编辑了会员', '1513919718');
 INSERT INTO `osc_user_action` VALUES ('769', '1', 'admin', '后台系统用户', '编辑了会员', '1513919725');
 INSERT INTO `osc_user_action` VALUES ('770', '1', 'admin', '后台系统用户', '登录了后台系统', '1513992988');
+INSERT INTO `osc_user_action` VALUES ('771', '1', 'admin', '后台系统用户', '登录了后台系统', '1514162773');
+INSERT INTO `osc_user_action` VALUES ('772', '1', 'admin', '后台系统用户', '更新商品17', '1514180292');
+INSERT INTO `osc_user_action` VALUES ('773', '1', 'admin', '后台系统用户', '更新商品18', '1514180306');
+INSERT INTO `osc_user_action` VALUES ('774', '1', 'admin', '后台系统用户', '更新商品18', '1514180326');
+INSERT INTO `osc_user_action` VALUES ('775', '1', 'admin', '后台系统用户', '更新商品17', '1514180327');
+INSERT INTO `osc_user_action` VALUES ('776', '1', 'admin', '后台系统用户', '更新了运费模板', '1514188816');
+INSERT INTO `osc_user_action` VALUES ('777', '1', 'admin', '后台系统用户', '更新了运费模板', '1514188846');
+INSERT INTO `osc_user_action` VALUES ('778', '1', 'admin', '后台系统用户', '更新了运费模板', '1514194526');
+INSERT INTO `osc_user_action` VALUES ('779', '1', 'admin', '后台系统用户', '更新了运费模板', '1514194534');
+INSERT INTO `osc_user_action` VALUES ('780', '1', 'admin', '后台系统用户', '更新了运费模板', '1514194542');
+INSERT INTO `osc_user_action` VALUES ('781', '1', 'admin', '后台系统用户', '登录了后台系统', '1514250212');
+INSERT INTO `osc_user_action` VALUES ('782', '1', 'admin', '后台系统用户', '更新了运费模板', '1514250256');
+INSERT INTO `osc_user_action` VALUES ('783', '1', 'admin', '后台系统用户', '更新了运费模板', '1514250403');
+INSERT INTO `osc_user_action` VALUES ('784', '1', 'admin', '后台系统用户', '更新了运费模板', '1514250439');
+INSERT INTO `osc_user_action` VALUES ('785', '1', 'admin', '后台系统用户', '更新了运费模板', '1514250467');
+INSERT INTO `osc_user_action` VALUES ('786', '1', 'admin', '后台系统用户', '更新了运费模板', '1514250476');
+INSERT INTO `osc_user_action` VALUES ('787', '1', 'admin', '后台系统用户', '更新了运费模板', '1514250490');
+INSERT INTO `osc_user_action` VALUES ('788', '1', 'admin', '后台系统用户', '更新了运费模板', '1514250555');
+INSERT INTO `osc_user_action` VALUES ('789', '1', 'admin', '后台系统用户', '更新了运费模板', '1514250592');
+INSERT INTO `osc_user_action` VALUES ('790', '1', 'admin', '后台系统用户', '更新了运费模板', '1514250632');
+INSERT INTO `osc_user_action` VALUES ('791', '1', 'admin', '后台系统用户', '更新了运费模板', '1514252042');
+INSERT INTO `osc_user_action` VALUES ('792', '1', 'admin', '后台系统用户', '更新了物流单号', '1514260200');
+INSERT INTO `osc_user_action` VALUES ('793', '1', 'admin', '后台系统用户', '更新了物流单号', '1514265040');
+INSERT INTO `osc_user_action` VALUES ('794', '1', 'admin', '后台系统用户', '修改了用户状态', '1514272661');
+INSERT INTO `osc_user_action` VALUES ('795', '1', 'admin', '后台系统用户', '修改了用户状态', '1514273743');
+INSERT INTO `osc_user_action` VALUES ('796', '1', 'admin', '后台系统用户', '修改了用户状态', '1514273748');
+INSERT INTO `osc_user_action` VALUES ('797', '1', 'admin', '后台系统用户', '修改了用户状态', '1514274320');
+INSERT INTO `osc_user_action` VALUES ('798', '1', 'admin', '后台系统用户', '修改了用户状态', '1514274326');
+INSERT INTO `osc_user_action` VALUES ('799', '1', 'admin', '后台系统用户', '修改了用户状态', '1514274441');
+INSERT INTO `osc_user_action` VALUES ('800', '1', 'admin', '后台系统用户', '登录了后台系统', '1514423415');

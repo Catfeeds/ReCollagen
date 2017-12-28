@@ -84,7 +84,7 @@ Route::post('api/:version/order/transfee', 'api/:version.Order/getTransFee');   
 
 Route::put('api/:version/order/delivery', 'api/:version.Order/delivery');
 //不想把所有查询都写在一起，所以增加by_user，很好的REST与RESTFul的区别
-Route::get('api/:version/order/by_user/:status', 'api/:version.Order/getSummaryByUser');        //根据订单类型获取某个用户订单列表
+Route::get('api/:version/order/by_user/:status/:page', 'api/:version.Order/getSummaryByUser');        //根据订单类型获取某个用户订单列表
 Route::get('api/:version/order/paginate', 'api/:version.Order/getSummary');
 
 //Pay

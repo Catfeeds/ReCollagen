@@ -27,15 +27,16 @@ class Order extends BaseController
      * @url /order
      * @HTTP POST
      */
-    public function createOrder(){
+    public function createOrder()
+    {
         (new OrderPlace())->goCheck();
         $postData = input('post.');
         $products = input('post.goodsArrInfo/a');
         $uid      = Token::getCurrentUid();
         // $uid      = 2;
 
-        $order    = new OrderService();
-        $status   = $order->place($uid, $products,$postData);
+        $order  = new OrderService();
+        $status = $order->place($uid, $products, $postData);
 
         return $status;
     }
@@ -47,16 +48,17 @@ class Order extends BaseController
      * @throws OrderException
      * @throws \app\lib\exception\ParameterException
      */
-    public function getDetail($id){
+    public function getDetail($id)
+    {
 
         (new IDMustBePositiveInt())->goCheck();
         $orderDetail = OrderModel::getDetail($id);
-        if (!$orderDetail){
+        if (!$orderDetail) {
             throw new OrderException();
         }
         $orderDetail = $orderDetail
-            ->hidden(['pay_subject_img','pay_subject','mainPay','secondPay','promotion'])->toArray();
-        
+            ->hidden(['pay_subject_img', 'pay_subject', 'mainPay', 'secondPay', 'promotion'])->toArray();
+
         return $orderDetail;
     }
 
@@ -65,17 +67,24 @@ class Order extends BaseController
      * @return array
      * @throws \app\lib\exception\ParameterException
      */
-    public function getSummaryByUser($status){
+    public function getSummaryByUser($status=1, $page = 1)
+    {
         $uid = Token::getCurrentUid();
-        $orders = OrderModel::getSummaryByUser($uid,$status);
-        if ($orders->isEmpty()){
-            return [];
+        $pagingOrders = OrderModel::getSummaryByUser($uid, $status, $page);
+        if ($pagingOrders->isEmpty()) {
+            return [
+                'current_page' => $pagingOrders->currentPage(),
+                'data' => []
+            ];
         }
 
-        $data = $orders->hidden(['shipping_name','shipping_tel','shipping_addr','shipping_method','shipping_num','mainPay','secondPay','mainGoodsPrice','otherGoodsPrice','shippingPrice','promotion','create_time','products'])
+        $data = $pagingOrders->hidden(['shipping_name', 'shipping_tel', 'shipping_addr', 'shipping_method', 'shipping_num', 'mainPay', 'secondPay', 'mainGoodsPrice', 'otherGoodsPrice', 'shippingPrice', 'promotion', 'create_time', 'products'])
             ->toArray();
 
-        return $data;
+        return [
+            'current_page' => $pagingOrders->currentPage(),
+            'data' => $data
+        ];
 
     }
 
@@ -86,12 +95,12 @@ class Order extends BaseController
      * @return array
      * @throws \app\lib\exception\ParameterException
      */
-    public function getSummary($page=1, $size = 20){
+    public function getSummary($page = 1, $size = 20)
+    {
         (new PagingParameter())->goCheck();
 //        $uid = Token::getCurrentUid();
         $pagingOrders = OrderModel::getSummaryByPage($page, $size);
-        if ($pagingOrders->isEmpty())
-        {
+        if ($pagingOrders->isEmpty()) {
             return [
                 'current_page' => $pagingOrders->currentPage(),
                 'data' => []
@@ -105,56 +114,65 @@ class Order extends BaseController
         ];
     }
 
-    public function delivery($id){
+    public function delivery($id)
+    {
         (new IDMustBePositiveInt())->goCheck();
-        $order = new OrderService();
+        $order   = new OrderService();
         $success = $order->delivery($id);
-        if($success){
+        if ($success) {
             return new SuccessMessage();
         }
     }
+
     /**
      * 根据订单id查询物流进度
      */
-    public function getTransInfo($id){
+    public function getTransInfo($id)
+    {
 
-        $orderDetail = $this->getDetail($id);
+        $orderDetail  = $this->getDetail($id);
         $shippingCode = getShippingCode($orderDetail['shipping_method']);
-        $url = 'https://m.kuaidi100.com/query?type='.$shippingCode.'&postid='.$orderDetail['shipping_num'];
-        $info = curl_post($url);
+        $url          = 'https://m.kuaidi100.com/query?type=' . $shippingCode . '&postid=' . $orderDetail['shipping_num'];
+        $info         = curl_post($url);
 
         return json_decode($info);
     }
+
     /**
      * 取消订单
      */
-    public function cancelOrder($id){
-        (new IDMustBePositiveInt()) -> goCheck();
+    public function cancelOrder($id)
+    {
+        (new IDMustBePositiveInt())->goCheck();
         $uid = Token::getCurrentUid();
 
-        $order = new OrderService();
-        $success = $order->cancel($id,$uid);
-        if($success){
+        $order   = new OrderService();
+        $success = $order->cancel($id, $uid);
+        if ($success) {
             return new SuccessMessage();
         }
     }
+
     /**
      * 确认收货
      */
-    public function receiveOrder($id){
-        (new IDMustBePositiveInt()) -> goCheck();
+    public function receiveOrder($id)
+    {
+        (new IDMustBePositiveInt())->goCheck();
         $uid = Token::getCurrentUid();
 
-        $order = new OrderService();
-        $success = $order->receive($id,$uid);
-        if($success){
+        $order   = new OrderService();
+        $success = $order->receive($id, $uid);
+        if ($success) {
             return new SuccessMessage();
         }
     }
+
     /**
      * 根据商品重量匹配物流公司和运费
      */
-    public function getTransFee(){
+    public function getTransFee()
+    {
         $order = new OrderService();
         return $order->getTransFee(input('post.'));
     }
