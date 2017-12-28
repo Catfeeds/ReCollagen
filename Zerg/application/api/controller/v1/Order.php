@@ -21,7 +21,7 @@ class Order extends BaseController
         'checkPrimaryScope'   => ['only' => 'getDetail,getSummaryByUser'],
         'checkSuperScope'     => ['only' => 'delivery,getSummary']
     ];
-    
+
     /**
      * 下单
      * @url /order
@@ -61,14 +61,13 @@ class Order extends BaseController
     }
 
     /**
-     * 根据用户id获取订单列表（简要信息）
+     * 根据订单类型获取某个用户订单列表（简要信息）
      * @return array
      * @throws \app\lib\exception\ParameterException
      */
-    public function getSummaryByUser(){
-        
+    public function getSummaryByUser($status){
         $uid = Token::getCurrentUid();
-        $orders = OrderModel::getSummaryByUser($uid);
+        $orders = OrderModel::getSummaryByUser($uid,$status);
         if ($orders->isEmpty()){
             return [];
         }

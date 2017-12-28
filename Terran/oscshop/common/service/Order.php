@@ -77,7 +77,6 @@ class Order{
 		$map['Order.order_id']=['gt',0];
 	
 		return Db::view('Order','*')
-			->view('Member','openId','Order.uid=Member.uid')
 			->view('Dispatch','dispatch_title','Order.dispatch_id=Dispatch.id')
 			->where($map)
 			->order('Order.order_id desc')
@@ -403,7 +402,7 @@ class Order{
 		$name='会员订单表';
 
 		$page = Db::view('Order','*')
-			->view('Member','openId','Order.uid=Member.uid')
+			// ->view('Member','openId','Order.uid=Member.uid')
 			->view('Dispatch','dispatch_title','Order.dispatch_id=Dispatch.id')
 			->order('Order.order_id desc')
 			->select();
@@ -451,27 +450,26 @@ class Order{
 		//设置宽
 		$objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(8);
 		$objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(25);
-		$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(25);
-		$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(20);
-		$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(18);
-		$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(50);
-		$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(25);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(18);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(50);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(25);
+		$objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(15);
 		$objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(15);
 		$objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(15);
 		$objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(15);
-		$objPHPExcel->getActiveSheet()->getColumnDimension('K')->setWidth(15);
-		$objPHPExcel->getActiveSheet()->getStyle('A1:K1')->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID);
-		$objPHPExcel->getActiveSheet()->getStyle('A1:K1')->getFill()->getStartColor()->setARGB('333399');
+		$objPHPExcel->getActiveSheet()->getStyle('A1:J1')->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID);
+		$objPHPExcel->getActiveSheet()->getStyle('A1:J1')->getFill()->getStartColor()->setARGB('333399');
 	
-		$objPHPExcel->getActiveSheet()->setCellValue('A1', '订单ID')->setCellValue('B1', '订单号')->setCellValue('C1', '会员微信openId')->setCellValue('D1', '收货人')->setCellValue('E1', '联系电话')
-		->setCellValue('F1', '收货地址')->setCellValue('G1', '下单时间')->setCellValue('H1', '主账户消费')->setCellValue('I1', '辅账户消费')->setCellValue('J1', '总计')->setCellValue('K1', '状态');
-		$objPHPExcel->getActiveSheet()->getStyle('A1:K1')->applyFromArray($styleArray);
+		$objPHPExcel->getActiveSheet()->setCellValue('A1', '订单ID')->setCellValue('B1', '订单号')->setCellValue('C1', '收货人')->setCellValue('D1', '联系电话')
+		->setCellValue('E1', '收货地址')->setCellValue('F1', '下单时间')->setCellValue('G1', '主账户消费')->setCellValue('H1', '小金库消费')->setCellValue('I1', '总计')->setCellValue('J1', '状态');
+		$objPHPExcel->getActiveSheet()->getStyle('A1:J1')->applyFromArray($styleArray);
 	
 		for ($row = 0; $row < count($page); $row++){
 			$i = $row+2;
-			$objPHPExcel->getActiveSheet()->setCellValue('A'.$i, $page[$row]['order_id'])->setCellValue('B'.$i, $page[$row]['order_num_alias'])->setCellValue('C'.$i, $page[$row]['openId'])->setCellValue('D'.$i, $page[$row]['shipping_name'])
-			->setCellValue('E'.$i, $page[$row]['shipping_tel'])->setCellValue('F'.$i, $page[$row]['shipping_addr'])->setCellValue('G'.$i, $page[$row]['create_time'])->setCellValue('H'.$i, $page[$row]['mainPay'])->setCellValue('I'.$i, $page[$row]['secondPay'])
-			->setCellValue('J'.$i, $page[$row]['total'])->setCellValue('K'.$i, $page[$row]['order_status']);
+			$objPHPExcel->getActiveSheet()->setCellValue('A'.$i, $page[$row]['order_id'])->setCellValue('B'.$i, $page[$row]['order_num_alias'])->setCellValue('C'.$i, $page[$row]['shipping_name'])
+			->setCellValue('D'.$i, $page[$row]['shipping_tel'])->setCellValue('E'.$i, $page[$row]['shipping_addr'])->setCellValue('F'.$i, $page[$row]['create_time'])->setCellValue('G'.$i, $page[$row]['mainPay'])->setCellValue('H'.$i, $page[$row]['secondPay'])
+			->setCellValue('I'.$i, $page[$row]['total'])->setCellValue('J'.$i, $page[$row]['order_status']);
 		}
 	
 		//输出EXCEL格式

@@ -15,8 +15,8 @@ class Member extends Validate
     protected $message = [
         'mainAccount.number' =>  '主账户金额必须为数字',
         'mainAccount.egt'    =>  '主账户金额最小值为0',
-        'secondAccount.egt'  =>  '辅账户金额必须为数字',
-        'secondAccount.egt'  =>  '辅账户金额最小值为0',
+        'secondAccount.egt'  =>  '小金库金额必须为数字',
+        'secondAccount.egt'  =>  '小金库金额最小值为0',
     ];
 	
 }

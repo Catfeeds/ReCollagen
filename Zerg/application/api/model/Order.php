@@ -26,8 +26,8 @@ class Order extends BaseModel
     /**
      * 根据用户id获取订单列表（简要信息）
      */
-    public static function getSummaryByUser($uid){
-        $data = self::with('products')->where('uid', '=', $uid)
+    public static function getSummaryByUser($uid,$status){
+        $data = self::with('products')->where(['uid'=>$uid,'order_status'=>$status])
             ->order('create_time desc')
             ->select();
         if (!empty($data)) {
