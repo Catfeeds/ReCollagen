@@ -6,7 +6,7 @@ use think\Model;
 
 class Order extends BaseModel
 {
-    protected $hidden = ['uid','update_time','dispatch_id','pay_time'];
+    protected $hidden = ['uid', 'update_time', 'dispatch_id', 'pay_time'];
     protected $autoWriteTimestamp = true;
 
     // public function getSnapItemsAttr($value)
@@ -26,10 +26,11 @@ class Order extends BaseModel
     /**
      * 根据用户id获取订单列表（简要信息）
      */
-    public static function getSummaryByUser($uid,$status){
-        $data = self::with('products')->where(['uid'=>$uid,'order_status'=>$status])
+    public static function getSummaryByUser($uid, $status, $page)
+    {
+        $data = self::with('products')->where(['uid' => $uid, 'order_status' => $status])
             ->order('create_time desc')
-            ->select();
+            ->paginate(10, true, ['page' => $page]);
         if (!empty($data)) {
             foreach ($data as $key => $v) {
                 $data[$key]['productCount'] = count($v['products']);
@@ -38,10 +39,11 @@ class Order extends BaseModel
         return $data;
     }
 
-    public static function getSummaryByPage($page=1, $size=20){
+    public static function getSummaryByPage($page = 1, $size = 20)
+    {
         $pagingData = self::order('create_time desc')
             ->paginate($size, true, ['page' => $page]);
-        return $pagingData ;
+        return $pagingData;
     }
 
     public function products()
@@ -52,12 +54,13 @@ class Order extends BaseModel
     /**
      * 根据订单id获取订单详情
      */
-    public static function getDetail($id){
+    public static function getDetail($id)
+    {
 
         $orderDetail = self::with('products')->find($id);
         if (!empty($orderDetail['promotion'])) {
-            $promotion = json_decode($orderDetail['promotion'],true);
-            $orderDetail['promotionName'] = array_column($promotion,'name');
+            $promotion                    = json_decode($orderDetail['promotion'], true);
+            $orderDetail['promotionName'] = array_column($promotion, 'name');
         }
         return $orderDetail;
     }
