@@ -207,9 +207,9 @@
   margin-right:10rpx;
 }
 .attr_list_li.on{
-  border:1px solid #ff0000;
+  border:1px solid #75bb0b;
   color:#fff;
-  background: #ff0000;
+  background: #75bb0b;
 }
 .attr_list_li.disabled {
   border:1px dotted #ddd;
