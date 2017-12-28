@@ -65,16 +65,16 @@ class OrderBackend extends AdminBase{
 		$og=Db::name('order_goods')->find($data['order_goods_id']);
 		
 		if($type=='quantity'){
-					
-			$update['quantity']=$data['quantity'];
-			$update['total']=$data['quantity']*$og['price'];
-			$update['order_goods_id']=$data['order_goods_id'];
+
+            $update['quantity']       = $data['quantity'];
+            $update['total']          = $data['quantity'] * $og['price'];
+            $update['order_goods_id'] = $data['order_goods_id'];
 			
 		}elseif($type=='price'){
-			
-			$update['price']=$data['price'];
-			$update['total']=$og['quantity']*$data['price'];						
-			$update['order_goods_id']=$data['order_goods_id'];
+
+            $update['price']          = $data['price'];
+            $update['total']          = $og['quantity'] * $data['price'];
+            $update['order_goods_id'] = $data['order_goods_id'];
 			
 		}		
 		

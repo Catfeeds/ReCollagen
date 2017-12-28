@@ -1,11 +1,11 @@
 Request:
-    /api/v1/order/by_user
+    /api/v1/order/by_user/:status
 
 Method:
     Get
 
 Params:
-    ""
+    "status"    :   "订单类型(1待付款,2待发货,3已发货,4已收货,5已取消订单)"
 
 
 
