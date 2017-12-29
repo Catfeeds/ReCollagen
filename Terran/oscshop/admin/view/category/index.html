@@ -21,7 +21,7 @@
 				<thead>
 					<tr>
 						<th>排序</th> 		
-						<th>图片</th> 									
+						<th class="hidden-xs">图片</th> 									
 						<th>分类名称</th>					
 						<th>操作</th>				
 					</tr>
@@ -32,12 +32,12 @@
 						<td>
 							<input name="sort" type="text" size="1" class="sort" cid='{$cat.id}' value="{$cat.sort}" />								
 						</td>
-						<td>
+						<td class="hidden-xs">
 							<a href="{:url('Category/index',array('pid'=>$cat['id']))}">
 								{if condition="$cat['image']"}
-		                  			<img src="IMG_ROOT{$cat.image|resize=200,100}" />
+		                  			<img style="max-width: 100%;" src="IMG_ROOT{$cat.image|resize=200,100}" />
 			                  	{else /}
-			                  		<img src="__PUBLIC__/image/no_image_50x50.jpg" />
+			                  		<img style="max-width: 100%;" src="__PUBLIC__/image/no_image_50x50.jpg" />
 			                  	{/if}
 		                  	</a>
 						</td>

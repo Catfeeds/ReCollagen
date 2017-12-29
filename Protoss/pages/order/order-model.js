@@ -110,9 +110,9 @@ class Order extends Base{
     }
 
     /*获得所有订单,pageIndex 从1开始*/
-    getOrders(pageIndex,callback){
+    getOrders(statusId,pageIndex,callback){
         var allParams = {
-            url: 'order/by_user',
+            url: 'order/by_user/' + statusId+'/'+pageIndex,
             type:'get',
             sCallback: function (data) {
               callback && callback(data);  //1待付款,2待发货,3已发货,4已收货,5已取消订单

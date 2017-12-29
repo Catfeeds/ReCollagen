@@ -46,11 +46,11 @@
                 </tr>
 				<tr>
 				    <td>主账户金额（元）</td>
-				    <td><input name="mainAccount" type="text" style="width:200px;" value="{$data.mainAccount}" /></td>
+				    <td><input name="mainAccount" type="text" style="width:60%;" value="{$data.mainAccount}" /></td>
 				</tr> 
  				<tr>
 				    <td>小金库金额（元）</td>
-				    <td><input name="secondAccount" type="text" style="width:200px;" value="{$data.secondAccount}" /></td>
+				    <td><input name="secondAccount" type="text" style="width:60%;" value="{$data.secondAccount}" /></td>
 				</tr> 
 				<tr>
 					<td>创建时间</td>
@@ -73,22 +73,28 @@
 				</div>
 			</div>
 		</div>
-		
-		<div class="tab-pane" id="tab-shipping">
-			<table class="table table-binfoed">
-				{volist name="address" id="vo"}
-				<tr>
-					<td>{if $vo['is_default'] == 1}默认{/if}收货人: {$vo.name}</td>
-					<td>所在地:</td>
-					<td>{$vo.province},{$vo.city},{$vo.country}</td>
-					<td>地址:</td>
-					<td>{$vo.address}</td>
-					<td>联系电话:</td>
-					<td>{$vo.telephone}</td>
-				</tr>
-				{/volist}
-			</table>
+
+
+		<div class="row tab-pane" id="tab-shipping">
+			{volist name="address" id="vo"}
+
+			<div class=" col-xs-12 col-md-3" style="height: 26px;" >
+				  {if $vo['is_default'] == 1}默认{/if}收货人: {$vo.name}
+			  </div>
+			  <div class=" col-xs-12 col-md-3" style="height: 26px;" >
+			  	所在地: {$vo.province},{$vo.city},{$vo.country}
+			  </div>
+			  <div class=" col-xs-12 col-md-3" style="height: 26px;" >
+			  	地址: {$vo.address}
+			  </div>
+			  <div class=" col-xs-12 col-md-3" style="height: 26px;" >
+			  	联系电话: {$vo.telephone}
+			  </div>
+			{/volist}
+
 		</div>
+
+	</div>
 	
 	</div>
 	</form>	
