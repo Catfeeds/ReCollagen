@@ -183,13 +183,13 @@ background: #F2F2F2;
 .postage-tpl span.error, .postage-tpl span.stop { display: inline-block; float: none;}
 /*运费模板选择地区弹出层*/
 .ks-ext-mask {filter:progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr='#BFFFFFFF', endColorstr='#BFFFFFFF');background:rgba(255,255,255,0.75);}
-.dialog-areas, .dialog-batch { background-color: #FFF; max-width: 640px; min-width: 300px;position: fixed; z-index: 9999; top: 25%; left: 0; right: 0; margin: 0 auto; }
+.dialog-areas, .dialog-batch { background-color: #FFF; max-width: 640px; min-width: 300px;position: fixed; z-index: 9999; top: 0; bottom: 0; left: 0; right: 0; margin:auto; }
 .dialog-batch { top: 40%;}
 .ks-contentbox { display: block; margin: 0 10px;    border: 1px solid #CCC; }
 .ks-contentbox .title { font-size: 14px;font-weight: bold; color: #555; background-color: #FFF;  padding: 10px; border-bottom: solid 1px #E6E6E6; position: relative; z-index: 1;}
 a.ks-ext-close { font: lighter 14px/20px Verdana; color: #999; text-align: center; display: block; width: 20px; height: 20px; position: absolute; z-index: 1; top: 10px; right: 10px; cursor: pointer;}
 a:hover.ks-ext-close { text-decoration: none; color: #27A9E3;}
-.dialog-areas ul { display: block; padding: 10px;margin:0;}
+.dialog-areas ul { display: block; padding: 10px;margin:0; overflow-y: auto; max-height: 540px; }
 .dialog-areas li { display: block; width: 100%; clear: none;}
 .dialog-areas li.even {	background-color: #F7F7F7;}
 .ncsc-region { font-size: 0; *word-spacing:-1px/*IE6、7*/; overflow: visible!important;margin:0;}
