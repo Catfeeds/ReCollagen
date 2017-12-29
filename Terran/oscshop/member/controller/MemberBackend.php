@@ -25,7 +25,7 @@ class MemberBackend extends AdminBase{
 		}
 
 		$list=Db::name('member')->alias('m')->field('m.*,a.name,a.telephone')
-			->join('__ADDRESS__ a','a.uid=m.uid','left')
+			->join('__ADDRESS__ a','a.uid=m.uid and a.is_default =1','left')
 			->where($map)
 			->order('m.create_time desc')
 			->paginate(config('page_num'));		
@@ -54,13 +54,15 @@ class MemberBackend extends AdminBase{
 				$this->error('编辑失败');
 			}
 		}
-		
+		$uid = input('param.id/d');
 		$data = Db::name('member')->alias('m')->field('m.*,a.name,a.telephone,a.province,a.city,a.country,a.address')
-			->join('__ADDRESS__ a','a.uid=m.uid','left')
-			->where(['m.uid'=>input('param.id/d')])
+			->join('__ADDRESS__ a','a.uid=m.uid and a.is_default =1','left')
+			->where(['m.uid'=>$uid])
 			->find();
+		$address = Db::name('address')->where('uid',$uid)->order('is_default desc')->select();
 
-		$this->assign('data',$data);
+        $this->assign('data',$data);
+        $this->assign('address',$address);
 		$this->assign('crumbs','会员资料');
 	 	return $this->fetch('info');
 	}
