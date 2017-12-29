@@ -29,7 +29,6 @@ class Category extends BaseController
            ]);
         }
         $categories = $categories->hidden(['pid','child.pid'])->toArray();
-        halt($categories);
         return $categories;
     }
 
