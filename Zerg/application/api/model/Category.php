@@ -6,7 +6,7 @@ use think\Model;
 
 class Category extends BaseModel{
     
-    protected $hidden = ['sort', 'update_time', 'pid', 'meta_keyword', 'meta_description'];
+    protected $hidden = ['sort', 'update_time', 'meta_keyword', 'meta_description'];
 
     /**
      * 修改图片路径
@@ -28,7 +28,14 @@ class Category extends BaseModel{
      * 获取所有商品分类
      */
     public static function getAllCategories(){
-        $categories = self::order('sort')->select();
+        $categories = self::where(['pid'=>0])->order('sort')->select();
+        if (!empty($categories)) {
+            foreach ($categories as $k => $parent) {
+                $child = self::where(['pid'=>$parent['id']])->order('sort')->select();
+                $categories[$k]['child'] = $child;
+
+            }
+        }
         return $categories;
     }
     public static function getCategories($ids)

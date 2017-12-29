@@ -25,10 +25,10 @@
 				<option value="">全部分类</option>			
 				<?php $input_cid=input('category'); ?>				
 				{volist name="category" id="cat"}
-					<option {if condition="$input_cid eq $cat['id']"} selected="selected"{/if} value="{$cat.id}">{$cat.name}</option>
+					<option {if condition="$input_cid eq $cat['id']"} selected="selected"{/if} value="{$cat.id}">{$cat.title_show}</option>
 				{/volist}
 			</select>
-		</th>	
+		</th>
 		<th>    				
 			<select name="isMainGoods">
 				<option {if condition="$isMainGoods eq null"} selected="selected"{/if}value="">全部状态</option>							

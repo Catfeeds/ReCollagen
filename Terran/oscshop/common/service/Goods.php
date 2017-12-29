@@ -209,9 +209,9 @@ class Goods{
 	}
 	
 	//取得商品分类树形结构
-	public function get_category_tree(){	
+	public function get_category_tree($where = []){
 		$tree=new \oscshop\Tree();	
-		return $tree->toFormatTree(Db::name('category')->field('id,pid,name')->order('sort')->select(),'name');
+		return $tree->toFormatTree(Db::name('category')->field('id,pid,name')->where($where)->order('sort')->select(),'name');
 	}
 
 	//取得商品分类
