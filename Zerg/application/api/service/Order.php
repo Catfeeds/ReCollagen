@@ -434,7 +434,7 @@ class Order
         $this->uid   = Token::getCurrentUid();
         // $this->uid   = 2;
 
-        $userAddress = UserAddress::where(['uid'=>$this->uid])
+        $userAddress = UserAddress::where('uid', '=', $this->uid)
             ->find();
         if (!$userAddress) {
             $trans['fee'] = 0;
