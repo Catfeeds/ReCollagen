@@ -22,7 +22,7 @@
 					<tr>		
 						<th>排序</th> 	
 						<th>图片</th> 									
-						<th>链接到</th>					
+						<th class="hidden-xs">链接到</th>					
 						<th>操作</th>				
 					</tr>
 				</thead>
@@ -34,12 +34,12 @@
 							</td>					
 							<td>
 							{if condition="$data['image']"}
-		                  		<img src="IMG_ROOT{$data.image|resize=200,100}" />
+		                  		<img style="max-width: 100%;" src="IMG_ROOT{$data.image|resize=200,100}" />
 		                  	{else /}
-		                  		<img src="__PUBLIC__/image/no_image_100x100.jpg" title="暂无图片" />
+		                  		<img style="max-width: 100%;" src="__PUBLIC__/image/no_image_100x100.jpg" title="暂无图片" />
 		                  	{/if}
 							</td>
-							<td>{$data.goods_name}</td>
+							<td class="hidden-xs">{$data.goods_name}</td>
 							<td>
 								<a  class="btn btn-xs btn-info" href='{:url("banner/edit",array("id"=>$data["banner_id"]))}'>
 									<i class="fa fa-edit bigger-120"></i>

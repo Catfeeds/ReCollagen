@@ -28,7 +28,7 @@
 	background: transparent url(images/loading.gif) no-repeat center top;
 }
 .dialog_message_body { margin: 15px 5px 5px 5px;}
-.dialog_message_contents { font-size: 14px; line-height: 24px; text-align: center; min-width: 360px; padding: 30px 20px;}
+.dialog_message_contents { font-size: 14px; line-height: 24px; text-align: center; min-width: 280px; padding: 30px 20px;}
 .dialog_message_contents i { display: inline-block; vertical-align: middle; width: 34px; height: 34px; margin-right: 8px;}
 .dialog_message_contents i.alert_info { background: transparent url(images/info.gif) no-repeat 0 0;}
 .dialog_message_contents i.alert_right { background: transparent url(images/right.gif) no-repeat 0 0;}

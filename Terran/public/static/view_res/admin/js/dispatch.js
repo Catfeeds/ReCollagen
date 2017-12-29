@@ -14,13 +14,13 @@ $(function(){
 	TransTpl += "<td class=\"cell-area\">\n";
 	TransTpl += "<span class=\"area-group\">\n";
 	TransTpl += "<input class=\"J_BatchField\" style=\"width:15px; display:none\" type=\"checkbox\" value=\"\" name=\"TRANSTYPE_n1\">\n";
-	TransTpl += "<p style=\"display:inline-block\">未添加地区<\/p><\/span>\n";
+	TransTpl += "<p style=\"display:inline-block;\">未添加地区<\/p><\/span>\n";
 	TransTpl += "<input type=\"hidden\" value=\"\" name=\"areas[kd][1]\">\n";
 	TransTpl += "<\/td>\n";
 	TransTpl += "<td class=\"nscs-table-handle\">\n";
 	TransTpl += "<span>\n";
 	TransTpl += "<a class=\"btn-blue\" data-group=\"n1\" title=\"编辑运送区域\" area-haspopup=\"true\" area-controls=\"J_DialogArea\" entype=\'J_EditArea\' data-acc=\"event:enter\" href=\"JavaScript:void(0);\">\n";
-	TransTpl += "<i class=\"icon-edit\"><\/i><p>编辑<\/p>\n";
+	TransTpl += "<p style=\"white-space: nowrap;\">编辑<\/p>\n";
 	TransTpl += "<\/a>\n";	
 	TransTpl += "<\/span>\n";
 	TransTpl += "<\/td>\n";

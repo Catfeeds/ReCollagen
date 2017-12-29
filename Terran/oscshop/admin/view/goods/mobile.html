@@ -39,7 +39,7 @@
 			                     <?php if(isset($mobile_images)){ ?>
 				                    <?php foreach ($mobile_images as $mobile_image) { ?>
 					                    <tr id="mobile-image-row<?php echo $mobile_image_row; ?>">
-					                      <td class="text-left"><a href="#" id="mobile-thumb-image<?php echo $mobile_image_row; ?>" data-toggle="image" class="img-thumbnail"><img src="/<?php echo resize($mobile_image['image'],100,100); ?>" /></a><input type="hidden" name="goods_mobile_description_image[<?php echo $mobile_image_row; ?>][image]" value="<?php echo $mobile_image['image']; ?>" id="mobile-input-image<?php echo $mobile_image_row; ?>" /></td>
+					                      <td class="text-left"><a href="#" id="mobile-thumb-image<?php echo $mobile_image_row; ?>" data-toggle="image" class="img-thumbnail"><img style="max-width: 100%;"  src="/<?php echo resize($mobile_image['image'],100,100); ?>"/></a><input type="hidden" name="goods_mobile_description_image[<?php echo $mobile_image_row; ?>][image]" value="<?php echo $mobile_image['image']; ?>" id="mobile-input-image<?php echo $mobile_image_row; ?>" /></td>
 					                      <td class="text-right"><input type="text" name="goods_mobile_description_image[<?php echo $mobile_image_row; ?>][description]" value="<?php echo $mobile_image['description']; ?>" class="form-control" /></td>
 					                      
 					                      <td class="text-right"><input type="text" name="goods_mobile_description_image[<?php echo $mobile_image_row; ?>][sort_order]" value="<?php echo $mobile_image['sort_order']; ?>" size="1" class="form-control" /></td>
@@ -83,7 +83,7 @@ var mobile_image_row = '<?php echo $mobile_image_row; ?>';
 
 	function add_mobile_image() {
 		html  = '<tr id="mobile-image-row' + mobile_image_row + '">';
-		html += '  <td class="text-left"><a href="#" id="mobile-thumb-image' + mobile_image_row + '"data-toggle="image" class="img-thumbnail"><img src="__PUBLIC__/image/no_image_100x100.jpg" /><input type="hidden" name="goods_mobile_description_image[' + mobile_image_row + '][image]" value="" id="mobile-input-image' + mobile_image_row + '" /></td>';
+		html += '  <td class="text-left"><a href="#" id="mobile-thumb-image' + mobile_image_row + '"data-toggle="image" class="img-thumbnail"><img style="max-width: 100%;" src="__PUBLIC__/image/no_image_100x100.jpg" /><input type="hidden" name="goods_mobile_description_image[' + mobile_image_row + '][image]" value="" id="mobile-input-image' + mobile_image_row + '" /></td>';
 		html += '<td class="text-right"><input type="text" name="goods_mobile_description_image['+mobile_image_row+'][description]" value="" class="form-control" /></td>';
 		html += '  <td class="text-right"><input type="text" name="goods_mobile_description_image[' + mobile_image_row + '][sort_order]" value="'+mobile_image_row+'"  size="1" class="form-control" /></td>';
 		

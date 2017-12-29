@@ -19,7 +19,7 @@
 				<thead>
 					<tr>											
 						<th>用户名</th>
-						<th>类型</th> 
+						<th class="hidden-xs">类型</th> 
 						<th>行为描述</th> 						
 						<th>时间</th>									
 					</tr>
@@ -28,7 +28,7 @@
 						{volist name="list" id="ua" empty="$empty"}
 						<tr>							
 							<td>{$ua.uname}</td>
-							<td>{$ua.type}</td>
+							<td class="hidden-xs">{$ua.type}</td>
 							<td>{$ua.info}</td>							
 							<td>{$ua.add_time|date="Y-m-d H:i:s",###}</td>							
 						</tr>

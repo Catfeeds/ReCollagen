@@ -10,13 +10,15 @@
 							今日订单
 							<span class="pull-right"> 总{$total_order}单</span>
 						</div>
+						<a href="{:url('member/OrderBackend/index')}">
 						<div class="tile-body">
 							<i class="fa fa-shopping-cart"></i>
 							<h2 class="pull-right">{$today_order}</h2>
 						</div>
 						<div class="tile-footer">
-							<a href="{:url('member/OrderBackend/index')}">显示详细...</a>
+							显示详细...
 						</div>
+						</a>
 					</div>
 			  </div>
 		      <div class="col-lg-3 col-md-3 col-sm-6">
@@ -25,13 +27,15 @@
 					今日销售额 
 					<span class="pull-right"> 总{$total_money} </span>
 					</div>
+					<a href="{:url('member/OrderBackend/index')}">
 					<div class="tile-body">
 					<i class="fa fa-credit-card"></i>
 					<h2 class="pull-right">{$today_money}</h2>
 					</div>
 					<div class="tile-footer">
-					<a href="{:url('member/OrderBackend/index')}">显示详细...</a>
+					显示详细...
 					</div>
+					</a>
 					</div> 	
 		      </div>
 		      <div class="col-lg-3 col-md-3 col-sm-6">
@@ -40,13 +44,15 @@
 					新增会员 
 					<span class="pull-right"> 总{$member_count}个</span>
 					</div>
+					<a href="{:url('member/MemberBackend/index')}">
 					<div class="tile-body">
 					<i class="fa fa-user"></i>
 					<h2 class="pull-right">{$today_member}</h2>
 					</div>
 					<div class="tile-footer">
-					<a href="{:url('member/MemberBackend/index')}">显示详细...</a>
+					显示详细...
 					</div>
+					</a>
 					</div>
 			  </div>
 		      <div class="col-lg-3 col-md-3 col-sm-6">
@@ -54,18 +60,20 @@
 					<div class="tile-heading">新增用户行为
 					<span class="pull-right"> 总{$user_action_total}个</span>	
 					</div>
+					<a href="{:url('admin/UserAction/index')}">
 					<div class="tile-body">
 					<i class="fa fa-eye"></i>
 					<h2 class="pull-right">{$today_user_action}个</h2>
 					</div>
 					<div class="tile-footer">
-					<a href="{:url('admin/UserAction/index')}">显示详细...</a>
+					显示详细...
 					</div>
+					</a>
 					</div>	  
 			  </div>
 		    </div>
 		    <div class="row">
-		      <div class="col-lg-4 col-md-12 col-sm-12 col-sx-12">
+		      <div class="col-lg-4 col-md-4 col-sm-12 col-sx-12">
 				  	<div class="panel panel-default">
 					<div class="panel-heading">
 					<h3 class="panel-title">
@@ -94,7 +102,7 @@
 					</ul>
 					</div>
 			  </div>
-		      <div class="col-lg-8 col-md-12 col-sm-12 col-sx-12">
+		      <div class="col-lg-8 col-md-8 col-sm-12 col-sx-12">
 		      	<div class="panel panel-default">
 		      		<div class="panel-heading">
 						<h3 class="panel-title">
@@ -108,9 +116,9 @@
 							<thead>
 							<tr>
 							<td>订单号</td>
-							<td>下单时间</td>
-							<td>主账户消费</td>
-							<td>小金库消费</td>
+							<td class="hidden-xs">下单时间</td>
+							<td class="hidden-xs">主账户消费</td>
+							<td class="hidden-xs">小金库消费</td>
 							<td>总计</td>
 							<td>状态</td>
 							<td>操作</td>
@@ -120,9 +128,9 @@
 								{volist name="order_list" id="v" empty="$empty"}
 								<tr>
 									<td>{$v.order_num_alias}</td>
-									<td>{$v.create_time|date='Y-m-d H:i:s',###}</td>
-									<td>&yen;{$v.mainPay}</td>
-									<td>&yen;{$v.secondPay}</td>
+									<td class="hidden-xs">{$v.create_time|date='Y-m-d H:i:s',###}</td>
+									<td class="hidden-xs">&yen;{$v.mainPay}</td>
+									<td class="hidden-xs">&yen;{$v.secondPay}</td>
 									<td>&yen;{$v.total}</td>
 									<td>{$v.order_status|getOrderStatus}</td>
 									<td>

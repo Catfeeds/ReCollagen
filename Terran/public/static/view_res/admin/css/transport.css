@@ -41,18 +41,14 @@
     font-size: 0;
 }
 
-.nscs-table-handle span:first-child {
-    border-left: 0 none;
-}
+
 .ncsc-form-default dl dd span {
 }
 .nscs-table-handle span {
 }
 .nscs-table-handle span {
-    border-left: 1px solid #e6e6e6;
     display: inline-block;
     letter-spacing: normal;
-    padding: 0 4px;
     text-align: center;
     vertical-align: middle;
     word-spacing: normal;
@@ -104,7 +100,7 @@
     letter-spacing: normal;
     position: relative;
     vertical-align: top;
-    width: 100px;
+    padding-right:10px;
     word-spacing: normal;
     z-index: 1;
 }
@@ -164,7 +160,15 @@ a.ncsc-btn-mini {
 
 
 .ncsu-trans-type { background-color: #FFF; border: solid #DDD 1px;}
-.ncsu-trans-type .default { line-height: 30px; background-color: #E6E6E6; min-height: 30px; padding: 4px 10px;}
+.ncsu-trans-type .default { line-height: 30px;  min-height: 30px; padding: 4px 10px;
+background: #F2F2F2;
+	background-image: -webkit-linear-gradient(top,#f8f8f8 0,#ececec 100%);
+	background-image: -o-linear-gradient(top,#f8f8f8 0,#ececec 100%);
+	background-image: linear-gradient(to bottom,#f8f8f8 0,#ececec 100%);
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff8f8f8', endColorstr='#ffececec', GradientType=0)
+
+}
 .postage-tpl .postage-detail { padding: 5px; margin: 5px 0; border: 1px dashed #D3E5F3;}
 .postage-tpl .express .section { margin-bottom: 8px;}
 .postage-tpl .input_readonly { background-color: #E6E6E6; border: 1px solid #CCC;}
@@ -179,9 +183,9 @@ a.ncsc-btn-mini {
 .postage-tpl span.error, .postage-tpl span.stop { display: inline-block; float: none;}
 /*运费模板选择地区弹出层*/
 .ks-ext-mask {filter:progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr='#BFFFFFFF', endColorstr='#BFFFFFFF');background:rgba(255,255,255,0.75);}
-.dialog-areas, .dialog-batch { background-color: #FFF; width: 640px; margin-left: -320px; border: 1px solid #CCC; position: fixed; z-index: 9999; top: 25%; left: 50%;}
+.dialog-areas, .dialog-batch { background-color: #FFF; max-width: 640px; min-width: 300px;position: fixed; z-index: 9999; top: 25%; left: 0; right: 0; margin: 0 auto; }
 .dialog-batch { top: 40%;}
-.ks-contentbox { display: block; }
+.ks-contentbox { display: block; margin: 0 10px;    border: 1px solid #CCC; }
 .ks-contentbox .title { font-size: 14px;font-weight: bold; color: #555; background-color: #FFF;  padding: 10px; border-bottom: solid 1px #E6E6E6; position: relative; z-index: 1;}
 a.ks-ext-close { font: lighter 14px/20px Verdana; color: #999; text-align: center; display: block; width: 20px; height: 20px; position: absolute; z-index: 1; top: 10px; right: 10px; cursor: pointer;}
 a:hover.ks-ext-close { text-decoration: none; color: #27A9E3;}
@@ -189,10 +193,10 @@ a:hover.ks-ext-close { text-decoration: none; color: #27A9E3;}
 .dialog-areas li { display: block; width: 100%; clear: none;}
 .dialog-areas li.even {	background-color: #F7F7F7;}
 .ncsc-region { font-size: 0; *word-spacing:-1px/*IE6、7*/; overflow: visible!important;margin:0;}
-.ncsc-region-title { font-size: 12px; line-height: normal!important; vertical-align: top; letter-spacing: normal; word-spacing: normal; text-align: left!important; display: inline-block; padding: 0!important; width:100px!important; }
+.ncsc-region-title { float: left; font-size: 12px; line-height: normal!important; vertical-align: top; letter-spacing: normal; word-spacing: normal; text-align: left!important; display: inline-block; padding: 0!important; width:80px; }
 .ncsc-region-title span { line-height: 20px; color: #333; font-weight: bold; display: block; height: 20px; padding: 5px 0 4px 10px; }
-.ncsc-province-list { font-size: 0!important; *word-spacing:-1px/*IE6、7*/; vertical-align: top; letter-spacing: normal; word-spacing: normal; display: inline-block; width: 500px!important; padding: 0!important;}
-.ncsc-province { font-size: 12px; vertical-align: top; letter-spacing: normal; word-spacing: normal; display: inline-block; width: 100px; height: 30px; position: relative; z-index: 1;}
+.ncsc-province-list { font-size: 0!important; *word-spacing:-1px/*IE6、7*/; vertical-align: top; letter-spacing: normal; word-spacing: normal; display: inline-block; display: table;}
+.ncsc-province { font-size: 12px; vertical-align: top; letter-spacing: normal; word-spacing: normal; display: inline-block;padding-right: 10px; height: 30px; position: relative; z-index: 1;}
 .ncsc-province-tab { line-height: 20px; display: block; height: 20px; padding: 4px; margin: 1px 1px 0 1px;}
 .ncsc-province-tab input, .ncsc-province-tab label { vertical-align: middle;}
 .ncsc-province-tab .check_num { font: 12px/16px Verdana, Geneva, sans-serif; color: #28B779; letter-spacing: -1px; vertical-align: middle; padding-right: 1px;}
@@ -204,7 +208,7 @@ a:hover.ks-ext-close { text-decoration: none; color: #27A9E3;}
 .showCityPop .ncsc-citys-sub  { font-size: 0; *word-spacing:-1px/*IE6、7*/; display: block;}
 .ncsc-citys-sub .areas { font-size: 12px; line-height: 20px; vertical-align: middle; letter-spacing: normal; word-spacing: normal; display: inline-block; padding: 4px; margin-right: 4px;}
 .ks-contentbox .bottom { padding: 10px;}
-.ks-contentbox .batch { line-height: 30px; background-color: #FFF; text-align: center; height: 30px; padding: 20px 0; border-bottom: solid 1px #E6E6E6;}
+.ks-contentbox .batch { line-height: 30px; background-color: #FFF; text-align: center; padding: 20px 0; border-bottom: solid 1px #E6E6E6;}
 .checkbox { padding: 0; vertical-align: middle;}
 .hidden { display: none;}
 

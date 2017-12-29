@@ -9,6 +9,7 @@ var my=new My();
 Page({
     data: {
         pageIndex:1,
+        statusId:1,
         currentTabsIndex: 0,
         isLoadedAll:false,
         loadingHidden:false,
@@ -17,7 +18,7 @@ Page({
     },
     onLoad:function(){
         this._loadData();
-
+  
         /*显示收获地址*/
         this._addressInfo();
     },
@@ -81,22 +82,33 @@ Page({
 
     /*切换订单面板*/
     onTabsItemTap: function (event) {
-      var index = order.getDataSet(event, 'index');
+      var that = this,
+        index = order.getDataSet(event, 'index'),
+        id = order.getDataSet(event, 'id');
+      this.data.orderArr = [];  //订单初始化
       this.setData({
-        currentTabsIndex: index
+        orderArr: this.data.orderArr,
+        statusId:id,
+        currentTabsIndex: index,
+      });
+      this._getOrders(() => {
+        that.data.isLoadedAll = false;  //是否加载完全
+        that.data.pageIndex = 1;
       });
     },
 
     /*订单信息*/
     _getOrders:function(callback){
         var that=this;
-        order.getOrders(this.data.pageIndex,(data)=>{
+        order.getOrders(this.data.statusId,this.data.pageIndex,(res)=>{
+          var data = res.data;
             that.setData({
                 loadingHidden: true
             });
             if(data.length>0) {
                 that.data.orderArr.push.apply(that.data.orderArr,data);  //数组合并                
                 that.setData({
+                    pageIndex: res.current_page,
                     orderArr: that.data.orderArr
                 });
             }else{
@@ -199,22 +211,21 @@ Page({
 
     /*下拉刷新页面*/
     onPullDownRefresh: function(){
-        var that=this;
-        this.data.orderArr=[];  //订单初始化
-        this._getOrders(()=>{
-            that.data.isLoadedAll=false;  //是否加载完全
-            that.data.pageIndex=1;
-            wx.stopPullDownRefresh();
-        });
+        // var that=this;
+        // this.data.orderArr=[];  //订单初始化
+        // this._getOrders(()=>{
+        //     that.data.isLoadedAll=false;  //是否加载完全
+        //     that.data.pageIndex=1;
+        //     wx.stopPullDownRefresh();
+        // });
     },
 
-
-    // onReachBottom:function(){
-    //     if(!this.data.isLoadedAll) {
-    //         this.data.pageIndex++;
-    //         this._getOrders();
-    //     }
-    // },
+    onReachBottom:function(){
+        if(!this.data.isLoadedAll) {
+            this.data.pageIndex++;
+            this._getOrders();
+        }
+    },
 
     /*
      * 提示窗口

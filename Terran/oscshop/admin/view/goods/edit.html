@@ -281,7 +281,7 @@
 	var image_row =0;
 	function addImage() {
 		html  = '<tr id="gallery-image-row' + image_row + '">';
-		html += '  <td class="text-left"><a href="#" id="thumb-image' + image_row + '"data-toggle="image" class="img-thumbnail"><img src="__PUBLIC__/image/no_image_100x100.jpg" /><input type="hidden" name="goods_image[' + image_row + '][image]" value="" id="gallery-input-image' + image_row + '" /></td>';
+		html += '  <td class="text-left"><a href="#" id="thumb-image' + image_row + '"data-toggle="image" class="img-thumbnail"><img style="max-width: 100%;" src="__PUBLIC__/image/no_image_100x100.jpg" /><input type="hidden" name="goods_image[' + image_row + '][image]" value="" id="gallery-input-image' + image_row + '" /></td>';
 		html += '  <td class="text-right"><input type="text" name="goods_image[' + image_row + '][sort_order]" value="'+image_row+'" class="form-control" /></td>';
 		html += '  <td class="text-left"><button type="button" onclick="$(\'#gallery-image-row' + image_row  + '\').remove();" data-toggle="tooltip" class="btn btn-danger"><i class="fa fa-trash"></i></button></td>';
 		html += '</tr>';
@@ -295,7 +295,7 @@
 	var mobile_image_row =0;
 	function add_mobile_image() {
 		html  = '<tr id="mobile-image-row' + mobile_image_row + '">';
-		html += '  <td class="text-left"><a href="#" id="mobile-thumb-image' + mobile_image_row + '"data-toggle="image" class="img-thumbnail"><img src="__PUBLIC__/image/no_image_100x100.jpg" /><input type="hidden" name="mobile_image[' + mobile_image_row + '][image]" value="" id="mobile-input-image' + mobile_image_row + '" /></td>';
+		html += '  <td class="text-left"><a href="#" id="mobile-thumb-image' + mobile_image_row + '"data-toggle="image" class="img-thumbnail"><img style="max-width: 100%;" src="__PUBLIC__/image/no_image_100x100.jpg" /><input type="hidden" name="mobile_image[' + mobile_image_row + '][image]" value="" id="mobile-input-image' + mobile_image_row + '" /></td>';
 		html += '<td class="text-right"><input type="text" name="mobile_image['+mobile_image_row+'][description]" value="" class="form-control" /></td>';
 		html += '  <td class="text-right"><input type="text" name="mobile_image[' + mobile_image_row + '][sort_order]" value="'+mobile_image_row+'"  size="1" class="form-control" /></td>';
 		html += '  <td class="text-left"><button type="button" onclick="$(\'#mobile-image-row' + mobile_image_row  + '\').remove();" data-toggle="tooltip" class="btn btn-danger"><i class="fa fa-trash"></i></button></td>';
