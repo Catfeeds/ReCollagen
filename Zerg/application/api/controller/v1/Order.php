@@ -78,7 +78,7 @@ class Order extends BaseController
             ];
         }
 
-        $data = $pagingOrders->hidden(['shipping_name', 'shipping_tel', 'shipping_addr', 'shipping_method', 'shipping_num', 'mainPay', 'secondPay', 'mainGoodsPrice', 'otherGoodsPrice', 'shippingPrice', 'promotion', 'create_time', 'products'])
+        $data = $pagingOrders->hidden(['shipping_tel', 'shipping_method', 'shipping_num', 'mainPay', 'secondPay', 'mainGoodsPrice', 'otherGoodsPrice', 'shippingPrice', 'promotion', 'create_time', 'products'])
             ->toArray();
 
         return [

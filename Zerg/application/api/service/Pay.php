@@ -179,7 +179,7 @@ class Pay
             return ['errorCode' => 0,'msg'=>'支付成功'];
         } catch (Exception $e) {
             Db::rollback();
-            throw $ex;
+            throw $e;
         }
     }
     /**
