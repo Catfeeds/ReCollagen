@@ -28,6 +28,7 @@ class Category extends BaseController
                'errorCode' => 50000
            ]);
         }
+        $categories = $categories->hidden(['pid','child.pid'])->toArray();
         return $categories;
     }
 

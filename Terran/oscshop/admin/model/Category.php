@@ -10,8 +10,8 @@ class Category extends Model{
 		if(!$validate->check($data)){
 		    return ['error'=>$validate->getError()];
 		}
-		
-		$category['image']            = $data['image'];
+        $category['pid']              = $data['pid'];
+        $category['image']            = $data['image'];
 		$category['name']             = $data['name'];
 		$category['update_time']      = time();
 		
@@ -27,8 +27,9 @@ class Category extends Model{
 		    return ['error'=>$validate->getError()];
 		}
 		$cid=(int)$data['id'];
-		
-		$category['image']       =$data['image'];
+
+		$category['pid']         = $data['pid'];
+        $category['image']       =$data['image'];
 		$category['name']        =$data['name'];
 		$category['update_time'] =time();
 		

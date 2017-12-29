@@ -55,7 +55,7 @@
 						<div class="col-sm-10">
 							<select id="input-length-class" class="form-control" name="cat_id">
 								{volist name="category" id="v"}
-									<option {if condition="isset($goods)&&($v.id eq $goods['cat_id'])"}selected="selected"{/if} value="{$v.id}">{$v.name}</option>
+									<option {if condition="isset($goods)&&($v.id eq $goods['cat_id'])"}selected="selected"{/if} value="{$v.id}">{$v.title_show}</option>
 								{/volist}
 							</select>
 						</div>
