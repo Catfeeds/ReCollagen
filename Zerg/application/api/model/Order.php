@@ -58,17 +58,21 @@ class Order extends BaseModel
     {
 
         $orderDetail = self::with('products')->find($id);
-        foreach ($orderDetail['products'] as $key => $product ) {
-            $orderDetail['products'][$key]['counts']       = $product['quantity'];
-            $orderDetail['products'][$key]['currentPrice'] = $product['price'];
-            unset($orderDetail['products'][$key]['quantity']);
-            unset($orderDetail['products'][$key]['price']);
+        if ($orderDetail) {
+            foreach ($orderDetail['products'] as $key => $product ) {
+                $orderDetail['products'][$key]['counts']       = $product['quantity'];
+                $orderDetail['products'][$key]['currentPrice'] = $product['price'];
+                unset($orderDetail['products'][$key]['quantity']);
+                unset($orderDetail['products'][$key]['price']);
+                $orderDetail['products'][$key]['detail'] = Product::getProductDetail($product['goods_id'])->hidden(['goods_id','isMainGoods','cat_id','image','name','properties','detail','imgs']);
+
+            }
+            if (!empty($orderDetail['promotion'])) {
+                $promotion                    = json_decode($orderDetail['promotion'], true);
+                $orderDetail['promotionName'] = array_column($promotion, 'name');
+            }
         }
-//        halt($orderDetail['products']->toArray());
-        if (!empty($orderDetail['promotion'])) {
-            $promotion                    = json_decode($orderDetail['promotion'], true);
-            $orderDetail['promotionName'] = array_column($promotion, 'name');
-        }
+
         return $orderDetail;
     }
 
