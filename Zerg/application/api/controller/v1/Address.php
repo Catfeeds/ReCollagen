@@ -16,7 +16,7 @@ use think\Exception;
 class Address extends BaseController
 {
     protected $beforeActionList = [
-        'checkPrimaryScope' => ['only' => 'createOrUpdateAddress,getUserAddress']
+        'checkPrimaryScope' => ['only' => 'createAddress,updateAddress,delAddress,getUserAddress']
     ];
 
     /**
@@ -98,30 +98,9 @@ class Address extends BaseController
     /**
      * 删除用户收货地址
      */
-    public function delAddress(){
+    public function delAddress($id){
 
-        $validate = new AddressNew();
-        $validate->goCheck();
-
-        $uid = TokenService::getCurrentUid();
-//                $uid = 2;
-        $data = input('post.');
-
-        $userAddress = UserAddress::get($data['address_id']);
-        if (!$userAddress) {
-            throw new UserException(
-                [
-                    'msg' => '用户收货地址不存在',
-                    'errorCode' => 60001,
-                ]);
-        }
-
-        $data['province_id'] = UserAddress::getProvinceId($data['province']);
-        //如果设为默认且已有默认地址，改为普通地址
-        if ($data['is_default'] == 1) {
-            UserAddress::where(['uid'=>$uid,'is_default'=>1])->update(['is_default'=>-1]);
-        }
-        $userAddress->save($data);
+        UserAddress::destroy($id);
 
         return new SuccessMessage();
     }
