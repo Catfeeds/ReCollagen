@@ -15,10 +15,10 @@ use think\Exception;
 
 class Address extends BaseController
 {
-    protected $beforeActionList = [
-        'checkPrimaryScope' => ['only' => 'createOrUpdateAddress,getUserAddress']
-    ];
-    
+//    protected $beforeActionList = [
+//        'checkPrimaryScope' => ['only' => 'createOrUpdateAddress,getUserAddress']
+//    ];
+//
     /**
      * 获取用户地址信息
      * @return UserAddress
@@ -27,8 +27,8 @@ class Address extends BaseController
     public function getUserAddress(){
         $uid = Token::getCurrentUid();
 
-        $userAddress = UserAddress::field('name,telephone,province,city,country,address')->where('uid', $uid)
-            ->find();
+        $userAddress = UserAddress::field('address_id,name,telephone,province,city,country,address,is_default')->where('uid', $uid)
+            ->select();
         if(!$userAddress){
             throw new UserException([
                'msg' => '用户地址不存在',
