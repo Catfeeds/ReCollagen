@@ -420,7 +420,8 @@ class Order
      */
     public function getTransFee($data){
         $rule = [
-            ['weight','require|float','商品重量不能为空|商品重量必须是数字']
+            ['weight','require|float','商品重量不能为空|商品重量必须是数字'],
+            ['address_id','require|number','地址id不能为空|地址id必须是数字']
         ];
         $validate = new Validate($rule);
         $result   = $validate->check($data);
@@ -432,10 +433,12 @@ class Order
                 ]);
         }
         $this->uid   = Token::getCurrentUid();
-        // $this->uid   = 2;
-
-        $userAddress = UserAddress::where('uid', '=', $this->uid)
-            ->find();
+//        $this->uid   = 2;
+        if ($data['address_id']) {
+            $userAddress = UserAddress::get($data['address_id']);
+        }else{
+            $userAddress = UserAddress::where(['uid'=>$this->uid,'is_default'=>1])->find();
+        }
         if (!$userAddress) {
             $trans['fee'] = 0;
             $trans['transId'] = 0;

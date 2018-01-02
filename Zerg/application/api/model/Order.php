@@ -59,8 +59,10 @@ class Order extends BaseModel
 
         $orderDetail = self::with('products')->find($id);
         foreach ($orderDetail['products'] as $key => $product ) {
-            $orderDetail['products'][$key]['counts'] = $product['quantity'];
+            $orderDetail['products'][$key]['counts']       = $product['quantity'];
+            $orderDetail['products'][$key]['currentPrice'] = $product['price'];
             unset($orderDetail['products'][$key]['quantity']);
+            unset($orderDetail['products'][$key]['price']);
         }
 //        halt($orderDetail['products']->toArray());
         if (!empty($orderDetail['promotion'])) {
