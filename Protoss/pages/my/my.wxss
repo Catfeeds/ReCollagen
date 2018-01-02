@@ -196,9 +196,9 @@
   justify-content:flex-end;
 }
 .order-bottom .pay{
-    width: 170rpx;
+    width: 145rpx;
     height: 60rpx;
-    margin-right: 30rpx;
+    margin-right: 10rpx;
     background-color:#75bb0b;
     border-radius: 4rpx;
     color: #fff;

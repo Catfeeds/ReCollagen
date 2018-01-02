@@ -6,7 +6,8 @@
     overflow: hidden;
 }
 .left-box{
-    flex: 0 0 150rpx;
+    flex: 0 0 180rpx;
+    background-color: #f6f6f9;
 }
 .menu-item{
     height: 50rpx;
@@ -15,13 +16,41 @@
     align-items: center;
     justify-content: center;
     font-size:28rpx;
-    border-left: 6rpx solid #fff;
+    border-left: 6rpx solid #f6f6f9;
+    border-right: 6rpx solid #f6f6f9;
+}
+.menu-item.show{
+    border-left-color:#00a1e9;
+    background-color: #f9fdff;
+    border-right: 6rpx solid #f9fdff;
 }
 .menu-item.selected{
     color: #00a1e9;
     border-left-color:#00a1e9;
+    background-color: #f9fdff;
+    border-right: 6rpx solid #f9fdff;
 }
-
+.menu-child{
+  padding: 10rpx 0;
+  background-color: #f9fdff;
+  display: none;
+}
+.menu-child view{
+    padding: 10rpx 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size:28rpx;
+}
+.menu-child.show{
+    display: block;
+}
+.menu-child view.selected{
+    color: #00a1e9;
+    border-left-color:#00a1e9;
+    background-color: #f9fdff;
+    border-right: 6rpx solid #f9fdff;
+}
 .right-box{
     flex: 1;
     transition: all 500ms ease-in-out;
