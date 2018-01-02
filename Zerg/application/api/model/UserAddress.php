@@ -8,7 +8,7 @@ class UserAddress extends BaseModel
 {
     protected $table = 'osc_address';
     protected $autoWriteTimestamp = true;
-    protected $hidden = ['address_id','create_time','update_time'];
+    protected $hidden = ['create_time','update_time'];
 
     public static function getProvinceId($province){
         $provinces = Area::all(['area_parent_id'=>0]);
