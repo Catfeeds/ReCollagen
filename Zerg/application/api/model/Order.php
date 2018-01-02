@@ -58,6 +58,11 @@ class Order extends BaseModel
     {
 
         $orderDetail = self::with('products')->find($id);
+        foreach ($orderDetail['products'] as $key => $product ) {
+            $orderDetail['products'][$key]['counts'] = $product['quantity'];
+            unset($orderDetail['products'][$key]['quantity']);
+        }
+//        halt($orderDetail['products']->toArray());
         if (!empty($orderDetail['promotion'])) {
             $promotion                    = json_decode($orderDetail['promotion'], true);
             $orderDetail['promotionName'] = array_column($promotion, 'name');

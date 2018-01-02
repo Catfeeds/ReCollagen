@@ -1,0 +1,28 @@
+Request:
+    /api/v1/address/del
+
+Method:
+    Post
+
+Params:
+    "address_id"    :   "地址id"
+
+
+Callback: 编码一律utf-8
+
++-------------------------------------------------------+
+
+    {  
+
+        "code"          :   201,
+        "msg"           :   "ok",
+        "errorCode"     :   0,
+        "shouldToClient":   true                        
+
+    }
+
++-------------------------------------------------------+
+    {  
+        "errorCode"     :  "错误码", 
+        "msg"           : "错误提示",        
+    }

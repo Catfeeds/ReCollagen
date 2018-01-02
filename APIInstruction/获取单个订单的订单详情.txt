@@ -33,10 +33,12 @@ Callback: 编码一律utf-8
             "isMainGoods"       : "商品类型(1主商品，0辅销品)"     
             "image"             : "商品缩略图"                
             "name"              : "商品名称"   
-            "option_name"       : "商品选项名称"                             
-            "quantity"          : "商品数量"                             
-            "price"             : "商品价格"                             
-            "total"             : "单件商品总价"                             
+            "option_id"         : "商品选项id"
+            "option_name"       : "商品选项名称"
+            "price"             : "商品价格"
+            "total"             : "单件商品总价"
+            "counts"            : "商品数量"
+
         },
 
         "promotionName" :  {

@@ -72,6 +72,7 @@ Route::post('api/:version/token/verify', 'api/:version.Token/verifyToken');
 //Address
 Route::post('api/:version/address/create', 'api/:version.Address/createAddress');
 Route::post('api/:version/address/update', 'api/:version.Address/updateAddress');
+Route::post('api/:version/address/del', 'api/:version.Address/delAddress');
 Route::get('api/:version/address', 'api/:version.Address/getUserAddress');
 
 //Order
