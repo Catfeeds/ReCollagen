@@ -75,7 +75,7 @@ Page({
       });
     },
 
-    /*再次购买订单里的商品*/
+    /*重新购买订单里的商品*/
     addCart: function (event) {
       var that = this,
         id = order.getDataSet(event, 'id'),
@@ -94,10 +94,7 @@ Page({
             var cartData = cart.getCartDataFromLocal();
             if (cartData.length < 1) 
             {
-              
-              wx.switchTab({
-                url: '/pages/cart/cart'
-              });
+              that.addToCart(id);
             }
             else 
             {
@@ -106,7 +103,7 @@ Page({
                   cartData = [];
                   cart.execSetStorageSync(cartData);
                   if (cartData.length < 1) {
-                    that.showTips('提示', '商品已加入购物车');
+                    that.addToCart(id);
                   }
                   else {
                     that.showTips('提示', '清空购物车失败');
@@ -118,19 +115,23 @@ Page({
           // });
         }
       })
-
-      // this.addToCart();
     },
 
     /*将商品数据添加到内存中*/
-    addToCart: function () {
-      var tempObj = {}, keys = ['goods_id', 'name', 'image', 'price', 'isMainGoods', 'haveCollect', 'options', 'discounts', 'weight'];
-      for (var key in this.data.product) {
-        if (keys.indexOf(key) >= 0) {
-          tempObj[key] = this.data.product[key];
+    addToCart: function (id) {
+      order.getOrderInfoById(id, (data) => {
+        console.log(data.products)
+        var tempObj = {}, keys = ['goods_id', 'name', 'image', 'price', 'isMainGoods', 'haveCollect', 'options', 'discounts', 'weight'];
+        for (var key in data.products) {
+          if (keys.indexOf(key) >= 0) {
+            tempObj[key] = data.products[key];
+          }
         }
-      }
-      cart.add(tempObj, this.data.productCounts, this.data.price, this.data.option_id);
+        cart.add(tempObj, data.counts, data.currentPrice, data.option_id);
+        wx.switchTab({
+          url: '/pages/cart/cart'
+        });
+      });
     },
 
     /*绑定地址信息*/ 
