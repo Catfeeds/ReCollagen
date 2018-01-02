@@ -2,7 +2,8 @@ import { Category } from 'category-model.js';
 var category=new Category();  //实例化 home 的推荐页面
 Page({
   data: {
-    currentMenuIndex:0,
+    currentMenuId:0,
+    currentMenuIndex: 0,
     loadingHidden:false,
     categoryInfo:[],
   },
@@ -18,66 +19,48 @@ Page({
     category.getCategoryType((categoryData)=>{
 
       that.setData({
-        categoryTypeArr: categoryData
+        categoryTypeArr: categoryData,
+        currentMenuId: categoryData[0].id,
+        title: categoryData[0].name,
+        imgUrl: categoryData[0].image
       });
-      
-      /*缓存中是否有该商品*/
-      var isHadInfo = category._isHasThatOne(categoryData[0].id);
-      if (isHadInfo.index != -1) {
-        this.setData({
-          loadingHidden: true,
-          categoryInfo: isHadInfo.data
-        });
-      }
-      else {
-        /*获取第一个分类下对应的商品*/
-        this.getProductsByCategory(categoryData[0].id, 0);
-      }
+  
+      /*获取第一个分类下对应的商品*/
+      this.getProductsByCategory(categoryData[0].id);
 
     });
   },
 
   /*切换分类*/
   changeCategory:function(event){
-    var index=category.getDataSet(event,'index'),
-        id=category.getDataSet(event,'id');
+
+    var id=category.getDataSet(event,'id'),
+      index = category.getDataSet(event, 'index'),
+      name = category.getDataSet(event, 'name'),
+      image = category.getDataSet(event, 'image');
 
     this.setData({
-      loadingHidden: false,
+      currentMenuId: id,
       currentMenuIndex: index,
+      title: name,
+      imgUrl: image
     });
-
-    /*缓存中是否有该商品*/
-    var isHadInfo = category._isHasThatOne(id);
-    if (isHadInfo.index != -1) {
-      this.setData({
-        loadingHidden: true,
-        categoryInfo: isHadInfo.data
-      });
-    }
-    else
-    {
-      /*获取分类下对应的商品*/
-      this.getProductsByCategory(id,index);
-    }
+    this.getProductsByCategory(id);
   },
 
   /*获取分类下对应的商品*/
-  getProductsByCategory: function (id, index){
+  getProductsByCategory: function (id){
     var that = this;
     category.getProductsByCategory(id,(data)=> {
-      var baseData = this.data.categoryTypeArr[index];
       var dataObj = {
         procucts: data,
-        topImgUrl: baseData.image,
-        title: baseData.name,
-        id: baseData.id
+        topImgUrl: this.data.imgUrl,
+        title: this.data.title
       };
       that.setData({
         loadingHidden: true,
         categoryInfo: dataObj
       });
-      category.addCategory(dataObj);
     });
   },
 

@@ -1,8 +1,10 @@
 import {Address} from '../../utils/address.js';
+import { Cart } from '../cart/cart-model.js';
 import {Order} from '../order/order-model.js';
 import {My} from '../my/my-model.js';
 
 var address=new Address();
+var cart = new Cart();
 var order=new Order();
 var my=new My();
 
@@ -71,6 +73,64 @@ Page({
       wx.navigateTo({
         url: '../address/address'
       });
+    },
+
+    /*再次购买订单里的商品*/
+    addCart: function (event) {
+      var that = this,
+        id = order.getDataSet(event, 'id'),
+        index = order.getDataSet(event, 'index');
+      this.showTipsReturn('提示', '你确定要重新购买吗？', (statusConfirm) => {
+        if (statusConfirm) {
+          // order.cancel(id, (statusCode) => {
+          //   if (statusCode.errorCode != 0) {
+          //     that.showTips('订单提示', statusCode.msg);
+          //     return;
+          //   }
+            that.data.orderArr[index].order_status = 5;
+            that.setData({
+              orderArr: that.data.orderArr
+            });
+            var cartData = cart.getCartDataFromLocal();
+            if (cartData.length < 1) 
+            {
+              
+              wx.switchTab({
+                url: '/pages/cart/cart'
+              });
+            }
+            else 
+            {
+              that.showTipsReturn('提示', '购物车里已有商品，需清空之后才能再次购买？', (statusConfirm) => {
+                if (statusConfirm) {
+                  cartData = [];
+                  cart.execSetStorageSync(cartData);
+                  if (cartData.length < 1) {
+                    that.showTips('提示', '商品已加入购物车');
+                  }
+                  else {
+                    that.showTips('提示', '清空购物车失败');
+                  }
+                }
+              })
+            }
+
+          // });
+        }
+      })
+
+      // this.addToCart();
+    },
+
+    /*将商品数据添加到内存中*/
+    addToCart: function () {
+      var tempObj = {}, keys = ['goods_id', 'name', 'image', 'price', 'isMainGoods', 'haveCollect', 'options', 'discounts', 'weight'];
+      for (var key in this.data.product) {
+        if (keys.indexOf(key) >= 0) {
+          tempObj[key] = this.data.product[key];
+        }
+      }
+      cart.add(tempObj, this.data.productCounts, this.data.price, this.data.option_id);
     },
 
     /*绑定地址信息*/ 

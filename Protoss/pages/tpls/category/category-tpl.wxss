@@ -1,6 +1,6 @@
 .category-detail-box{
     overflow: hidden;
-    padding: 20px;
+    padding: 10px;
 }
 .category-header{
     height: 200rpx;
