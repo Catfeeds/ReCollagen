@@ -16,7 +16,7 @@ class User extends BaseModel
 
     public function address()
     {
-        return $this->hasOne('UserAddress', 'uid', 'uid');
+        return $this->hasMany('UserAddress', 'uid', 'uid');
     }
 
     /**

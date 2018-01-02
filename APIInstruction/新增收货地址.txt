@@ -1,5 +1,5 @@
 Request:
-    /api/v1/address
+    /api/v1/address/create
 
 Method:
     Post
@@ -11,7 +11,7 @@ Params:
     "city"          :   "市"
     "country"       :   "区县"
     "address"       :   "具体地址"
-
+    "is_default"    :   "是否默认收货地址，1是-1否"
 
 
 Callback: 编码一律utf-8
