@@ -9,6 +9,7 @@ use think\Exception;
 class OrderPlace extends BaseValidate
 {
     protected $rule = [
+        'address_id'      => 'require|isPositiveInteger',
         'goodsArrInfo'    => 'checkProducts',
         'mainGoodsPrice'  => 'require|float',
         'otherGoodsPrice' => 'require|float',

@@ -287,8 +287,7 @@ class Order
      * 获取用户的收货地址
      */
     private function getUserAddress(){
-        $userAddress = UserAddress::where('uid', '=', $this->uid)
-            ->find();
+        $userAddress = UserAddress::get($this->postData['address_id']);
         if (!$userAddress) {
             throw new UserException(
                 [

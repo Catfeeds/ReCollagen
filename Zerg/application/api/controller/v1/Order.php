@@ -33,7 +33,7 @@ class Order extends BaseController
         $postData = input('post.');
         $products = input('post.goodsArrInfo/a');
         $uid      = Token::getCurrentUid();
-        // $uid      = 2;
+//         $uid      = 2;
 
         $order  = new OrderService();
         $status = $order->place($uid, $products, $postData);
