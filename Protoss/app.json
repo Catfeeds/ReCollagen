@@ -1,13 +1,13 @@
 {
   "pages":[
-    "pages/cart/cart",
     "pages/my/my",
-    "pages/address/list/list",
+    "pages/cart/cart",
+    
+    
     
     "pages/home/home",
-    
+    "pages/address/list/list",
     "pages/address/edit/edit",
-    
     
     
     

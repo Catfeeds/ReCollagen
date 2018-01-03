@@ -1,10 +1,10 @@
 import {Order} from '../order/order-model.js';
 import {Cart} from '../cart/cart-model.js';
-import {Address} from '../../utils/address.js';
+import { AdrList } from '../address/list/list-model.js';
 
 var order=new Order();
 var cart=new Cart();
-var address=new Address();
+var adrList = new AdrList();
 
 Page({
         data: {
@@ -33,7 +33,7 @@ Page({
                 });
 
                 /*显示收获地址*/
-                this._addressInfo();                
+                this._addressInfo(0);     
 
                 /*主商品价格和辅销品价格*/
                 var accountMain = this._calcTotalMainAndCounts(this.data.productsArr,1).account;
@@ -60,9 +60,9 @@ Page({
                   /*获取商品重量*/
                   var weight = this.getResultweight(this.data.productsArr);
 
-                  /*获取运费信息*/
-                  order.getTransFee(weight, (res) => {
-
+                  /*获取运费信息*/                    
+                  order.getTransFee(weight, this.data.addressInfo.address_id, (res) => {
+                    
                     /*设置总参数*/
                     that.setData({
                       mainGoodsPrice: (accountMain * PromotionPrice).toFixed(2),
@@ -79,7 +79,6 @@ Page({
                     });
 
                   });
-
                 })
             }
             //旧订单
@@ -90,8 +89,8 @@ Page({
         },
 
         onShow:function(){
+          var that = this;
             if(this.data.id) {
-                var that = this;
                 //下单后，支付成功或者失败后，点左上角返回时能够更新订单状态 所以放在onshow中
                 var id = this.data.id;
                 order.getOrderInfoById(id, (data)=> {
@@ -122,25 +121,48 @@ Page({
             else
             {
               /*显示收获地址*/
-              this._addressInfo();
+              adrList.getCartDataFromLocal((id) => {
+                if (id){
+                  that._addressInfo(id);
+                  /*获取商品重量*/
+                  var weight = that.getResultweight(that.data.productsArr);
+                  /*获取运费信息*/
+                  order.getTransFee(weight, id, (res) => {
+                    /*设置总参数*/
+                    that.setData({
+                      shippingPrice: res.fee,
+                      shippingtransId: res.transId,
+                    });
+                    /*获取商品总价格*/
+                    var ResultTotal = that.getResultTotal(that.data.mainGoodsPrice, that.data.otherGoodsPrice, that.data.shippingPrice);
+                    that.setData({
+                      total: ResultTotal
+                    });
+                  });
+                }
+              })
             }
         },
 
         /*显示收获地址*/
-        _addressInfo: function () {
-          address.getAddress((res) => {
-            this.setData({
-              addressInfo: res,
-              'addressInfo.address': res.province + res.city + res.country + res.address
-            })
+        _addressInfo: function (id) {
+          var that = this;
+          adrList.getAddress((res) => {
+            var hasInfo = adrList._isHasThatOne(id, res);
+            if (hasInfo.index != -1) {
+              hasInfo.data.address = hasInfo.data.province + ',' + hasInfo.data.city + ',' + hasInfo.data.country + ',' + hasInfo.data.address;
+              that.setData({
+                addressInfo: hasInfo.data
+              })
+            }
           });
         },
-
-        /*修改或者添加地址信息*/
-        editAddress: function () {
+        
+        /*选择地址*/
+        changAddress: function () {
           var that = this;
           wx.navigateTo({
-            url: '../address/address'
+            url: '../address/list/list?type=order'
           });
         },
 

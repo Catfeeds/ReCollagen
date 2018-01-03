@@ -94,11 +94,11 @@ class Order extends Base{
     * params:
     * weight - 商品总重量(单位：kg)
     * */
-    getTransFee(param, callback) {
+    getTransFee(id,weight, callback) {
       var allParams = {
         url: 'order/transfee',
         type: 'post',
-        data: { weight: param },
+        data: { weight: weight, address_id: id },
         sCallback: function (data) {
           callback && callback(data);
         },

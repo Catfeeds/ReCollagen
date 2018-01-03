@@ -21,7 +21,7 @@
     </view>
   </view>
   <!--地址-->
-  <view class="order-address-info {{orderStatus!=0?'disabled':''}}" ontap="editAddress">
+  <view class="order-address-info {{orderStatus!=0?'disabled':''}}" ontap="changAddress">
     <block wx:if="{{addressInfo}}">
       <view class="contact-box">
         <view>
@@ -74,13 +74,13 @@
         </view>
         <view class="item-middle">
           <view>{{item.name}}</view>
-          <view>￥{{item.currentPrice || item.price}}</view>
+          <view>￥{{item.currentPrice}}</view>
           <view wx:if="{{item.option_name}}">规格：
              {{item.option_name}}
           </view>
         </view>
         <view class="item-right">
-          ×{{item.counts || item.quantity}}
+          ×{{item.counts}}
         </view>
       </view>
     </block>

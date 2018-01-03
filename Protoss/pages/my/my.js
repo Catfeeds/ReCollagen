@@ -48,7 +48,7 @@ Page({
     editAddress: function () {
       var that = this;
       wx.navigateTo({
-        url: '../address/list/list'
+        url: '../address/list/list?type=my'
       });
     },
 
