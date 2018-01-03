@@ -6,7 +6,7 @@ Method:
 
 Params:
     "weight"        :   "商品总重量(单位：kg)"
-
+	"address_id" 	:   "地址id"
 
 
 

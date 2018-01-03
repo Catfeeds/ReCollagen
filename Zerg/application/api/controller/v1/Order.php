@@ -16,11 +16,11 @@ use think\Controller;
 
 class Order extends BaseController
 {
-//    protected $beforeActionList = [
-//        'checkExclusiveScope' => ['only' => 'createOrder,cancelOrder,receiveOrder'],
-//        'checkPrimaryScope'   => ['only' => 'getDetail,getSummaryByUser'],
-//        'checkSuperScope'     => ['only' => 'delivery,getSummary']
-//    ];
+    protected $beforeActionList = [
+        'checkExclusiveScope' => ['only' => 'createOrder,cancelOrder,receiveOrder'],
+        'checkPrimaryScope'   => ['only' => 'getDetail,getSummaryByUser'],
+        'checkSuperScope'     => ['only' => 'delivery,getSummary']
+    ];
 
     /**
      * 下单
@@ -33,7 +33,7 @@ class Order extends BaseController
         $postData = input('post.');
         $products = input('post.goodsArrInfo/a');
         $uid      = Token::getCurrentUid();
-        // $uid      = 2;
+//         $uid      = 2;
 
         $order  = new OrderService();
         $status = $order->place($uid, $products, $postData);

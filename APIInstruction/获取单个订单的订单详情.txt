@@ -35,10 +35,29 @@ Callback: 编码一律utf-8
             "name"              : "商品名称"   
             "option_id"         : "商品选项id"
             "option_name"       : "商品选项名称"
-            "price"             : "商品价格"
             "total"             : "单件商品总价"
             "counts"            : "商品数量"
+            "currentPrice"      : "商品价格"
 
+            "detail":{          ："商品实际详情（取消订单商品回退到购物车时使用）"
+                "price":"9.90",             ："商品默认价格",
+                "stock":998,                : "商品库存",
+                "weight":"100.00",          : "商品重量",
+                "bulk":"0.02",              : "商品体积",
+                "status":1,                 :"商品状态(1正常0下架)",
+                "options":[{                : "商品选项",
+                    "goods_option_id":9,
+                    "goods_id":30,
+                    "option_name":"1000g",
+                    "option_price":"8.80",
+                    "stock":976
+                }],
+                "discounts":[{              : "商品折扣",
+                    "quantity":5,
+                    "discount":66
+                }]
+            }
+            }
         },
 
         "promotionName" :  {

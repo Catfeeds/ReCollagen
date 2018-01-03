@@ -5,7 +5,7 @@ Method:
     Post
 
 Params:
-    "address_id"    :   "地址id"
+    "id"    :   "地址id"
 
 
 Callback: 编码一律utf-8

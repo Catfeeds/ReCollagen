@@ -5,6 +5,8 @@ Method:
     Post
 
 Params:
+    "address_id"            :  "选中的收货地址id",
+
     "goodsArrInfo":[{
         "goods_id"          :  "商品id", 
         "quantity"          :  "商品数量", 
