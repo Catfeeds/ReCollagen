@@ -16,22 +16,15 @@ Page({
         isLoadedAll:false,
         loadingHidden:false,
         orderArr:[],
-        addressInfo:null
     },
     onLoad:function(){
         this._loadData();
-  
-        /*显示收获地址*/
-        this._addressInfo();
     },
 
     onShow:function(){
         if(this.data.loadingHidden){
             this.onPullDownRefresh();
         }
-
-        /*显示收获地址*/
-        this._addressInfo();
     },
 
     _loadData:function(){
@@ -42,12 +35,6 @@ Page({
             });
         });
 
-        my.getUserInfo((data) => {
-          that.setData({
-            userInfo: data
-          });
-        });
-
         my.getUserAccount((data) => {
           that.setData({
             UserAccount: data
@@ -56,22 +43,12 @@ Page({
 
         this._getOrders();
     },
-    
-    /*显示收获地址*/
-    _addressInfo: function () {
-      address.getAddress((res) => {
-        this.setData({
-          addressInfo: res,
-          'addressInfo.address': res.province + res.city + res.country + res.address
-        })
-      });
-    },
 
     /*修改或者添加地址信息*/
     editAddress: function () {
       var that = this;
       wx.navigateTo({
-        url: '../address/address'
+        url: '../address/list/list'
       });
     },
 

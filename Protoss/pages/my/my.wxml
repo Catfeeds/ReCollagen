@@ -11,26 +11,10 @@
   </view>
   <!--地址管理-->
   <view class="my-address">
-    <block wx:if="{{addressInfo}}">
-      <view class="item-title" ontap="editAddress">
-        地址管理
-        <image src="../../imgs/icon/arrow@right.png"></image>
-      </view>
-      <view  class="item-main">
-          <view class="section">
-            <input disabled name="name" placeholder="姓名" value="{{addressInfo.name}}" />
-          </view>
-          <view class="section">
-            <input disabled type="number" name="mobile" placeholder="手机号码" value="{{addressInfo.telephone}}"/>
-          </view>
-          <view class="section">
-            <input disabled name="detail" placeholder="收货地址" value="{{addressInfo.address}}"/>
-          </view>
-      </view>
-    </block>
-    <block wx:else>
-      <view class="add-new-address" ontap="editAddress"><text class="icon">+</text><text>添加地址</text></view>
-    </block>
+    <view class="item-title" ontap="editAddress">
+      地址管理
+      <image src="../../imgs/icon/arrow@right.png"></image>
+    </view>
   </view>
 
   <view class="my-order">
