@@ -32,13 +32,9 @@ Page({
                     orderStatus:0
                 });
 
-                /*显示收获地址*/
-                this._addressInfo(0);     
-
                 /*主商品价格和辅销品价格*/
                 var accountMain = this._calcTotalMainAndCounts(this.data.productsArr,1).account;
                 var accountFain = this._calcTotalMainAndCounts(this.data.productsArr,0).account;
-                
 
                 /*获取促销套餐*/
                 order.getMainPromotion((data) => {
@@ -54,31 +50,17 @@ Page({
                       });
                     }
                   }
+
                   /*获取满额打折价格*/
                   var PromotionPrice = that.getMainPromotionTypePrice(Promotion);
 
-                  /*获取商品重量*/
-                  var weight = this.getResultweight(this.data.productsArr);
-
-                  /*获取运费信息*/                    
-                  order.getTransFee(weight, this.data.addressInfo.address_id, (res) => {
-                    
-                    /*设置总参数*/
-                    that.setData({
-                      mainGoodsPrice: (accountMain * PromotionPrice).toFixed(2),
-                      otherGoodsPrice: accountFain,
-                      shippingPrice: res.fee,
-                      shippingtransId: res.transId,
-                      PromotionInfo: Promotion,
-                    });
-
-                    /*获取商品总价格*/
-                    var ResultTotal = that.getResultTotal(that.data.mainGoodsPrice, that.data.otherGoodsPrice, that.data.shippingPrice);
-                    that.setData({
-                      total: ResultTotal
-                    });
-
+                  /*设置总参数*/
+                  that.setData({
+                    mainGoodsPrice: (accountMain * PromotionPrice).toFixed(2),
+                    otherGoodsPrice: accountFain,
+                    PromotionInfo: Promotion,
                   });
+
                 })
             }
             //旧订单

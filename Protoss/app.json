@@ -1,12 +1,9 @@
 {
   "pages":[
     "pages/home/home",
+    "pages/promotion/promotion",
     "pages/my/my",
     "pages/cart/cart",
-    
-    
-    
-    
     "pages/address/list/list",
     "pages/address/edit/edit",
     

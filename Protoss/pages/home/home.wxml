@@ -12,7 +12,7 @@
         <view class="home-main-theme">
             <view class="home-main-header">最新促销</view>
             <view class="theme-box">
-              <view class="theme-item big" bindtap="onThemesItemTap">
+              <view class="theme-item big" bindtap="onPromotionTap">
                 <image src="http://wxadmin.edeapp.com/public/uploads/images/osc1/category/banner-2a.png"></image>
               </view>
             </view>
