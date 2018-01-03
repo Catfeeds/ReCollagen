@@ -1,0 +1,73 @@
+
+<view class="container my-container" hidden="{{!loadingHidden}}">
+  <view class="my-header">
+    <image src="{{userInfo.avatarUrl}}"></image>
+    <text class="name">{{userInfo.nickName}}</text>
+  </view>
+  <view class='mblist'>
+    <text>余额：￥{{UserAccount.mainAccount}}</text>
+    <text>小金库：￥{{UserAccount.secondAccount}}</text>
+    <view ontap="showCollectList">收藏商品</view>
+  </view>
+  <!--地址管理-->
+  <view class="my-address">
+    <view class="item-title" ontap="editAddress">
+      地址管理
+      <image src="../../imgs/icon/arrow@right.png"></image>
+    </view>
+  </view>
+
+  <view class="my-order">
+    <view class="item-title">我的订单</view>
+    <view class='tabs-box'>
+      <block wx:for="{{['待付款' ,'待发货' ,'已发货' ,'已收货' ,'已取消订单']}}">
+          <view class="tabs-item {{currentTabsIndex==index?'selected':''}}" bindtap="onTabsItemTap" data-id="{{index+1}}" data-index="{{index}}">
+              {{item}}
+          </view>
+      </block>
+    </view>
+    <view class="item-main" >
+      <block wx:for="{{orderArr}}">
+        <view class="order-item">
+          <view class="order-header">
+            <view class='order-no' ontap="showOrderDetailInfo" data-id="{{item.order_id}}">
+              <text>订单编号:</text>
+              <text class="order-no-txt">{{item.order_num_alias}}</text>
+            </view>
+            <view class='order-wul' wx:if="{{item.order_status>2 && item.order_status<5}}" ontap="showOrderWul" data-id="{{item.order_id}}">查看物流</view>
+          </view>
+          <view class="order-main" ontap="showOrderDetailInfo" data-id="{{item.order_id}}">
+            <view class="item-left">
+              <view class='products-isMainGoods' wx:if="{{item.isMainGoods==0}}">辅</view>
+              <image wx:if="{{item.pay_subject_img!=''}}" src="{{item.pay_subject_img}}" mode="aspectFill" />
+              <image wx:else src="../../imgs/icon/default_img.png" mode="aspectFill" />
+            </view>
+            <view class="item-middle">
+              <view>{{item.pay_subject}}</view>
+              <view>{{item.productCount}}件商品</view>
+            </view>
+            <view class="item-right">
+              <text class="order-status-txt unpay" wx:if="{{item.order_status==1}}">待付款</text>
+              <text class="order-status-txt payed" wx:if="{{item.order_status==2}}">待发货</text>
+              <text class="order-status-txt done" wx:if="{{item.order_status==3}}">已发货</text>
+              <text class="order-status-txt receive" wx:if="{{item.order_status==4}}">已收货</text>
+              <text class="order-status-txt cancel" wx:if="{{item.order_status==5}}">已取消订单</text>
+            </view>
+          </view>
+          <view class="order-bottom">
+            <text>实付:￥{{item.total}}</text>
+            <view class="orde-status">
+              <view class="pay" ontap="addCart" data-id="{{item.order_id}}" data-index="{{index}}" wx:if="{{item.order_status<3}}">重新购买</view>
+              <view class="pay" ontap="rePay" data-id="{{item.order_id}}" data-index="{{index}}" wx:if="{{item.order_status==1}}">付款</view>
+              <view class="pay" ontap="receive" data-id="{{item.order_id}}" data-index="{{index}}" wx:if="{{item.order_status==3}}">确认收货</view>
+              <view class="pay" ontap="cancel" data-id="{{item.order_id}}" data-index="{{index}}"  wx:if="{{item.order_status==1}}">取消订单</view>
+            </view>
+          </view>
+        </view>
+      </block>
+    </view>
+  </view>
+</view>
+<loading hidden="{{loadingHidden}}">
+  加载中...
+</loading>

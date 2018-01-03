@@ -20,7 +20,7 @@ Page({
         });
 
         /*获取主题信息*/
-        // home.getThemeData((data) => {
+        // home.getPromotionData((data) => {
         //     that.setData({
         //         themeArr: data,
         //         loadingHidden: true

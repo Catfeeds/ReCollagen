@@ -8,21 +8,16 @@
         </block>
     </swiper>
     <view class="home-main">
-        <!--主题精选-->
+        <!--最新促销-->
         <view class="home-main-theme">
-            <!--<view class="home-main-header">精选主题</view>-->
+            <view class="home-main-header">最新促销</view>
             <view class="theme-box">
-                <block wx:for="{{themeArr}}">
-                    <view wx:if="{{index==2}}" class="theme-item big" bindtap="onThemesItemTap" data-id="{{item.id}}" data-name="{{item.name}}">
-                        <image src="{{item.topic_img.url}}"></image>
-                    </view>
-                    <view wx:else class="theme-item" bindtap="onThemesItemTap" data-id="{{item.id}}" data-name="{{item.name}}">
-                        <image src="{{item.topic_img.url}}"></image>
-                    </view>
-                </block>
+              <view class="theme-item big" bindtap="onThemesItemTap">
+                <image src="http://wxadmin.edeapp.com/public/uploads/images/osc1/category/banner-2a.png"></image>
+              </view>
             </view>
         </view>
-        <!--单品首发-->
+        <!--最近新品-->
         <view class="home-main-products">
             <view class="home-main-header">最近新品</view>
             <template is="products" data="{{productsArr:productsArr}}"/>

@@ -21,8 +21,8 @@ class Home extends Base{
         };
         this.request(param);
     }
-    /*首页主题*/
-    getThemeData(callback){
+    /*首页促销方案*/
+    getPromotionData(callback){
         var param={
             url: 'theme?ids=1,2,3',
             sCallback:function(data){
