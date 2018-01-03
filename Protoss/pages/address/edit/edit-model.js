@@ -44,7 +44,7 @@ class AdrEdit extends Base{
       var param = {
         url: 'address/del',
         type: 'post',
-        data: { address_id: id },
+        data: { id: id },
         sCallback: function (res) {
           callback && callback(res);
         },

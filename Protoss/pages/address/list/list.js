@@ -110,7 +110,7 @@ Page({
             that.showTips('提示', statusCode.msg);
             return;
           }
-          that.showToast('statusCode.msg');
+          that.showToast(statusCode.msg);
           that.data.addressInfo.splice(index, 1);
           that.setData({
             addressInfo: that.data.addressInfo
