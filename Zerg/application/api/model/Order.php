@@ -64,8 +64,12 @@ class Order extends BaseModel
                 $orderDetail['products'][$key]['currentPrice'] = $product['price'];
                 unset($orderDetail['products'][$key]['quantity']);
                 unset($orderDetail['products'][$key]['price']);
-                $orderDetail['products'][$key]['detail'] = Product::getProductDetail($product['goods_id'])->hidden(['goods_id','isMainGoods','cat_id','image','name','properties','detail','imgs']);
 
+                $productDetail = Product::getProductDetail($product['goods_id'])->hidden(['goods_id','isMainGoods','cat_id','image','name','properties','detail','imgs']);
+                $orderDetail['products'][$key]['price'] = $productDetail['price'];
+                $orderDetail['products'][$key]['weight'] = $productDetail['weight']; 
+                $orderDetail['products'][$key]['options'] = $productDetail['options']; 
+                $orderDetail['products'][$key]['discounts'] = $productDetail['discounts']; 
             }
             if (!empty($orderDetail['promotion'])) {
                 $promotion                    = json_decode($orderDetail['promotion'], true);
