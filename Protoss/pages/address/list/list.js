@@ -24,9 +24,6 @@ Page({
     wx.setNavigationBarTitle({
       title: titleName
     });
-
-    /*显示收获地址*/
-    this._addressInfo();
   },
 
   onShow: function () {

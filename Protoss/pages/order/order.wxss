@@ -134,10 +134,11 @@
 }
 .pay{
     display: flex;
-    flex-basis: 240rpx;
+    flex-basis: 170rpx;
     background-color: #75bb0b;
     color: #fff;
     justify-content: center;
+    border-left: 1rpx solid #fff;
 }
 .pay:active{
     background: #6bab0b;

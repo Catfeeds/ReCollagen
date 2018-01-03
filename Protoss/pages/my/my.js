@@ -59,19 +59,20 @@ Page({
         index = order.getDataSet(event, 'index');
       this.showTipsReturn('提示', '你确定要重新购买吗？', (statusConfirm) => {
         if (statusConfirm) {
-          // order.cancel(id, (statusCode) => {
-          //   if (statusCode.errorCode != 0) {
-          //     that.showTips('订单提示', statusCode.msg);
-          //     return;
-          //   }
-            that.data.orderArr[index].order_status = 5;
-            that.setData({
-              orderArr: that.data.orderArr
-            });
+          order.cancel(id, (statusCode) => {
+            if (statusCode.errorCode != 0) {
+              that.showTips('订单提示', statusCode.msg);
+              return;
+            }
             var cartData = cart.getCartDataFromLocal();
             if (cartData.length < 1) 
             {
               that.addToCart(id);
+              that.data.orderArr[index].order_status = 5;
+              that.data.orderArr.splice(index, 1);
+              that.setData({
+                orderArr: that.data.orderArr
+              });
             }
             else 
             {
@@ -81,6 +82,11 @@ Page({
                   cart.execSetStorageSync(cartData);
                   if (cartData.length < 1) {
                     that.addToCart(id);
+                    that.data.orderArr[index].order_status = 5;
+                    that.data.orderArr.splice(index, 1);
+                    that.setData({
+                      orderArr: that.data.orderArr
+                    });
                   }
                   else {
                     that.showTips('提示', '清空购物车失败');
@@ -88,8 +94,7 @@ Page({
                 }
               })
             }
-
-          // });
+          });
         }
       })
     },
@@ -97,17 +102,22 @@ Page({
     /*将商品数据添加到内存中*/
     addToCart: function (id) {
       order.getOrderInfoById(id, (data) => {
-        console.log(data.products)
-        var tempObj = {}, keys = ['goods_id', 'name', 'image', 'price', 'isMainGoods', 'haveCollect', 'options', 'discounts', 'weight'];
-        for (var key in data.products) {
-          if (keys.indexOf(key) >= 0) {
-            tempObj[key] = data.products[key];
+        var item,
+          tempObj = {},
+          keys = ['goods_id', 'name', 'image', 'price', 'isMainGoods', 'options', 'discounts', 'weight'],
+          arr = data.products;
+        for (let i = 0; i < arr.length; i++) {
+          item = arr[i];
+          for (var key in item) {
+            if (keys.indexOf(key) >= 0) {
+              tempObj[key] = item[key];
+            }
           }
+          cart.add(tempObj, item.counts, item.currentPrice, item.option_id);
+          wx.switchTab({
+            url: '/pages/cart/cart'
+          });
         }
-        cart.add(tempObj, data.counts, data.currentPrice, data.option_id);
-        wx.switchTab({
-          url: '/pages/cart/cart'
-        });
       });
     },
 

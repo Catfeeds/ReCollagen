@@ -32,6 +32,8 @@ Page({
                     orderStatus:0
                 });
 
+                adrList.execSetStorageSync(0);
+
                 /*主商品价格和辅销品价格*/
                 var accountMain = this._calcTotalMainAndCounts(this.data.productsArr,1).account;
                 var accountFain = this._calcTotalMainAndCounts(this.data.productsArr,0).account;
@@ -104,24 +106,22 @@ Page({
             {
               /*显示收获地址*/
               adrList.getCartDataFromLocal((id) => {
-                if (id){
-                  that._addressInfo(id);
-                  /*获取商品重量*/
-                  var weight = that.getResultweight(that.data.productsArr);
-                  /*获取运费信息*/
-                  order.getTransFee(weight, id, (res) => {
-                    /*设置总参数*/
-                    that.setData({
-                      shippingPrice: res.fee,
-                      shippingtransId: res.transId,
-                    });
-                    /*获取商品总价格*/
-                    var ResultTotal = that.getResultTotal(that.data.mainGoodsPrice, that.data.otherGoodsPrice, that.data.shippingPrice);
-                    that.setData({
-                      total: ResultTotal
-                    });
+                that._addressInfo(id);
+                /*获取商品重量*/
+                var weight = that.getResultweight(that.data.productsArr);
+                /*获取运费信息*/
+                order.getTransFee(weight, id, (res) => {
+                  /*设置总参数*/
+                  that.setData({
+                    shippingPrice: res.fee,
+                    shippingtransId: res.transId,
                   });
-                }
+                  /*获取商品总价格*/
+                  var ResultTotal = that.getResultTotal(that.data.mainGoodsPrice, that.data.otherGoodsPrice, that.data.shippingPrice);
+                  that.setData({
+                    total: ResultTotal
+                  });
+                });
               })
             }
         },
@@ -221,6 +221,66 @@ Page({
             weight += parseInt(data[i].weight) * data[i].counts / 1000;
           }
           return (weight).toFixed(2);
+        },
+
+        /*重新购买订单里的商品*/
+        addCart: function (event) {
+          var that = this,
+            id = this.data.id;
+          this.showTipsReturn('提示', '你确定要重新购买吗？', (statusConfirm) => {
+            if (statusConfirm) {
+            order.cancel(id, (statusCode) => {
+                if (statusCode.errorCode != 0) {
+                  that.showTips('订单提示', statusCode.msg);
+                  return;
+                }
+              var cartData = cart.getCartDataFromLocal();
+              if (cartData.length < 1) {
+                that.addToCart(id);
+                that.setData({
+                  orderStatus: 5
+                });
+              }
+              else {
+                that.showTipsReturn('提示', '购物车里已有商品，需清空之后才能再次购买？', (statusConfirm) => {
+                  if (statusConfirm) {
+                    cartData = [];
+                    cart.execSetStorageSync(cartData);
+                    if (cartData.length < 1) {
+                      that.addToCart(id);
+                      that.setData({
+                        orderStatus: 5
+                      });
+                    }
+                    else {
+                      that.showTips('提示', '清空购物车失败');
+                    }
+                  }
+                })
+              }
+            });
+            }
+          })
+        },
+
+        /*将商品数据添加到内存中*/
+        addToCart: function (id) {
+          var item,
+            tempObj = {},
+            keys = ['goods_id', 'name', 'image', 'price', 'isMainGoods', 'options', 'discounts', 'weight'],
+            arr = this.data.productsArr;
+          for (let i = 0; i < arr.length; i++) {
+            item = arr[i];
+            for (var key in item) {
+              if (keys.indexOf(key) >= 0) {
+                tempObj[key] = item[key];
+              }
+            }
+            cart.add(tempObj, item.counts, item.currentPrice, item.option_id);
+            wx.switchTab({
+              url: '/pages/cart/cart'
+            });
+          }
         },
 
         /*取消订单*/

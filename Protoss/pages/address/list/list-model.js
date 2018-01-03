@@ -33,8 +33,12 @@ class AdrList extends Base {
 
   /*本地缓存 保存／更新*/
   execSetStorageSync(data) {
-    wx.setStorage({ key: this._storageKeyName, data: data });
+    wx.setStorage({
+      key: this._storageKeyName, 
+      data: data
+    });
   };
+  
 
   /*根据ID获取某个地址或默认地址*/
   _isHasThatOne(id, arr) {
