@@ -1,0 +1,21 @@
+@import "../tpls/base.wxss";
+
+.my-container{
+    background-color:#fff;
+}
+.my-promotion{
+    margin-top: 20px;
+}
+.promotion-title{
+    padding: 25rpx 0;
+    color: #75bb0b;
+    text-align: center;
+    font-size: 34rpx;
+    position: relative;
+}
+.promotion-main{
+    display: flex;
+    font-size: 28rpx;
+    color: #6D6D6D;
+    padding:20rpx 30rpx;
+}

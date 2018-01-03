@@ -20,9 +20,9 @@ Page({
         });
 
         /*获取主题信息*/
-        // home.getThemeData((data) => {
+        // home.getPromotionData((data) => {
         //     that.setData({
-        //         themeArr: data,
+        //         promotionArr: data,
         //         loadingHidden: true
         //     });
         // });
@@ -45,12 +45,10 @@ Page({
         })
     },
 
-    /*跳转到主题列表*/
-    onThemesItemTap: function (event) {
-        var id = home.getDataSet(event, 'id');
-        var name = home.getDataSet(event, 'name');
+    /*跳转到促销文案*/
+    onPromotionTap: function (event) {
         wx.navigateTo({
-            url: '../theme/theme?id=' + id+'&name='+ name
+          url: '../promotion/promotion'
         })
     },
 
