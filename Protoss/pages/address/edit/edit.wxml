@@ -17,7 +17,7 @@
           <input name="detail" value="{{addressInfo.address}}" placeholder="详细地址、如街道、楼牌号等" bindinput="bindDetail" />
         </view>
         <view class="set-default" bindtap="setDefault">
-				<icon type="{{addressInfo.is_default == 1 ? 'success_circle' : 'circle'}}"/>
+				<icon type="{{is_default == 1 ? 'success_circle' : 'circle'}}"/>
 				<text>默认地址</text>
         </view>
         <button  class="submit-btn" formType="submit">保存</button>
