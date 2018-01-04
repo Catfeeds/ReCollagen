@@ -11,7 +11,7 @@ class Promotion extends Base{
     /*获取促销方案*/
     getPromotionTxt(callback) {
       var param = {
-        url: 'account',
+        url: 'promotion/info',
         sCallback: function (data) {
           callback && callback(data);
         }

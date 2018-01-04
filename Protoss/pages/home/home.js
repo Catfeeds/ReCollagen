@@ -19,13 +19,13 @@ Page({
             });
         });
 
-        /*获取主题信息*/
-        // home.getPromotionData((data) => {
-        //     that.setData({
-        //         promotionArr: data,
-        //         loadingHidden: true
-        //     });
-        // });
+        /*获取最新促销*/
+        home.getPromotionData((data) => {
+            that.setData({
+                promotionArr: data,
+                loadingHidden: true
+            });
+        });
 
         /*获取单品信息*/
         home.getProductorData((data) => {

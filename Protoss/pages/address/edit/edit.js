@@ -73,7 +73,7 @@ Page({
       {
         adrEdit.updateAddress(self.data.addressInfo, (data) => {
           if (data.errorCode != 0) {
-            self.showToast(data.msg);
+            self.showTips('提示', '至少有一个默认地址');
             return;
           }
           wx.navigateBack();
@@ -134,6 +134,23 @@ Page({
     this.setData({
       'addressInfo.is_default': !setDefault,
     })
+  },
+
+  /*
+  * 提示窗口
+  * params:
+  * title - {string}标题
+  * content - {string}内容
+  */
+  showTips: function (title, content) {
+    wx.showModal({
+      title: title,
+      content: content,
+      showCancel: false,
+      success: function (res) {
+
+      }
+    });
   },
 
   /*

@@ -12,7 +12,6 @@ class Home extends Base{
 
     /*banner图片信息*/
     getBannerData(callback){
-        var that=this;
         var param={
             url: 'banner',
             sCallback:function(data){
@@ -24,7 +23,7 @@ class Home extends Base{
     /*首页促销方案*/
     getPromotionData(callback){
         var param={
-            url: 'theme?ids=1,2,3',
+            url: 'promotion/img',
             sCallback:function(data){
                 callback && callback(data);
             }

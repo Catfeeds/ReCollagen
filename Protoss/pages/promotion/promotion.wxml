@@ -1,8 +1,7 @@
 <view class="container my-container" hidden="{{!loadingHidden}}">
   <view class="my-promotion">
-    <view class="promotion-title">最新促销</view>
     <view class="promotion-main" >
-      {{PromotionTxt}}
+      {{PromotionTxt.description}}
     </view>
   </view>
 </view>
