@@ -1,6 +1,5 @@
 {
   "pages":[
-    "pages/promotion/promotion",
     "pages/home/home",    
     "pages/category/category",
     "pages/product/product",
@@ -10,7 +9,7 @@
     "pages/pay-result/pay-result",
     "pages/collect/collect",
     "pages/transinfo/transinfo",
-    
+    "pages/promotion/promotion",
     "pages/address/list/list",
     "pages/address/edit/edit"
   ],
