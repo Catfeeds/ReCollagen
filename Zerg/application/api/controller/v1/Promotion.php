@@ -28,7 +28,7 @@ class Promotion extends Controller
     public function getPromotionInfo(){
 
         $promotionInfo = PromotionInfoModel::get()->hidden(['image']);
-
+        $promotionInfo['description'] = htmlspecialchars_decode($promotionInfo['description']);
         return $promotionInfo;
     }
     /**
