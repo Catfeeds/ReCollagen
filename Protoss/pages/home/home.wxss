@@ -34,7 +34,7 @@
 }
 .theme-item{
   display: flex;
-  height:375rpx;
+  height:316rpx;
   width: 50%;
   border-bottom: 4rpx solid #fff;
   position: relative;
