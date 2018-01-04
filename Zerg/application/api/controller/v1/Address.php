@@ -74,7 +74,7 @@ class Address extends BaseController
         $validate->goCheck();
 
         $uid = TokenService::getCurrentUid();
-//                $uid = 2;
+               // $uid = 2;
         $data = input('post.');
 
         $userAddress = UserAddress::get($data['address_id']);
@@ -89,7 +89,7 @@ class Address extends BaseController
         $data['province_id'] = UserAddress::getProvinceId($data['province']);
         //如果设为默认且已有默认地址，改为普通地址
         if ($data['is_default'] == 1) {
-            UserAddress::where(['uid'=>$uid,'is_default'=>1])->update(['is_default'=>-1]);
+            UserAddress::where(['uid'=>$uid,'address_id'=>['neq',$data['address_id']],'is_default'=>1])->update(['is_default'=>-1]);
         }
         $userAddress->save($data);
 

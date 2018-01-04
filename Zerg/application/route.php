@@ -56,6 +56,9 @@ Route::get('api/:version/product/collect','api/:version.Product/getcollectGoodsL
 
 //Promotion
 Route::get('api/:version/promotion/all', 'api/:version.Promotion/getPromotions');                    //正在进行中的促销活动
+Route::get('api/:version/promotion/info', 'api/:version.Promotion/getPromotionInfo');                //促销信息
+Route::get('api/:version/promotion/img', 'api/:version.Promotion/getPromotionImg');                  //促销图片
+
 
 //Category
 Route::get('api/:version/category', 'api/:version.Category/getCategories'); 

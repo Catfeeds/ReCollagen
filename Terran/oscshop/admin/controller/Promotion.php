@@ -125,8 +125,29 @@ class Promotion extends AdminBase{
 			storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'删除了促销管理');	
 			$this->redirect('Promotion/index');
 		}	
-		
 	}
-	
+	/**
+     * 促销信息
+     */
+    public function info(){
+        if (request()->isPost()) {
+			$data = input('post.');
+			$data['update_time'] = time();
+			unset($data['send']);
+
+            $result = Db::name('promotion_info')->update($data);
+            if ($result) {
+                storage_user_action(UID, session('user_auth.username'), config('BACKEND_USER'), '修改了促销信息');
+				$this->success('修改成功');
+            } else {
+				$this->error('修改失败');							
+            }
+        } else {
+            $this->assign('info', Db::name('promotion_info')->find());
+            $this->assign('action', url('Promotion/info'));
+
+            return $this->fetch();
+        }
+    }
 	
 }
