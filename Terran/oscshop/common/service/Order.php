@@ -59,11 +59,11 @@ class Order{
 		
 		if(isset($param['order_num'])){
 			$map['Order.order_num_alias']=['eq',$param['order_num']];	
-			$query['order_num']=urlencode($param['order_num']);
+			$query['order_num_alias']=urlencode($param['order_num']);
 		}
-		if(isset($param['name'])){
-			$map['Member.name']=['like',"%".$param['name']."%"];
-			$query['name']=urlencode($param['name']);
+		if(isset($param['user_name'])){
+			$map['Order.shipping_name']=['like',"%".$param['user_name']."%"];
+			$query['shipping_name']=urlencode($param['user_name']);
 		}
 		if(isset($param['status'])){
 			$map['Order.order_status_id']=['eq',$param['status']];	
