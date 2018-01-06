@@ -82,7 +82,7 @@ Page({
   //分享效果
   onShareAppMessage: function () {
     return {
-      title: '悦寇霖智',
+      title: '悦蔻霖智',
       path: 'pages/category/category'
     }
   }

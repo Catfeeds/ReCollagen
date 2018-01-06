@@ -22,7 +22,7 @@ class AdrList extends Base {
   }
 
   /*获取缓存*/
-  getCartDataFromLocal(callback) {
+  getAddressDataFromLocal(callback) {
     wx.getStorage({
       key: this._storageKeyName,
       success: function (res) {
