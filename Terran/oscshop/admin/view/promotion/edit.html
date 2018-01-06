@@ -55,7 +55,7 @@
                 <label class="col-sm-2 control-label hidden-xs" for="input-length-class"> </label>
                 <div class="col-sm-10">
                    <ul class="pgoods">
-                   	 <!--<li>
+                   	 <!--<li class="li-id-0">
                    	 	<input name="id" type="hidden" class="goods-id" value="0" type="text">
                    	 	<button type="button" id="pgoods-del" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
                    	 	<a href="#" class="img-thumbnail">
@@ -142,7 +142,7 @@
 						<tr>		
 							<td class="center">
 							<label>
-								<input class="ace ids" type="checkbox" name="id[]" value="36">
+								<input class="ace ids id-36" type="checkbox" name="id[]" value="36">
 								<span class="lbl"></span>
 							</label>
 							</td>				
@@ -158,7 +158,7 @@
 						<tr>		
 							<td class="center">
 							<label>
-								<input class="ace ids" type="checkbox" name="id[]" value="37">
+								<input class="ace ids id-37" type="checkbox" name="id[]" value="37">
 								<span class="lbl"></span>
 							</label>
 							</td>				
@@ -174,7 +174,7 @@
 						<tr>		
 							<td class="center">
 							<label>
-								<input class="ace ids" type="checkbox" name="id[]" value="38">
+								<input class="ace ids id-38" type="checkbox" name="id[]" value="38">
 								<span class="lbl"></span>
 							</label>
 							</td>				
@@ -331,30 +331,56 @@ ul.pgoods li p{
 	
 			$('.table-bordered').find('tbody tr').find('input[type="checkbox"]').each(function(){
 				if ($(this).attr('checked')){
-					var tr = $(this).parents('tr'),
+					var pid = $(this).val(),
+					tr = $(this).parents('tr'),
 					goodspic = tr.find('td.goods-pic img').attr('src'),
 					goodsname = tr.find('td.goods-name').html(),
 					goodsprice = tr.find('td.goods-price').html(),
 					goodsguig = tr.find('td.goods-guig').html();
+					
+					var len = $('ul.pgoods').find('li').length;
+					if(len > 0){
+						$('ul.pgoods').find('.goods-id').each(function(){
 
-					html='<li>';
-					html+='<input name="id" type="hidden" class="goods-id" value="'+$(this).val()+'" type="text">';
-                   	html+='<button type="button" id="pgoods-del" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>';
-                   	html+='<a href="#" class="img-thumbnail">';
-                   	html+='<img src="'+goodspic+'">';
-                   	html+='</a>';
-                   	html+='<a class="pgoods-name" href="#">'+goodsname+'</a>';
-                   	html+='<p>价格：'+goodsprice+'</p>';
-                   	html+='<p>规格：'+goodsguig+'</p>';
-                   	html+='</li>';
-					$('ul.pgoods').append(html);
+							if(pid != $(this).val()){
+								html='<li class="li-id-'+pid+'">';
+								html+='<input name="id" type="hidden" class="goods-id" value="'+pid+'" type="text">';
+			                   	html+='<button type="button" id="pgoods-del" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>';
+			                   	html+='<a href="#" class="img-thumbnail">';
+			                   	html+='<img src="'+goodspic+'">';
+			                   	html+='</a>';
+			                   	html+='<a class="pgoods-name" href="#">'+goodsname+'</a>';
+			                   	html+='<p>价格：'+goodsprice+'</p>';
+			                   	html+='<p>规格：'+goodsguig+'</p>';
+			                   	html+='</li>';
+								$('ul.pgoods').append(html);
+							}
+						})
+					}else{
+						html='<li class="li-id-'+pid+'">';
+								html+='<input name="id" type="hidden" class="goods-id" value="'+pid+'" type="text">';
+			                   	html+='<button type="button" id="pgoods-del" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>';
+			                   	html+='<a href="#" class="img-thumbnail">';
+			                   	html+='<img src="'+goodspic+'">';
+			                   	html+='</a>';
+			                   	html+='<a class="pgoods-name" href="#">'+goodsname+'</a>';
+			                   	html+='<p>价格：'+goodsprice+'</p>';
+			                   	html+='<p>规格：'+goodsguig+'</p>';
+			                   	html+='</li>';
+								$('ul.pgoods').append(html);
+					}
 				}
-				 $(this).attr("checked", false); 
-				 $('.check-all').attr("checked", false); 
 			});
 			
+			$('.table-bordered').on('click','.ace.ids',function (){
+				var pid = $(this).val();
+				$('li.li-id-'+pid).remove();
+			})
+			
 			$('ul.pgoods').on('click','#pgoods-del',function(){
+				var pid = $(this).parents('li').find('.goods-id').val();
 				$(this).parents('li').remove();
+				$('.id-'+pid).attr("checked", false); 
 			})
 	
 			//关闭弹出层与遮罩层
