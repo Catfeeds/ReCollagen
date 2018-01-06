@@ -44,32 +44,6 @@
                     </select>
                 </div>
             </div>
-            <div class="form-group" style="margin-bottom: 0;">
-                <label class="col-sm-2 control-label" for="input-length-class"><font color="red">*</font> 选择促销商品 </label>
-                <div class="col-sm-10">
-                   <a class="promotiongoods" style="line-height: 35px;" href="javascript:;" >选择商品</a>
-                </div>
-                
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label hidden-xs" for="input-length-class"> </label>
-                <div class="col-sm-10">
-                   <ul class="pgoods">
-                   	 <!--<li>
-                   	 	<input name="id" type="hidden" class="goods-id" value="0" type="text">
-                   	 	<button type="button" id="pgoods-del" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
-                   	 	<a href="#" class="img-thumbnail">
-                   	 		<img src="/public/uploads/cache/images/osc1/fruit/product-vg@3-100x100.png">
-                   	 	</a>
-                   	 	<a class="pgoods-name" href="#">我吃西红柿</a>
-                   	 	<p>价格：8.80</p>
-                   	 	<p>规格：500g</p>
-                   	 </li>-->
-
-                   </ul>
-                </div>
-                
-            </div>
 
             <div class="form-group">
                 <label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 需要满足的金额 </label>
@@ -87,6 +61,26 @@
                         <input name="expression" class="col-xs-10"  value="{$promotion.expression|default=''}" type="text" placeholder="折扣值(1-100 如果打9折，请输入90)">
                     </div>
                 </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label hidden-xs" for="input-length-class"> </label>
+                <div class="col-sm-10">
+                    <ul class="pgoods">
+                        <!--<li>
+                            <input name="id" type="hidden" class="goods-id" value="0" type="text">
+                            <button type="button" id="pgoods-del" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
+                            <a href="#" class="img-thumbnail">
+                                <img src="/public/uploads/cache/images/osc1/fruit/product-vg@3-100x100.png">
+                            </a>
+                            <a class="pgoods-name" href="#">我吃西红柿</a>
+                            <p>价格：8.80</p>
+                            <p>规格：500g</p>
+                        </li>-->
+
+                    </ul>
+                </div>
+
             </div>
 
             <div class="form-group">
@@ -150,7 +144,7 @@
 							<td class="goods-pic hidden-xs">
 								<img src="/public/uploads/cache/images/osc1/fruit/product-vg@3-50x50.png">
 			                </td>
-							<td class="goods-name">我吃西红柿</td>
+							<td class="goods-name">我吃西红柿我吃西红柿</td>
 							<td class="goods-price hidden-xs">10.00</td>
 							<td class="goods-guig">500g</td>
 							<td class="hidden-xs">999</td>
@@ -184,7 +178,7 @@
 			                </td>
 							<td class="goods-name">我吃西红柿</td>
 							<td class="goods-price hidden-xs">10.00</td>
-							<td class="goods-guig">500g</td>
+							<td class="goods-guig">无</td>
 							<td class="hidden-xs">999</td>
 						</tr>				
 						<tr>
@@ -192,7 +186,7 @@
 								<ul class="pagination">
 									<li class="disabled"><span>«</span></li> 
 									<li class="active"><span>1</span></li>
-									<li><a href="#">2</a></li>
+									<li><a href="http://www.baidu.com">2</a></li>
 									<li><a href="#">3</a></li> 
 									<li><a href="#">»</a></li>
 								</ul>
@@ -338,7 +332,7 @@ ul.pgoods li p{
 					goodsguig = tr.find('td.goods-guig').html();
 
 					html='<li>';
-					html+='<input name="id" type="hidden" class="goods-id" value="'+$(this).val()+'" type="text">';
+					html+='<input name="goods_id[]" type="hidden" class="goods-id" value="'+$(this).val()+'" type="text">';
                    	html+='<button type="button" id="pgoods-del" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>';
                    	html+='<a href="#" class="img-thumbnail">';
                    	html+='<img src="'+goodspic+'">';
@@ -404,9 +398,40 @@ ul.pgoods li p{
                             +'</div>';
                 break;
             }
+            case 3:{
+                expression = '<label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 选择商品 </label>'
+                    +'<div class="col-sm-10">'
+                    // +'<a class="promotiongoods" style="line-height: 35px;" href="javascript:;" >选择商品</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+                    +'<a style="line-height: 35px;" href="javascript:;"  onclick="javascript:chooseBox()">选择商品</a>'
+                    +'</div>'
+                    +'</div>';
+                break;
+
+
+            }
         }
         $("#expression_dl").html(expression);
     });
+    function chooseBox(){
 
+        $.post("{:url('admin/Promotion/chooseBox')}",function(data){
+            var w = openBox({
+                type: 1,
+                title:"选择商品",
+                shade: [0.6, '#000'],
+                border: [0],
+                content: data,
+                area: ['800px', '580px'],
+                btn: ['关闭窗口'],
+
+            });
+
+        });
+    }
+    openBox = function(options){
+        var opts = {};
+        opts = $.extend(opts, {offset:'100px'}, options);
+        return layer.open(opts);
+    }
 </script>							
 {/block}
