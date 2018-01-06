@@ -39,7 +39,7 @@ class Dispatch extends AdminBase{
 	public function save(){
 		if(request()->isPost()){		
 			$post=input('post.');
-		
+//		halt($post);
 			$info = array();
 			$info['id'] 			= $post['id'];	
 			$info['dispatch_title'] = $post['title'];
@@ -53,7 +53,7 @@ class Dispatch extends AdminBase{
 			$model = new DispatchModel();
 
 			if (is_numeric($post['id'])){
-				//编辑时，删除所有附加表信息
+				//编辑
 				$model->updateDispatch($info);
 			}else{
 				//新增
