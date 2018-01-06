@@ -77,6 +77,7 @@ class Promotion extends AdminBase{
 		
 		if(request()->isPost()){
 			$data = input('post.');
+			halt($data);
 			if (isset($data['expression']) && $data['expression'] == '') {
 				$this->error('请输入折扣/优惠金额');
 			}
@@ -148,6 +149,20 @@ class Promotion extends AdminBase{
 
             return $this->fetch();
         }
+    }
+    /**
+     * 显示选择促销商品弹窗
+     */
+    public function chooseBox(){
+        return $this->fetch('box_choose');
+    }
+    /**
+     * 返回弹窗需要显示的商品
+     */
+    public function getChooseGoods(){
+        $data = file_get_contents('goods.json');
+        $data = json_decode($data);
+        return $data;
     }
 	
 }

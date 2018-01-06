@@ -1,0 +1,119 @@
+<div class='wst-shop-tbar' style="height:30px">
+
+    <div class='wst-shop-content'>
+        <table class='wst-order-list'>
+            <thead>
+            <tr class='head'>
+                <th style="padding-left:8px;width: 180px;">商品ID</th>
+                <th style="padding-left:8px;">商品名称</th>
+                <th style="padding-left:8px;">商品价格</th>
+                <th style="padding-left:8px;">商品选项</th>
+                <th style="padding-left:8px;">商品库存</th>
+                <th style="width: 65px;">操作</th>
+            </tr>
+            </thead>
+            <tbody id='loadingBdy1' style='display:none'>
+
+            </tbody>
+            <script id="tblist1" type="text/html">
+                {{# for(var i = 0; i < d.length; i++){ }}
+                <tbody class="j-order-row1" data-goodid="{{d[i]['goods_Id']}}">
+                <tr class='goods-box'>
+                    <td style="padding:2px" class="bendclass overh_td">
+                        {{d[i]['goods_Id']}}
+                    </td>
+                    <td style="padding:2px" class="brank">
+                        <div class="overh_td1">
+                            {{d[i]['goodsName']}}
+                        </div>
+                    </td>
+                    <td style="padding:2px">
+                        <div class='goods-name' style="line-height:23px">
+                            <div><a href="" target="_blank" class="overh_t
+                                ver_mid">{{d[i]['goods_Id']}}</a></div>
+                        </div>
+                    </td>
+                    <td style="padding:2px" class="brank" goods_option_id="{{d[i]['goods_option_id']}}">
+                        <div class="overh_td1">
+                            {{d[i]['option_name']}}
+                        </div>
+                    </td>
+                    <td style="padding:2px" class="brank">
+                        <div class="overh_td1">
+                            {{d[i]['stock']}}
+                        </div>
+                    </td>
+                    <td style="padding:2px">
+                        <div class="choose_cancel"><a href="javascript:void(0)" onclick="choose(this)">【选择】</a></div>
+                    </td>
+
+                </tr>
+
+                </tbody>
+                {{# } }}
+            </script>
+            <tr class='empty-row'>
+                <td colspan='4' id='pager1' align="center" style='padding:5px 0px 5px 0px'>&nbsp;</td>
+            </tr>
+        </table>
+    </div>
+    <script type="text/javascript" src="__PUBLIC__/js/laytpl/laytpl.js"></script>
+
+    <script>
+
+        $(function () {
+            quotationChoiceByPage();
+        })
+        $(".wst-shop-tbar").keydown(function (event) {
+            if (event.which == "13") {
+                $(this).find('.u-btn').trigger("click");
+            }
+        });
+
+        function quotationChoiceByPage(p) {
+            var params = {};
+            params.page = p;
+            $.post("{:url('admin/Promotion/getChooseGoods')}", params, function (data, textStatus) {
+                var json = infoToJson(data);
+                $('.j-order-row1').remove();
+                if (json.status == 1) {
+                    json = json.data;
+                    var gettpl = document.getElementById('tblist1').innerHTML;
+                    laytpl(gettpl).render(json.Rows, function (html) {
+                        $(html).insertAfter('#loadingBdy1');
+                    });
+                    if (json.TotalPage > 1) {
+                        laypage({
+                            cont: 'pager1',
+                            pages: json.TotalPage,
+                            curr: json.CurrentPage,
+                            skin: '#e23e3d',
+                            groups: 3,
+                            jump: function (e, first) {
+                                if (!first) {
+                                    quotationChoiceByPage(e.curr);
+                                }
+                            }
+                        });
+                    } else {
+                        $('#pager1').empty();
+                    }
+                }
+            });
+        }
+
+        infoToJson = function (str) {
+            var json = {};
+            try {
+                if (typeof(str) == "object") {
+                    json = str;
+                } else {
+                    json = eval("(" + str + ")");
+                }
+
+            } catch (e) {
+                json = {};
+            }
+            return json;
+        }
+    </script>

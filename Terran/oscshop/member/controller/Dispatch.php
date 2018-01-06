@@ -28,7 +28,6 @@ class Dispatch extends AdminBase{
 		$id = input('param.id/d');
 		$model = new DispatchModel();
 		$dispatch = $model->getDispatchInfo(array('id'=>$id));
-		
 		$this->assign('dispatch',$dispatch);
 		$this->assign('crumbs','修改');
 		return $this->fetch('edit');
@@ -39,7 +38,7 @@ class Dispatch extends AdminBase{
 	public function save(){
 		if(request()->isPost()){		
 			$post=input('post.');
-//		halt($post);
+
 			$info = array();
 			$info['id'] 			= $post['id'];	
 			$info['dispatch_title'] = $post['title'];
@@ -47,19 +46,38 @@ class Dispatch extends AdminBase{
 			$info['update_time']    = time();
 			
 			$area = explode('|||', $post['areas']['kd'][1]);
-			$info['top_area_id'] 	= ','.$area[0].',';
+			$info['area_id'] 	= ','.$area[0].',';
 			$info['area_name'] 		= $area[1];
 
-			$model = new DispatchModel();
+            //计算省份ID
+            $province = array();
+            $tmp = explode(',',$area[0]);
+            if (!empty($tmp) && is_array($tmp)){
+                $city = $this->getCity();
+                foreach ($tmp as $t) {
+                    if(isset($city[$t])){
+                        $pid = $city[$t];
+                        if (!in_array($pid,$province) && !empty($pid))
+                            $province[] = $pid;
+                    }
+                }
+            }
+            if (count($province)>0){
+                $info['top_area_id'] = ','.implode(',',$province).',';
+            }else{
+                $info['top_area_id'] = '';
+            }
+//            halt($info);
 
+			$model = new DispatchModel();
 			if (is_numeric($post['id'])){
 				//编辑
 				$model->updateDispatch($info);
 			}else{
 				//新增
-				$transport_id = $model->addDispatch($info);
+				$model->addDispatch($info);
 			}
-			
+
 			storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'更新了货仓管理');
 			$this->success('保存成功',url('Dispatch/index'));
 		
