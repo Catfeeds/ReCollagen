@@ -116,77 +116,37 @@
 				</div>
 			</div>
 			
-			<div class="ks-ext-mask" style="position: fixed; left: 0px; top: 0px; width: 100%; height: 100%; z-index: 999; display:none"></div>
 		    <div id="dialog_areas" class="dialog-areas" style="display:none">
 		        <div class="ks-contentbox">
 		          <div class="title">选择促销商品<a class="ks-ext-close" href="javascript:void(0)">X</a></div>
 		          <form method="post">
 		            <table id="table" class="table table-striped table-bordered table-hover">
 				<thead>
-					<tr>
-						<th class="center">
-							<label>
-								<input type="checkbox" class="ace check-all">
-								<span class="lbl"></span>
-							</label>
-						</th>											
+					<tr>										
 						<th class="hidden-xs">商品ID</th> 
 						<th class="hidden-xs">图片</th> 
 						<th>商品名称</th>
 						<th class="hidden-xs">价格</th>
 						<th>规格</th> 		
-						<th class="hidden-xs">库存</th>							
+						<th class="hidden-xs">库存</th>
+						<th></th>
 					</tr>
 				</thead>
 				<tbody>
 						<tr>		
-							<td class="center">
-							<label>
-								<input class="ace ids id-36" type="checkbox" name="id[]" value="36">
-								<span class="lbl"></span>
-							</label>
-							</td>				
-							<td class="hidden-xs">36</td>
+							<td class="hidden-xs" align="center">36</td>
 							<td class="goods-pic hidden-xs">
 								<img src="/public/uploads/cache/images/osc1/fruit/product-vg@3-50x50.png">
 			                </td>
 							<td class="goods-name">我吃西红柿</td>
-							<td class="goods-price hidden-xs">10.00</td>
-							<td class="goods-guig">500g</td>
-							<td class="hidden-xs">999</td>
+							<td class="goods-price hidden-xs" align="center">10.00</td>
+							<td class="goods-guig" align="center">500g</td>
+							<td class="hidden-xs" align="center">999</td>
+							<td align="center" class="xuanzpic val-37" data-val='37' >
+								<a href="javascript:;">选择</a>
+							</td>
 						</tr>
-						<tr>		
-							<td class="center">
-							<label>
-								<input class="ace ids id-37" type="checkbox" name="id[]" value="37">
-								<span class="lbl"></span>
-							</label>
-							</td>				
-							<td class="hidden-xs">37</td>
-							<td class="goods-pic hidden-xs">
-								<img src="/public/uploads/cache/images/osc1/fruit/product-vg@3-50x50.png">
-			                </td>
-							<td class="goods-name">我吃西红柿</td>
-							<td class="goods-price hidden-xs">10.00</td>
-							<td class="goods-guig">500g</td>
-							<td class="hidden-xs">999</td>
-						</tr>
-						<tr>		
-							<td class="center">
-							<label>
-								<input class="ace ids id-38" type="checkbox" name="id[]" value="38">
-								<span class="lbl"></span>
-							</label>
-							</td>				
-							<td class="hidden-xs">38</td>
-							<td class="goods-pic hidden-xs">
-								<img src="/public/uploads/cache/images/osc1/fruit/product-vg@3-50x50.png">
-			                </td>
-							<td class="goods-name">我吃西红柿</td>
-							<td class="goods-price hidden-xs">10.00</td>
-							<td class="goods-guig">500g</td>
-							<td class="hidden-xs">999</td>
-						</tr>				
+						
 						<tr>
 							<td colspan="20" class="page">
 								<ul class="pagination">
@@ -201,7 +161,6 @@
 				</tbody>
 				
 			</table>
-		            <div class="bottom"> <a href="javascript:void(0);" class="J_Submit ncsc-btn ncsc-btn-green">确定</a> <a href="javascript:void(0);" class="J_Cancel ncsc-btn">取消</a> </div>
 		          </form>
 		        </div>
 		    </div>
@@ -233,47 +192,6 @@
 }
 .table-bordered tr td{
     padding: 0 !important;
-}
-	a.ncsc-btn {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    background-color: #f5f5f5;
-    border-color: #dcdcdc #dcdcdc #b3b3b3;
-    border-image: none;
-    border-style: solid;
-    border-width: 1px;
-    color: #777;
-    cursor: pointer;
-    display: inline-block;
-    font: 12px/20px "microsoft yahei";
-    padding: 4px 12px;
-    text-align: center;
-    vertical-align: middle;
-}
-a.ncsc-btn-green, .nscs-table-handle a.btn-green:hover {
-    background-color: #5bb75b;
-    border-color: #52a452 #52a452 #448944;
-    color:#fff;
-}
-
-
-a.ncsc-btn-mini {
-    background-color: #f5f5f5;
-    border-color: #dcdcdc #dcdcdc #b3b3b3;
-    border-style: solid;
-    border-width: 1px;
-    color: #777;
-    cursor: pointer;
-    display: inline-block;
-    font: 12px/20px arial;
-    height: 20px;
-    margin:5px;
-    margin-right: 2px;
-    padding: 0 10px;
-    text-align: center;
-    vertical-align: middle;
 }
 
 ul.pgoods{
@@ -316,78 +234,44 @@ ul.pgoods li p{
 			//定位弹出层的坐标
 			var pos = $(this).position();
 			$("#dialog_areas").css({'position' : 'fixed','display' : 'block', 'z-index' : '9999'});
-			$('.ks-ext-mask').css('display','block');
 		});
         
         /*	关闭选择区域层*/
-		$('#dialog_areas').on('click','.J_Cancel,.ks-ext-close',function(){
+		$('#dialog_areas').on('click','.ks-ext-close',function(){
 		    $("#dialog_areas").css('display','none');
-		    $('.ks-ext-mask').css('display','none');
 		});
 		
-		
-		/*	选择完区域后，确定事重*/
-		$('#dialog_areas').on('click','.J_Submit',function (){
-	
-			$('.table-bordered').find('tbody tr').find('input[type="checkbox"]').each(function(){
-				if ($(this).attr('checked')){
-					var pid = $(this).val(),
-					tr = $(this).parents('tr'),
-					goodspic = tr.find('td.goods-pic img').attr('src'),
-					goodsname = tr.find('td.goods-name').html(),
-					goodsprice = tr.find('td.goods-price').html(),
-					goodsguig = tr.find('td.goods-guig').html();
-					
-					var len = $('ul.pgoods').find('li').length;
-					if(len > 0){
-						$('ul.pgoods').find('.goods-id').each(function(){
-
-							if(pid != $(this).val()){
-								html='<li class="li-id-'+pid+'">';
-								html+='<input name="id" type="hidden" class="goods-id" value="'+pid+'" type="text">';
-			                   	html+='<button type="button" id="pgoods-del" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>';
-			                   	html+='<a href="#" class="img-thumbnail">';
-			                   	html+='<img src="'+goodspic+'">';
-			                   	html+='</a>';
-			                   	html+='<a class="pgoods-name" href="#">'+goodsname+'</a>';
-			                   	html+='<p>价格：'+goodsprice+'</p>';
-			                   	html+='<p>规格：'+goodsguig+'</p>';
-			                   	html+='</li>';
-								$('ul.pgoods').append(html);
-							}
-						})
-					}else{
-						html='<li class="li-id-'+pid+'">';
-								html+='<input name="id" type="hidden" class="goods-id" value="'+pid+'" type="text">';
-			                   	html+='<button type="button" id="pgoods-del" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>';
-			                   	html+='<a href="#" class="img-thumbnail">';
-			                   	html+='<img src="'+goodspic+'">';
-			                   	html+='</a>';
-			                   	html+='<a class="pgoods-name" href="#">'+goodsname+'</a>';
-			                   	html+='<p>价格：'+goodsprice+'</p>';
-			                   	html+='<p>规格：'+goodsguig+'</p>';
-			                   	html+='</li>';
-								$('ul.pgoods').append(html);
-					}
-				}
-			});
+		$('.table-bordered').on('click','.xuanzpic a',function (){
+			var pid = $(this).parent().attr('data-val'),
+			tr = $(this).parents('tr'),
+			goodspic = tr.find('td.goods-pic img').attr('src'),
+			goodsname = tr.find('td.goods-name').html(),
+			goodsprice = tr.find('td.goods-price').html(),
+			goodsguig = tr.find('td.goods-guig').html();
+			console.log(pid)
+			html='<li>';
+			html+='<input name="id" type="hidden" class="goods-id" value="'+pid+'" type="text">';
+           	html+='<button type="button" id="pgoods-del" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>';
+           	html+='<a href="#" class="img-thumbnail">';
+           	html+='<img src="'+goodspic+'">';
+           	html+='</a>';
+           	html+='<a class="pgoods-name" href="#">'+goodsname+'</a>';
+           	html+='<p>价格：'+goodsprice+'</p>';
+           	html+='<p>规格：'+goodsguig+'</p>';
+           	html+='</li>';
+			$('ul.pgoods').append(html);
+			$(this).parent().html('<span style="color: red;">已选择</span>');
 			
-			$('.table-bordered').on('click','.ace.ids',function (){
-				var pid = $(this).val();
-				$('li.li-id-'+pid).remove();
-			})
-			
-			$('ul.pgoods').on('click','#pgoods-del',function(){
-				var pid = $(this).parents('li').find('.goods-id').val();
-				$(this).parents('li').remove();
-				$('.id-'+pid).attr("checked", false); 
-			})
-	
 			//关闭弹出层与遮罩层
 		    $("#dialog_areas").css('display','none');
 		    $('.ks-ext-mask').css('display','none');
-		});
-
+		})
+														
+		$('ul.pgoods').on('click','#pgoods-del',function(){
+			var pid = $(this).parents('li').find('.goods-id').val();
+			$(this).parents('li').remove();
+			$('.val-'+pid).html('<a href="javascript:;">选择</a>'); 
+		})
     })
 
 	
