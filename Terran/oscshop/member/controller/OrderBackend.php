@@ -13,7 +13,7 @@ class OrderBackend extends AdminBase{
 	 * 订单列表
 	 */
     public function index(){     	
-		$this->assign('list',osc_order()->order_list(input('param.'),20));
+		$this->assign('list',osc_order()->order_list(input('param.'),15));
 		$this->assign('empty','<tr><td colspan="20">没有数据</td></tr>');
 
     	return $this->fetch();
@@ -113,9 +113,18 @@ class OrderBackend extends AdminBase{
 	/**
 	 * 导出订单
 	 */
-	public function toExport(){
-		osc_order()->toExport();
+	public function toExport($history){
+		osc_order()->toExport($history);
 	}
+    /**
+     * 历史订单列表
+     */
+    public function history(){
+        $this->assign('list',osc_order()->order_list(input('param.'),20,1));
+        $this->assign('empty','<tr><td colspan="20">没有数据</td></tr>');
+
+        return $this->fetch();
+    }
 
 }
 ?>

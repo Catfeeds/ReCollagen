@@ -102,7 +102,8 @@ class Transport extends AdminBase{
 		if(request()->isPost()){		
 		
 			$post=input('post.');
-		
+				halt($post);
+
 			$trans_info = array();
 			$trans_info['title'] 		= $post['title'];	
 			$trans_info['update_time'] 	= time();

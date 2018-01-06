@@ -7,21 +7,19 @@
   <div class="search-form-li col-xs-6 col-md-3">
   	<input name="user_name" type="text" placeholder="输入会员名" value="{:input('param.user_name')}" />
   </div>
-  <div class="search-form-li col-xs-6 col-md-3">
-  	<select name="status">
-		<option value="">-选择状态-</option>
-		<?php $search_status=input('param.status'); ?>
-		<option <?php if($search_status==1){echo ' selected="selected"';} ?> value="1">待付款</option>
-		<option <?php if($search_status==2){echo ' selected="selected"';} ?> value="2">待发货</option>
-		<option <?php if($search_status==3){echo ' selected="selected"';} ?> value="3">已发货</option>
-		<option <?php if($search_status==4){echo ' selected="selected"';} ?> value="4">已收货</option>
-		<option <?php if($search_status==5){echo ' selected="selected"';} ?> value="5">取消订单</option>
-	</select>
-  	
-  </div>
+  <!--<div class="search-form-li col-xs-6 col-md-3">-->
+  	<!--<select name="status">-->
+		<!--<option value="">-选择状态-</option>-->
+		<!--<?php $search_status=input('param.status'); ?>-->
+		<!--<option <?php if($search_status==1){echo ' selected="selected"';} ?> value="1">待付款</option>-->
+		<!--<option <?php if($search_status==2){echo ' selected="selected"';} ?> value="2">待发货</option>-->
+		<!--<option <?php if($search_status==3){echo ' selected="selected"';} ?> value="3">已发货</option>-->
+		<!--<option <?php if($search_status==4){echo ' selected="selected"';} ?> value="4">已收货</option>-->
+	<!--</select>-->
+  <!--</div>-->
     <div class="search-form-li col-xs-6 col-md-3">
   		<a class="btn btn-primary" href="javascript:;" id="search" url="{:url('OrderBackend/index')}">查询</a>&nbsp;
-		<a class="btn btn-primary" href="{:url('OrderBackend/toExport')}">导出</a>
+		<a class="btn btn-primary" href="{:url('OrderBackend/toExport',['history'=>0])}">导出</a>
   </div>
 </div>
 
@@ -45,7 +43,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					{volist name="list" id="v" empty="$empty"}
+					{volist name="list['data']" id="v" empty="$empty"}
 					<tr>						
 						<td class="hidden-xs">{$v.order_id}</td>
 						<td>{$v.order_num_alias}
@@ -71,7 +69,11 @@
 					{/volist}	
 					
 					<tr>
-						<td colspan="20" class="page">{$list->render()}</td>
+						<td colspan="20" class="page">
+							<ul class="pagination">
+								{$list['page']}
+							</ul>
+						</td>
 					</tr>
 				</tbody>
 				

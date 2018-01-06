@@ -23,7 +23,7 @@ class Index extends AdminBase{
     	$this->assign('user_action',Db::name('user_action')->order('ua_id desc')->limit(config('page_num'))->select());
 		$this->assign('uc_empty', '<tr><td colspan="20">暂无数据</td></tr>');		
 		//订单列表	
-		$this->assign('order_list',osc_order()->order_list(null,10));		
+		$this->assign('order_list',osc_order()->order_list(null,15));
 		$this->assign('empty', '<tr><td colspan="20">暂无数据</td></tr>');    
 		
 		$this->assign('breadcrumb1','主页');
