@@ -5,7 +5,6 @@ var adrList = new AdrList();
 
 Page({
   data:{
-    is_default:false,
     addressInfo:{
       name:'',
       telephone:'',
@@ -131,10 +130,9 @@ Page({
   },
   
   setDefault(e) {
-    var setDefault = this.data.is_default;
+    var setDefault = this.data.addressInfo.is_default==-1?1:-1;
     this.setData({
-      is_default: !setDefault,
-      'addressInfo.is_default': !setDefault,
+      'addressInfo.is_default': setDefault,
     })
   },
 

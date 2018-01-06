@@ -105,7 +105,7 @@ Page({
             else
             {
               /*显示收获地址*/
-              adrList.getCartDataFromLocal((id) => {
+              adrList.getAddressDataFromLocal((id) => {
                 that._addressInfo(id);
                 /*获取商品重量*/
                 var weight = that.getResultweight(that.data.productsArr);
@@ -361,9 +361,11 @@ Page({
                   mainGoodsPrice: this.data.mainGoodsPrice,
                   otherGoodsPrice: this.data.otherGoodsPrice,
                   shippingPrice: this.data.shippingPrice,
+                  address_id: this.data.addressInfo.address_id,
                   transId: this.data.shippingtransId,
                   promotionId: PromoArr,
               };
+              console.log(orderInfo)
             var that=this;
             //支付分两步，第一步是生成订单号，然后根据订单号支付
             order.doOrder(orderInfo,(data)=>{

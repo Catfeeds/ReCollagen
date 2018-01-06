@@ -26,7 +26,7 @@ class My extends Base{
                     fail:function(res){
                         typeof cb == "function" && cb({
                             avatarUrl:'../../imgs/icon/user@default.png',
-                            nickName:'悦寇霖智'
+                            nickName:'悦蔻霖智'
                         });
                     }
                 });
