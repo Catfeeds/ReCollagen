@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="__PUBLIC__/shop.css" />
+
 <div class='wst-shop-tbar' style="height:30px">
 
     <div class='wst-shop-content'>
@@ -23,14 +25,15 @@
                         {{d[i]['goods_Id']}}
                     </td>
                     <td style="padding:2px" class="brank">
-                        <div class="overh_td1">
-                            {{d[i]['goodsName']}}
+                        <div class='goods-name' style="line-height:23px">
+                            <div class="overh_td1">
+                                {{d[i]['goodsName']}}
+                            </div>
                         </div>
                     </td>
                     <td style="padding:2px">
-                        <div class='goods-name' style="line-height:23px">
-                            <div><a href="" target="_blank" class="overh_t
-                                ver_mid">{{d[i]['goods_Id']}}</a></div>
+                        <div class="overh_td1">
+                            {{d[i]['goods_Id']}}
                         </div>
                     </td>
                     <td style="padding:2px" class="brank" goods_option_id="{{d[i]['goods_option_id']}}">
