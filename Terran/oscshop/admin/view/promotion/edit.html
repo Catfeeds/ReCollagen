@@ -1,463 +1,463 @@
-{extend name="public:base" /}
-{block name="content"}
-<div class="page-header">
-	<h1>
-		{$breadcrumb1}
-		<small>
-			<i class="ace-icon fa fa-angle-double-right"></i>
-			{$breadcrumb2}
-		</small>
-		<small>
-			<i class="ace-icon fa fa-angle-double-right"></i>
-			{$crumbs}
-		</small>			
-	
-	</h1>
-</div>
+	{extend name="public:base" /}
+	{block name="content"}
+	<div class="page-header">
+		<h1>
+			{$breadcrumb1}
+			<small>
+				<i class="ace-icon fa fa-angle-double-right"></i>
+				{$breadcrumb2}
+			</small>
+			<small>
+				<i class="ace-icon fa fa-angle-double-right"></i>
+				{$crumbs}
+			</small>
 
-<div class="row">
-	<div class="col-xs-12">	
-		
-		<div class="form-horizontal">
-			
-			{if condition="$Request.param.id"}
-			<input name="id" type="hidden" value="{$Request.param.id}" />
-			{/if}
-			
-			
-			<div class="form-group">
-				<label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 促销活动名称 </label>
-				<div class="col-sm-5">
-					<div class="clearfix">
-						<input name="name" class="col-xs-10"  value="{$promotion.name|default=''}" type="text">
+		</h1>
+	</div>
+
+	<div class="row">
+		<div class="col-xs-12">
+
+			<div class="form-horizontal">
+
+				{if condition="$Request.param.id"}
+				<input name="id" type="hidden" value="{$Request.param.id}" />
+				{/if}
+
+
+				<div class="form-group">
+					<label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 促销活动名称 </label>
+					<div class="col-sm-5">
+						<div class="clearfix">
+							<input name="name" class="col-xs-10"  value="{$promotion.name|default=''}" type="text">
+						</div>
 					</div>
 				</div>
-			</div>
 
-            <div class="form-group">
-                <label class="col-sm-2 control-label" for="input-length-class"><font color="red">*</font> 促销活动类型 </label>
-                <div class="col-sm-10">
-                    <select name="type" id="type" class="col-xs-5">
-                        <option value="1" {if isset($promotion) && $promotion['type'] eq 1}selected{/if}>满额打折</option>
-                        <option value="2" {if isset($promotion) && $promotion['type'] eq 2}selected{/if}>满额返现</option>
-                        <option value="3" {if isset($promotion) && $promotion['type'] eq 3}selected{/if}>满额赠送商品</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 需要满足的金额 </label>
-                <div class="col-sm-5">
-                    <div class="clearfix">
-                        <input type="text" name="money" class="col-xs-10" value="{$promotion.money|default=''}"  onpaste="this.value=this.value.replace(/[^\d.]/g,'')" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')">
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group" id="expression_dl">
-                <label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 折扣 </label>
-                <div class="col-sm-5">
-                    <div class="clearfix">
-                        <input name="expression" class="col-xs-10"  value="{$promotion.expression|default=''}" type="text" placeholder="折扣值(1-100 如果打9折，请输入90)">
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-2 control-label hidden-xs" for="input-length-class"> </label>
-                <div class="col-sm-10">
-                    <ul class="pgoods">
-                        <!--<li>
-                            <input name="id" type="hidden" class="goods-id" value="0" type="text">
-                            <button type="button" id="pgoods-del" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
-                            <a href="#" class="img-thumbnail">
-                                <img src="/public/uploads/cache/images/osc1/fruit/product-vg@3-100x100.png">
-                            </a>
-                            <a class="pgoods-name" href="#">我吃西红柿</a>
-                            <p>价格：8.80</p>
-                            <p>规格：500g</p>
-                        </li>-->
-
-                    </ul>
-                </div>
-
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 开始时间 </label>
-                <div class="col-sm-5">
-                    <div class="clearfix">
-                        <input type="text" id="start_time" name="start_time" class="col-xs-10"  value="{$promotion.start_time|default=''}">
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 结束时间 </label>
-                <div class="col-sm-5">
-                    <div class="clearfix">
-                        <input type="text" id="end_time" name="end_time" class="col-xs-10"  value="{$promotion.end_time|default=''}">
-                    </div>
-                </div>
-            </div>
-			
-			<div class="space-4"></div>
-			
-			<div class="form-group">
-				<label class="col-sm-1 control-label no-padding-left"> </label>	
-				<div class="col-sm-11">
-					<input id="send" name="send" type="submit" value="提交" class="btn btn-primary" />
+				<div class="form-group">
+					<label class="col-sm-2 control-label" for="input-length-class"><font color="red">*</font> 促销活动类型 </label>
+					<div class="col-sm-10">
+						<select name="type" id="type" class="col-xs-5">
+							<option value="1" {if isset($promotion) && $promotion['type'] eq 1}selected{/if}>满额打折</option>
+							<option value="2" {if isset($promotion) && $promotion['type'] eq 2}selected{/if}>满额返现</option>
+							<option value="3" {if isset($promotion) && $promotion['type'] eq 3}selected{/if}>满额赠送商品</option>
+						</select>
+					</div>
 				</div>
-			</div>
-			
-			<div class="ks-ext-mask" style="position: fixed; left: 0px; top: 0px; width: 100%; height: 100%; z-index: 999; display:none"></div>
-		    <div id="dialog_areas" class="dialog-areas" style="display:none">
-		        <div class="ks-contentbox">
-		          <div class="title">选择促销商品<a class="ks-ext-close" href="javascript:void(0)">X</a></div>
-		          <form method="post">
-		            <table id="table" class="table table-striped table-bordered table-hover">
-				<thead>
-					<tr>
-						<th class="center">
-							<label>
-								<input type="checkbox" class="ace check-all">
-								<span class="lbl"></span>
-							</label>
-						</th>											
-						<th class="hidden-xs">商品ID</th> 
-						<th class="hidden-xs">图片</th> 
-						<th>商品名称</th>
-						<th class="hidden-xs">价格</th>
-						<th>规格</th> 		
-						<th class="hidden-xs">库存</th>							
-					</tr>
-				</thead>
-				<tbody>
-						<tr>		
-							<td class="center">
-							<label>
-								<input class="ace ids id-36" type="checkbox" name="id[]" value="36">
-								<span class="lbl"></span>
-							</label>
-							</td>				
-							<td class="hidden-xs">36</td>
-							<td class="goods-pic hidden-xs">
-								<img src="/public/uploads/cache/images/osc1/fruit/product-vg@3-50x50.png">
-			                </td>
-							<td class="goods-name">我吃西红柿我吃西红柿</td>
-							<td class="goods-price hidden-xs">10.00</td>
-							<td class="goods-guig">500g</td>
-							<td class="hidden-xs">999</td>
-						</tr>
-						<tr>		
-							<td class="center">
-							<label>
-								<input class="ace ids id-37" type="checkbox" name="id[]" value="37">
-								<span class="lbl"></span>
-							</label>
-							</td>				
-							<td class="hidden-xs">37</td>
-							<td class="goods-pic hidden-xs">
-								<img src="/public/uploads/cache/images/osc1/fruit/product-vg@3-50x50.png">
-			                </td>
-							<td class="goods-name">我吃西红柿</td>
-							<td class="goods-price hidden-xs">10.00</td>
-							<td class="goods-guig">500g</td>
-							<td class="hidden-xs">999</td>
-						</tr>
-						<tr>		
-							<td class="center">
-							<label>
-								<input class="ace ids id-38" type="checkbox" name="id[]" value="38">
-								<span class="lbl"></span>
-							</label>
-							</td>				
-							<td class="hidden-xs">38</td>
-							<td class="goods-pic hidden-xs">
-								<img src="/public/uploads/cache/images/osc1/fruit/product-vg@3-50x50.png">
-			                </td>
-							<td class="goods-name">我吃西红柿</td>
-							<td class="goods-price hidden-xs">10.00</td>
-							<td class="goods-guig">无</td>
-							<td class="hidden-xs">999</td>
-						</tr>				
-						<tr>
-							<td colspan="20" class="page">
-								<ul class="pagination">
-									<li class="disabled"><span>«</span></li> 
-									<li class="active"><span>1</span></li>
-									<li><a href="http://www.baidu.com">2</a></li>
-									<li><a href="#">3</a></li> 
-									<li><a href="#">»</a></li>
-								</ul>
-							</td>
-						</tr>
-				</tbody>
+
+				<div class="form-group">
+					<label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 需要满足的金额 </label>
+					<div class="col-sm-5">
+						<div class="clearfix">
+							<input type="text" name="money" class="col-xs-10" value="{$promotion.money|default=''}"  onpaste="this.value=this.value.replace(/[^\d.]/g,'')" onkeyup="this.value=this.value.replace(/[^\d.]/g,'')">
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group" id="expression_dl">
+					<label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 折扣 </label>
+					<div class="col-sm-5">
+						<div class="clearfix">
+							<input name="expression" class="col-xs-10"  value="{$promotion.expression|default=''}" type="text" placeholder="折扣值(1-100 如果打9折，请输入90)">
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-2 control-label hidden-xs" for="input-length-class"> </label>
+					<div class="col-sm-10">
+						<ul class="pgoods">
+							<!--<li>
+								<input name="id" type="hidden" class="goods-id" value="0" type="text">
+								<button type="button" id="pgoods-del" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
+								<a href="#" class="img-thumbnail">
+									<img src="/public/uploads/cache/images/osc1/fruit/product-vg@3-100x100.png">
+								</a>
+								<a class="pgoods-name" href="#">我吃西红柿</a>
+								<p>价格：8.80</p>
+								<p>规格：500g</p>
+							</li>-->
+
+						</ul>
+					</div>
+
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 开始时间 </label>
+					<div class="col-sm-5">
+						<div class="clearfix">
+							<input type="text" id="start_time" name="start_time" class="col-xs-10"  value="{$promotion.start_time|default=''}">
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 结束时间 </label>
+					<div class="col-sm-5">
+						<div class="clearfix">
+							<input type="text" id="end_time" name="end_time" class="col-xs-10"  value="{$promotion.end_time|default=''}">
+						</div>
+					</div>
+				</div>
+
+				<div class="space-4"></div>
 				
-			</table>
-		            <div class="bottom"> <a href="javascript:void(0);" class="J_Submit ncsc-btn ncsc-btn-green">确定</a> <a href="javascript:void(0);" class="J_Cancel ncsc-btn">取消</a> </div>
-		          </form>
-		        </div>
-		    </div>
-			
+				<div class="form-group">
+					<label class="col-sm-1 control-label no-padding-left"> </label>
+					<div class="col-sm-11">
+						<input id="send" name="send" type="submit" value="提交" class="btn btn-primary" />
+					</div>
+				</div>
+
+				<div class="ks-ext-mask" style="position: fixed; left: 0px; top: 0px; width: 100%; height: 100%; z-index: 999; display:none"></div>
+				<div id="dialog_areas" class="dialog-areas" style="display:none">
+					<div class="ks-contentbox">
+					  <div class="title">选择促销商品<a class="ks-ext-close" href="javascript:void(0)">X</a></div>
+					  <form method="post">
+						<table id="table" class="table table-striped table-bordered table-hover">
+					<thead>
+						<tr>
+							<th class="center">
+								<label>
+									<input type="checkbox" class="ace check-all">
+									<span class="lbl"></span>
+								</label>
+							</th>
+							<th class="hidden-xs">商品ID</th>
+							<th class="hidden-xs">图片</th>
+							<th>商品名称</th>
+							<th class="hidden-xs">价格</th>
+							<th>规格</th>
+							<th class="hidden-xs">库存</th>
+						</tr>
+					</thead>
+					<tbody>
+							<tr>
+								<td class="center">
+								<label>
+									<input class="ace ids id-36" type="checkbox" name="id[]" value="36">
+									<span class="lbl"></span>
+								</label>
+								</td>
+								<td class="hidden-xs">36</td>
+								<td class="goods-pic hidden-xs">
+									<img src="/public/uploads/cache/images/osc1/fruit/product-vg@3-50x50.png">
+								</td>
+								<td class="goods-name">我吃西红柿我吃西红柿</td>
+								<td class="goods-price hidden-xs">10.00</td>
+								<td class="goods-guig">500g</td>
+								<td class="hidden-xs">999</td>
+							</tr>
+							<tr>
+								<td class="center">
+								<label>
+									<input class="ace ids id-37" type="checkbox" name="id[]" value="37">
+									<span class="lbl"></span>
+								</label>
+								</td>
+								<td class="hidden-xs">37</td>
+								<td class="goods-pic hidden-xs">
+									<img src="/public/uploads/cache/images/osc1/fruit/product-vg@3-50x50.png">
+								</td>
+								<td class="goods-name">我吃西红柿</td>
+								<td class="goods-price hidden-xs">10.00</td>
+								<td class="goods-guig">500g</td>
+								<td class="hidden-xs">999</td>
+							</tr>
+							<tr>
+								<td class="center">
+								<label>
+									<input class="ace ids id-38" type="checkbox" name="id[]" value="38">
+									<span class="lbl"></span>
+								</label>
+								</td>
+								<td class="hidden-xs">38</td>
+								<td class="goods-pic hidden-xs">
+									<img src="/public/uploads/cache/images/osc1/fruit/product-vg@3-50x50.png">
+								</td>
+								<td class="goods-name">我吃西红柿</td>
+								<td class="goods-price hidden-xs">10.00</td>
+								<td class="goods-guig">无</td>
+								<td class="hidden-xs">999</td>
+							</tr>
+							<tr>
+								<td colspan="20" class="page">
+									<ul class="pagination">
+										<li class="disabled"><span>«</span></li>
+										<li class="active"><span>1</span></li>
+										<li><a href="http://www.baidu.com">2</a></li>
+										<li><a href="#">3</a></li>
+										<li><a href="#">»</a></li>
+									</ul>
+								</td>
+							</tr>
+					</tbody>
+
+				</table>
+						<div class="bottom"> <a href="javascript:void(0);" class="J_Submit ncsc-btn ncsc-btn-green">确定</a> <a href="javascript:void(0);" class="J_Cancel ncsc-btn">取消</a> </div>
+					  </form>
+					</div>
+				</div>
+
+			</div>
 		</div>
 	</div>
-</div>
-{/block}
-{block name="javascript"}
-<style>
-	.ks-ext-mask {filter:progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr='#BFFFFFFF', endColorstr='#BFFFFFFF');background:rgba(255,255,255,0.75);}
-	.dialog-areas, .dialog-batch { background-color: #FFF; max-width: 640px; min-width: 300px;position: fixed; z-index: 9999; top: 0; bottom: 0; left: 0; right: 0; margin:auto; }
-	.dialog-batch { top: 40%;}
-	.ks-contentbox { display: block; margin: 0 10px;    border: 1px solid #CCC; }
-	.ks-contentbox .title { font-size: 14px;font-weight: bold; color: #555; background-color: #FFF;  padding: 10px; border-bottom: solid 1px #E6E6E6; position: relative; z-index: 1;}
-	a.ks-ext-close { font: lighter 14px/20px Verdana; color: #999; text-align: center; display: block; width: 20px; height: 20px; position: absolute; z-index: 1; top: 10px; right: 10px; cursor: pointer;}
-	a:hover.ks-ext-close { text-decoration: none; color: #27A9E3;}
-	.ncsc-form-default div.bottom {
-    text-align: center;
-}
-.ks-contentbox .bottom {
-    padding: 10px;
-}
-.table-bordered{
-	margin-bottom: 0;
-}
-.pagination {
-    margin: 10px 0;
-}
-.table-bordered tr td{
-    padding: 0 !important;
-}
-	a.ncsc-btn {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    background-color: #f5f5f5;
-    border-color: #dcdcdc #dcdcdc #b3b3b3;
-    border-image: none;
-    border-style: solid;
-    border-width: 1px;
-    color: #777;
-    cursor: pointer;
-    display: inline-block;
-    font: 12px/20px "microsoft yahei";
-    padding: 4px 12px;
-    text-align: center;
-    vertical-align: middle;
-}
-a.ncsc-btn-green, .nscs-table-handle a.btn-green:hover {
-    background-color: #5bb75b;
-    border-color: #52a452 #52a452 #448944;
-    color:#fff;
-}
+	{/block}
+	{block name="javascript"}
+	<style>
+		.ks-ext-mask {filter:progid:DXImageTransform.Microsoft.gradient(enabled='true',startColorstr='#BFFFFFFF', endColorstr='#BFFFFFFF');background:rgba(255,255,255,0.75);}
+		.dialog-areas, .dialog-batch { background-color: #FFF; max-width: 640px; min-width: 300px;position: fixed; z-index: 9999; top: 0; bottom: 0; left: 0; right: 0; margin:auto; }
+		.dialog-batch { top: 40%;}
+		.ks-contentbox { display: block; margin: 0 10px;    border: 1px solid #CCC; }
+		.ks-contentbox .title { font-size: 14px;font-weight: bold; color: #555; background-color: #FFF;  padding: 10px; border-bottom: solid 1px #E6E6E6; position: relative; z-index: 1;}
+		a.ks-ext-close { font: lighter 14px/20px Verdana; color: #999; text-align: center; display: block; width: 20px; height: 20px; position: absolute; z-index: 1; top: 10px; right: 10px; cursor: pointer;}
+		a:hover.ks-ext-close { text-decoration: none; color: #27A9E3;}
+		.ncsc-form-default div.bottom {
+		text-align: center;
+	}
+	.ks-contentbox .bottom {
+		padding: 10px;
+	}
+	.table-bordered{
+		margin-bottom: 0;
+	}
+	.pagination {
+		margin: 10px 0;
+	}
+	.table-bordered tr td{
+		padding: 0 !important;
+	}
+		a.ncsc-btn {
+		-moz-border-bottom-colors: none;
+		-moz-border-left-colors: none;
+		-moz-border-right-colors: none;
+		-moz-border-top-colors: none;
+		background-color: #f5f5f5;
+		border-color: #dcdcdc #dcdcdc #b3b3b3;
+		border-image: none;
+		border-style: solid;
+		border-width: 1px;
+		color: #777;
+		cursor: pointer;
+		display: inline-block;
+		font: 12px/20px "microsoft yahei";
+		padding: 4px 12px;
+		text-align: center;
+		vertical-align: middle;
+	}
+	a.ncsc-btn-green, .nscs-table-handle a.btn-green:hover {
+		background-color: #5bb75b;
+		border-color: #52a452 #52a452 #448944;
+		color:#fff;
+	}
 
 
-a.ncsc-btn-mini {
-    background-color: #f5f5f5;
-    border-color: #dcdcdc #dcdcdc #b3b3b3;
-    border-style: solid;
-    border-width: 1px;
-    color: #777;
-    cursor: pointer;
-    display: inline-block;
-    font: 12px/20px arial;
-    height: 20px;
-    margin:5px;
-    margin-right: 2px;
-    padding: 0 10px;
-    text-align: center;
-    vertical-align: middle;
-}
+	a.ncsc-btn-mini {
+		background-color: #f5f5f5;
+		border-color: #dcdcdc #dcdcdc #b3b3b3;
+		border-style: solid;
+		border-width: 1px;
+		color: #777;
+		cursor: pointer;
+		display: inline-block;
+		font: 12px/20px arial;
+		height: 20px;
+		margin:5px;
+		margin-right: 2px;
+		padding: 0 10px;
+		text-align: center;
+		vertical-align: middle;
+	}
 
-ul.pgoods{
-	margin: 0;
-	list-style-type: none;
-}
-ul.pgoods li{
-	float: left;
-	margin-right: 10px;
-	position: relative;
-}
-ul.pgoods li .img-thumbnail{
-	margin-bottom: 10px;
-}
-ul.pgoods li .pgoods-name{
-	display: block;
-}
-ul.pgoods li #pgoods-del{
-	position: absolute;
-	right: 0;
-	top: 0;
-}
-ul.pgoods li p{
-	margin: 0;
-}
-</style>
-<script src="__PUBLIC__/js/dialog/dialog.js" id="dialog_js" charset="utf-8"></script>
-<link rel="stylesheet" href="__PUBLIC__/js/dialog/dialog.css" />
-<script type="text/javascript" src="__PUBLIC__/js/layer/laydate/laydate.js"></script>
+	ul.pgoods{
+		margin: 0;
+		list-style-type: none;
+	}
+	ul.pgoods li{
+		float: left;
+		margin-right: 10px;
+		position: relative;
+	}
+	ul.pgoods li .img-thumbnail{
+		margin-bottom: 10px;
+	}
+	ul.pgoods li .pgoods-name{
+		display: block;
+	}
+	ul.pgoods li #pgoods-del{
+		position: absolute;
+		right: 0;
+		top: 0;
+	}
+	ul.pgoods li p{
+		margin: 0;
+	}
+	</style>
+	<script src="__PUBLIC__/js/dialog/dialog.js" id="dialog_js" charset="utf-8"></script>
+	<link rel="stylesheet" href="__PUBLIC__/js/dialog/dialog.css" />
+	<script type="text/javascript" src="__PUBLIC__/js/layer/laydate/laydate.js"></script>
 
-<script>
-    $(document).ready(function(){
-        $("#type").trigger('change');
-        $('input[name=expression]').val("{$promotion.expression|default=''}");
+	<script>
+		$(document).ready(function(){
+			$("#type").trigger('change');
+			$('input[name=expression]').val("{$promotion.expression|default=''}");
 
-        $('#start_time').layDate();
-        $('#end_time').layDate();
-        
-		$('.form-group').on('click','a.promotiongoods',function () {
-			//定位弹出层的坐标
-			var pos = $(this).position();
-			$("#dialog_areas").css({'position' : 'fixed','display' : 'block', 'z-index' : '9999'});
-			$('.ks-ext-mask').css('display','block');
-		});
-        
-        /*	关闭选择区域层*/
-		$('#dialog_areas').on('click','.J_Cancel,.ks-ext-close',function(){
-		    $("#dialog_areas").css('display','none');
-		    $('.ks-ext-mask').css('display','none');
-		});
-		
-		
-		/*	选择完区域后，确定事重*/
-		$('#dialog_areas').on('click','.J_Submit',function (){
-	
-			$('.table-bordered').find('tbody tr').find('input[type="checkbox"]').each(function(){
-				if ($(this).attr('checked')){
-					var pid = $(this).val(),
-					tr = $(this).parents('tr'),
-					goodspic = tr.find('td.goods-pic img').attr('src'),
-					goodsname = tr.find('td.goods-name').html(),
-					goodsprice = tr.find('td.goods-price').html(),
-					goodsguig = tr.find('td.goods-guig').html();
-					
-					var len = $('ul.pgoods').find('li').length;
-					if(len > 0){
-						$('ul.pgoods').find('.goods-id').each(function(){
+			$('#start_time').layDate();
+			$('#end_time').layDate();
 
-							if(pid != $(this).val()){
-								html='<li class="li-id-'+pid+'">';
-								html+='<input name="id" type="hidden" class="goods-id" value="'+pid+'" type="text">';
-			                   	html+='<button type="button" id="pgoods-del" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>';
-			                   	html+='<a href="#" class="img-thumbnail">';
-			                   	html+='<img src="'+goodspic+'">';
-			                   	html+='</a>';
-			                   	html+='<a class="pgoods-name" href="#">'+goodsname+'</a>';
-			                   	html+='<p>价格：'+goodsprice+'</p>';
-			                   	html+='<p>规格：'+goodsguig+'</p>';
-			                   	html+='</li>';
-								$('ul.pgoods').append(html);
-							}
-						})
+			$('.form-group').on('click','a.promotiongoods',function () {
+				//定位弹出层的坐标
+				var pos = $(this).position();
+				$("#dialog_areas").css({'position' : 'fixed','display' : 'block', 'z-index' : '9999'});
+				$('.ks-ext-mask').css('display','block');
+			});
+
+			/*	关闭选择区域层*/
+			$('#dialog_areas').on('click','.J_Cancel,.ks-ext-close',function(){
+				$("#dialog_areas").css('display','none');
+				$('.ks-ext-mask').css('display','none');
+			});
+
+
+			/*	选择完区域后，确定事重*/
+			$('#dialog_areas').on('click','.J_Submit',function (){
+
+				$('.table-bordered').find('tbody tr').find('input[type="checkbox"]').each(function(){
+					if ($(this).attr('checked')){
+						var pid = $(this).val(),
+						tr = $(this).parents('tr'),
+						goodspic = tr.find('td.goods-pic img').attr('src'),
+						goodsname = tr.find('td.goods-name').html(),
+						goodsprice = tr.find('td.goods-price').html(),
+						goodsguig = tr.find('td.goods-guig').html();
+
+						var len = $('ul.pgoods').find('li').length;
+						if(len > 0){
+							$('ul.pgoods').find('.goods-id').each(function(){
+
+								if(pid != $(this).val()){
+									html='<li class="li-id-'+pid+'">';
+									html+='<input name="id" type="hidden" class="goods-id" value="'+pid+'" type="text">';
+									html+='<button type="button" id="pgoods-del" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>';
+									html+='<a href="#" class="img-thumbnail">';
+									html+='<img src="'+goodspic+'">';
+									html+='</a>';
+									html+='<a class="pgoods-name" href="#">'+goodsname+'</a>';
+									html+='<p>价格：'+goodsprice+'</p>';
+									html+='<p>规格：'+goodsguig+'</p>';
+									html+='</li>';
+									$('ul.pgoods').append(html);
+								}
+							})
+						}else{
+							html='<li class="li-id-'+pid+'">';
+									html+='<input name="id" type="hidden" class="goods-id" value="'+pid+'" type="text">';
+									html+='<button type="button" id="pgoods-del" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>';
+									html+='<a href="#" class="img-thumbnail">';
+									html+='<img src="'+goodspic+'">';
+									html+='</a>';
+									html+='<a class="pgoods-name" href="#">'+goodsname+'</a>';
+									html+='<p>价格：'+goodsprice+'</p>';
+									html+='<p>规格：'+goodsguig+'</p>';
+									html+='</li>';
+									$('ul.pgoods').append(html);
+						}
+					}
+				});
+
+				$('.table-bordered').on('click','.ace.ids',function (){
+					var pid = $(this).val();
+					$('li.li-id-'+pid).remove();
+				})
+
+				$('ul.pgoods').on('click','#pgoods-del',function(){
+					var pid = $(this).parents('li').find('.goods-id').val();
+					$(this).parents('li').remove();
+					$('.id-'+pid).attr("checked", false);
+				})
+
+				//关闭弹出层与遮罩层
+				$("#dialog_areas").css('display','none');
+				$('.ks-ext-mask').css('display','none');
+			});
+
+		})
+
+
+		$('#send').click(function(){
+			$.post(
+				'{$action}',
+				$('input[type=\'text\'],input[type=\'hidden\'],select'),
+				function(data){
+					if (data.code == 1) {
+						layer.msg(data.msg,{icon:1});
+						setTimeout(function(){
+							location.href = data.url;
+						},1000);
 					}else{
-						html='<li class="li-id-'+pid+'">';
-								html+='<input name="id" type="hidden" class="goods-id" value="'+pid+'" type="text">';
-			                   	html+='<button type="button" id="pgoods-del" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>';
-			                   	html+='<a href="#" class="img-thumbnail">';
-			                   	html+='<img src="'+goodspic+'">';
-			                   	html+='</a>';
-			                   	html+='<a class="pgoods-name" href="#">'+goodsname+'</a>';
-			                   	html+='<p>价格：'+goodsprice+'</p>';
-			                   	html+='<p>规格：'+goodsguig+'</p>';
-			                   	html+='</li>';
-								$('ul.pgoods').append(html);
+						return layer.msg(data.msg,{icon:2});
 					}
 				}
-			});
-			
-			$('.table-bordered').on('click','.ace.ids',function (){
-				var pid = $(this).val();
-				$('li.li-id-'+pid).remove();
-			})
-			
-			$('ul.pgoods').on('click','#pgoods-del',function(){
-				var pid = $(this).parents('li').find('.goods-id').val();
-				$(this).parents('li').remove();
-				$('.id-'+pid).attr("checked", false); 
-			})
-	
-			//关闭弹出层与遮罩层
-		    $("#dialog_areas").css('display','none');
-		    $('.ks-ext-mask').css('display','none');
+			);
 		});
 
-    })
-
-	
-    $('#send').click(function(){
-    	$.post(
-    		'{$action}',
-    		$('input[type=\'text\'],input[type=\'hidden\'],select'),
-    		function(data){
-                if (data.code == 1) {
-                    layer.msg(data.msg,{icon:1});
-                    setTimeout(function(){
-                        location.href = data.url;
-                    },1000); 
-                }else{
-                    return layer.msg(data.msg,{icon:2});
-                }
-    		}
-    	);
-    });
-
-    $("#type").on("change",function(){
-        var type = parseInt($("#type").val());
-        var expression = '';
-        switch(type){
-            case 1:{
-                expression = '<label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 折扣 </label>'
-                            +'<div class="col-sm-5">'
-                            +'<div class="clearfix">'
-                            +'<input name="expression" class="col-xs-10"  value="" type="text" placeholder="折扣值(1-100 如果打9折，请输入90)">'
-                            +'</div>'
-                            +'</div>';
-                break;
-            }
-            case 2:{
-                expression = '<label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 优惠金额 </label>'
-                            +'<div class="col-sm-5">'
-                            +'<div class="clearfix">'
-                            +'<input name="expression" class="col-xs-10"  value="" type="text">'
-                            +'</div>'
-                            +'</div>';
-                break;
-            }
-            case 3:{
-                expression = '<label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 选择商品 </label>'
-                    +'<div class="col-sm-10">'
-                    // +'<a class="promotiongoods" style="line-height: 35px;" href="javascript:;" >选择商品</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
-                    +'<a style="line-height: 35px;" href="javascript:;"  onclick="javascript:chooseBox()">选择商品</a>'
-                    +'</div>'
-                    +'</div>';
-                break;
+		$("#type").on("change",function(){
+			var type = parseInt($("#type").val());
+			var expression = '';
+			switch(type){
+				case 1:{
+					expression = '<label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 折扣 </label>'
+								+'<div class="col-sm-5">'
+								+'<div class="clearfix">'
+								+'<input name="expression" class="col-xs-10"  value="" type="text" placeholder="折扣值(1-100 如果打9折，请输入90)">'
+								+'</div>'
+								+'</div>';
+					break;
+				}
+				case 2:{
+					expression = '<label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 优惠金额 </label>'
+								+'<div class="col-sm-5">'
+								+'<div class="clearfix">'
+								+'<input name="expression" class="col-xs-10"  value="" type="text">'
+								+'</div>'
+								+'</div>';
+					break;
+				}
+				case 3:{
+					expression = '<label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 选择商品 </label>'
+						+'<div class="col-sm-10">'
+						// +'<a class="promotiongoods" style="line-height: 35px;" href="javascript:;" >选择商品</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
+						+'<a style="line-height: 35px;" href="javascript:;"  onclick="javascript:chooseBox()">选择商品</a>'
+						+'</div>'
+						+'</div>';
+					break;
 
 
-            }
-        }
-        $("#expression_dl").html(expression);
-    });
-    function chooseBox(){
+				}
+			}
+			$("#expression_dl").html(expression);
+		});
+		function chooseBox(){
 
-        $.post("{:url('admin/Promotion/chooseBox')}",function(data){
-            var w = openBox({
-                type: 1,
-                title:"选择商品",
-                shade: [0.6, '#000'],
-                border: [0],
-                content: data,
-                area: ['800px', '580px'],
-                btn: ['关闭窗口'],
+			$.post("{:url('admin/Promotion/chooseBox')}",function(data){
+				var w = openBox({
+					type: 1,
+					title:"选择商品",
+					shade: [0.6, '#000'],
+					border: [0],
+					content: data,
+					area: ['800px', '580px'],
+					btn: ['关闭窗口'],
 
-            });
+				});
 
-        });
-    }
-    openBox = function(options){
-        var opts = {};
-        opts = $.extend(opts, {offset:'100px'}, options);
-        return layer.open(opts);
-    }
-</script>							
-{/block}
+			});
+		}
+		openBox = function(options){
+			var opts = {};
+			opts = $.extend(opts, {offset:'100px'}, options);
+			return layer.open(opts);
+		}
+	</script>
+	{/block}
