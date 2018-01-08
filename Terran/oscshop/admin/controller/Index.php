@@ -7,7 +7,10 @@ class Index extends AdminBase{
 	 * 后台首页
 	 */
     public function index(){
-    	//订单数量    
+        //管理员登录触发7天自动收货
+        model('CronJobs')->autoByAdmin();
+
+        //订单数量
 		$this->assign('total_order',$this->get_total_order());
 		$this->assign('today_order',$this->get_total_order(array('create_time' => date('Y-m-d'))));	
     	//销售额

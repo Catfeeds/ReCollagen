@@ -67,8 +67,10 @@ class Login extends Base{
 			}				
 
         } else {
-        	
-            if($user->is_login()){
+             //管理员登录触发7天自动收货
+             model('CronJobs')->autoByAdmin();
+
+             if($user->is_login()){
                 $this->redirect('Index/index');
             }else{			
                 return $this->fetch('public/login'); 
