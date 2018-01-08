@@ -1,17 +1,13 @@
 <link rel="stylesheet" href="__PUBLIC__/shop.css" />
-
-<div class='wst-shop-tbar' style="height:30px">
-
-    <div class='wst-shop-content'>
         <table class='wst-order-list'>
             <thead>
             <tr class='head'>
-                <th style="padding-left:8px;width: 180px;">商品ID</th>
+                <th style="padding-left:8px; text-align: center;">商品ID</th>
                 <th style="padding-left:8px;">商品名称</th>
-                <th style="padding-left:8px;">商品价格</th>
-                <th style="padding-left:8px;">商品选项</th>
-                <th style="padding-left:8px;">商品库存</th>
-                <th style="width: 65px;">操作</th>
+                <th style="padding-left:8px; text-align: center;">商品价格</th>
+                <th style="padding-left:8px; text-align: center;">商品选项</th>
+                <th style="padding-left:8px; text-align: center;">商品库存</th>
+                <th style="text-align: center;" >操作</th>
             </tr>
             </thead>
             <tbody id='loadingBdy1' style='display:none'>
@@ -21,55 +17,65 @@
                 {{# for(var i = 0; i < d.length; i++){ }}
                 <tbody class="j-order-row1" data-goodid="{{d[i]['goods_Id']}}">
                 <tr class='goods-box'>
-                    <td style="padding:2px" class="bendclass overh_td">
+                    <td style="padding:2px; text-align: center;" class="overh_td">
                         {{d[i]['goods_Id']}}
                     </td>
-                    <td style="padding:2px" class="brank">
-                        <div class='goods-name' style="line-height:23px">
-                            <div class="overh_td1">
-                                {{d[i]['goodsName']}}
-                            </div>
-                        </div>
+                    <td style="padding:2px" class="good-name" data-imgsrc="{{d[i]['goodsName']}}">
+                        {{d[i]['goodsName']}}
                     </td>
-                    <td style="padding:2px">
-                        <div class="overh_td1">
-                            {{d[i]['goods_Id']}}
-                        </div>
+                    <td style="padding:2px; text-align: center;" class="good-price">
+                        {{d[i]['goods_Id']}}
                     </td>
-                    <td style="padding:2px" class="brank" goods_option_id="{{d[i]['goods_option_id']}}">
-                        <div class="overh_td1">
+                    <td style="padding:2px; text-align: center;" class="good-guig" goods_option_id="{{d[i]['goods_option_id']}}">
                             {{d[i]['option_name']}}
-                        </div>
                     </td>
-                    <td style="padding:2px" class="brank">
-                        <div class="overh_td1">
+                    <td style="padding:2px; text-align: center;">
                             {{d[i]['stock']}}
-                        </div>
                     </td>
-                    <td style="padding:2px">
-                        <div class="choose_cancel"><a href="javascript:void(0)" onclick="choose(this)">【选择】</a></div>
+                    <td style="padding:2px; text-align: center;" class="choose_cancel">
+                        <a href="javascript:void(0)">【选择】</a>
                     </td>
-
                 </tr>
-
                 </tbody>
                 {{# } }}
             </script>
             <tr class='empty-row'>
-                <td colspan='4' id='pager1' align="center" style='padding:5px 0px 5px 0px'>&nbsp;</td>
+                <td colspan='6' id='pager1' align="center" style='padding:20px 0px 5px 0px'>&nbsp;</td>
             </tr>
         </table>
-    </div>
 
     <script>
         $(function () {
             quotationChoiceByPage();
+            
+            $('.wst-order-list').on('click','.choose_cancel a',function (){
+            	var tr = $(this).parent().parent('.goods-box'),
+				goodid = tr.parent().attr('data-goodid'),
+				goodpic = tr.find('.good-name').attr('data-imgsrc'),
+				goodname = tr.find('.good-name').html(),
+				goodprice = tr.find('.good-price').html(),
+				goodguig = tr.find('.good-guig').html();
+				html='<li>';
+				html+='<input name="id" type="hidden" value="'+goodid+'" type="text">';
+	           	html+='<button type="button" id="pgoods-del" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>';
+	           	html+='<a href="#" class="img-thumbnail">';
+	           	html+='<img src="'+goodpic+'">';
+	           	html+='</a>';
+	           	html+='<a class="pgoods-name" href="#">'+goodname+'</a>';
+	           	html+='<p>价格：'+goodprice+'</p>';
+	           	html+='<p>规格：'+goodguig+'</p>';
+	           	html+='</li>';
+				$('ul.pgoods').append(html);
+				$(this).parent().html('<span style="color: red;">已选择</span>');
+            })
+            
+            $('ul.pgoods').on('click','#pgoods-del',function(){
+				var goodid = $(this).prev('input[type="hidden"]').val();
+				$(this).parents('li').remove();
+				$('tbody[data-goodid="'+ goodid +'"]').find('.choose_cancel').html('<a href="javascript:void(0)">【选择】</a>'); 
+			})
+           	
         })
-        $(".wst-shop-tbar").keydown(function (event) {
-            if (event.which == "13") {
-                $(this).find('.u-btn').trigger("click");
-            }
-        });
 
         function quotationChoiceByPage(p) {
             var params = {};
@@ -82,6 +88,10 @@
                     var gettpl = document.getElementById('tblist1').innerHTML;
                     laytpl(gettpl).render(json.Rows, function (html) {
                         $(html).insertAfter('#loadingBdy1');
+                        $('ul.pgoods input[type="hidden"]').each(function(){
+			           		var goodid = $(this).val();
+			           		$('tbody[data-goodid="'+ goodid +'"]').find('.choose_cancel').html('<span style="color: red;">已选择</span>'); 
+			           	})
                     });
                     if (json.TotalPage > 1) {
                         laypage({
@@ -91,6 +101,7 @@
                             skin: '#e23e3d',
                             groups: 3,
                             jump: function (e, first) {
+                            	console.log(e)
                                 if (!first) {
                                     quotationChoiceByPage(e.curr);
                                 }
