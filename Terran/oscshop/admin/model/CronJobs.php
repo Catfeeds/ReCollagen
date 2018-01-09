@@ -23,7 +23,7 @@ class CronJobs extends Model{
 	 	$lastDay = date("Y-m-d 00:00:00",strtotime("-".$autoReceiveDays." days"));
 
 	 	$orders = Db::name('order')->where("deliver_time<'".$lastDay."' and order_status=3")->select();
-//halt($orders);
+
 	 	if(!empty($orders)){
 	 		Db::startTrans();
 		    try{
