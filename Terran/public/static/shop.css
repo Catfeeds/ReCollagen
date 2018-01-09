@@ -1,4 +1,4 @@
-@CHARSET "UTF-8";
+﻿@CHARSET "UTF-8";
 
 body {
 	margin: 0px auto;
@@ -1389,10 +1389,8 @@ max-height:150px;
     white-space: nowrap;
 }
 .overh_td {
-    width: 180px;
     height: 30px;
     line-height: 30px;
-    display: inline-block;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
