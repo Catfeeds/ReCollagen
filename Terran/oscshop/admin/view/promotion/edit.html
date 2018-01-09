@@ -25,7 +25,7 @@
 			text-overflow:ellipsis;
 			white-space:nowrap;
 		}
-		ul.pgoods li #pgoods-del{
+		ul.pgoods li .pgoods-del{
 			position: absolute;
 			right: 0;
 			top: 0;
@@ -101,16 +101,21 @@
 					<label class="col-sm-2 control-label hidden-xs" for="input-length-class"> </label>
 					<div class="col-sm-10">
 						<ul class="pgoods">
-							<!--<li>
-								<input name="id" type="hidden" value="0" type="text">
-								<button type="button" id="pgoods-del" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
+							{if isset($promotion['goods']) && $promotion['goods']}
+							{volist name="promotion['goods']" id="vo"}
+							<li>
+								<input name="goods_id[]" type="hidden" class="goods-id" value="{$vo.goods_id}" type="text">
+								<input name="goods_option_id[]" type="hidden" class="goption-id" value="{$vo.goods_option_id}" type="text">
+								<button type="button" class="btn btn-danger pgoods-del"><i class="fa fa-trash-o"></i></button>
 								<a href="#" class="img-thumbnail">
-									<img src="/public/uploads/cache/images/osc1/fruit/product-vg@3-100x100.png">
+									<img src="IMG_ROOT{$vo.image|resize=50,50}">
 								</a>
-								<a class="pgoods-name" href="#">我吃西红柿</a>
-								<p>价格：8.80</p>
-								<p>规格：500g</p>
-							</li>-->
+								<a class="pgoods-name" href="#">{$vo.name}</a>
+								<p>价格：{if $vo['option_price']}{$vo.option_price}{else /}{$vo.price}{/if}</p>
+								<p>规格：{if $vo['option_name']}{$vo.option_name}{else /}无{/if}</p>
+							</li>
+							{/volist}
+							{/if}
 
 						</ul>
 					</div>
@@ -176,6 +181,19 @@
 				}
 			);
 		});
+        $('ul.pgoods').on('click','.pgoods-del',function(){
+            var goodid = $(this).parent().find('.goods-id').val();
+            var goptionid = $(this).parent().find('.goption-id').val();
+            $(this).parents('li').remove();
+            if(goptionid!=0)
+            {
+                $('tbody[data-goptionid="'+ goptionid +'"]').find('.choose_cancel').html('<a href="javascript:void(0)">【选择】</a>');
+            }
+            else
+            {
+                $('tbody[data-goodid="'+ goodid +'"]').find('.choose_cancel').html('<a href="javascript:void(0)">【选择】</a>');
+            }
+        })
 
 		$("#type").on("change",function(){
 			var type = parseInt($("#type").val());
