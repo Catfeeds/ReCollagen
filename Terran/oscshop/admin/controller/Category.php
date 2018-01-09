@@ -17,7 +17,12 @@ class Category extends AdminBase
 
     public function index()
     {
-        $list = Db::name('category')->order('sort')->paginate(config('page_num'));
+//        $list = Db::name('category')->order('sort')->paginate(config('page_num'));
+//        $tree=new \oscshop\Tree();
+//        $list['data'] = $tree->toFormatTree($list->items(),'name');
+        $tree=new \oscshop\Tree();
+        $list = $tree->toFormatTree(Db::name('category')->order('sort')->select(),'name');
+
         $this->assign('empty', '<tr><td colspan="20">暂无数据</td></tr>');
         $this->assign('list', $list);
 
