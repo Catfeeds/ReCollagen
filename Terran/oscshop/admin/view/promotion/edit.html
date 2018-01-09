@@ -1,5 +1,39 @@
 	{extend name="public:base" /}
 	{block name="content"}
+	<style>
+		ul.pgoods{
+			margin: 0;
+			list-style-type: none;
+		}
+		ul.pgoods li{
+			width: 90px;
+			float: left;
+			margin-right: 10px;
+			position: relative;
+		}
+		ul.pgoods li .img-thumbnail{
+			margin-bottom: 10px;
+		}
+		ul.pgoods li .img-thumbnail img{
+			width: 70px;
+			height: 70px;
+		}
+		ul.pgoods li .pgoods-name{
+			width: 100%;
+			display: block;
+			overflow:hidden;
+			text-overflow:ellipsis;
+			white-space:nowrap;
+		}
+		ul.pgoods li #pgoods-del{
+			position: absolute;
+			right: 0;
+			top: 0;
+		}
+		ul.pgoods li p{
+			margin: 0;
+		}
+	</style>
 	<div class="page-header">
 		<h1>
 			{$breadcrumb1}
@@ -114,40 +148,6 @@
 	</div>
 	{/block}
 	{block name="javascript"}
-	<style>
-	ul.pgoods{
-		margin: 0;
-		list-style-type: none;
-	}
-	ul.pgoods li{
-		width: 90px;
-		float: left;
-		margin-right: 10px;
-		position: relative;
-	}
-	ul.pgoods li .img-thumbnail{
-		margin-bottom: 10px;
-	}
-	ul.pgoods li .img-thumbnail img{
-		width: 70px;
-		height: 70px;
-	}
-	ul.pgoods li .pgoods-name{
-		width: 100%;
-		display: block;
-		overflow:hidden;
-		text-overflow:ellipsis;
-		white-space:nowrap;
-	}
-	ul.pgoods li #pgoods-del{
-		position: absolute;
-		right: 0;
-		top: 0;
-	}
-	ul.pgoods li p{
-		margin: 0;
-	}
-	</style>
 	<script type="text/javascript" src="__PUBLIC__/js/layer/laydate/laydate.js"></script>
 
 	<script>
@@ -202,7 +202,6 @@
 				case 3:{
 					expression = '<label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 选择商品 </label>'
 						+'<div class="col-sm-10">'
-						// +'<a class="promotiongoods" style="line-height: 35px;" href="javascript:;" >选择商品</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'
 						+'<a style="line-height: 35px;" href="javascript:;"  onclick="javascript:chooseBox()">选择商品</a>'
 						+'</div>'
 						+'</div>';
