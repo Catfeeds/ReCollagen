@@ -15,7 +15,7 @@
             </tbody>
             <script id="tblist1" type="text/html">
                 {{# for(var i = 0; i < d.length; i++){ }}
-                <tbody class="j-order-row1" data-goodid="{{d[i]['goods_Id']}}">
+                <tbody class="j-order-row1" data-goodid="{{d[i]['goods_Id']}}" data-goptionid="{{d[i]['goods_option_id']}}">
                 <tr class='goods-box'>
                     <td style="padding:2px; text-align: center;" class="overh_td">
                         {{d[i]['goods_Id']}}
@@ -26,7 +26,7 @@
                     <td style="padding:2px; text-align: center;" class="good-price">
                         {{d[i]['goods_Id']}}
                     </td>
-                    <td style="padding:2px; text-align: center;" class="good-guig" goods_option_id="{{d[i]['goods_option_id']}}">
+                    <td style="padding:2px; text-align: center;" class="good-guig">
                             {{d[i]['option_name']}}
                     </td>
                     <td style="padding:2px; text-align: center;">
@@ -51,12 +51,14 @@
             $('.wst-order-list').on('click','.choose_cancel a',function (){
             	var tr = $(this).parent().parent('.goods-box'),
 				goodid = tr.parent().attr('data-goodid'),
+				goptionid = tr.parent().attr('data-goptionid'),
 				goodpic = tr.find('.good-name').attr('data-imgsrc'),
 				goodname = tr.find('.good-name').html(),
 				goodprice = tr.find('.good-price').html(),
 				goodguig = tr.find('.good-guig').html();
 				html='<li>';
-				html+='<input name="id" type="hidden" value="'+goodid+'" type="text">';
+				html+='<input name="id" type="hidden" class="goods-id" value="'+goodid+'" type="text">';
+				html+='<input name="goptionid" type="hidden" class="goption-id" value="'+goptionid+'" type="text">';
 	           	html+='<button type="button" id="pgoods-del" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>';
 	           	html+='<a href="#" class="img-thumbnail">';
 	           	html+='<img src="'+goodpic+'">';
@@ -70,9 +72,17 @@
             })
             
             $('ul.pgoods').on('click','#pgoods-del',function(){
-				var goodid = $(this).prev('input[type="hidden"]').val();
+				var goodid = $(this).parent().find('.goods-id').val();
+				var goptionid = $(this).parent().find('.goption-id').val();
 				$(this).parents('li').remove();
-				$('tbody[data-goodid="'+ goodid +'"]').find('.choose_cancel').html('<a href="javascript:void(0)">【选择】</a>'); 
+				if(goptionid!=0)
+				{
+					$('tbody[data-goptionid="'+ goptionid +'"]').find('.choose_cancel').html('<a href="javascript:void(0)">【选择】</a>');
+				}
+				else
+				{
+					$('tbody[data-goodid="'+ goodid +'"]').find('.choose_cancel').html('<a href="javascript:void(0)">【选择】</a>'); 
+				}
 			})
            	
         })
@@ -88,9 +98,17 @@
                     var gettpl = document.getElementById('tblist1').innerHTML;
                     laytpl(gettpl).render(json.Rows, function (html) {
                         $(html).insertAfter('#loadingBdy1');
-                        $('ul.pgoods input[type="hidden"]').each(function(){
-			           		var goodid = $(this).val();
-			           		$('tbody[data-goodid="'+ goodid +'"]').find('.choose_cancel').html('<span style="color: red;">已选择</span>'); 
+                        $('ul.pgoods .goption-id').each(function(){
+                        	var goodid = $(this).prev('input[type="hidden"]').val();
+                        	var goptionid = $(this).val();
+			           		if(goptionid!=0)
+			           		{
+			           			$('tbody[data-goptionid="'+ goptionid +'"]').find('.choose_cancel').html('<span style="color: red;">已选择</span>'); 
+			           		}
+			           		else
+			           		{
+			           			$('tbody[data-goodid="'+ goodid +'"]').find('.choose_cancel').html('<span style="color: red;">已选择</span>'); 
+			           		}
 			           	})
                     });
                     if (json.TotalPage > 1) {
@@ -101,7 +119,6 @@
                             skin: '#e23e3d',
                             groups: 3,
                             jump: function (e, first) {
-                            	console.log(e)
                                 if (!first) {
                                     quotationChoiceByPage(e.curr);
                                 }
