@@ -4,9 +4,9 @@
             <tr class='head'>
                 <th style="padding-left:8px; text-align: center;">商品ID</th>
                 <th style="padding-left:8px;">商品名称</th>
+                <th style="padding-left:8px; text-align: center;">商品分类</th>
                 <th style="padding-left:8px; text-align: center;">商品价格</th>
                 <th style="padding-left:8px; text-align: center;">商品选项</th>
-                <th style="padding-left:8px; text-align: center;">商品库存</th>
                 <th style="text-align: center;" >操作</th>
             </tr>
             </thead>
@@ -15,22 +15,26 @@
             </tbody>
             <script id="tblist1" type="text/html">
                 {{# for(var i = 0; i < d.length; i++){ }}
-                <tbody class="j-order-row1" data-goodid="{{d[i]['goods_Id']}}" data-goptionid="{{d[i]['goods_option_id']}}">
+                <tbody class="j-order-row1" data-goodid="{{d[i]['goods_id']}}" data-goptionid="{{#if(d[i].goods_option_id){}}{{d[i]['goods_option_id']}}{{# }else{ }}0{{# } }}">
                 <tr class='goods-box'>
                     <td style="padding:2px; text-align: center;" class="overh_td">
-                        {{d[i]['goods_Id']}}
+                        {{d[i]['goods_id']}}
                     </td>
-                    <td style="padding:2px" class="good-name" data-imgsrc="{{d[i]['goodsName']}}">
-                        {{d[i]['goodsName']}}
-                    </td>
-                    <td style="padding:2px; text-align: center;" class="good-price">
-                        {{d[i]['goods_Id']}}
-                    </td>
-                    <td style="padding:2px; text-align: center;" class="good-guig">
-                            {{d[i]['option_name']}}
+                    <td style="padding:2px" class="good-name" data-imgsrc="/public/uploads/{{d[i]['image']}}">
+                        {{d[i]['name']}}
                     </td>
                     <td style="padding:2px; text-align: center;">
-                            {{d[i]['stock']}}
+                        {{d[i]['cat_name']}}
+                    </td>
+                    <td style="padding:2px; text-align: center;" class="good-price">
+                        {{#if(d[i].option_price){}}{{d[i]['option_price']}}{{# }else{ }}{{d[i]['price']}}{{# } }}
+                    </td>
+                    <td style="padding:2px; text-align: center;" class="good-guig">
+                        {{#if(d[i].option_name){}}
+                        {{d[i]['option_name']}}
+                        {{# }else{ }}
+                        无
+                        {{# } }}
                     </td>
                     <td style="padding:2px; text-align: center;" class="choose_cancel">
                         <a href="javascript:void(0)">【选择】</a>
@@ -57,9 +61,9 @@
 				goodprice = tr.find('.good-price').html(),
 				goodguig = tr.find('.good-guig').html();
 				html='<li>';
-				html+='<input name="id" type="hidden" class="goods-id" value="'+goodid+'" type="text">';
-				html+='<input name="goptionid" type="hidden" class="goption-id" value="'+goptionid+'" type="text">';
-	           	html+='<button type="button" id="pgoods-del" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>';
+				html+='<input name="goods_id[]" type="hidden" class="goods-id" value="'+goodid+'" type="text">';
+				html+='<input name="goods_option_id[]" type="hidden" class="goption-id" value="'+goptionid+'" type="text">';
+	           	html+='<button type="button" class="btn btn-danger pgoods-del"><i class="fa fa-trash-o"></i></button>';
 	           	html+='<a href="#" class="img-thumbnail">';
 	           	html+='<img src="'+goodpic+'">';
 	           	html+='</a>';
@@ -70,20 +74,6 @@
 				$('ul.pgoods').append(html);
 				$(this).parent().html('<span style="color: red;">已选择</span>');
             })
-            
-            $('ul.pgoods').on('click','#pgoods-del',function(){
-				var goodid = $(this).parent().find('.goods-id').val();
-				var goptionid = $(this).parent().find('.goption-id').val();
-				$(this).parents('li').remove();
-				if(goptionid!=0)
-				{
-					$('tbody[data-goptionid="'+ goptionid +'"]').find('.choose_cancel').html('<a href="javascript:void(0)">【选择】</a>');
-				}
-				else
-				{
-					$('tbody[data-goodid="'+ goodid +'"]').find('.choose_cancel').html('<a href="javascript:void(0)">【选择】</a>'); 
-				}
-			})
            	
         })
 
@@ -93,29 +83,28 @@
             $.post("{:url('admin/Promotion/getChooseGoods')}", params, function (data, textStatus) {
                 var json = infoToJson(data);
                 $('.j-order-row1').remove();
-                if (json.status == 1) {
-                    json = json.data;
+
                     var gettpl = document.getElementById('tblist1').innerHTML;
-                    laytpl(gettpl).render(json.Rows, function (html) {
+                    laytpl(gettpl).render(json.data, function (html) {
                         $(html).insertAfter('#loadingBdy1');
                         $('ul.pgoods .goption-id').each(function(){
                         	var goodid = $(this).prev('input[type="hidden"]').val();
                         	var goptionid = $(this).val();
 			           		if(goptionid!=0)
 			           		{
-			           			$('tbody[data-goptionid="'+ goptionid +'"]').find('.choose_cancel').html('<span style="color: red;">已选择</span>'); 
+			           			$('tbody[data-goptionid="'+ goptionid +'"]').find('.choose_cancel').html('<span style="color: red;">已选择</span>');
 			           		}
 			           		else
 			           		{
-			           			$('tbody[data-goodid="'+ goodid +'"]').find('.choose_cancel').html('<span style="color: red;">已选择</span>'); 
+			           			$('tbody[data-goodid="'+ goodid +'"]').find('.choose_cancel').html('<span style="color: red;">已选择</span>');
 			           		}
 			           	})
                     });
-                    if (json.TotalPage > 1) {
+                    if (json.last_page > 1) {
                         laypage({
                             cont: 'pager1',
-                            pages: json.TotalPage,
-                            curr: json.CurrentPage,
+                            pages: json.last_page,
+                            curr: json.current_page,
                             skin: '#e23e3d',
                             groups: 3,
                             jump: function (e, first) {
@@ -127,7 +116,7 @@
                     } else {
                         $('#pager1').empty();
                     }
-                }
+
             });
         }
 

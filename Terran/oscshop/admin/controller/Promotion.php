@@ -77,7 +77,6 @@ class Promotion extends AdminBase{
 		
 		if(request()->isPost()){
 			$data = input('post.');
-			halt($data);
 			if (isset($data['expression']) && $data['expression'] == '') {
 				$this->error('请输入折扣/优惠金额');
 			}
@@ -90,20 +89,34 @@ class Promotion extends AdminBase{
 			if($data['start_time']>=$data['end_time']){
 				$this->error('开始时间不得大于结束时间');
             }
-            if ($data['type'] == 3) {
-				$data['expression'] = $data['name'];
+
+            if (!isset($data['goods_id'])) {
+                $this->error('请选择商品');
             }
-			$result = $this->model->update($data);
-			
-			if(!$result){	
-				$this->error('修改失败');							
-			}else{		
-				storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'修改了促销管理');	
-				$this->success('修改成功',url('Admin/Promotion/index'));
+            $arr = [];
+            foreach ($data['goods_id'] as $key => $v) {
+                $arr[$key]['promotion_id'] = $data['id'];
+                $arr[$key]['goods_id'] = $v;
+                $arr[$key]['goods_option_id'] = $data['goods_option_id'][$key];
+            }
+            unset($data['goods_id']);
+            unset($data['goods_option_id']);
+
+            $result = Db::name('promotion')->update($data);
+
+            if($result !== false){
+                Db::name('promotion_goods')->where(['promotion_id'=>$data['id']])->delete();
+                Db::name('promotion_goods')->insertAll($arr);
+
+                storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'修改了促销管理');
+                $this->success('修改成功',url('Admin/Promotion/index'));
+			}else{
+                $this->error('修改失败');
 			}
 			
 		}else{
 			$promotion = $this->model->find((int)input('param.id'));
+			$promotion['goods'] = $this->model->getPromotionGoods($promotion['id']);
 			$promotion['start_time'] = date('Y-m-d H:i:s',$promotion['start_time']);
 			$promotion['end_time']   = date('Y-m-d H:i:s',$promotion['end_time']);
 
@@ -160,8 +173,8 @@ class Promotion extends AdminBase{
      * 返回弹窗需要显示的商品
      */
     public function getChooseGoods(){
-        $data = file_get_contents('goods.json');
-        $data = json_decode($data);
+        $data = osc_goods()->getChooseGoods();
+
         return $data;
     }
 	

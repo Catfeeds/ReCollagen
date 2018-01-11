@@ -1,73 +1,83 @@
 {extend name="./oscshop/admin/view/public/base.html" /}
 {block name="content"}
 <div class="page-header">
-		<h1>
-			{$breadcrumb2}
-			<small>
-				<i class="ace-icon fa fa-angle-double-right"></i>
-				{$crumbs}
-			</small>
-		</h1>
-</div>	
-	<ul class="nav nav-tabs">
-		
-	  <li class="active"><a href="#tab-member" data-toggle="tab">会员资料</a></li>
-	 
-	  <li><a href="#tab-shipping" data-toggle="tab">收货地址</a></li>
-	  
-	</ul>
+	<h1>
+		{$breadcrumb2}
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			{$crumbs}
+		</small>
+	</h1>
+</div>
+<ul class="nav nav-tabs">
 
-	<form class="form-horizontal">	
-	<div class="tab-content">		
-		<input name="uid" type="hidden" value="{$Request.param.id}" />		
+	<li class="active"><a href="#tab-member" data-toggle="tab">会员资料</a></li>
+
+	<li><a href="#tab-shipping" data-toggle="tab">收货地址</a></li>
+
+</ul>
+
+<form class="form-horizontal" method="post" name="form">
+	<div class="tab-content">
+		<input name="uid" type="hidden" value="{$Request.param.id}" />
 		<div class="tab-pane active" id="tab-member">
 			<table class="table table-binfoed">
 				<tr>
-				    <td>ID</td>
-				    <td>{$data.uid}</td>
+					<td>ID</td>
+					<td>{$data.uid}</td>
 				</tr>
 				<tr>
 					<td>微信openId</td>
-					<td>				
-					{$data.openId}					
+					<td>
+						{$data.openId}
 					</td>
 				</tr>
-                <tr>
-                    <td>默认收货人</td>
-                    <td>                
-                    {$data.name}                 
-                    </td>
-                </tr>
-                <tr>
-                    <td>联系电话</td>
-                    <td>                
-                    {$data.telephone}                 
-                    </td>
-                </tr>
 				<tr>
-				    <td>主账户金额（元）</td>
-				    <td><input name="mainAccount" type="text" style="width:60%;" value="{$data.mainAccount}" /></td>
-				</tr> 
- 				<tr>
-				    <td>小金库金额（元）</td>
-				    <td><input name="secondAccount" type="text" style="width:60%;" value="{$data.secondAccount}" /></td>
-				</tr> 
+					<td>默认收货人</td>
+					<td>
+						{$data.name}
+					</td>
+				</tr>
+				<tr>
+					<td>联系电话</td>
+					<td>
+						{$data.telephone}
+					</td>
+				</tr>
+				<tr>
+					<td>主账户金额（元）</td>
+					<td>￥{$data.mainAccount}元
+						<select name="sma">
+							<option value="1">增加</option>
+							<option value="2">扣除</option>
+						</select>
+						<input name="mainAccount" type="text" style="width:20%;" value="0.00" /></td>
+				</tr>
+				<tr>
+					<td>小金库金额（元）</td>
+					<td>￥{$data.secondAccount}元
+						<select name="ssa">
+							<option value="1">增加</option>
+							<option value="2">扣除</option>
+						</select>
+						<input name="secondAccount" type="text" style="width:20%;" value="0.00" /></td>
+				</tr>
 				<tr>
 					<td>创建时间</td>
 					<td>{$data.create_time|date="Y-m-d H:i:s",###}</td>
 				</tr>
 				<tr>
 					<td>状态</td>
-					<td>	
+					<td>
 						<label class="radio-inline">
-						<input type="radio" checked="checked" value="1" name="checked">审核通过</label>
+							<input type="radio" {if condition="$data.checked eq 1"} checked="checked"{/if} value="1" name="checked">审核通过</label>
 						<label class="radio-inline">
-						<input type="radio" value="0" name="checked">审核不通过</label>
+							<input type="radio" {if condition="$data.checked eq 0"} checked="checked"{/if} value="0" name="checked">审核不通过</label>
 					</td>
 				</tr>
-				</table>
-				<div class="form-group">
-				
+			</table>
+			<div class="form-group">
+
 				<div style="margin-left:20px;">
 					<input type="submit" id="send" value="提交" class="btn btn-primary" />
 				</div>
@@ -79,51 +89,53 @@
 			{volist name="address" id="vo"}
 
 			<div class=" col-xs-12 col-md-3" style="height: 26px;" >
-				  {if $vo['is_default'] == 1}默认{/if}收货人: {$vo.name}
-			  </div>
-			  <div class=" col-xs-12 col-md-3" style="height: 26px;" >
-			  	所在地: {$vo.province},{$vo.city},{$vo.country}
-			  </div>
-			  <div class=" col-xs-12 col-md-3" style="height: 26px;" >
-			  	地址: {$vo.address}
-			  </div>
-			  <div class=" col-xs-12 col-md-3" style="height: 26px;" >
-			  	联系电话: {$vo.telephone}
-			  </div>
+				{if $vo['is_default'] == 1}默认{/if}收货人: {$vo.name}
+			</div>
+			<div class=" col-xs-12 col-md-3" style="height: 26px;" >
+				所在地: {$vo.province},{$vo.city},{$vo.country}
+			</div>
+			<div class=" col-xs-12 col-md-3" style="height: 26px;" >
+				地址: {$vo.address}
+			</div>
+			<div class=" col-xs-12 col-md-3" style="height: 26px;" >
+				联系电话: {$vo.telephone}
+			</div>
 			{/volist}
 
 		</div>
 
 	</div>
-	
+
 	</div>
-	</form>	
-	
+</form>
+
 {/block}
 {block name="javascript"}
 
 <script>
-    $('#send').click(function(){
+    $('#send').click(function () {
         $.post(
             "{'Admin/MemberBackend/edit'}",
             $('input[type=\'text\'],input[type=\'radio\']:checked,input[type=\'hidden\']'),
-            function(data){
+            function (data) {
                 if (data.code == 1) {
-                    layer.msg(data.msg,{icon:1});
-                    setTimeout(function(){
+                    layer.msg(data.msg, {icon: 1});
+                    setTimeout(function () {
                         location.href = data.url;
-                    },1000); 
-                }else{
-                    layer.msg(data.msg,{icon:2,time:3000});
+                    }, 1000);
+                } else {
+                    layer.msg(data.msg, {icon: 2, time: 3000});
                 }
             }
         );
     });
-    
-    $(function(){	
-    	{if condition="$Request.param.id"}
-    			Oscshop.setValue("checked", {$data.checked|default=1});		
-    	{/if}
-    });
-</script>							
+
+    $(function () {
+        {if condition = "$Request.param.id"
+            }
+        Oscshop.setValue("checked", {$data.checked | default = 1}
+    );
+        {/if}
+        });
+</script>
 {/block}

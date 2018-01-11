@@ -88,11 +88,13 @@ class Goods{
 		return $list;
 	}
 
-	/**
-	 * 根据条件取得商品列表
-	 * @param array $filter 条件
-	 * @return object(think\paginator\Collection)  
-	 */
+    /**
+     * 根据条件取得商品列表
+     * @param $filter
+     * @param int $page_num
+     * @return \think\Paginator
+     * @throws \think\exception\DbException
+     */
 	public function get_goods_list($filter,$page_num=10){
 		
 		$map=[];
@@ -113,6 +115,22 @@ class Goods{
 		
 		return $list;
 	}
+    /**
+     * 获取促销商品列表
+     */
+    public function getChooseGoods(){
+
+        $map=['g.isMainGoods'=>1,'g.status'=>1,'g.stock'=>['gt',0]];
+
+        $list = Db::name('goods')->alias('g')->field('g.*,c.name As cat_name,o.goods_option_id,o.option_name,o.option_price')
+            ->where($map)
+            ->join('__CATEGORY__ c','c.id = g.cat_id','left')
+            ->join('__GOODS_OPTION__ o','o.goods_id = g.goods_id','left')
+            ->order('g.create_time desc')
+            ->paginate(10);
+
+        return $list;
+    }
 	
 	public function ajax_get_goods($page_num,$limit_num){		
 		//页码

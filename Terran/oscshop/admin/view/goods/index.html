@@ -32,7 +32,7 @@
   </div>
   <div class="search-form-li col-xs-6 col-md-3">
 	<select name="isMainGoods">
-		<option {if condition="$isMainGoods eq null"} selected="selected"{/if}value="">全部状态</option>							
+		<option {if condition="$isMainGoods eq null"} selected="selected"{/if}value="">全部状态</option>
 		<option {if condition="$isMainGoods eq 1"} selected="selected"{/if}value="1">主商品</option>
 		<option {if condition="$isMainGoods === 0"} selected="selected"{/if} value="0">辅销品</option>
 	</select>
