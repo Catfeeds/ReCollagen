@@ -89,27 +89,25 @@ class Promotion extends AdminBase{
 			if($data['start_time']>=$data['end_time']){
 				$this->error('开始时间不得大于结束时间');
             }
-            if ($data['type'] == 3) {
-			    if (!isset($data['goods_id'])) {
-                    $this->error('请选择商品');
-			    }
-                $arr = [];
-                foreach ($data['goods_id'] as $key => $v) {
-                    $arr[$key]['promotion_id'] = $data['id'];
-                    $arr[$key]['goods_id'] = $v;
-                    $arr[$key]['goods_option_id'] = $data['goods_option_id'][$key];
-                }
-                unset($data['goods_id']);
-                unset($data['goods_option_id']);
+
+            if (!isset($data['goods_id'])) {
+                $this->error('请选择商品');
             }
+            $arr = [];
+            foreach ($data['goods_id'] as $key => $v) {
+                $arr[$key]['promotion_id'] = $data['id'];
+                $arr[$key]['goods_id'] = $v;
+                $arr[$key]['goods_option_id'] = $data['goods_option_id'][$key];
+            }
+            unset($data['goods_id']);
+            unset($data['goods_option_id']);
 
             $result = Db::name('promotion')->update($data);
 
             if($result !== false){
-                if ($data['type'] == 3) {
-                    Db::name('promotion_goods')->where(['promotion_id'=>$data['id']])->delete();
-                    Db::name('promotion_goods')->insertAll($arr);
-                }
+                Db::name('promotion_goods')->where(['promotion_id'=>$data['id']])->delete();
+                Db::name('promotion_goods')->insertAll($arr);
+
                 storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'修改了促销管理');
                 $this->success('修改成功',url('Admin/Promotion/index'));
 			}else{
@@ -118,9 +116,7 @@ class Promotion extends AdminBase{
 			
 		}else{
 			$promotion = $this->model->find((int)input('param.id'));
-			if ($promotion['type'] == 3) {
-                $promotion['goods'] = $this->model->getPromotionGoods($promotion['id']);
-			}
+			$promotion['goods'] = $this->model->getPromotionGoods($promotion['id']);
 			$promotion['start_time'] = date('Y-m-d H:i:s',$promotion['start_time']);
 			$promotion['end_time']   = date('Y-m-d H:i:s',$promotion['end_time']);
 

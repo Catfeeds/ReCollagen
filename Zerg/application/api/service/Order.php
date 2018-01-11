@@ -448,10 +448,11 @@ class Order
         $transports = Transport::all(['is_default'=>2])->toArray();
         $supportTrans = []; //支持配送到用户地址的物流公司
         foreach ($transports as $key => $v) {
-            if (strpos($v['area_id'],",".$userAddress['province_id'].",") !== false){
+            if (strpos($v['area_id'],",".$userAddress['city_id'].",") !== false){
                 $supportTrans[] = $v; 
             }
         }
+
         //计算匹配到的物流公司需要的运费和对应的物流公司id
         $feeArr = $transIdArr = [];
         $fee = $transId = 0;

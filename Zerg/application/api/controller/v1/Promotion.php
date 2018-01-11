@@ -17,7 +17,7 @@ class Promotion extends Controller
      */
     public function getPromotions(){
 
-        $promotions = PromotionModel::all(['start_time'=>['lt',time()],'end_time'=>['gt',time()]])->toArray();
+        $promotions = PromotionModel::getPromotions();
 
         return $promotions;
     }

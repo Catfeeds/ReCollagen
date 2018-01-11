@@ -21,8 +21,12 @@ class Address extends BaseController
 
     /**
      * 获取用户地址信息
-     * @return UserAddress
+     * @return false|\PDOStatement|string|\think\Collection
      * @throws UserException
+     * @throws \app\lib\exception\ParameterException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function getUserAddress(){
         $uid = Token::getCurrentUid();
@@ -55,6 +59,8 @@ class Address extends BaseController
         // 根据规则取字段是很有必要的，防止恶意更新非客户端字段
         $data = $validate->getDataByRule(input('post.'));
         $data['province_id'] = UserAddress::getProvinceId($data['province']);
+        $data['city_id'] = UserAddress::getCityId($data['city']);
+
         //如果设为默认且已有默认地址，改为普通地址
         if ($data['is_default'] == 1) {
             UserAddress::where(['uid'=>$uid,'is_default'=>1])->update(['is_default'=>-1]);
@@ -74,7 +80,7 @@ class Address extends BaseController
         $validate->goCheck();
 
         $uid = TokenService::getCurrentUid();
-               // $uid = 2;
+//                $uid = 2;
         $data = input('post.');
 
         $userAddress = UserAddress::get($data['address_id']);
@@ -87,6 +93,8 @@ class Address extends BaseController
         }
 
         $data['province_id'] = UserAddress::getProvinceId($data['province']);
+        $data['city_id'] = UserAddress::getCityId($data['city']);
+
         //如果设为默认且已有默认地址，改为普通地址
         if ($data['is_default'] == 1) {
             UserAddress::where(['uid'=>$uid,'address_id'=>['neq',$data['address_id']],'is_default'=>1])->update(['is_default'=>-1]);
