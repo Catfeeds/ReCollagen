@@ -1,77 +1,81 @@
 {extend name="./oscshop/admin/view/public/base.html" /}
 {block name="content"}
 <div class="page-header">
-	<h1>
-		{$breadcrumb1}
-		<small>
-			<i class="ace-icon fa fa-angle-double-right"></i>
-			{$breadcrumb2}
-		</small>
-	</h1>
+    <h1>	
+        {$breadcrumb1}
+        <small>
+            <i class="ace-icon fa fa-angle-double-right"></i>
+            {$breadcrumb2}
+        </small>
+    </h1>
 </div>
 
 <table class="table table-striped table-bordered table-hover search-form">
-	<thead>
+    <thead>
 
-	<th><input name="condition" type="text" style="width: 80%;" placeholder="请输入微信openId/收货人/联系电话" value="{:input('param.condition')}" /></th>
+    <th><input name="condition" type="text" style="width: 80%;" placeholder="请输入微信openId/姓名/微信号/收货人/联系电话" value="{:input('param.condition')}" /></th>		
 
-	<th>
-		<a class="btn btn-primary" href="javascript:;" id="search" url="{:url('MemberBackend/index')}">查询</a>
-	</th>
-	</thead>
-</table>
+    <th>
+        <a class="btn btn-primary" href="javascript:;" id="search" url="{:url('MemberBackend/index')}">查询</a>
+    </th>
+</thead>
+</table>	
 
 <div class="row">
-	<div class="col-xs-12">
-		<div class="table-responsive">
-			<table class="table table-striped table-bordered table-hover">
-				<thead>
-				<tr>
-					<th class="hidden-xs">ID</th>
-					<th>微信openId</th>
-					<th class="hidden-xs">默认收货人</th>
-					<th class="hidden-xs">联系电话</th>
-					<th class="hidden-xs">创建时间</th>
-					<th class="hidden-xs">主账户金额（元）</th>
-					<th class="hidden-xs">小金库金额（元）</th>
-					<th>状态</th>
-					<th>操作</th>
-				</tr>
-				</thead>
-				<tbody>
-				{volist name="list" id="v" empty="$empty"}
-				<tr>
-					<td class="hidden-xs">{$v.uid}</td>
-					<td>{$v.openId}</td>
-					<td class="hidden-xs">{$v.name}</td>
-					<td class="hidden-xs">{$v.telephone}</td>
-					<td class="hidden-xs">{if condition="$v['create_time'] neq 0"}{$v.create_time|date="Y-m-d H:i:s",###}{else/}无{/if}</td>
-					<!--                        <td class="hidden-xs"><input name="mainAccount" type="text" size="8" class="account" uid='{$v.uid}' value="{$v.mainAccount}" /></td>
-                    <td class="hidden-xs"><input name="secondAccount" type="text" size="8" class="account" uid='{$v.uid}' value="{$v.secondAccount}" /></td>-->
-					<td class="hidden-xs"><a class="btn btn-xs btn-info" href='{:url("MemberBackend/edit",array("id"=>$v["uid"]))}'>{$v.mainAccount}</a></td>
-					<td class="hidden-xs"><a class="btn btn-xs btn-info" href='{:url("MemberBackend/edit",array("id"=>$v["uid"]))}'>{$v.secondAccount}</a></td>
-					<td>
-						{switch name="v.checked"}
-						{case value="1"}<a href='{:url("MemberBackend/set_status",array("uid"=>$v["uid"],"checked"=>0))}'><span class="btn btn-xs btn-success"><i class="fa fa-check bigger-120"></i></span></a>{/case}
-						{case value="0"}<a href='{:url("MemberBackend/set_status",array("uid"=>$v["uid"],"checked"=>1))}'><span class="btn btn-xs btn-danger"><i class="fa fa-remove bigger-120"></i></span></a>{/case}
-						{/switch}
-					</td>
-					<td>
-						<a class="btn btn-xs btn-info" href='{:url("MemberBackend/edit",array("id"=>$v["uid"]))}'>
-							<i class="fa fa-edit bigger-120"></i>
-						</a>
-					</td>
-				</tr>
-				{/volist}
+    <div class="col-xs-12">	
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>											
+                        <th class="hidden-xs">ID</th>
+                        <th>微信openId</th>
+                        <th>姓名</th>
+                        <th>微信号</th>
+                        <th class="hidden-xs">默认收货人</th>
+                        <th class="hidden-xs">联系电话</th> 									
+                        <th class="hidden-xs">创建时间</th>								
+                        <th class="hidden-xs">主账户金额（元）</th>		
+                        <th class="hidden-xs">小金库金额（元）</th>
+                        <th>状态</th> 	
+                        <th>操作</th>	
+                    </tr>
+                </thead>
+                <tbody>
+                    {volist name="list" id="v" empty="$empty"}
+                    <tr>						
+                        <td class="hidden-xs">{$v.uid}</td>
+                        <td>{$v.openId}</td>
+                        <td>{$v.uname}</td>
+                        <td>{$v.uwecat}</td>
+                        <td class="hidden-xs">{$v.name}</td>
+                        <td class="hidden-xs">{$v.telephone}</td>
+                        <td class="hidden-xs">{if condition="$v['create_time'] neq 0"}{$v.create_time|date="Y-m-d H:i:s",###}{else/}无{/if}</td>
+                        <!--                        <td class="hidden-xs"><input name="mainAccount" type="text" size="8" class="account" uid='{$v.uid}' value="{$v.mainAccount}" /></td>
+                        <td class="hidden-xs"><input name="secondAccount" type="text" size="8" class="account" uid='{$v.uid}' value="{$v.secondAccount}" /></td>-->
+                        <td class="hidden-xs"><a style="color: red;" href='{:url("MemberBackend/edit",array("id"=>$v["uid"]))}'>{$v.mainAccount}</a></td>
+                        <td class="hidden-xs"><a style="color: red;" href='{:url("MemberBackend/edit",array("id"=>$v["uid"]))}'>{$v.secondAccount}</a></td>
+                        <td>							
+                            {switch name="v.checked"}
+                            {case value="1"}<a href='{:url("MemberBackend/set_status",array("uid"=>$v["uid"],"checked"=>0))}'><span class="btn btn-xs btn-success"><i class="fa fa-check bigger-120"></i></span></a>{/case}
+                            {case value="0"}<a href='{:url("MemberBackend/set_status",array("uid"=>$v["uid"],"checked"=>1))}'><span class="btn btn-xs btn-danger"><i class="fa fa-remove bigger-120"></i></span></a>{/case}
+                            {/switch}
+                        </td>
+                        <td>
+                            <a class="btn btn-xs btn-info" href='{:url("MemberBackend/edit",array("id"=>$v["uid"]))}'>
+                                <i class="fa fa-edit bigger-120"></i>
+                            </a> 
+                        </td>
+                    </tr>
+                    {/volist}	
 
-				<tr>
-					<td colspan="20" class="page">{$list->render()}</td>
-				</tr>
-				</tbody>
+                    <tr>
+                        <td colspan="20" class="page">{$list->render()}</td>
+                    </tr>
+                </tbody>
 
-			</table>
-		</div>
-	</div>
+            </table>
+        </div>
+    </div>
 </div>
 {/block}
 {block name="javascript"}
@@ -96,18 +100,18 @@
                 return layer.msg('请输入正确的充值金额', {icon: 2});
             }
             $.post(
-                "{:url('MemberBackend/updateAccount')}",
-                {accountMoney: accountMoney, accountName: $(this).attr('name'), uid: $(this).attr('uid')},
-                function (data) {
-                    if (data) {
-                        layer.msg('充值成功', {icon: 1});
-                        setTimeout(function () {
-                            window.location.reload();
-                        }, 1000);
-                    } else {
-                        layer.msg('充值失败', {icon: 2});
+                    "{:url('MemberBackend/updateAccount')}",
+                    {accountMoney: accountMoney, accountName: $(this).attr('name'), uid: $(this).attr('uid')},
+                    function (data) {
+                        if (data) {
+                            layer.msg('充值成功', {icon: 1});
+                            setTimeout(function () {
+                                window.location.reload();
+                            }, 1000);
+                        } else {
+                            layer.msg('充值失败', {icon: 2});
+                        }
                     }
-                }
             );
         });
     });

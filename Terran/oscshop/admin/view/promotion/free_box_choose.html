@@ -61,8 +61,8 @@
 				goodprice = tr.find('.good-price').html(),
 				goodguig = tr.find('.good-guig').html();
 				html='<li>';
-				html+='<input name="goods_id[]" type="hidden" class="goods-id" value="'+goodid+'" type="text">';
-				html+='<input name="goods_option_id[]" type="hidden" class="goption-id" value="'+goptionid+'" type="text">';
+				html+='<input name="free_goods_id[]" type="hidden" class="goods-id" value="'+goodid+'" type="text">';
+				html+='<input name="free_goods_option_id[]" type="hidden" class="goption-id" value="'+goptionid+'" type="text">';
 	           	html+='<button type="button" class="btn btn-danger pgoods-del"><i class="fa fa-trash-o"></i></button>';
 	           	html+='<a href="#" class="img-thumbnail">';
 	           	html+='<img src="'+goodpic+'">';
@@ -71,7 +71,7 @@
 	           	html+='<p>价格：'+goodprice+'</p>';
 	           	html+='<p>规格：'+goodguig+'</p>';
 	           	html+='</li>';
-				$('ul.promotion_pgoods').append(html);
+				$('ul.free_pgoods').append(html);
 				$(this).parent().html('<span style="color: red;">已选择</span>');
             })
            	
@@ -87,7 +87,7 @@
                     var gettpl = document.getElementById('tblist1').innerHTML;
                     laytpl(gettpl).render(json.data, function (html) {
                         $(html).insertAfter('#loadingBdy1');
-                        $('ul.promotion_pgoods .goption-id').each(function(){
+                        $('ul.free_pgoods .goption-id').each(function(){
                         	var goodid = $(this).prev('input[type="hidden"]').val();
                         	var goptionid = $(this).val();
 			           		if(goptionid!=0)

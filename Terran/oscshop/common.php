@@ -47,7 +47,7 @@ function check_verify($code, $id = 1) {
 /**
  * 读取支付配置
  * @param string $code 支付方式code
- * @return array
+ * @return array 
  */
 function payment_config($code) {
 
@@ -66,7 +66,7 @@ function payment_config($code) {
 
 /**
  * 通过id取得订单状态名称
- *
+ * 
  */
 function get_order_status_name($order_status_id) {
     if (!$order_status = cache('order_status_list')) {
@@ -227,7 +227,7 @@ function is_module_install($moduleName) {
 
 /**
  * 读取配置
- * @return array
+ * @return array 
  */
 function load_config() {
     $list = Db::name('config')->where('status', 1)->select();
@@ -347,7 +347,7 @@ function data_auth_sign($data) {
  * @param string $data 要加密的字符串
  * @param string $key  加密密钥
  * @param int $expire  过期时间 (单位:秒)
- * @return string
+ * @return string 
  */
 function think_ucenter_encrypt($data, $key, $expire = 0) {
     $key = md5($key);
@@ -372,7 +372,7 @@ function think_ucenter_encrypt($data, $key, $expire = 0) {
  * 系统解密方法
  * @param string $data 要解密的字符串 （必须是think_encrypt方法加密的字符串）
  * @param string $key  加密密钥
- * @return string
+ * @return string 
  */
 function think_ucenter_decrypt($data, $key) {
     $key = md5($key);
@@ -404,7 +404,7 @@ function think_ucenter_decrypt($data, $key) {
 /**
  * 获取客户端IP地址
  * @param integer $type 返回类型 0 返回IP地址 1 返回IPV4地址数字
- * @param boolean $adv 是否进行高级模式获取（有可能被伪装）
+ * @param boolean $adv 是否进行高级模式获取（有可能被伪装） 
  * @return mixed
  */
 function get_client_ip($type = 0, $adv = false) {
@@ -471,7 +471,7 @@ function list_to_tree($list, $pk = 'id', $pid = 'pid', $child = 'children', $roo
 function create_tables($module) {
     $sql_file = APP_PATH . $module . '/install/install.sql';
 
-    //没有安装文件
+    //没有安装文件	
     if (!is_file($sql_file)) {
         return ['fail' => '失败'];
     }
@@ -484,7 +484,7 @@ function create_tables($module) {
     $orginal = 'osc_';
     $prefix = config('database.prefix');
     $sql = str_replace(" `{$orginal}", " `{$prefix}", $sql);
-    //开始安装
+    //开始安装 
     foreach ($sql as $value) {
         $value = trim($value);
         if (empty($value)) continue;
@@ -503,7 +503,7 @@ function create_tables($module) {
 /**
  * 数组写入文件
  * $path 路径 string
- * $data 数据 array
+ * $data 数据 array 
  */
 function write_to_file($path, $data = array()) {
     file_put_contents($path, var_export($data, true));

@@ -9,11 +9,10 @@ class Promotion extends Validate
         ['type','require','请输入促销活动类型'],
         ['money','require','请输入需要满足的金额'],
         ['money','float','金额必须是数字'],
-        // ['expression','require','请输入折扣/优惠金额'],
-        ['expression','number','折扣/优惠金额必须是数字'],
+        ['expression','number','折扣/返现金额必须是数字'],
+        ['goods_id','require','请选择促销商品范围'],
         ['start_time','require','请输入活动开始时间'],
         ['end_time','require','请输入活动结束时间'],
-
     ];
 	
 }

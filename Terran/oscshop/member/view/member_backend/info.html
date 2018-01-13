@@ -1,141 +1,252 @@
 {extend name="./oscshop/admin/view/public/base.html" /}
 {block name="content"}
 <div class="page-header">
-	<h1>
-		{$breadcrumb2}
-		<small>
-			<i class="ace-icon fa fa-angle-double-right"></i>
-			{$crumbs}
-		</small>
-	</h1>
-</div>
+    <h1>
+        {$breadcrumb2}
+        <small>
+            <i class="ace-icon fa fa-angle-double-right"></i>
+            {$crumbs}
+        </small>
+    </h1>
+</div>	
 <ul class="nav nav-tabs">
 
-	<li class="active"><a href="#tab-member" data-toggle="tab">会员资料</a></li>
+    <li class="active"><a href="#tab-member" data-toggle="tab">会员资料</a></li>
 
-	<li><a href="#tab-shipping" data-toggle="tab">收货地址</a></li>
+    <li><a href="#tab-shipping" data-toggle="tab">收货地址</a></li>
 
 </ul>
 
-<form class="form-horizontal" method="post" name="form">
-	<div class="tab-content">
-		<input name="uid" type="hidden" value="{$Request.param.id}" />
-		<div class="tab-pane active" id="tab-member">
-			<table class="table table-binfoed">
-				<tr>
-					<td>ID</td>
-					<td>{$data.uid}</td>
-				</tr>
-				<tr>
-					<td>微信openId</td>
-					<td>
-						{$data.openId}
-					</td>
-				</tr>
-				<tr>
-					<td>默认收货人</td>
-					<td>
-						{$data.name}
-					</td>
-				</tr>
-				<tr>
-					<td>联系电话</td>
-					<td>
-						{$data.telephone}
-					</td>
-				</tr>
-				<tr>
-					<td>主账户金额（元）</td>
-					<td>￥{$data.mainAccount}元
-						<select name="sma">
-							<option value="1">增加</option>
-							<option value="2">扣除</option>
-						</select>
-						<input name="mainAccount" type="text" style="width:20%;" value="0.00" /></td>
-				</tr>
-				<tr>
-					<td>小金库金额（元）</td>
-					<td>￥{$data.secondAccount}元
-						<select name="ssa">
-							<option value="1">增加</option>
-							<option value="2">扣除</option>
-						</select>
-						<input name="secondAccount" type="text" style="width:20%;" value="0.00" /></td>
-				</tr>
-				<tr>
-					<td>创建时间</td>
-					<td>{$data.create_time|date="Y-m-d H:i:s",###}</td>
-				</tr>
-				<tr>
-					<td>状态</td>
-					<td>
-						<label class="radio-inline">
-							<input type="radio" {if condition="$data.checked eq 1"} checked="checked"{/if} value="1" name="checked">审核通过</label>
-						<label class="radio-inline">
-							<input type="radio" {if condition="$data.checked eq 0"} checked="checked"{/if} value="0" name="checked">审核不通过</label>
-					</td>
-				</tr>
-			</table>
-			<div class="form-group">
+<form class="form-horizontal" method="post" name="form">	
+    <div class="tab-content">		
+        <input name="uid" type="hidden" value="{$Request.param.id}" />		
+        <div class="tab-pane active" id="tab-member">
+            <table class="table table-binfoed">
+                <tr>
+                    <td>ID</td>
+                    <td>{$data.uid}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>姓名</td>
+                    <td>				
+                        <input name="uname" type="text" style="width:60%;" value="{$data.uname}" />
+                    </td>
+                    <td>性别</td>
+                    <td>				
+                        <label class="radio-inline">
+                            <input type="radio" {if condition="$data.usex eq 0"} checked="checked"{/if} value="0" name="usex">男</label>
+                        <label class="radio-inline">
+                            <input type="radio" {if condition="$data.usex eq 1"} checked="checked"{/if} value="1" name="usex">女</label>				
+                    </td>
+                </tr>
+                <tr>
+                    <td>微信号</td>
+                    <td><input name="uwecat" type="text" style="width:60%;" value="{$data.uwecat}" /></td>
+                    <td>微信openId</td>
+                    <td>				
+                        {$data.openId}					
+                    </td>
+                </tr>
+                <tr>
+                    <td>电话</td>
+                    <td>				
+                        <input name="utel" type="text" style="width:60%;" value="{$data.utel}" />
+                    </td>
+                    <td>邮箱</td>
+                    <td>				
+                        <input name="uemail" type="text" style="width:60%;" value="{$data.uemail}" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>身份证号</td>
+                    <td>                
+                        <input name="IDcode" type="text" style="width:60%;" value="{$data.IDcode}" />
+                    </td>
+                    <td>身份证手持照</td>
+                    <td>
+                        <div class="col-sm-10" id="thumb">
+                            <a id="thumb-image" href="#" data-toggle="image" class="img-thumbnail">
+                                {if condition="!empty($data['IDcode_pic_h'])"}
+                                <img src="IMG_ROOT{$data.IDcode_pic_h|resize=100,100}" />
+                                {else /}
+                                <img src="__PUBLIC__/image/no_image_100x100.jpg" />
+                                {/if}
+                            </a>
+                            <input type="hidden" name="IDcode_pic_h" value="{$data.IDcode_pic_h|default=''}" id="input-image" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>身份证正面照</td>
+                    <td>                
+                        <div class="col-sm-10" id="thumb">
+                            <a id="thumb-image1" href="#" data-toggle="image" class="img-thumbnail">
+                                {if condition="!empty($data['IDcode_pic'])"}
+                                <img src="IMG_ROOT{$data.IDcode_pic|resize=100,100}" />
+                                {else /}
+                                <img src="__PUBLIC__/image/no_image_100x100.jpg" />
+                                {/if}
+                            </a>
+                            <input type="hidden" name="IDcode_pic" value="{$data.IDcode_pic|default=''}" id="input-image1" />
+                        </div>    
+                    </td>
+                    <td>身份证反面照</td>
+                    <td>                
+                        <div class="col-sm-10" id="thumb">
+                            <a id="thumb-image2" href="#" data-toggle="image" class="img-thumbnail">
+                                {if condition="!empty($data['IDcode_pic_b'])"}
+                                <img src="IMG_ROOT{$data.IDcode_pic_b|resize=100,100}" />
+                                {else /}
+                                <img src="__PUBLIC__/image/no_image_100x100.jpg" />
+                                {/if}
+                            </a>
+                            <input type="hidden" name="IDcode_pic_b" value="{$data.IDcode_pic_b|default=''}" id="input-image2" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>推荐人</td>
+                    <td><input name="up_name" type="text" style="width:60%;" value="{$data.up_name}" /></td>
+                    <td>推荐人微信号</td>
+                    <td>				
+                        <input name="up_wecat" type="text" style="width:60%;" value="{$data.up_wecat}" />			
+                    </td>
+                </tr>
+                <tr>
+                    <td>默认收货人</td>
+                    <td>                
+                        {$data.name}                 
+                    </td>
+                    <td>联系电话</td>
+                    <td>                
+                        {$data.telephone}                 
+                    </td>
+                </tr>
+                <tr>
+                    <td>主账户金额（元）</td>
+                    <td>￥{$data.mainAccount}元
+                        <select name="sma">			
+                            <option value="1">增加</option>
+                            <option value="2">扣除</option>
+                        </select>
+                        <input name="mainAccount" type="text" style="width:20%;" value="0.00" />
+                    </td>
+                    <td>小金库金额（元）</td>
+                    <td>￥{$data.secondAccount}元
+                        <select name="ssa">			
+                            <option value="1">增加</option>
+                            <option value="2">扣除</option>
+                        </select>
+                        <input name="secondAccount" type="text" style="width:20%;" value="0.00" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>创建时间</td>
+                    <td>{$data.create_time|date="Y-m-d H:i:s",###}</td>
+                    <td>状态</td>
+                    <td>	
+                        <label class="radio-inline">
+                            <input type="radio" {if condition="$data.checked eq 1"} checked="checked"{/if} value="1" name="checked">审核通过</label>
+                        <label class="radio-inline">
+                            <input type="radio" {if condition="$data.checked eq 0"} checked="checked"{/if} value="0" name="checked">审核不通过</label>
+                    </td>
+                </tr>
+            </table>
+            <div class="form-group">
 
-				<div style="margin-left:20px;">
-					<input type="submit" id="send" value="提交" class="btn btn-primary" />
-				</div>
-			</div>
-		</div>
+                <div style="margin-left:20px;">
+                    <input type="submit" id="send" value="提交" class="btn btn-primary" />
+                </div>
+            </div>
+        </div>
 
 
-		<div class="row tab-pane" id="tab-shipping">
-			{volist name="address" id="vo"}
+        <div class="row tab-pane" id="tab-shipping">
+            {volist name="address" id="vo"}
 
-			<div class=" col-xs-12 col-md-3" style="height: 26px;" >
-				{if $vo['is_default'] == 1}默认{/if}收货人: {$vo.name}
-			</div>
-			<div class=" col-xs-12 col-md-3" style="height: 26px;" >
-				所在地: {$vo.province},{$vo.city},{$vo.country}
-			</div>
-			<div class=" col-xs-12 col-md-3" style="height: 26px;" >
-				地址: {$vo.address}
-			</div>
-			<div class=" col-xs-12 col-md-3" style="height: 26px;" >
-				联系电话: {$vo.telephone}
-			</div>
-			{/volist}
+            <div class=" col-xs-12 col-md-3" style="height: 26px;" >
+                {if $vo['is_default'] == 1}默认{/if}收货人: {$vo.name}
+            </div>
+            <div class=" col-xs-12 col-md-3" style="height: 26px;" >
+                所在地: {$vo.province},{$vo.city},{$vo.country}
+            </div>
+            <div class=" col-xs-12 col-md-3" style="height: 26px;" >
+                地址: {$vo.address}
+            </div>
+            <div class=" col-xs-12 col-md-3" style="height: 26px;" >
+                联系电话: {$vo.telephone}
+            </div>
+            {/volist}
 
-		</div>
+        </div>
 
-	</div>
-
-	</div>
-</form>
+    </div>
+</form>	
 
 {/block}
 {block name="javascript"}
 
 <script>
-    $('#send').click(function () {
-        $.post(
-            "{'Admin/MemberBackend/edit'}",
-            $('input[type=\'text\'],input[type=\'radio\']:checked,input[type=\'hidden\']'),
-            function (data) {
-                if (data.code == 1) {
-                    layer.msg(data.msg, {icon: 1});
-                    setTimeout(function () {
-                        location.href = data.url;
-                    }, 1000);
-                } else {
-                    layer.msg(data.msg, {icon: 2, time: 3000});
+    $('input[name=\'attribute\']').autocomplete({
+        'source': function (request, response) {
+
+            $.ajax({
+                url: '{:url("Attribute/get_attribute_group")}' + '/filter_name/' + encodeURIComponent(request),
+                dataType: 'json',
+                success: function (json) {
+                    response($.map(json, function (item) {
+                        return {
+
+                            label: item.attribute_group + ':' + item.value,
+                            value: item.attribute_id
+                        }
+                    }));
                 }
-            }
-        );
+            });
+        },
+        'select': function (item) {
+            $('input[name=\'attribute\']').val('');
+
+            $('#category-attribute' + item['value']).remove();
+
+            $('#category-attribute').append('<div id="category-attribute' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="category_attribute[]" value="' + item['value'] + '" /></div>');
+
+        }
     });
 
-    $(function () {
-        {if condition = "$Request.param.id"
-            }
-        Oscshop.setValue("checked", {$data.checked | default = 1}
-    );
-        {/if}
-        });
+    $('#category-attribute').delegate('.fa-minus-circle', 'click', function () {
+        $(this).parent().remove();
+    });
+
+    $('input[name=\'brand\']').autocomplete({
+        'source': function (request, response) {
+            $.ajax({
+                url: '{:url("Brand/autocomplete")}' + '/filter_name/' + encodeURIComponent(request),
+                dataType: 'json',
+                success: function (json) {
+                    response($.map(json, function (item) {
+                        return {
+                            label: item['name'],
+                            value: item['brand_id']
+                        }
+                    }));
+                }
+            });
+        },
+        'select': function (item) {
+            $('input[name=\'brand\']').val('');
+
+            $('#category-brand' + item['value']).remove();
+
+            $('#category-brand').append('<div id="category-brand' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="category_brand[]" value="' + item['value'] + '" /></div>');
+        }
+    });
+
+    $('#category-brand').delegate('.fa-minus-circle', 'click', function () {
+        $(this).parent().remove();
+    });
+
 </script>
 {/block}

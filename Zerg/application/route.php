@@ -41,7 +41,7 @@ Route::group('api/:version/theme',function(){
 //Route::delete('api/:version/theme/:t_id/product/:p_id', 'api/:version.Theme/deleteThemeProduct');
 
 //User
-Route::get('api/:version/account','api/:version.User/getUserAccount');          //获取已收藏的商品列表
+Route::get('api/:version/account','api/:version.User/getUserAccount');          //获取用户账户信息
 
 //Product
 Route::post('api/:version/product', 'api/:version.Product/createOne');
