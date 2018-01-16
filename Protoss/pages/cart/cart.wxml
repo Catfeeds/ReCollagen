@@ -21,7 +21,7 @@
                             <view class="bottom-box">
                                 <view class="cart-item-counts">
                                     <view class="btns {{item.counts==1?'disabled':''}}" bindtap="changeCounts" data-id="{{item.goods_id}}" data-guid="{{item.option_id}}" data-type="cut">-</view>
-                                    <view class="counts">{{item.counts}}</view>
+                                    <view class="counts"><input bindchange="changeInput" value='{{item.counts}}' data-id="{{item.goods_id}}" data-guid="{{item.option_id}}" /></view>
                                     <view class="btns" bindtap="changeCounts" data-id="{{item.goods_id}}"  data-guid="{{item.option_id}}" data-type="add">+</view>
                                 </view>
                                 <view class="delete" data-id="{{item.goods_id}}"  data-guid="{{item.option_id}}" bindtap="delete">×</view>

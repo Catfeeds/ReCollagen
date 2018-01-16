@@ -1,0 +1,8 @@
+@import "../../wxParse/wxParse.wxss"; 
+@import "../tpls/base.wxss";
+.my-container{
+    background-color:#fff;
+}
+.promotion-main{
+    padding:20rpx;
+}

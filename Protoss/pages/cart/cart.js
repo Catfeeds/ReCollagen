@@ -23,6 +23,8 @@ Page({
     onShow:function(){
         var cartData=cart.getCartDataFromLocal(),
             countsInfo=cart.getCartTotalCounts(true);
+
+        console.log(cartData);
         
         this.setData({
             selectedCounts:countsInfo.counts1,
@@ -75,26 +77,42 @@ Page({
 
 
     /*调整商品数目*/
-    changeCounts:function(event){
-        var id=cart.getDataSet(event,'id'),
-            guid=cart.getDataSet(event, 'guid'),
-            type=cart.getDataSet(event,'type'),
-            index = this._getProductIndexById(id, guid),
-            counts=1;
-        if(type=='add') {
-            this._getProductIndexPrice(index, counts);
-            var price = this.data.cartData[index].price;
-            cart.addCounts(id, guid, price);
-        }else{
-            counts=-1;
-            this._getProductIndexPrice(index, counts);
-            var price = this.data.cartData[index].price;
-            cart.cutCounts(id, guid, price);
-        }
-        
-        //更新商品页面
-        this.data.cartData[index].counts+=counts;
-        this._resetCartData();
+    changeCounts: function (event) {
+      var id = cart.getDataSet(event, 'id'),
+        guid = cart.getDataSet(event, 'guid'),
+        type = cart.getDataSet(event, 'type'),
+        index = this._getProductIndexById(id, guid),
+        counts = this.data.cartData[index].counts;
+      if (type == 'add') {
+        counts++;
+        this._getProductIndexPrice(index, counts);
+        var price = this.data.cartData[index].price;
+        cart.addCutCounts(id, guid, counts, price);
+      } else {
+        counts--;
+        this._getProductIndexPrice(index, counts);
+        var price = this.data.cartData[index].price;
+        cart.addCutCounts(id, guid, counts, price);
+      }
+
+      //更新商品页面
+      this.data.cartData[index].counts = counts;
+      this._resetCartData();
+    },
+
+    //输入商品数量
+    changeInput: function (event) {
+      var id = cart.getDataSet(event, 'id'),
+        guid = cart.getDataSet(event, 'guid'),
+        index = this._getProductIndexById(id, guid),
+        counts = event.detail.value;
+      this._getProductIndexPrice(index, counts);
+      var price = this.data.cartData[index].price;
+      cart.addCutCounts(id, guid, counts, price);
+
+      //更新商品页面
+      this.data.cartData[index].counts = counts;
+      this._resetCartData();
     },
 
     /*调整商品价格*/

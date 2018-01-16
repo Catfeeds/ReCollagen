@@ -1,16 +1,21 @@
 {
   "pages":[
+    "pages/my/my",
+    "pages/cart/cart",
+    "pages/home/home",
+    
     "pages/product/product",
-    "pages/home/home",    
+       
     "pages/category/category",
    
-    "pages/cart/cart",
-    "pages/my/my",
+    
+    
     "pages/order/order",
     "pages/pay-result/pay-result",
     "pages/collect/collect",
     "pages/transinfo/transinfo",
     "pages/promotion/promotion",
+    "pages/summary/summary",
     "pages/address/list/list",
     "pages/address/edit/edit"
   ],
