@@ -122,10 +122,9 @@ class Goods{
 
         $map=['g.isMainGoods'=>1,'g.status'=>1,'g.stock'=>['gt',0]];
 
-        $list = Db::name('goods')->alias('g')->field('g.*,c.name As cat_name,o.goods_option_id,o.option_name,o.option_price')
+        $list = Db::name('goods')->alias('g')->field('g.*,c.name As cat_name')
             ->where($map)
             ->join('__CATEGORY__ c','c.id = g.cat_id','left')
-            ->join('__GOODS_OPTION__ o','o.goods_id = g.goods_id','left')
             ->order('g.create_time desc')
             ->paginate(10);
 
