@@ -8,9 +8,15 @@
     color: #fff;
     display: flex;
     align-items: center;
-    padding: 38rpx;
+    padding: 38rpx 25rpx 38rpx 38rpx;
     padding-top: 0;
     font-size: 28rpx;
+    justify-content: space-between;
+}
+.my-header view{
+    display:flex;
+    align-items:center;
+    justify-content:center;
 }
 .my-header image{
     height: 100rpx;

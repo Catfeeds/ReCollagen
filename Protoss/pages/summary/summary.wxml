@@ -1,0 +1,9 @@
+<import src="../../wxParse/wxParse.wxml"/>
+<view class="container my-container" hidden="{{!loadingHidden}}">
+    <view class="promotion-main" >
+      <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
+    </view>
+</view>
+<loading hidden="{{loadingHidden}}">
+  加载中...
+</loading>

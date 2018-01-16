@@ -175,6 +175,13 @@ Page({
         });
     },
 
+    /*查看消费记录*/
+    gosummary: function (event) {
+      wx.navigateTo({
+        url: '../summary/summary'
+      });
+    },
+
     /*显示收藏商品*/
     showCollectList: function (event) {
       wx.navigateTo({

@@ -95,11 +95,16 @@
     padding-top:12rpx;
     box-sizing: border-box;
 }
+.cart-item-counts .counts input{
+    width: 80rpx;
+    height:48rpx;
+    min-height:42rpx;
+    border:1rpx solid #D0D0D7;
+}
 .delete{
     font-size: 40rpx;
     padding:0 10rpx;
 }
-
 
 /*合计*/
 .all-accounts-box{

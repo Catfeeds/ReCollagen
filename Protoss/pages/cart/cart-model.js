@@ -119,8 +119,8 @@ class Cart extends Base{
         var cartData=this.getCartDataFromLocal(),
           hasInfo = this._isHasThatOne(id,guid,cartData);
         if(hasInfo.index!=-2){
-            if(hasInfo.data.counts>1){
-                cartData[hasInfo.index].counts+=counts;
+            if(hasInfo.data.counts>=1){
+                cartData[hasInfo.index].counts=counts;
                 cartData[hasInfo.index].currentPrice=price;
             }
         }
@@ -128,17 +128,10 @@ class Cart extends Base{
     };
 
     /*
-    * 增加商品数目
+    * 修改商品数目
     * */
-    addCounts(id, guid, price){
-      this._changeCounts(id, guid, 1, price);
-    };
-
-    /*
-    * 购物车减
-    * */
-    cutCounts(id, guid, price){
-      this._changeCounts(id, guid, -1, price);
+    addCutCounts(id, guid, counts, price){
+      this._changeCounts(id, guid, counts, price);
     };
 
     /*购物车中是否已经存在该单商品和规格商品*/
