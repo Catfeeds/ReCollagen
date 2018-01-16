@@ -1,202 +1,229 @@
 {extend name="./oscshop/admin/view/public/base.html" /}
 {block name="content"}
 <?php use think\Db; ?>
- 
-	<div class="page-header">
-		<h1>{$breadcrumb2}<small><i class="ace-icon fa fa-angle-double-right"></i>{$crumbs}</small></h1>
-	</div>	
-	<ul class="nav nav-tabs">
-		
-	  <li class="active"><a href="#tab-order" data-toggle="tab">订单详情</a></li>
-	  <li><a href="#tab-shipping" data-toggle="tab">收货地址</a></li>
-	  <li><a href="#tab-product" data-toggle="tab">商品清单</a></li>
-	  <li><a href="#tab-history" data-toggle="tab">物流信息</a></li>          
-	  
-	</ul>
-	<div class="tab-content">
-		<div class="tab-pane active" id="tab-order">
-			<table class="table table-bordered">
-				<tr>
-				    <td>订单ID</td>
-				    <td>{$data.order.order_id}</td>
-				</tr>
-				<tr>
-					<td>订单编号</td>
-					<td>{$data.order.order_num_alias}</td>
-				</tr>
-				 <tr>
-		            <td>会员微信openId</td>
-		            <td>{$data.order.openId}</td>
-		          </tr>
-				<tr>
-					<td>下单时间</td>
-					<td>{$data.order.create_time|date='Y/m/d H:i:s',###}</td>
-				</tr>
-                <tr>
-                    <td>主账户消费</td>
-                    <td>￥{$data.order.mainPay}</td>
-                </tr>
-                  <tr>
-                    <td>小金库消费</td>
-                    <td>￥{$data.order.secondPay}</td>
-                </tr> 
-                <tr>
-                    <td>合计金额</td>
-                    <td>￥{$data.order.total}</td>
-                </tr>
-                <tr>
-                    <td>订单状态</td>
-                    <td id="order-status">{$data.order.order_status|getOrderStatus}</td>
-                </tr> 
-			</table>
-		</div>
 
-		<div class="tab-pane" id="tab-shipping">
-            <table class="table table-bordered">
-              <tr>
+<div class="page-header">
+    <h1>{$breadcrumb2}<small><i class="ace-icon fa fa-angle-double-right"></i>{$crumbs}</small></h1>
+</div>	
+<ul class="nav nav-tabs">
+
+    <li class="active"><a href="#tab-order" data-toggle="tab">订单详情</a></li>
+    <li><a href="#tab-shipping" data-toggle="tab">收货地址</a></li>
+    <li><a href="#tab-product" data-toggle="tab">商品清单</a></li>
+    <li><a href="#tab-history" data-toggle="tab">物流信息</a></li>          
+
+</ul>
+<div class="tab-content">
+    <div class="tab-pane active" id="tab-order">
+        <table class="table table-bordered">
+            <tr>
+                <td>订单ID</td>
+                <td>{$data.order.order_id}</td>
+            </tr>
+            <tr>
+                <td>订单编号</td>
+                <td>{$data.order.order_num_alias}</td>
+            </tr>
+            <tr>
+                <td>会员微信openId</td>
+                <td>{$data.order.openId}</td>
+            </tr>
+            <tr>
+                <td>会员姓名</td>
+                <td>{$data.order.uname}</td>
+            </tr>
+            <tr>
+                <td>微信号</td>
+                <td>{$data.order.uwecat}</td>
+            </tr>
+            <tr>
+                <td>下单时间</td>
+                <td>{$data.order.create_time|date='Y/m/d H:i:s',###}</td>
+            </tr>
+            <tr>
+                <td>主账户消费</td>
+                <td>￥{$data.order.mainPay}</td>
+            </tr>
+            <tr>
+                <td>小金库消费</td>
+                <td>￥{$data.order.secondPay}</td>
+            </tr> 
+            <tr>
+                <td>合计金额</td>
+                <td>￥{$data.order.total}</td>
+            </tr>
+            <tr>
+                <td>订单状态</td>
+                <td id="order-status">{$data.order.order_status|getOrderStatus}</td>
+            </tr> 
+        </table>
+    </div>
+
+    <div class="tab-pane" id="tab-shipping">
+        <table class="table table-bordered">
+            <tr>
                 <td>收货人姓名</td>
                 <td>{$data.order.shipping_name}</td>
-              </tr>
-              <tr>
+            </tr>
+            <tr>
                 <td>联系电话</td>
                 <td>{$data.order.shipping_tel}</td>
-              </tr>  
-              <tr>
+            </tr>  
+            <tr>
                 <td>收货地址</td>
                 <td>{$data.order.shipping_addr}</td>
-              </tr>
-            </table>        
-        </div>
-
-      <div id="tab-product" class="tab-pane">
-       <table class="table table-bordered">
-          <thead>
-            <tr>
-              <td class="left">商品品名</td>
-              <td class="right">数量</td>
-              <td class="right">单价</td>              
-              <td class="right">总计</td>
-
             </tr>
-          </thead>
-          
-        <?php if(isset($data['order_product'])&&is_array($data['order_product'])){ ?>
-        <tbody>
-	        <?php foreach ($data['order_product'] as $product) { ?>
-	            <tr>
-	              <td class="left">
-	              	<a><?php echo $product['name']; ?></a>
-                {if condition="$product['option_name'] neq null"}
-                    <br />&nbsp;<small>({$product['option_name']})</small>
-                {/if}
-	              </td>
-	              <td class="right">{$product['quantity']}</td>
-	              <td class="right">￥{$product['price']}</td>
-	              <td class="right">￥{$product['total']}</td>
-	            </tr>
-	        <?php } ?>
+        </table>        
+    </div>
 
-            <tbody>
-                <tr>
-                  	<td colspan="3" class="right">主商品价格</td>
-                  	<td class="right">￥{$data.order.mainGoodsPrice}</td>
-                </tr>
-                <tr>
-                    <td colspan="3" class="right">辅销品价格</td>
-                    <td class="right">￥{$data.order.otherGoodsPrice}</td>
-                </tr>
-                <tr>
-                    <td colspan="3" class="right">运费</td>
-                    <td class="right">￥{$data.order.shippingPrice}</td>
-                </tr>
-            
-            {if $data['order']['promotion']}
-                <tr>
-                    <td colspan="3" class="right">促销活动</td>
-                    <td class="right">
-                {volist name="data['order']['promotion']" id="vo"}
-                    <font color="red">{$vo.name}</font><br/>
-                {/volist}
-                    </td>
-                </tr>
-            {/if}
 
-                <tr>
-                    <td colspan="3" class="right">总价</td>
-                    <td class="right">￥{$data.order.total}</td>
-                </tr>
-            </tbody>
-        </tbody>
-        <?php } ?>	
-        
-        </table>
-  
-      </div>
-	
-	
-		<div id="tab-history" class="tab-pane">
-            <div id="history"></div>
+    <div id="tab-product" class="tab-pane">
+        <form class="form-horizontal" method="post" name="form">
+            <input name="order_id" type="hidden" value="{$Request.param.id}" />
             <table class="table table-bordered">
-                <tr>
-                    <td>发货仓</td>
-                    <td>{$data.order.dispatch_title}</td>
-                </tr>
-                <tr>
-                    <td>物流公司</td>
-                    <td>{$data.order.shipping_method}</td>
-                </tr>
+                <thead>
+                    <tr>
+                        <td class="left">商品品名</td>
+                        <td class="right">数量</td>
+                        <td class="right">单价</td>              
+                        <td class="right">总计</td>
 
-                <?php if($data['order']['order_status'] == 2 || $data['order']['order_status'] == 3 || $data['order']['order_status'] == 4){ ?>
-                <tr>
-                    <td>物流单号</td>
-                    <td>
-                        <input type="text" name="shipping_num" value="{$data.order.shipping_num}" style="width: 60%;">
-                    </td>
-                </tr>
-                <tr>
-                    <td>跟踪信息</td>
-                    <td><iframe src="{$data.order.transportInfo}" width="100%" height="380"><br/></iframe></td>
-                </tr>
+                    </tr>
+                </thead>
 
-                <?php if($data['order']['order_status'] == 2 || $data['order']['order_status'] == 3){ ?>
-                <tr>
-                   	<td colspan="2">
-                        <div class="text-right">
-                			<button id="button-dispatch" class="btn btn-primary" data-loading-text="Loading...">
-                			<i class="fa fa-plus-circle"></i>
-                			录入物流单号
-                			</button>
-            		    </div>
-        		    </td>
-                </tr>
-                <?php } ?>  
+                <?php if(isset($data['order_product'])&&is_array($data['order_product'])){ ?>
+                <tbody>
+                    <?php foreach ($data['order_product'] as $product) { ?>
+                    <tr>
+                        <td class="left">
+                            <a><?php echo $product['name']; ?></a>
+                            {if condition="$product['option_name'] neq null"}
+                            <br />&nbsp;<small>({$product['option_name']})</small>
+                            {/if}
+                        </td>
+                        <td class="right">{$product['quantity']}<input name="quantity{$product.order_goods_id}" type="hidden" style="width:200px;" value="{$product.quantity}" /></td>
+                        <td class="right">￥
+                            <?php if($data['order']['order_status']<2){ ?>
+                            <input name="price{$product.order_goods_id}" type="text" style="width:200px;" value="{$product.price}" />
+                            <?php }else{ ?>
+                            {$product['price']}
+                            <?php } ?>
+                        </td>
+                        <td class="right">￥{$product['total']}</td>
+                    </tr>
+                    <?php } ?>
 
-                <?php } ?>  
+                <tbody>
+                    <tr>
+                        <td colspan="3" class="right">主商品价格</td>
+                        <td class="right">￥{$data.order.mainGoodsPrice}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="right">辅销品价格</td>
+                        <td class="right">￥{$data.order.otherGoodsPrice}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="right">运费</td>
+                        <td class="right">￥
+                            <?php if($data['order']['order_status']<2){ ?>
+                            <input name="shippingPrice" type="text" style="width:200px;" value="{$data.order.shippingPrice}" />
+                            <?php }else{ ?>
+                            {$data.order.shippingPrice}
+                            <?php } ?>
+                        </td>
+                    </tr>
+
+                    {if $data['order']['promotion']}
+                    <tr>
+                        <td colspan="3" class="right">促销活动</td>
+                        <td class="right">
+                            {volist name="data['order']['promotion']" id="vo"}
+                            <font color="red">{$vo.name}</font><br/>
+                            {/volist}
+                        </td>
+                    </tr>
+                    {/if}
+
+                    <tr>
+                        <td colspan="3" class="right">总价</td>
+                        <td class="right">￥{$data.order.total}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="right"><input type="submit" id="send" value="确认修改价格" class="btn btn-primary" /></td>
+                    </tr>
+                </tbody>
+                </tbody>
+                <?php } ?>	
+
             </table>
-        </div>	
-		
-	</div>
+        </form>
+    </div>
+
+
+
+    <div id="tab-history" class="tab-pane">
+        <div id="history"></div>
+        <table class="table table-bordered">
+            <tr>
+                <td>发货仓</td>
+                <td>{$data.order.dispatch_title}</td>
+            </tr>
+            <tr>
+                <td>物流公司</td>
+                <td>{$data.order.shipping_method}</td>
+            </tr>
+
+            <?php if($data['order']['order_status'] == 2 || $data['order']['order_status'] == 3 || $data['order']['order_status'] == 4){ ?>
+            <tr>
+                <td>物流单号</td>
+                <td>
+                    <input type="text" name="shipping_num" value="{$data.order.shipping_num}" style="width: 60%;">
+                </td>
+            </tr>
+            <tr>
+                <td>跟踪信息</td>
+                <td><iframe src="{$data.order.transportInfo}" width="100%" height="380"><br/></iframe></td>
+            </tr>
+
+            <?php if($data['order']['order_status'] == 2 || $data['order']['order_status'] == 3){ ?>
+            <tr>
+                <td colspan="2">
+                    <div class="text-right">
+                        <button id="button-dispatch" class="btn btn-primary" data-loading-text="Loading...">
+                            <i class="fa fa-plus-circle"></i>
+                            录入物流单号
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            <?php } ?>  
+
+            <?php } ?>  
+        </table>
+    </div>	
+
+</div>
 {/block}
 {block name="javascript"}
-<script>	
-    $('#button-dispatch').live('click', function() {
+<script>
+    $('#button-dispatch').live('click', function () {
         var shipping_num = $('input[name=\'shipping_num\']').val();
         if (isNaN(shipping_num)) {
-            return layer.msg('请输入正确的物流单号',{icon:2});
+            return layer.msg('请输入正确的物流单号', {icon: 2});
         }
-    	$.ajax({
-    		url: '<?php echo url("OrderBackend/update_shipping",array("id"=>input("param.id"))); ?>',
-    		type: 'post',
-    		dataType: 'html',
-    		data: 'shipping_num=' + encodeURIComponent(shipping_num),
-    		success: function(res) {
-    			if (res == 'true') {
-                    layer.msg('录入成功',{icon:1});
-                }else{
-                    layer.msg('录入失败',{icon:2});
+        $.ajax({
+            url: '<?php echo url("OrderBackend/update_shipping",array("id"=>input("param.id"))); ?>',
+            type: 'post',
+            dataType: 'html',
+            data: 'shipping_num=' + encodeURIComponent(shipping_num),
+            success: function (res) {
+                if (res == 'true') {
+                    layer.msg('录入成功', {icon: 1});
+                } else {
+                    layer.msg('录入失败', {icon: 2});
                 }
-    		}
-    	});
+            }
+        });
     });
 </script>
 {/block}

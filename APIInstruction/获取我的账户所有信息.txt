@@ -1,0 +1,37 @@
+﻿Request:
+    /api/v1/user/data
+
+Method:
+    Get
+
+Params:
+    ""
+
+
+
+Callback: 编码一律utf-8
+
++-------------------------------------------------------+
+
+    {
+        "uname"   : "姓名",
+        "uwecat"   : "微信号",
+        "usex"   : "性别，0男，1女",
+        "utel"   : "联系电话",
+        "uemail"   : "邮箱",
+        "IDcode"   : "身份证号",
+        "IDcode_pic"   : "身份证正面",
+        "IDcode_pic_b"   : "身份证反面",
+        "IDcode_pic_h"   : "手持身份证",
+        "up_name"   : "推荐人",
+        "up_wecat"   : "推荐人微信号",
+        "mainAccount"   : "主账户金额",
+        "secondAccount" : "小金库金额"                             
+
+    }
+
++-------------------------------------------------------+
+    {  
+        "errorCode"     :  "错误码", 
+        "msg"           : "错误提示",        
+    }

@@ -5,7 +5,7 @@
     <input name="order_num" type="text" placeholder="输入订单号" value="{:input('param.order_num')}" />
   </div>
   <div class="search-form-li col-xs-6 col-md-3">
-    <input name="user_name" type="text" placeholder="输入会员名" value="{:input('param.user_name')}" />
+    <input name="user_name" type="text" placeholder="输入会员姓名/微信号/收货人" value="{:input('param.user_name')}" />
   </div>
   <div class="search-form-li col-xs-6 col-md-3">
     <a class="btn btn-primary" href="javascript:;" id="search" url="{:url('OrderBackend/history')}">查询</a>&nbsp;
@@ -21,6 +21,8 @@
         <tr>
           <th class="hidden-xs">ID</th>
           <th>订单号</th>
+          <th class="hidden-xs">姓名</th>
+          <th class="hidden-xs">微信号</th>
           <th class="hidden-xs">收货人</th>
           <th class="hidden-xs">联系电话</th>
           <th class="hidden-xs">收货地址</th>
@@ -40,6 +42,8 @@
             <span style="border:1px solid red;color:#f60;" class="hidden-xs">{$v.dispatch_title}</span>
             <span style="border:1px solid red;color:#f60;" class="hidden-xs">{$v.shipping_method}</span>
           </td>
+          <td class="hidden-xs">{$v.uname}</td>
+          <td class="hidden-xs">{$v.uwecat}</td>
           <td class="hidden-xs">{$v.shipping_name}</td>
           <td class="hidden-xs">{$v.shipping_tel}</td>
           <td class="hidden-xs">{$v.shipping_addr}</td>

@@ -87,7 +87,7 @@
 						</div>
 					</div>
 				</div>
-
+				{if !isset($promotion)}
 				<div class="form-group" id="expression_dl">
 					<label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 折扣 </label>
 					<div class="col-sm-5">
@@ -96,18 +96,76 @@
 						</div>
 					</div>
 				</div>
+				{/if}
 
+				{if isset($promotion) && $promotion['type'] == 1}
+				<div class="form-group" id="expression_dl">
+					<label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 折扣 </label>
+					<div class="col-sm-5">
+						<div class="clearfix">
+							<input name="expression" class="col-xs-10"  value="{$promotion.expression|default=''}" type="text" placeholder="折扣值(1-100 如果打9折，请输入90)">
+						</div>
+					</div>
+				</div>
+				{elseif isset($promotion) && $promotion['type'] == 2/}
+				<div class="form-group" id="expression_dl">
+					<label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 返现金额 </label>
+					<div class="col-sm-5">
+						<div class="clearfix">
+							<input name="expression" class="col-xs-10"  value="{$promotion.expression|default=''}" type="text">
+						</div>
+					</div>
+				</div>
+				{elseif isset($promotion) && $promotion['type'] == 3/}
+					<div class="form-group" id="expression_dl">
+						<label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 赠送商品 </label>
+						<div class="col-sm-10">
+							<a style="line-height: 35px;" href="javascript:;"  onclick="javascript:chooseBox(1);">选择赠送商品</a>
+						</div>;
+					</div>
+				{/if}
+				{if !isset($promotion)}
 				<div class="form-group">
-					<label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 选择商品 </label>
+					<label class="col-sm-2 control-label hidden-xs" for="input-length-class"> </label>
 					<div class="col-sm-10">
-						<a style="line-height: 35px;" href="javascript:;"  onclick="javascript:chooseBox()">选择商品</a>
+						<ul class="pgoods free_pgoods">
+						</ul>
+					</div>
+				</div>
+				{/if}
+				{if isset($promotion) && $promotion['type'] == 3}
+				<div class="form-group">
+					<label class="col-sm-2 control-label hidden-xs" for="input-length-class"> </label>
+					<div class="col-sm-10">
+						<ul class="pgoods free_pgoods">
+							{volist name="promotion['expression']" id="vo"}
+							<li>
+								<input name="free_goods_id[]" type="hidden" class="goods-id" value="{$vo.goods_id}" type="text">
+								<input name="free_goods_option_id[]" type="hidden" class="goption-id" value="{$vo.goods_option_id}" type="text">
+								<button type="button" class="btn btn-danger pgoods-del"><i class="fa fa-trash-o"></i></button>
+								<a href="#" class="img-thumbnail">
+									<img src="IMG_ROOT{$vo.image|resize=50,50}">
+								</a>
+								<a class="pgoods-name" href="#">{$vo.name}</a>
+								<p>价格：{if $vo['option_price']}{$vo.option_price}{else /}{$vo.price}{/if}</p>
+								<p>规格：{if $vo['option_name']}{$vo.option_name}{else /}无{/if}</p>
+							</li>
+							{/volist}
+						</ul>
+					</div>
+				</div>
+				{/if}
+				<div class="form-group">
+					<label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 促销商品 </label>
+					<div class="col-sm-10">
+						<a style="line-height: 35px;" href="javascript:;"  onclick="javascript:chooseBox()">选择促销商品</a>
 					</div>
 				</div>
 
 				<div class="form-group">
 					<label class="col-sm-2 control-label hidden-xs" for="input-length-class"> </label>
 					<div class="col-sm-10">
-						<ul class="pgoods">
+						<ul class="pgoods promotion_pgoods">
 							{if isset($promotion['goods']) && $promotion['goods']}
 							{volist name="promotion['goods']" id="vo"}
 							<li>
@@ -126,7 +184,6 @@
 
 						</ul>
 					</div>
-
 				</div>
 
 				<div class="form-group">
@@ -164,9 +221,6 @@
 
 	<script>
 		$(document).ready(function(){
-			$("#type").trigger('change');
-			$('input[name=expression]').val("{$promotion.expression|default=''}");
-
 			$('#start_time').layDate();
 			$('#end_time').layDate();
 		})
@@ -216,7 +270,7 @@
 					break;
 				}
 				case 2:{
-					expression = '<label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 优惠金额 </label>'
+					expression = '<label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 返现金额 </label>'
 								+'<div class="col-sm-5">'
 								+'<div class="clearfix">'
 								+'<input name="expression" class="col-xs-10"  value="" type="text">'
@@ -224,12 +278,19 @@
 								+'</div>';
 					break;
 				}
-
+                case 3:{
+                    expression = '<label class="col-sm-2 control-label no-padding-left"><font color="red">*</font> 赠送商品 </label>'
+                        +'<div class="col-sm-10">'
+                        +'<a style="line-height: 35px;" href="javascript:;"  onclick="javascript:chooseBox(1);">选择赠送商品</a>'
+                        +'</div>';
+                    break;
+                }
 			}
 			$("#expression_dl").html(expression);
 		});
-		function chooseBox(){
-			$.post("{:url('admin/Promotion/chooseBox')}",function(data){
+		function chooseBox(type){
+		    type = type || 0;
+			$.post("{:url('admin/Promotion/chooseBox')}"+'?type='+type,function(data){
 				var w = openBox({
 					type: 1,
 					title:"选择商品",

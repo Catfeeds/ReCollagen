@@ -26,14 +26,14 @@ class MemberBackend extends AdminBase {
         $param = input('param.');
         $map = $query = [];
         if (isset($param['condition'])) {
-            $map['m.openId|a.name|a.telephone'] = ['like', "%" . trim($param['condition']) . "%"];
+            $map['m.openId|m.uname|m.uwecat|a.name|a.telephone'] = ['like', "%" . trim($param['condition']) . "%"];
         }
 
         $list = Db::name('member')->alias('m')->field('m.*,a.name,a.telephone')
-            ->join('__ADDRESS__ a', 'a.uid=m.uid and a.is_default =1', 'left')
-            ->where($map)
-            ->order('m.create_time desc')
-            ->paginate(config('page_num'));
+                ->join('__ADDRESS__ a', 'a.uid=m.uid and a.is_default =1', 'left')
+                ->where($map)
+                ->order('m.create_time desc')
+                ->paginate(config('page_num'));
 
         $this->assign('list', $list);
         $this->assign('empty', '<tr><td colspan="20">没有数据</td></tr>');
@@ -51,6 +51,9 @@ class MemberBackend extends AdminBase {
 //            if ($result !== true) {
 //                $this->error($result);
 //            }
+            if ($data['uname'] == '') {
+                $this->error('请输入姓名');
+            }
             $data['update_time'] = time();
 
             $u = Db::name('member')->where('uid', $data['uid'])->find();
@@ -71,16 +74,16 @@ class MemberBackend extends AdminBase {
             if ((float) $data['secondAccount'] != 0) {
                 if ($data['ssa'] == 1) {
                     $nsecondAccount = $osecondAccount + $data['secondAccount'];
-                    finance_record($data['uid'], '站内', $data['secondAccount'], $nsecondAccount, time(), '后台操作-增加', session('user_auth.username'), 2, 0);
+                    finance_record($data['uid'], '站内', $data['secondAccount'], $nsecondAccount, time(), '后台操作-增加', session('user_auth.username'), 1, 0);
                 } elseif ($data['ssa'] == 2) {
                     $nsecondAccount = $osecondAccount - $data['secondAccount'];
-                    finance_record($data['uid'], '站内', -$data['secondAccount'], $nsecondAccount, time(), '后台操作-扣除', session('user_auth.username'), 2, 0);
+                    finance_record($data['uid'], '站内', -$data['secondAccount'], $nsecondAccount, time(), '后台操作-增加', session('user_auth.username'), 1, 0);
                 }
             } else {
                 $nsecondAccount = $osecondAccount;
             }
 
-            $data2 = ['mainAccount' => $nmainAccount, 'secondAccount' =>  $nsecondAccount, 'checked' =>  $data['checked'], 'update_time' =>  $data['update_time']];
+            $data2 = ['uname' => $data['uname'], 'uwecat' => $data['uwecat'], 'usex' => $data['usex'], 'utel' => $data['utel'], 'uemail' => $data['uemail'], 'IDcode' => $data['IDcode'], 'IDcode_pic' => $data['IDcode_pic'], 'IDcode_pic_b' => $data['IDcode_pic_b'], 'IDcode_pic_h' => $data['IDcode_pic_h'], 'up_name' => $data['up_name'], 'up_wecat' => $data['up_wecat'], 'mainAccount' => $nmainAccount, 'secondAccount' => $nsecondAccount, 'checked' => $data['checked'], 'update_time' => $data['update_time']];
             //print_r($data2);
             if (Db::name('member')->where('uid', $data['uid'])->update($data2)) {
                 storage_user_action(UID, session('user_auth.username'), config('BACKEND_USER'), '编辑了会员');
@@ -91,11 +94,10 @@ class MemberBackend extends AdminBase {
         }
         $uid = input('param.id/d');
         $data = Db::name('member')->alias('m')->field('m.*,a.name,a.telephone,a.province,a.city,a.country,a.address')
-            ->join('__ADDRESS__ a', 'a.uid=m.uid and a.is_default =1', 'left')
-            ->where(['m.uid' => $uid])
-            ->find();
+                ->join('__ADDRESS__ a', 'a.uid=m.uid and a.is_default =1', 'left')
+                ->where(['m.uid' => $uid])
+                ->find();
         $address = Db::name('address')->where('uid', $uid)->order('is_default desc')->select();
-
         $this->assign('data', $data);
         $this->assign('address', $address);
         $this->assign('crumbs', '会员资料');
@@ -145,17 +147,17 @@ class MemberBackend extends AdminBase {
         $param = input('param.');
         $map = $query = [];
         if (isset($param['condition'])) {
-            $map['m.openId|f.reason|f.editor'] = ['like', "%" . trim($param['condition']) . "%"];
+            $map['m.openId|m.uname|m.uwecat|f.reason|f.editor'] = ['like', "%" . trim($param['condition']) . "%"];
         }
         if (isset($param['rectype'])) {
             $map['f.rectype'] = ['=', trim($param['rectype'])];
         }
 
-        $list = Db::name('finance_record')->alias('f')->field('f.*,m.openId')
-            ->join('__MEMBER__ m', 'm.uid=f.uid', 'left')
-            ->where($map)
-            ->order('f.itemid desc')
-            ->paginate(config('page_num'));
+        $list = Db::name('finance_record')->alias('f')->field('f.*,m.openId,m.uname,m.uwecat')
+                ->join('__MEMBER__ m', 'm.uid=f.uid', 'left')
+                ->where($map)
+                ->order('f.itemid desc')
+                ->paginate(config('page_num'));
 
         $this->assign('list', $list);
         $this->assign('rectype', input('get.rectype/d'));
@@ -163,7 +165,6 @@ class MemberBackend extends AdminBase {
 
         return $this->fetch();
     }
-
 }
 
 ?>

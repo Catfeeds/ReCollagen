@@ -38,28 +38,50 @@ class Promotion extends AdminBase{
 	public function add(){
 		if(request()->isPost()){
 			$data = input('post.');
-			if (isset($data['expression']) && $data['expression'] == '') {
-				$this->error('请输入折扣/优惠金额');
-			}
+            if (isset($data['expression']) && $data['expression'] == '') {
+                $this->error('请输入折扣/返现金额');
+            }
 			$validate = $this->validate($data,'Promotion');
 			if ($validate !== true) {
 				$this->error($validate);
 			}
+
+            if ($data['type'] == 3) {
+                //保存赠送商品的数据
+                if (!isset($data['free_goods_id'])) {
+                    $this->error('请选择赠送商品');
+                }
+                $free_arr = [];
+                foreach ($data['free_goods_id'] as $key => $v) {
+                    $free_arr[$key]['goods_id'] = $v;
+                    $free_arr[$key]['goods_option_id'] = $data['free_goods_option_id'][$key];
+                }
+                $data['expression'] = json_encode($free_arr);
+                unset($data['free_goods_id']);
+                unset($data['free_goods_option_id']);
+            }
+
+            $arrData = $data;
+            unset($data['goods_id']);
+            unset($data['goods_option_id']);
 
 			$data['start_time'] = strtotime($data['start_time']);
 			$data['end_time']   = strtotime($data['end_time']);
 			if($data['start_time']>=$data['end_time']){
 				$this->error('开始时间不得大于结束时间');
             }
-            if ($data['type'] == 3) {
-				$data['expression'] = $data['name'];
-            }
 
-			$result = $this->model->save($data);
-			
-			if(!$result){	
+			$id = Db::name('promotion')->insertGetId($data);
+            if(!$id){
 				$this->error('新增失败');							
-			}else{		
+			}else{
+                foreach ($arrData['goods_id'] as $key => $v) {
+                    $arr[$key]['promotion_id'] = $id;
+                    $arr[$key]['goods_id'] = $v;
+                    $arr[$key]['goods_option_id'] = $arrData['goods_option_id'][$key];
+                }
+                Db::name('promotion_goods')->insertAll($arr);
+
 				storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'新增了促销管理');	
 				$this->success('新增成功',url('Admin/Promotion/index'));
 			}
@@ -77,22 +99,28 @@ class Promotion extends AdminBase{
 		
 		if(request()->isPost()){
 			$data = input('post.');
-			if (isset($data['expression']) && $data['expression'] == '') {
-				$this->error('请输入折扣/优惠金额');
-			}
+            if (isset($data['expression']) && $data['expression'] == '') {
+                $this->error('请输入折扣/返现金额');
+            }
 			$validate = $this->validate($data,'Promotion');
 			if ($validate !== true) {
 				$this->error($validate);
 			}
-			$data['start_time'] = strtotime($data['start_time']);
-			$data['end_time']   = strtotime($data['end_time']);
-			if($data['start_time']>=$data['end_time']){
-				$this->error('开始时间不得大于结束时间');
+            if ($data['type'] == 3) {
+                //保存赠送商品的数据
+                if (!isset($data['free_goods_id'])) {
+                    $this->error('请选择赠送商品');
+                }
+                $free_arr = [];
+                foreach ($data['free_goods_id'] as $key => $v) {
+                    $free_arr[$key]['goods_id'] = $v;
+                    $free_arr[$key]['goods_option_id'] = $data['free_goods_option_id'][$key];
+                }
+                $data['expression'] = json_encode($free_arr);
+                unset($data['free_goods_id']);
+                unset($data['free_goods_option_id']);
             }
 
-            if (!isset($data['goods_id'])) {
-                $this->error('请选择商品');
-            }
             $arr = [];
             foreach ($data['goods_id'] as $key => $v) {
                 $arr[$key]['promotion_id'] = $data['id'];
@@ -101,6 +129,12 @@ class Promotion extends AdminBase{
             }
             unset($data['goods_id']);
             unset($data['goods_option_id']);
+
+            $data['start_time'] = strtotime($data['start_time']);
+            $data['end_time']   = strtotime($data['end_time']);
+            if($data['start_time']>=$data['end_time']){
+                $this->error('开始时间不得大于结束时间');
+            }
 
             $result = Db::name('promotion')->update($data);
 
@@ -119,7 +153,10 @@ class Promotion extends AdminBase{
 			$promotion['goods'] = $this->model->getPromotionGoods($promotion['id']);
 			$promotion['start_time'] = date('Y-m-d H:i:s',$promotion['start_time']);
 			$promotion['end_time']   = date('Y-m-d H:i:s',$promotion['end_time']);
-
+            if ($promotion['type'] == 3) {
+                $promotion['expression'] = $this->model->getFreeGoods($promotion['expression']);
+            }
+//            halt($promotion['expression']);
 			$this->assign('promotion',$promotion);
 			$this->assign('action',url('Promotion/edit'));
 			$this->assign('crumbs','修改');
@@ -131,12 +168,14 @@ class Promotion extends AdminBase{
 	 * 删除促销
 	 */
 	public function del(){	
-			
-		$result = PromotionModel::destroy((int)input('param.id'));	
+	    $id = (int)input('param.id');
+		$result = PromotionModel::destroy($id);
 		if(!$result){	
 			$this->error('删除失败');							
-		}else{		
-			storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'删除了促销管理');	
+		}else{
+            Db::name('promotion_goods')->where(['promotion_id'=>$id])->delete();
+
+            storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'删除了促销管理');
 			$this->redirect('Promotion/index');
 		}	
 	}
@@ -167,6 +206,11 @@ class Promotion extends AdminBase{
      * 显示选择促销商品弹窗
      */
     public function chooseBox(){
+        if (input('type/d') == 1) {
+            //选择免费赠送商品
+            return $this->fetch('free_box_choose');
+        }
+        //选择促销商品范围
         return $this->fetch('box_choose');
     }
     /**
