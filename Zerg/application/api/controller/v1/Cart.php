@@ -194,4 +194,21 @@ class Cart extends BaseController
         return $data;
     }
 
+    /**
+     * 获取预下单详情清单
+     * @return false|\PDOStatement|string|\think\Collection
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function getPreOrderDetail(){
+
+//        $currentUid = TokenService::getCurrentUid();
+        $currentUid = 2;
+
+        $detail = CartModel::getPreOrderDetailByUid($currentUid);
+
+        return $detail;
+    }
+
 }

@@ -51,11 +51,13 @@ class Promotion extends AdminBase{
                 if (!isset($data['free_goods_id'])) {
                     $this->error('请选择赠送商品');
                 }
-                $free_arr = [];
-                foreach ($data['free_goods_id'] as $key => $v) {
-                    $free_arr[$key]['goods_id'] = $v;
-                }
-                $data['expression'] = json_encode($free_arr);
+                $data['expression'] = implode(',',$data['free_goods_id']);
+
+//                $free_arr = [];
+//                foreach ($data['free_goods_id'] as $key => $v) {
+//                    $free_arr[$key]['goods_id'] = $v;
+//                }
+//                $data['expression'] = json_encode($free_arr);
                 unset($data['free_goods_id']);
             }elseif($data['type'] == 4){
                 $data['expression'] = $data['expression'].','.$data['expression2'];
@@ -104,11 +106,7 @@ class Promotion extends AdminBase{
                 if (!isset($data['free_goods_id'])) {
                     $this->error('请选择赠送商品');
                 }
-                $free_arr = [];
-                foreach ($data['free_goods_id'] as $key => $v) {
-                    $free_arr[$key]['goods_id'] = $v;
-                }
-                $data['expression'] = json_encode($free_arr);
+                $data['expression'] = implode(',',$data['free_goods_id']);
                 unset($data['free_goods_id']);
             }elseif($data['type'] == 4){
                 $data['expression'] = $data['expression'].','.$data['expression2'];

@@ -1,0 +1,89 @@
+Request:
+    /api/v1/cart/preOrder
+
+Method:
+    Get
+
+Params:
+    ""
+
+
+
+Callback: 编码一律utf-8
+
++-------------------------------------------------------+
+
+    {
+      "goodsList": [{           :   "商品清单"
+              "goods_id": 30,
+              "goods_option_id": 9,
+              "count": 10,
+              "name": "李大爷的妙脆角",
+              "isMainGoods": 1,
+              "image": "http://wxadmin.edeapp.com/public/uploads/images/osc1/fruit/product-cake@1.png",
+              "price": 7.04,
+              "promotion1_id": 30,
+              "promotion2_id": 26,
+              "promotion3_id": 27,
+              "promotion4_id": 28,
+              "option_name": "1000g",
+              "option_price": "8.80",
+              "totalPrice": 70.4
+        }],
+      "promotion1": {           :   "满额打折"
+        "id": 25,
+        "name": "满100打8折",
+        "type": 1,
+        "money": 100,
+        "expression": "80",
+        "free": 620             :   "实际优惠金额"
+      },
+      "promotion2": {           :   "满额返现"
+        "id": 26,
+        "name": "满200返现30",
+        "type": 2,
+        "money": 200,
+        "expression": "30",
+        "free": 450             :   "实际返现金额"
+      },
+      "promotion3": {           :   "满额赠送商品"
+        "id": 27,
+        "name": "满200送精美礼品",
+        "type": 3,
+        "money": 200,
+        "expression": "15,17",
+        "free": [               :   "赠送的商品"
+          {
+                "goods_id": 15,
+                "isMainGoods": 1,
+                "cat_id": 5,
+                "image": "http://wxadmin.edeapp.com/public/uploads/images/osc1/fruit/product-dryfruit@1.png",
+                "name": "梨花带雨",
+                "price": "0.03",
+                "stock": 232,
+                "weight": "0.00",
+                "bulk": "0.02",
+                "status": 1,
+                "promotion1_id": 0,
+                "promotion2_id": 0,
+                "promotion3_id": 0,
+                "promotion4_id": 0
+          }
+        ],
+        "freeCount": 15         :   "赠送的商品件数"
+      },
+      "promotion4": {           :   "第X件商品X折"
+        "id": 28,
+        "name": "满200第3件8折",
+        "type": 4,
+        "money": 200,
+        "expression": "80,3",
+        "free": 17.6            :   "实际优惠金额"
+      }
+    }
+
++-------------------------------------------------------+
+    {  
+        "errorCode"     :  "错误码", 
+        "msg"           : "错误提示",        
+    }

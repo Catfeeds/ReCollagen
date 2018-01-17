@@ -173,8 +173,7 @@ class Goods extends Model{
      * 获取赠送商品
      */
     public function getFreeGoods($expression){
-        $expression = json_decode($expression,true);
-        $goodsIds = array_column($expression,'goods_id');
+        $goodsIds = explode(',',$expression);
 
         $goods = $this->field('goods_id,name,image,price')->where(['goods_id'=>['in',$goodsIds]])->select();
 
