@@ -65,6 +65,7 @@ Route::post('api/:version/cart/del','api/:version.Cart/delCart');               
 Route::post('api/:version/cart/setByClick','api/:version.Cart/setCountByClick'); //点击增加或减少购物车商品数量
 Route::post('api/:version/cart/setByInput','api/:version.Cart/setCountByInput'); //输入数字修改购物车商品数量
 Route::post('api/:version/cart/setChecked','api/:version.Cart/setChecked');      //设置购物车商品选中状态
+Route::post('api/:version/cart/batchSetChecked','api/:version.Cart/batchSetChecked'); //批量设置购物车商品选中状态
 Route::get('api/:version/cart/goods','api/:version.Cart/getCartGoods');          //获取购物车商品
 
 

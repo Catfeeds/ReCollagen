@@ -151,6 +151,24 @@ class Cart extends BaseController
     }
 
     /**
+     * 批量设置购物车商品选中状态
+     * @return SuccessMessage
+     * @throws \app\lib\exception\ParameterException
+     */
+    public function batchSetChecked(){
+
+        $params = input('post.');
+        $cartModel = new CartModel();
+
+        $currentUid = TokenService::getCurrentUid();
+//        $currentUid = 2;
+
+        $where = ['uid'=>$currentUid];
+        $cartModel->save(['isChecked'=>$params['isCheck']],$where);
+        return new SuccessMessage();
+    }
+
+    /**
      * 获取购物车商品
      * @return array
      * @throws \app\lib\exception\ParameterException
