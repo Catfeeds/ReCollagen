@@ -23,7 +23,7 @@ class Cart extends BaseController
         $cartModel = new CartModel();
 
         $currentUid = TokenService::getCurrentUid();
-//        $currentUid = 2;
+//        $currentUid = 4;
 
         $where = ['uid'=>$currentUid,'goods_id'=>$params['goods_id'],'goods_option_id'=>$params['goods_option_id']];
 
