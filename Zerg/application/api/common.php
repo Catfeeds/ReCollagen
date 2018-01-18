@@ -109,4 +109,12 @@ function getShippingCode($shipping_method){
 
     return $shippingCode;
 }
-
+//对多维数组进行排序
+function sortArrByField(&$array, $field, $desc = false){
+    $fieldArr = array();
+    foreach ($array as $k => $v) {
+        $fieldArr[$k] = $v[$field];
+    }
+    $sort = $desc == false ? SORT_ASC : SORT_DESC;
+    return array_multisort($fieldArr, $sort, $array);
+}

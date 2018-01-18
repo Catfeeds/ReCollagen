@@ -160,6 +160,25 @@ class Goods extends Model{
 			return false;
 		}
 	}
+    /**
+     * 根据促销id和类型获取所属促销商品
+     */
+    public static function getPromotionGoods($id,$type){
+        $goods = self::where(['promotion'.$type.'_id'=>$id])->select();
+
+        return $goods;
+    }
+
+    /**
+     * 获取赠送商品
+     */
+    public function getFreeGoods($expression){
+        $goodsIds = explode(',',$expression);
+
+        $goods = $this->field('goods_id,name,image,price')->where(['goods_id'=>['in',$goodsIds]])->select();
+
+        return $goods;
+    }
 		
 }
 ?>

@@ -51,19 +51,20 @@ class Promotion extends AdminBase{
                 if (!isset($data['free_goods_id'])) {
                     $this->error('请选择赠送商品');
                 }
-                $free_arr = [];
-                foreach ($data['free_goods_id'] as $key => $v) {
-                    $free_arr[$key]['goods_id'] = $v;
-                    $free_arr[$key]['goods_option_id'] = $data['free_goods_option_id'][$key];
-                }
-                $data['expression'] = json_encode($free_arr);
-                unset($data['free_goods_id']);
-                unset($data['free_goods_option_id']);
-            }
+                $data['expression'] = implode(',',$data['free_goods_id']);
 
-            $arrData = $data;
+//                $free_arr = [];
+//                foreach ($data['free_goods_id'] as $key => $v) {
+//                    $free_arr[$key]['goods_id'] = $v;
+//                }
+//                $data['expression'] = json_encode($free_arr);
+                unset($data['free_goods_id']);
+            }elseif($data['type'] == 4){
+                $data['expression'] = $data['expression'].','.$data['expression2'];
+                unset($data['expression2']);
+            }
+            $goodsArr =$data['goods_id'];
             unset($data['goods_id']);
-            unset($data['goods_option_id']);
 
 			$data['start_time'] = strtotime($data['start_time']);
 			$data['end_time']   = strtotime($data['end_time']);
@@ -75,13 +76,7 @@ class Promotion extends AdminBase{
             if(!$id){
 				$this->error('新增失败');							
 			}else{
-                foreach ($arrData['goods_id'] as $key => $v) {
-                    $arr[$key]['promotion_id'] = $id;
-                    $arr[$key]['goods_id'] = $v;
-                    $arr[$key]['goods_option_id'] = $arrData['goods_option_id'][$key];
-                }
-                Db::name('promotion_goods')->insertAll($arr);
-
+                model('Goods')->save(['promotion'.$data['type'].'_id'=>$id],['goods_id'=>['in',$goodsArr]]);
 				storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'新增了促销管理');	
 				$this->success('新增成功',url('Admin/Promotion/index'));
 			}
@@ -111,36 +106,26 @@ class Promotion extends AdminBase{
                 if (!isset($data['free_goods_id'])) {
                     $this->error('请选择赠送商品');
                 }
-                $free_arr = [];
-                foreach ($data['free_goods_id'] as $key => $v) {
-                    $free_arr[$key]['goods_id'] = $v;
-                    $free_arr[$key]['goods_option_id'] = $data['free_goods_option_id'][$key];
-                }
-                $data['expression'] = json_encode($free_arr);
+                $data['expression'] = implode(',',$data['free_goods_id']);
                 unset($data['free_goods_id']);
-                unset($data['free_goods_option_id']);
+            }elseif($data['type'] == 4){
+                $data['expression'] = $data['expression'].','.$data['expression2'];
+                unset($data['expression2']);
             }
 
-            $arr = [];
-            foreach ($data['goods_id'] as $key => $v) {
-                $arr[$key]['promotion_id'] = $data['id'];
-                $arr[$key]['goods_id'] = $v;
-                $arr[$key]['goods_option_id'] = $data['goods_option_id'][$key];
-            }
+            $goodsArr =$data['goods_id'];
             unset($data['goods_id']);
-            unset($data['goods_option_id']);
 
             $data['start_time'] = strtotime($data['start_time']);
             $data['end_time']   = strtotime($data['end_time']);
             if($data['start_time']>=$data['end_time']){
                 $this->error('开始时间不得大于结束时间');
             }
-
             $result = Db::name('promotion')->update($data);
 
             if($result !== false){
-                Db::name('promotion_goods')->where(['promotion_id'=>$data['id']])->delete();
-                Db::name('promotion_goods')->insertAll($arr);
+                model('Goods')->save(['promotion'.$data['type'].'_id'=>0],['promotion'.$data['type'].'_id'=>$data['id']]);
+                model('Goods')->save(['promotion'.$data['type'].'_id'=>$data['id']],['goods_id'=>['in',$goodsArr]]);
 
                 storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'修改了促销管理');
                 $this->success('修改成功',url('Admin/Promotion/index'));
@@ -150,13 +135,16 @@ class Promotion extends AdminBase{
 			
 		}else{
 			$promotion = $this->model->find((int)input('param.id'));
-			$promotion['goods'] = $this->model->getPromotionGoods($promotion['id']);
+			$promotion['goods'] = model('Goods')->getPromotionGoods($promotion['id'],$promotion['type']);
 			$promotion['start_time'] = date('Y-m-d H:i:s',$promotion['start_time']);
 			$promotion['end_time']   = date('Y-m-d H:i:s',$promotion['end_time']);
             if ($promotion['type'] == 3) {
-                $promotion['expression'] = $this->model->getFreeGoods($promotion['expression']);
+                $promotion['expression'] = model('Goods')->getFreeGoods($promotion['expression']);
+            }elseif ($promotion['type'] == 4){
+                $expression = explode(',',$promotion['expression']);
+                $promotion['expression'] = $expression[0];
+                $promotion['expression2'] = $expression[1];
             }
-//            halt($promotion['expression']);
 			$this->assign('promotion',$promotion);
 			$this->assign('action',url('Promotion/edit'));
 			$this->assign('crumbs','修改');
@@ -169,12 +157,13 @@ class Promotion extends AdminBase{
 	 */
 	public function del(){	
 	    $id = (int)input('param.id');
-		$result = PromotionModel::destroy($id);
+        $promotion = PromotionModel::get($id);
+
+        $result = PromotionModel::destroy($id);
 		if(!$result){	
 			$this->error('删除失败');							
 		}else{
-            Db::name('promotion_goods')->where(['promotion_id'=>$id])->delete();
-
+            model('Goods')->where(['promotion'.$promotion['type'].'_id'=>$promotion['id']])->update(['promotion'.$promotion['type'].'_id'=>0]);
             storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'删除了促销管理');
 			$this->redirect('Promotion/index');
 		}	

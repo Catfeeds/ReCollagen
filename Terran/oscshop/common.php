@@ -619,6 +619,9 @@ function getPromotionType($type) {
         case '3':
             return '满额赠送商品';
             break;
+        case '4':
+            return '第X件商品X折';
+            break;
 
         default:
             return '满额打折';

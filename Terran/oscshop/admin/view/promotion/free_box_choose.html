@@ -6,7 +6,6 @@
                 <th style="padding-left:8px;">商品名称</th>
                 <th style="padding-left:8px; text-align: center;">商品分类</th>
                 <th style="padding-left:8px; text-align: center;">商品价格</th>
-                <th style="padding-left:8px; text-align: center;">商品选项</th>
                 <th style="text-align: center;" >操作</th>
             </tr>
             </thead>
@@ -29,13 +28,6 @@
                     <td style="padding:2px; text-align: center;" class="good-price">
                         {{#if(d[i].option_price){}}{{d[i]['option_price']}}{{# }else{ }}{{d[i]['price']}}{{# } }}
                     </td>
-                    <td style="padding:2px; text-align: center;" class="good-guig">
-                        {{#if(d[i].option_name){}}
-                        {{d[i]['option_name']}}
-                        {{# }else{ }}
-                        无
-                        {{# } }}
-                    </td>
                     <td style="padding:2px; text-align: center;" class="choose_cancel">
                         <a href="javascript:void(0)">【选择】</a>
                     </td>
@@ -55,21 +47,18 @@
             $('.wst-order-list').on('click','.choose_cancel a',function (){
             	var tr = $(this).parent().parent('.goods-box'),
 				goodid = tr.parent().attr('data-goodid'),
-				goptionid = tr.parent().attr('data-goptionid'),
 				goodpic = tr.find('.good-name').attr('data-imgsrc'),
 				goodname = tr.find('.good-name').html(),
 				goodprice = tr.find('.good-price').html(),
 				goodguig = tr.find('.good-guig').html();
 				html='<li>';
 				html+='<input name="free_goods_id[]" type="hidden" class="goods-id" value="'+goodid+'" type="text">';
-				html+='<input name="free_goods_option_id[]" type="hidden" class="goption-id" value="'+goptionid+'" type="text">';
 	           	html+='<button type="button" class="btn btn-danger pgoods-del"><i class="fa fa-trash-o"></i></button>';
 	           	html+='<a href="#" class="img-thumbnail">';
 	           	html+='<img src="'+goodpic+'">';
 	           	html+='</a>';
 	           	html+='<a class="pgoods-name" href="#">'+goodname+'</a>';
 	           	html+='<p>价格：'+goodprice+'</p>';
-	           	html+='<p>规格：'+goodguig+'</p>';
 	           	html+='</li>';
 				$('ul.free_pgoods').append(html);
 				$(this).parent().html('<span style="color: red;">已选择</span>');
@@ -87,17 +76,9 @@
                     var gettpl = document.getElementById('tblist1').innerHTML;
                     laytpl(gettpl).render(json.data, function (html) {
                         $(html).insertAfter('#loadingBdy1');
-                        $('ul.free_pgoods .goption-id').each(function(){
-                        	var goodid = $(this).prev('input[type="hidden"]').val();
-                        	var goptionid = $(this).val();
-			           		if(goptionid!=0)
-			           		{
-			           			$('tbody[data-goptionid="'+ goptionid +'"]').find('.choose_cancel').html('<span style="color: red;">已选择</span>');
-			           		}
-			           		else
-			           		{
-			           			$('tbody[data-goodid="'+ goodid +'"]').find('.choose_cancel').html('<span style="color: red;">已选择</span>');
-			           		}
+                        $('ul.free_pgoods .goods-id').each(function(){
+                        	var goodid = $(this).val();
+                            $('tbody[data-goodid="'+ goodid +'"]').find('.choose_cancel').html('<span style="color: red;">已选择</span>');
 			           	})
                     });
                     if (json.last_page > 1) {
