@@ -38,13 +38,14 @@ class Product extends Base {
 
   /*添加商品到购物车*/
 
-  add(goods_id, option_id, callback) {
+  add(goods_id, option_id, count, callback) {
     var allParams = {
       url: 'cart/add',
       type: 'post',
       data: { 
         goods_id: goods_id, 
-        goods_option_id: option_id 
+        goods_option_id: option_id,
+        count: count
       },
       sCallback: function (data) {
         callback && callback(data);

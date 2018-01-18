@@ -63,42 +63,28 @@ Page({
     changeCounts: function (event) {
       var id = cart.getDataSet(event, 'id'),
         guid = cart.getDataSet(event, 'guid'),
-        type = cart.getDataSet(event, 'type'),
-        index = this._getProductIndexById(id, guid),
-        counts = this.data.cartData[index].counts;
-      if (type == 'add') {
-        counts++;
+        index = cart.getDataSet(event, 'index'),
+        type = cart.getDataSet(event, 'type');
 
-        this._getProductIndexPrice(index, counts);
-        var price = this.data.cartData[index].price;
+      if (type == 'inc') {
 
 
 
-        cart.addCutCounts(id, guid, 'inc', (data) => {
+
+        cart.addCutCounts(id, guid, type, (data) => {
           if (data.errorCode != 0) {
-            that.showTips('增加数量', data.msg);
+            this.showTips('增加数量', data.msg);
             return;
           }
         });
 
       } else {
-        counts--;
 
-        this._getProductIndexPrice(index, counts);
-        var price = this.data.cartData[index].price;
 
-        cart.addCutCounts(id, guid, 'dec', (data) => {
-          if (data.errorCode != 0) {
-            that.showTips('减少数量', data.msg);
-            return;
-          }
-        });
+
         
       }
 
-      //更新商品页面
-      this.data.cartData[index].counts = counts;
-      this._resetCartData();
     },
 
     //输入商品数量
