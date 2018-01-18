@@ -16,7 +16,6 @@
     "pages/collect/collect",
     "pages/transinfo/transinfo",
     "pages/promotion/promotion",
-    "pages/userinfo/userinfo",
     
     "pages/address/list/list",
     "pages/address/edit/edit"
