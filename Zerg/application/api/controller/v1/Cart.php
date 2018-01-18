@@ -205,7 +205,7 @@ class Cart extends BaseController
     public function getPreOrderDetail(){
 
         $currentUid = TokenService::getCurrentUid();
-//        $currentUid = 4;
+//        $currentUid = 2;
 
         $detail = CartModel::getPreOrderDetailByUid($currentUid);
 
