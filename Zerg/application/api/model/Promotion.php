@@ -57,23 +57,25 @@ class Promotion extends BaseModel
                 }
             }
         }
-
-        if ($promotion['type'] == 1) {              //满额打折活动获取优惠金额
-            //活动对应的商品总价
-            $totalPrice = $data[$promotion['id']];
-            $promotion['free'] = $totalPrice - $totalPrice*$promotion['expression']/100;
-        }elseif ($promotion['type'] == 2){          //满额返现活动获取返现金额
-            $totalPrice = $data[$promotion['id']];
-            //每满最低金额多返一次
-            $promotion['free'] = floor($totalPrice/$promotion['money']) * $promotion['expression'];
-        }elseif ($promotion['type'] == 3){          //满额返现活动获取赠送商品
-            $goodsIds = explode(',',$promotion['expression']);
-            //赠送商品
-            $promotion['free'] = Product::getcollectGoodsList($goodsIds);
-            //赠送商品件数(每满最低金额多送一件)
-            $totalPrice = $data[$promotion['id']];
-            $promotion['freeCount'] = floor($totalPrice/$promotion['money']);
+        if ($promotion) {
+            if ($promotion['type'] == 1) {              //满额打折活动获取优惠金额
+                //活动对应的商品总价
+                $totalPrice = $data[$promotion['id']];
+                $promotion['free'] = $totalPrice - $totalPrice*$promotion['expression']/100;
+            }elseif ($promotion['type'] == 2){          //满额返现活动获取返现金额
+                $totalPrice = $data[$promotion['id']];
+                //每满最低金额多返一次
+                $promotion['free'] = floor($totalPrice/$promotion['money']) * $promotion['expression'];
+            }elseif ($promotion['type'] == 3){          //满额返现活动获取赠送商品
+                $goodsIds = explode(',',$promotion['expression']);
+                //赠送商品
+                $promotion['free'] = Product::getcollectGoodsList($goodsIds);
+                //赠送商品件数(每满最低金额多送一件)
+                $totalPrice = $data[$promotion['id']];
+                $promotion['freeCount'] = floor($totalPrice/$promotion['money']);
+            }
         }
+
         return $promotion;
     }
 }
