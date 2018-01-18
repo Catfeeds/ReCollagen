@@ -29,9 +29,10 @@ class Cart extends BaseController
 
         $haveAdd = $cartModel->where($where)->find();
         if (!$haveAdd) {
+            $where['count'] = $params['count'];
             $cartModel->save($where);
         }else{
-            $cartModel->where($where)->setInc('count');
+            $cartModel->where($where)->setInc('count',$params['count']);
         }
         return new SuccessMessage();
     }
@@ -203,8 +204,8 @@ class Cart extends BaseController
      */
     public function getPreOrderDetail(){
 
-//        $currentUid = TokenService::getCurrentUid();
-        $currentUid = 2;
+        $currentUid = TokenService::getCurrentUid();
+//        $currentUid = 2;
 
         $detail = CartModel::getPreOrderDetailByUid($currentUid);
 

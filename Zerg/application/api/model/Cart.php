@@ -43,7 +43,7 @@ class Cart extends BaseModel{
      */
     public static function getPreOrderDetailByUid($uid){
         $data['goodsList'] = self::alias('c')
-            ->field('c.goods_id,c.goods_option_id,c.count,g.name,g.isMainGoods,g.image,g.price,g.promotion1_id,g.promotion2_id,g.promotion3_id,g.promotion4_id,o.option_name,o.option_price')
+            ->field('c.goods_id,c.goods_option_id,c.count,c.isChecked,g.name,g.isMainGoods,g.image,g.price,g.stock,g.promotion1_id,g.promotion2_id,g.promotion3_id,g.promotion4_id,o.option_name,o.option_price,o.stock AS option_stock')
             ->join('__GOODS__ g','g.goods_id = c.goods_id','left')
             ->join('__GOODS_OPTION__ o','o.goods_option_id = c.goods_option_id','left')
             ->where(['c.uid'=>$uid,'c.isChecked'=>1])
@@ -53,6 +53,7 @@ class Cart extends BaseModel{
             foreach ($data['goodsList'] as $key => $v) {
                 if ($v['goods_option_id']) {
                     $data['goodsList'][$key]['price'] = $v['option_price'];
+                    $data['goodsList'][$key]['stock'] = $v['option_stock'];
                     $data['goodsList'][$key]['totalPrice'] = $v['count'] * $v['option_price'];
                 }else{
                     $data['goodsList'][$key]['totalPrice'] = $v['count'] * $v['price'];

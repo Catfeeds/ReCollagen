@@ -18,10 +18,12 @@ Callback: 编码一律utf-8
               "goods_id": 30,
               "goods_option_id": 9,
               "count": 10,
+              "isChecked": 1,           :   "1选中，-1未选中" 
               "name": "李大爷的妙脆角",
               "isMainGoods": 1,
               "image": "http://wxadmin.edeapp.com/public/uploads/images/osc1/fruit/product-cake@1.png",
               "price": 7.04,
+              "stock": 976,
               "promotion1_id": 30,
               "promotion2_id": 26,
               "promotion3_id": 27,

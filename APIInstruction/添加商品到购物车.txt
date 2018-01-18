@@ -7,6 +7,7 @@ Method:
 Params:
     "goods_id"          :   "商品id",
     "goods_option_id"   :   "商品规格id(无则传0)"
+    "count"             :   "商品数量"
 
 
 
