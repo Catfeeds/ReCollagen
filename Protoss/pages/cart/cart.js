@@ -69,7 +69,7 @@ Page({
       if (type == 'inc') {
 
 
-
+  
 
         cart.addCutCounts(id, guid, type, (data) => {
           if (data.errorCode != 0) {
