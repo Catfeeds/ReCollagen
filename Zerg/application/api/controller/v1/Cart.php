@@ -22,8 +22,8 @@ class Cart extends BaseController
         $params = input('post.');
         $cartModel = new CartModel();
 
-//        $currentUid = TokenService::getCurrentUid();
-        $currentUid = 4;
+        $currentUid = TokenService::getCurrentUid();
+//        $currentUid = 4;
 
         $where = ['uid'=>$currentUid,'goods_id'=>$params['goods_id'],'goods_option_id'=>$params['goods_option_id']];
 
@@ -204,8 +204,8 @@ class Cart extends BaseController
      */
     public function getPreOrderDetail(){
 
-//        $currentUid = TokenService::getCurrentUid();
-        $currentUid = 4;
+        $currentUid = TokenService::getCurrentUid();
+//        $currentUid = 4;
 
         $detail = CartModel::getPreOrderDetailByUid($currentUid);
 
