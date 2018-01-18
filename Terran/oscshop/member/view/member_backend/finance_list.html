@@ -13,10 +13,10 @@
 <table class="table table-striped table-bordered table-hover search-form">
     <thead>
 
-    <th><input name="condition" type="text" style="width: 80%;" placeholder="请输入微信openId/姓名/微信号/操作说明/操作人" value="{:input('param.condition')}" /></th>		
+    <th><input name="condition" type="text" style="width: 80%;" placeholder="请输入姓名/联系电话/微信号" value="{:input('param.condition')}" /></th>
     <th>
         <select name="rectype">
-            <option {if condition="$rectype eq null"} selected="selected"{/if}value="">全部分类</option>							
+            <option {if condition="$rectype eq null"} selected="selected"{/if}value="">全部账户类型</option>
             <option {if condition="$rectype eq 1"} selected="selected"{/if}value="1">主账户</option>
             <option {if condition="$rectype === 2"} selected="selected"{/if} value="2">小金库</option>
         </select>
@@ -39,11 +39,10 @@
                         <th class="hidden-xs">邮箱</th>
                         <th class="hidden-xs">微信号</th>
                         <th class="hidden-xs">操作时间</th>
+                        <th class="hidden-xs">操作说明</th>
                         <th class="hidden-xs">操作金额</th>
                         <th class="hidden-xs">账户类型</th>
                         <th class="hidden-xs">余额</th>
-                        <th class="hidden-xs">操作说明</th>
-                        <th class="hidden-xs">操作人</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,6 +54,8 @@
                         <td class="hidden-xs">{$v.uemail}</td>
                         <td class="hidden-xs">{$v.uwecat}</td>
                         <td class="hidden-xs">{if condition="$v['addtime'] neq 0"}{$v.addtime|date="Y-m-d H:i:s",###}{else/}无{/if}</td>
+                        <td class="hidden-xs">{$v.reason}</td>
+
                         <td class="hidden-xs">{$v.amount}</td>
                         <td class="hidden-xs">
                             {switch name="v.rectype"}
@@ -63,8 +64,6 @@
                             {/switch}
                         </td>
                         <td class="hidden-xs">{$v.balance}</td>
-                        <td class="hidden-xs">{$v.reason}</td>
-                        <td class="hidden-xs">{$v.editor}</td>
                     </tr>
                     {/volist}	
 
@@ -77,4 +76,22 @@
         </div>
     </div>
 </div>
+{/block}
+{block name="javascript"}
+<script>
+    $(function () {
+        $("#search").click(function () {
+            var url = $(this).attr('url');
+            var query = $('.search-form').find('input,select').serialize();
+            query = query.replace(/(&|^)(\w*?\d*?\-*?_*?)*?=?((?=&)|(?=$))/g, '');
+            query = query.replace(/^&/g, '');
+            if (url.indexOf('?') > 0) {
+                url += '&' + query;
+            } else {
+                url += '?' + query;
+            }
+            window.location.href = url;
+        });
+    });
+</script>
 {/block}

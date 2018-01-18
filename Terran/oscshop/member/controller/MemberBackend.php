@@ -147,7 +147,7 @@ class MemberBackend extends AdminBase {
         $param = input('param.');
         $map = $query = [];
         if (isset($param['condition'])) {
-            $map['m.openId|m.uname|m.uwecat|f.reason|f.editor'] = ['like', "%" . trim($param['condition']) . "%"];
+            $map['m.uname|m.utel|m.uwecat'] = ['like', "%" . trim($param['condition']) . "%"];
         }
         if (isset($param['rectype'])) {
             $map['f.rectype'] = ['=', trim($param['rectype'])];
