@@ -9,13 +9,17 @@ class FinanceRecord extends BaseModel
     protected $table = 'osc_finance_record';
     protected $autoWriteTimestamp = true;
 
+    protected $hidden = [
+        'uid','bank', 'editor', 'del', 'itemid'
+    ];
     /**
-     * 根据用户id获取财务流水列表
+     * 根据用户id分页获取用户财务流水
      */
-    public static function getSummaryByPage($uid, $page = 1, $size = 20)
+    public static function getAccountRecordByPage($uid, $page = 1, $size = 20)
     {
         $pagingData = self::where(['uid' => $uid])->order('itemid desc')
-            ->paginate($size, true, ['page' => $page]);
+            ->paginate($size, false, ['page' => $page]);
+
         return $pagingData;
     }
 }
