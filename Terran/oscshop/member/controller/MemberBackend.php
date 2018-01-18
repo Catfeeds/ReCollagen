@@ -74,10 +74,10 @@ class MemberBackend extends AdminBase {
             if ((float) $data['secondAccount'] != 0) {
                 if ($data['ssa'] == 1) {
                     $nsecondAccount = $osecondAccount + $data['secondAccount'];
-                    finance_record($data['uid'], '站内', $data['secondAccount'], $nsecondAccount, time(), '后台操作-增加', session('user_auth.username'), 1, 0);
+                    finance_record($data['uid'], '站内', $data['secondAccount'], $nsecondAccount, time(), '后台操作-增加', session('user_auth.username'), 2, 0);
                 } elseif ($data['ssa'] == 2) {
                     $nsecondAccount = $osecondAccount - $data['secondAccount'];
-                    finance_record($data['uid'], '站内', -$data['secondAccount'], $nsecondAccount, time(), '后台操作-增加', session('user_auth.username'), 1, 0);
+                    finance_record($data['uid'], '站内', -$data['secondAccount'], $nsecondAccount, time(), '后台操作-扣除', session('user_auth.username'), 2, 0);
                 }
             } else {
                 $nsecondAccount = $osecondAccount;
@@ -153,7 +153,7 @@ class MemberBackend extends AdminBase {
             $map['f.rectype'] = ['=', trim($param['rectype'])];
         }
 
-        $list = Db::name('finance_record')->alias('f')->field('f.*,m.openId,m.uname,m.uwecat')
+        $list = Db::name('finance_record')->alias('f')->field('f.*,m.uname,m.utel,m.uemail,m.uwecat')
                 ->join('__MEMBER__ m', 'm.uid=f.uid', 'left')
                 ->where($map)
                 ->order('f.itemid desc')
