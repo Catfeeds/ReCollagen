@@ -17,7 +17,7 @@ class Cart extends Base{
     /*获取购物车*/
     getCartDataFromLocal(callback) {
       var param = {
-        url: 'cart/goods',
+        url: 'cart/preOrder',
         sCallback: function (data) {
           callback && callback(data);
         }
@@ -27,6 +27,9 @@ class Cart extends Base{
 
     /*点击增加或减少购物车商品数量*/
     addCutCounts(goods_id, option_id, type, callback) {
+      console.log(goods_id)
+      console.log(option_id)
+      console.log(type)
       var allParams = {
         url: 'cart/setByClick',
         type: 'post',

@@ -1,9 +1,9 @@
 <view class="container cart-container">
-    <block wx:if="{{cartData.length>0}}">
+    <block wx:if="{{cartData.goodsList.length>0}}">
         <view class="cart-box">
-            <block wx:for="{{cartData}}">
+            <block wx:for="{{cartData.goodsList}}">
                 <view class="cart-item {{deleteFlag&&index==currentIndex?'showDeleteBtn':'hideDeleteBtn'}}">
-                    <view class="cart-item-main" data-id="{{item.goods_id}}" data-index="{{index}}">
+                    <view class="cart-item-main">
                         <view  class="cart-item-checkbox" ontap="toggleSelect" data-id="{{item.goods_id}}" data-guid="{{item.goods_option_id}}" data-status="{{item.selectStatus}}">
                             <image wx:if="{{item.selectStatus}}" src="../../imgs/icon/circle@selected.png"></image>
                             <image wx:else src="../../imgs/icon/circle@noselected.png"></image>
@@ -16,13 +16,13 @@
                         <view class="cart-item-word">
                             <view class="title-box">
                                 <text class="title">{{item.name}}</text>
-                                <text>￥{{item.price}}</text>
+                                <text>￥{{item.totalPrice}}</text>
                             </view>
                             <view class="bottom-box">
                                 <view class="cart-item-counts">
-                                    <view class="btns {{item.counts==1?'disabled':''}}" bindtap="changeCounts" data-id="{{item.goods_id}}" data-guid="{{item.goods_option_id}}" data-type="dec">-</view>
-                                    <view class="counts"><input bindchange="changeInput" value='{{item.count}}' data-id="{{item.goods_id}}" data-guid="{{item.goods_option_id}}" /></view>
-                                    <view class="btns" bindtap="changeCounts" data-id="{{item.goods_id}}"  data-guid="{{item.goods_option_id}}" data-type="inc">+</view>
+                                    <view class="btns {{item.count==1?'disabled':''}}" bindtap="changeCounts" data-id="{{item.goods_id}}" data-guid="{{item.goods_option_id}}" data-index="{{index}}" data-type="dec">-</view>
+                                    <view class="counts"><input bindchange="changeInput" value='{{item.count}}' data-id="{{item.goods_id}}" data-guid="{{item.goods_option_id}}" data-index="{{index}}" /></view>
+                                    <view class="btns" bindtap="changeCounts" data-id="{{item.goods_id}}"  data-guid="{{item.goods_option_id}}" data-index="{{index}}" data-type="inc">+</view>
                                 </view>
                                 <view class="delete" data-id="{{item.goods_id}}"  data-guid="{{item.goods_option_id}}" bindtap="delete">×</view>
                             </view>
@@ -35,8 +35,8 @@
             </block>
         </view>
         <view class="footer-account-box all-accounts-box">
-            <view class="all-select" ontap="toggleSelectAll" data-status="{{selectedTypeCounts==cartData.length?'true':'false'}}">
-                <image wx:if="{{selectedTypeCounts==cartData.length}}"
+            <view class="all-select" ontap="toggleSelectAll" data-status="{{selectedTypeCounts==cartData.goodsList.length?'true':'false'}}">
+                <image wx:if="{{selectedTypeCounts==cartData.goodsList.length}}"
                        class="title-icon" src="../../imgs/icon/all@selected.png"></image>
                 <image wx:else class="title-icon" src="../../imgs/icon/all.png"></image>
                 <text>全选({{selectedCounts}})</text>

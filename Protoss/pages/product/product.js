@@ -209,7 +209,7 @@ Page({
 
     /*将商品数据添加到内存中*/
     addToCart:function(){
-      product.add(this.data.id, this.data.option_id, this.data.productCounts, this.data.price, (data) => {
+      product.add(this.data.id, this.data.option_id, this.data.productCounts, (data) => {
         if (data.errorCode != 0) {
           that.showTips('加入购物车', data.msg);
           return;
