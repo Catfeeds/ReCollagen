@@ -45,18 +45,20 @@ class User extends BaseController {
     }
 
     /**
-     * 更新用户账户信息
+     * 修改用户信息
      */
-    public function getUserUpdate() {
-        $uid = Token::getCurrentUid();
+    public function editUserData() {
+//        $uid = Token::getCurrentUid();
+        $uid = 2;
         $data = input('post.');
-        $user = UserModel::where('uid', $uid)
-                ->update($data);
-        if (!$user) {
+        $model = new UserModel();
+        $res = $model->save($data,['uid'=>$uid]);
+
+        if (!$res) {
             throw new UserException(
                 [
-                    'msg' => '用户ID不存在',
-                    'errorCode' => 60001,
+                    'msg' => '修改失败',
+                    'errorCode' => 60005,
                 ]);
         }
 

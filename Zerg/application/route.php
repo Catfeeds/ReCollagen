@@ -42,6 +42,7 @@ Route::group('api/:version/theme',function(){
 
 //User
 Route::get('api/:version/account','api/:version.User/getUserAccount');          //获取用户账户信息
+Route::post('api/:version/user/update','api/:version.User/editUserData');        //修改用户信息
 
 //Product
 Route::post('api/:version/product', 'api/:version.Product/createOne');

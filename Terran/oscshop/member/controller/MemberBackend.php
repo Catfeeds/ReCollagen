@@ -26,7 +26,7 @@ class MemberBackend extends AdminBase {
         $param = input('param.');
         $map = $query = [];
         if (isset($param['condition'])) {
-            $map['m.openId|m.uname|m.uwecat|a.name|a.telephone'] = ['like', "%" . trim($param['condition']) . "%"];
+            $map['m.uname|m.utel|m.uwecat|a.name'] = ['like', "%" . trim($param['condition']) . "%"];
         }
 
         $list = Db::name('member')->alias('m')->field('m.*,a.name,a.telephone')
