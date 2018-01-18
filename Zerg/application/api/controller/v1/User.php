@@ -13,20 +13,24 @@ use app\api\validate\PagingParameter;
 class User extends BaseController {
 
     protected $beforeActionList = [
-        'checkPrimaryScope' => ['only' => 'getUserAccount']
+        'checkPrimaryScope' => ['only' => 'getUserData']
     ];
 
     /**
      * 获取用户账户信息
      */
     public function getUserData() {
-//        $uid = Token::getCurrentUid();
-        $uid = 2;
+        $uid = Token::getCurrentUid();
+//        $uid = 2;
 
-        $user = UserModel::where('uid', $uid)->find();
+        $user = UserModel::field('mainAccount,secondAccount,checked,uname,uwecat,usex,utel,uemail,up_name,up_wecat,IDcode,IDcode_pic,IDcode_pic_b,IDcode_pic_h')
+            ->where('uid', $uid)->find();
         if (!$user) {
             throw new UserException();
         }
+        $user['IDcode_pic'] = $user['IDcode_pic'] ? config('setting.img_prefix').$user['IDcode_pic'] : '';
+        $user['IDcode_pic_b'] = $user['IDcode_pic_b'] ? config('setting.img_prefix').$user['IDcode_pic_b'] : '';
+        $user['IDcode_pic_h'] = $user['IDcode_pic_h'] ? config('setting.img_prefix').$user['IDcode_pic_h'] : '';
 
         return $user;
     }
