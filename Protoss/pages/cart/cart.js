@@ -3,8 +3,6 @@
 import {Cart} from 'cart-model.js';
 
 var cart=new Cart(); //实例化 购物车
-var x1=0;
-var x2=0;
 
 Page({
     data: {
@@ -12,32 +10,17 @@ Page({
         selectedCounts:0, //总的商品数
         selectedTypeCounts:0, //总的商品类型数
     },
-
-    onLoad: function () {
-
-    },
-
     /*
      * 页面重新渲染，包括第一次，和onload方法没有直接关系
      */
     onShow:function(){
-        var cartData=cart.getCartDataFromLocal(),
-            countsInfo=cart.getCartTotalCounts(true);
-
-        console.log(cartData);
-        
+      cart.getCartDataFromLocal((data) => {
         this.setData({
-            selectedCounts:countsInfo.counts1,
-            selectedTypeCounts:countsInfo.counts2,
-            account:this._calcTotalAccountAndCounts(cartData).account,
-            loadingHidden:true,
-            cartData:cartData
+          loadingHidden: true,
+          cartData: data
         });
-    },
-
-    /*离开页面时，更新本地缓存*/
-    onHide:function(){
-        cart.execSetStorageSync(this.data.cartData);
+        callback && callback();
+      })
     },
 
     /*更新购物车商品数据*/
@@ -85,14 +68,32 @@ Page({
         counts = this.data.cartData[index].counts;
       if (type == 'add') {
         counts++;
+
         this._getProductIndexPrice(index, counts);
         var price = this.data.cartData[index].price;
-        cart.addCutCounts(id, guid, counts, price);
+
+
+
+        cart.addCutCounts(id, guid, 'inc', (data) => {
+          if (data.errorCode != 0) {
+            that.showTips('增加数量', data.msg);
+            return;
+          }
+        });
+
       } else {
         counts--;
+
         this._getProductIndexPrice(index, counts);
         var price = this.data.cartData[index].price;
-        cart.addCutCounts(id, guid, counts, price);
+
+        cart.addCutCounts(id, guid, 'dec', (data) => {
+          if (data.errorCode != 0) {
+            that.showTips('减少数量', data.msg);
+            return;
+          }
+        });
+        
       }
 
       //更新商品页面
@@ -198,7 +199,22 @@ Page({
         wx.navigateTo({
             url: '../product/product?id=' + id
         })
+    },
+
+    /*
+    * 提示窗口
+    * params:
+    * title - {string}标题
+    * content - {string}内容
+    * flag - {bool}是否跳转到 "我的页面"
+    */
+    showTips: function (title, content) {
+      wx.showModal({
+        title: title,
+        content: content,
+        showCancel: false,
+        success: function (res) {
+        }
+      });
     }
-
-
 })
