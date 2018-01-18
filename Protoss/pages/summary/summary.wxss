@@ -1,8 +1,17 @@
-@import "../../wxParse/wxParse.wxss"; 
 @import "../tpls/base.wxss";
 .my-container{
     background-color:#fff;
 }
-.promotion-main{
-    padding:20rpx;
+.item-summary{
+  display:flex;
+  flex-direction:column;
+  border-bottom:1rpx solid #EDEDED;
+  padding:21rpx 30rpx;
+}
+.item-summary>view{
+  display:flex;
+  color:#777777;
+  font-size:28rpx;
+  padding:8rpx 0;
+  align-items: center;
 }

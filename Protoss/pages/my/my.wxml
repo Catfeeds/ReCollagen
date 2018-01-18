@@ -1,7 +1,7 @@
 
 <view class="container my-container" hidden="{{!loadingHidden}}">
   <view class="my-header">
-    <view>
+    <view ontap="userinfo">
     <image src="{{userInfo.avatarUrl}}"></image>
     <text class="name">{{userInfo.nickName}}</text>
     </view>

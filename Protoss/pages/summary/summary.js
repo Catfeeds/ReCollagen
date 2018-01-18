@@ -4,6 +4,8 @@ var summary = new Summary();
 
 Page({
   data: {
+    pageIndex: 1,
+    isLoadedAll: false,
     loadingHidden: false
   },
   onLoad: function () {
@@ -14,27 +16,42 @@ Page({
   _loadData: function (callback) {
     var that = this;
 
-    /*获取物流信息*/
-    summary.getSummary(10,1, (res) => {
+    /*获金额消费记录*/
+    var that = this;
+    summary.getSummary(10, this.data.pageIndex, (res) => {
+      var data = res.data;
       that.setData({
-        summaryData: res.data,
         loadingHidden: true
       });
+      if (data.length > 0) {
+        that.data.push.apply(that.data, data);  //数组合并                
+        that.setData({
+          pageIndex: res.current_page,
+          summaryData: res.data
+        });
+      } else {
+        that.data.isLoadedAll = true;  //已经全部加载完毕
+        that.data.pageIndex = 1;
+      }
       callback && callback();
     });
   },
 
+   
+
+
   /*下拉刷新页面*/
-  onPullDownRefresh: function () {
-    this._loadData(() => {
-      wx.stopPullDownRefresh()
-    });
+  onReachBottom: function () {
+    if (!this.data.isLoadedAll) {
+      this.data.pageIndex++;
+      this._loadData();
+    }
   },
 
   //分享效果
   onShareAppMessage: function () {
     return {
-      title: '悦寇霖智',
+      title: '悦蔻霖智',
       path: 'pages/summary/summary'
     }
   }

@@ -21,12 +21,6 @@ Page({
         this._loadData();
     },
 
-    onShow:function(){
-        if(this.data.loadingHidden){
-            this.onPullDownRefresh();
-        }
-    },
-
     _loadData:function(){
         var that=this;
         my.getUserInfo((data)=>{
@@ -166,6 +160,10 @@ Page({
             callback && callback();
         });
     },
+    
+    userinfo:function(event) {
+        
+    },
 
     /*显示订单的具体信息*/
     showOrderDetailInfo:function(event){
@@ -262,17 +260,6 @@ Page({
             url: '../pay-result/pay-result?id=' + id + '&from=my'
           });
         });
-    },
-
-    /*下拉刷新页面*/
-    onPullDownRefresh: function(){
-        // var that=this;
-        // this.data.orderArr=[];  //订单初始化
-        // this._getOrders(()=>{
-        //     that.data.isLoadedAll=false;  //是否加载完全
-        //     that.data.pageIndex=1;
-        //     wx.stopPullDownRefresh();
-        // });
     },
 
     onReachBottom:function(){
