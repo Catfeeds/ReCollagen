@@ -59,6 +59,19 @@ class Cart extends BaseModel{
                     $data['goodsList'][$key]['totalPrice'] = $v['count'] * $v['price'];
                 }
             }
+            //统计单个商品第几件几折
+            foreach ($data['goodsList'] as $key => $v) {
+                $dis = ProductDiscount::where(['goods_id'=>$v['goods_id']])->order('quantity desc')->select();
+                if ($dis) {
+                    foreach ($dis as $key2 => $v2) {
+                        if ($v['count'] >= $v2['quantity']) {
+                            $data['goodsList'][$key]['price'] = $v['price']*$v2['discount']/100;
+                            break;
+                        }
+                    }
+                }
+            }
+
             //统计满额打折活动(促销一)
             $condition1 = self::getPreOrderPromotionsCondition($data['goodsList'],'promotion1_id');
             $data['promotion1'] = Promotion::getPreOrderPromotions($condition1);
