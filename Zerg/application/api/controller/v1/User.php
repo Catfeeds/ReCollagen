@@ -13,31 +13,17 @@ use app\api\validate\PagingParameter;
 class User extends BaseController {
 
     protected $beforeActionList = [
-        'checkPrimaryScope' => ['only' => 'getUserAccount,getUserData']
+        'checkPrimaryScope' => ['only' => 'getUserAccount']
     ];
 
     /**
      * 获取用户账户信息
      */
-    public function getUserAccount() {
-        $uid = Token::getCurrentUid();
-
-        $user = UserModel::field('mainAccount,secondAccount')->where('uid', $uid)
-                ->find();
-        if (!$user) {
-            throw new UserException();
-        }
-
-        return $user;
-    }
-
-    /**
-     * 获取用户账户信息
-     */
     public function getUserData() {
-        $uid = Token::getCurrentUid();
+//        $uid = Token::getCurrentUid();
+        $uid = 2;
 
-        $user = UserModel::get($uid);
+        $user = UserModel::where('uid', $uid)->find();
         if (!$user) {
             throw new UserException();
         }

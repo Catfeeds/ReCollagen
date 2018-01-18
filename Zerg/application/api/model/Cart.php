@@ -82,7 +82,8 @@ class Cart extends BaseModel{
                 $expression = explode(',',$data['promotion4']['expression']);
                 $discount = $expression[0];
                 $piece = (int)$expression[1];
-                if (count($data['goodsList']) >= $piece) {
+
+                if (count($pro4Goods) >= $piece) {
                     //如果商品件数达到促销的件数要求
                     foreach ($data['goodsList'] as $key => $v) {
                         if ($v['goods_id'] == $pro4Goods[$piece-1]['goods_id'] && $v['goods_option_id'] == $pro4Goods[$piece-1]['goods_option_id']) {
