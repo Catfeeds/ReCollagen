@@ -27,9 +27,6 @@ class Cart extends Base{
 
     /*点击增加或减少购物车商品数量*/
     addCutCounts(goods_id, option_id, type, callback) {
-      console.log(goods_id)
-      console.log(option_id)
-      console.log(type)
       var allParams = {
         url: 'cart/setByClick',
         type: 'post',
@@ -49,7 +46,6 @@ class Cart extends Base{
     }
 
     /*输入数字修改购物车商品数量*/
-
     addInputCounts(goods_id, option_id, count, callback) {
       var allParams = {
         url: 'cart/setByInput',
@@ -109,7 +105,7 @@ class Cart extends Base{
     }
 
     /*从购物车删除商品*/
-    delete(goods_id, option_id, count, callback) {
+    delete(goods_id, option_id, callback) {
       var allParams = {
         url: 'cart/del',
         type: 'post',

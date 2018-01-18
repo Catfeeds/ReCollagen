@@ -14,12 +14,15 @@ Page({
      * 页面重新渲染，包括第一次，和onload方法没有直接关系
      */
     onShow:function(){
+      this._loadData();
+    },
+
+    _loadData: function () {
       cart.getCartDataFromLocal((data) => {
         this.setData({
           loadingHidden: true,
           cartData: data
         });
-        callback && callback();
       })
     },
 
@@ -63,68 +66,43 @@ Page({
     changeCounts: function (event) {
       var id = cart.getDataSet(event, 'id'),
         guid = cart.getDataSet(event, 'guid'),
-        index = cart.getDataSet(event, 'index'),
         type = cart.getDataSet(event, 'type');
-
       if (type == 'inc') {
-
-
-  
-
         cart.addCutCounts(id, guid, type, (data) => {
           if (data.errorCode != 0) {
-            this.showTips('增加数量', data.msg);
+            this.showTips('商品数量', data.msg);
             return;
           }
+          this._loadData();
         });
-
-      } else {
-
-
-
-        
+      } 
+      else 
+      {
+        cart.addCutCounts(id, guid, type, (data) => {
+          if (data.errorCode != 0) {
+            this.showTips('商品数量', data.msg);
+            return;
+          }
+          this._loadData();
+        }); 
       }
-
     },
 
     //输入商品数量
     changeInput: function (event) {
       var id = cart.getDataSet(event, 'id'),
         guid = cart.getDataSet(event, 'guid'),
-        index = this._getProductIndexById(id, guid),
         counts = event.detail.value;
-      this._getProductIndexPrice(index, counts);
-      var price = this.data.cartData[index].price;
-      cart.addCutCounts(id, guid, counts, price);
 
-      //更新商品页面
-      this.data.cartData[index].counts = counts;
-      this._resetCartData();
-    },
-
-    /*调整商品价格*/
-    _getProductIndexPrice: function (index, counts) {
-      var tempPrice,
-        float = false,
-        counts = this.data.cartData[index].counts + counts,
-        discounts = this.data.cartData[index].discounts,
-        optionsArr = this.data.cartData[index].options;
-
-      if (optionsArr.length < 1) {
-        discounts.sort(function (a, b) {
-          return a.quantity - b.quantity;
-        });
-        for (var key in discounts) {
-          if (counts >= discounts[key].quantity) {
-            tempPrice = (this.data.cartData[index].price * discounts[key].discount / 100).toFixed(2);
-            float = true;
+        cart.addInputCounts(id, guid, counts, (data) => {
+          if (data.errorCode != 0) {
+            this.showTips('商品数量', data.msg);
+            return;
           }
-        }
-        tempPrice = float == true ? tempPrice : this.data.cartData[index].price;
-        this.data.cartData[index].currentPrice = tempPrice;
-      }
+          this._loadData();
+        }); 
     },
-
+    
     /*根据商品id得到 商品所在下标*/
     _getProductIndexById: function (id, guid){
         var data=this.data.cartData,
@@ -138,27 +116,25 @@ Page({
 
     /*删除商品*/
     delete:function(event){
-      var ids = [],
-        id=cart.getDataSet(event,'id'),
-        guid = cart.getDataSet(event, 'guid'),
-        index = this._getProductIndexById(id, guid);
-        this.data.cartData.splice(index,1);//删除某一项商品
-        this._resetCartData();
-        ids.push({
-          id: id,
-          guid: guid
+      var id=cart.getDataSet(event,'id'),
+        guid = cart.getDataSet(event, 'guid');
+
+        cart.delete(id, guid, (data) => {
+          if (data.errorCode != 0) {
+            this.showTips('删除商品', data.msg);
+            return;
+          }
+          this._loadData();
         });
-        cart.delete(ids);  //内存中删除该商品
     },
 
     /*选择商品*/
     toggleSelect:function(event){
         var id=cart.getDataSet(event,'id'),
             guid = cart.getDataSet(event, 'guid'),
-            status=cart.getDataSet(event,'status'),
-            index = this._getProductIndexById(id,guid);
-        this.data.cartData[index].selectStatus=!status;
-        this._resetCartData();
+            status=cart.getDataSet(event,'status');
+
+
     },
 
     /*全选*/
