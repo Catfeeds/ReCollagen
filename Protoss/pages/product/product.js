@@ -13,7 +13,7 @@ Page({
         productCounts:1,
         cartTotalCounts:0,
         stockCount: 0,
-        option_id: -1,
+        option_id: 0,
         currentTabsIndex: 0,
         currentAttrIndex:-1,
     },
@@ -75,7 +75,7 @@ Page({
               });
             }
             that.setData({
-              cartTotalCounts: cart.getCartTotalCounts().counts1,
+              cartTotalCounts: 10,
               product: data,
               loadingHidden: true
             });
@@ -209,13 +209,12 @@ Page({
 
     /*将商品数据添加到内存中*/
     addToCart:function(){
-      var tempObj = {}, keys = ['goods_id', 'name', 'image', 'price', 'isMainGoods', 'options', 'discounts', 'weight'];
-        for(var key in this.data.product){
-            if(keys.indexOf(key)>=0){
-                tempObj[key]=this.data.product[key];
-            }
+      product.add(this.data.id, this.data.option_id, this.data.productCounts, this.data.price, (data) => {
+        if (data.errorCode != 0) {
+          that.showTips('加入购物车', data.msg);
+          return;
         }
-        cart.add(tempObj, this.data.productCounts, this.data.price, this.data.option_id);
+      });
     },
 
     /*加入购物车动效*/
