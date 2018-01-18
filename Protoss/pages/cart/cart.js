@@ -10,9 +10,8 @@ Page({
         selectedCounts:0, //总的商品数
         selectedTypeCounts:0, //总的商品类型数
     },
-    /*
-     * 页面重新渲染，包括第一次，和onload方法没有直接关系
-     */
+
+
     onShow:function(){
       this._loadData();
     },
