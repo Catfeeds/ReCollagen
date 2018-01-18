@@ -28,12 +28,12 @@ Page({
 
     /*更新购物车商品数据*/
     _resetCartData:function(){
-        var newData = this._calcTotalAccountAndCounts(this.data.cartData); /*重新计算总金额和商品总数*/
+        this._loadData();
+        var newData = this._calcTotalAccountAndCounts(this.data.cartData.goodsList); /*重新计算总金额和商品总数*/
         this.setData({
             account: newData.account,
             selectedCounts:newData.selectedCounts,
             selectedTypeCounts:newData.selectedTypeCounts,
-            cartData:this.data.cartData
         });
     },
 
@@ -48,9 +48,9 @@ Page({
         let multiple=100;
         for(let i=0;i<len;i++){
             //避免 0.05 + 0.01 = 0.060 000 000 000 000 005 的问题，乘以 100 *100
-          if (data[i].selectStatus) {
-                account += data[i].counts * multiple * Number(data[i].currentPrice) * multiple;
-                selectedCounts+=data[i].counts;
+          if (data[i].isChecked==1) {
+                account += data[i].count * multiple * Number(data[i].totalPrice) * multiple;
+                selectedCounts += data[i].count;
                 selectedTypeCounts++;
           }
         }
@@ -73,7 +73,7 @@ Page({
             this.showTips('商品数量', data.msg);
             return;
           }
-          this._loadData();
+          this._resetCartData();
         });
       } 
       else 
@@ -83,7 +83,7 @@ Page({
             this.showTips('商品数量', data.msg);
             return;
           }
-          this._loadData();
+          this._resetCartData();
         }); 
       }
     },
@@ -99,19 +99,8 @@ Page({
             this.showTips('商品数量', data.msg);
             return;
           }
-          this._loadData();
-        }); 
-    },
-    
-    /*根据商品id得到 商品所在下标*/
-    _getProductIndexById: function (id, guid){
-        var data=this.data.cartData,
-            len=data.length;
-        for(let i=0;i<len;i++){
-          if (data[i].goods_id == id && data[i].option_id == guid){
-                return i;
-            }
-        }
+          this._resetCartData();
+        });
     },
 
     /*删除商品*/
@@ -124,7 +113,7 @@ Page({
             this.showTips('删除商品', data.msg);
             return;
           }
-          this._loadData();
+          this._resetCartData();
         });
     },
 
@@ -133,7 +122,7 @@ Page({
         var id=cart.getDataSet(event,'id'),
             guid = cart.getDataSet(event, 'guid'),
             status=cart.getDataSet(event,'status');
-
+        
 
     },
 
