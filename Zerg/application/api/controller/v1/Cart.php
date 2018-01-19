@@ -197,17 +197,19 @@ class Cart extends BaseController
 
     /**
      * 获取预下单详情清单
+     * @param string $checked   all:购物车商品；1代表选择商品，预下单
      * @return false|\PDOStatement|string|\think\Collection
+     * @throws \app\lib\exception\ParameterException
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function getPreOrderDetail(){
+    public function getPreOrderDetail($checked = 'all'){
 
         $currentUid = TokenService::getCurrentUid();
 //        $currentUid = 4;
 
-        $detail = CartModel::getPreOrderDetailByUid($currentUid);
+        $detail = CartModel::getPreOrderDetailByUid($currentUid,$checked);
 
         return $detail;
     }

@@ -36,18 +36,23 @@ class Cart extends BaseModel{
     /**
      * 获取预下单详情清单
      * @param $uid
-     * @return false|\PDOStatement|string|\think\Collection
+     * @param $checked  all:购物车商品；1代表选择商品，预下单
+     * @return mixed
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public static function getPreOrderDetailByUid($uid){
+    public static function getPreOrderDetailByUid($uid,$checked){
+        $where = ['c.uid'=>$uid];
+        if ($checked == 1) {
+            $where['c.isChecked'] = $checked;
+        }
         $data['goodsList'] = self::alias('c')
             ->field('c.goods_id,c.goods_option_id,c.count,c.isChecked,g.name,g.isMainGoods,g.image,g.price,g.stock,g.promotion1_id,g.promotion2_id,g.promotion3_id,g.promotion4_id,o.option_name,o.option_price,o.stock AS option_stock')
             ->join('__GOODS__ g','g.goods_id = c.goods_id','left')
             ->join('__GOODS_OPTION__ o','o.goods_option_id = c.goods_option_id','left')
-            ->where(['c.uid'=>$uid,'c.isChecked'=>1])
-            ->select()->toArray();
+            ->where($where)
+            ->select();
         if ($data['goodsList']) {
             //统计单件商品总价格
             foreach ($data['goodsList'] as $key => $v) {

@@ -1,11 +1,11 @@
 Request:
-    /api/v1/cart/preOrder
+    /api/v1/cart/preOrder/checked/:checked
 
 Method:
     Get
 
 Params:
-    ""
+    "checked"     "all:购物车中所有商品; 1:选中商品，预下单"
 
 
 
