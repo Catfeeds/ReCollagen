@@ -16,7 +16,7 @@
                         <view class="cart-item-word">
                             <view class="title-box">
                                 <text class="title">{{item.name}}</text>
-                                <text>￥{{item.totalPrice}}</text>
+                                <text>￥{{item.price}}</text>
                             </view>
                             <view class="bottom-box">
                                 <view class="cart-item-counts">
