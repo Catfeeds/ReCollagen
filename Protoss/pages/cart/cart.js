@@ -11,12 +11,7 @@ Page({
         selectedTypeCounts:0, //总的商品类型数
     },
 
-
     onShow:function(){
-      this._loadData();
-    },
-
-    _loadData: function () {
       cart.getCartDataFromLocal((data) => {
         this.setData({
           loadingHidden: true,
@@ -27,13 +22,15 @@ Page({
 
     /*更新购物车商品数据*/
     _resetCartData:function(){
-        this._loadData();
-        var newData = this._calcTotalAccountAndCounts(this.data.cartData.goodsList); /*重新计算总金额和商品总数*/
+      cart.getCartDataFromLocal((data) => {
+        var newData = this._calcTotalAccountAndCounts(data.goodsList); /*重新计算总金额和商品总数*/
         this.setData({
-            account: newData.account,
-            selectedCounts:newData.selectedCounts,
-            selectedTypeCounts:newData.selectedTypeCounts,
+          account: newData.account,
+          selectedCounts: newData.selectedCounts,
+          selectedTypeCounts: newData.selectedTypeCounts,
+          cartData: data
         });
+      })
     },
 
     /*
@@ -44,19 +41,18 @@ Page({
             account=0,
             selectedCounts=0,
             selectedTypeCounts=0;
-        let multiple=100;
+
         for(let i=0;i<len;i++){
-            //避免 0.05 + 0.01 = 0.060 000 000 000 000 005 的问题，乘以 100 *100
           if (data[i].isChecked==1) {
-                account += data[i].count * multiple * Number(data[i].totalPrice) * multiple;
-                selectedCounts += data[i].count;
+                account = data[i].totalPrice;
+                selectedCounts += parseInt(data[i].count);
                 selectedTypeCounts++;
           }
         }
         return{
             selectedCounts:selectedCounts,
             selectedTypeCounts:selectedTypeCounts,
-            account: (account/(multiple*multiple)).toFixed(2)
+            account: (account).toFixed(2)
         }
     },
 
@@ -65,8 +61,11 @@ Page({
     changeCounts: function (event) {
       var id = cart.getDataSet(event, 'id'),
         guid = cart.getDataSet(event, 'guid'),
+        index = cart.getDataSet(event, 'index'),
         type = cart.getDataSet(event, 'type');
+      var counts = this.data.cartData.goodsList[index].count;
       if (type == 'inc') {
+        if (counts >= this.data.cartData.goodsList[index].stock) return;
         cart.addCutCounts(id, guid, type, (data) => {
           if (data.errorCode != 0) {
             this.showTips('商品数量', data.msg);
@@ -74,9 +73,10 @@ Page({
           }
           this._resetCartData();
         });
-      } 
+      }
       else 
       {
+        if (counts <=1) return;
         cart.addCutCounts(id, guid, type, (data) => {
           if (data.errorCode != 0) {
             this.showTips('商品数量', data.msg);
@@ -91,7 +91,16 @@ Page({
     changeInput: function (event) {
       var id = cart.getDataSet(event, 'id'),
         guid = cart.getDataSet(event, 'guid'),
+        index = cart.getDataSet(event, 'index'),
         counts = event.detail.value;
+
+        if (counts <= 1){
+          counts = 1;
+        }
+
+        if (counts >= this.data.cartData.goodsList[index].stock) {
+          counts = this.data.cartData.goodsList[index].stock;
+        }
 
         cart.addInputCounts(id, guid, counts, (data) => {
           if (data.errorCode != 0) {
@@ -121,7 +130,14 @@ Page({
         var id=cart.getDataSet(event,'id'),
             guid = cart.getDataSet(event, 'guid'),
             status=cart.getDataSet(event,'status');
-        
+
+        cart.selectStatus(id, guid, (data) => {
+          if (data.errorCode != 0) {
+            this.showTips('选择商品', data.msg);
+            return;
+          }
+          this._resetCartData();
+        });
 
     },
 

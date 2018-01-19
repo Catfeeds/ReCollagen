@@ -39,6 +39,9 @@ class Product extends Base {
   /*添加商品到购物车*/
 
   add(goods_id, option_id, count, callback) {
+    console.log(goods_id)
+    console.log(option_id)
+    console.log(count)
     var allParams = {
       url: 'cart/add',
       type: 'post',
