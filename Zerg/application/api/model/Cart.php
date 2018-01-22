@@ -70,7 +70,9 @@ class Cart extends BaseModel{
                 if ($dis) {
                     foreach ($dis as $key2 => $v2) {
                         if ($v['count'] >= $v2['quantity']) {
-                            $data['goodsList'][$key]['price'] = $v['price']*$v2['discount']/100;
+                            $price = $v['price']*$v2['discount']/100;
+                            $data['goodsList'][$key]['price'] = $price;
+                            $data['goodsList'][$key]['totalPrice'] = $v['count'] * $price;
                             break;
                         }
                     }
