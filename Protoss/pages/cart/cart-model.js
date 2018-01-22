@@ -15,9 +15,9 @@ class Cart extends Base{
     };
 
     /*获取购物车*/
-    getCartDataFromLocal(callback) {
+    getCartDataFromLocal(type,callback) {
       var param = {
-        url: 'cart/preOrder',
+        url: 'cart/preOrder/checked/' + type,
         sCallback: function (data) {
           callback && callback(data);
         }

@@ -4,8 +4,8 @@
             <block wx:for="{{cartData.goodsList}}">
                 <view class="cart-item {{deleteFlag&&index==currentIndex?'showDeleteBtn':'hideDeleteBtn'}}">
                     <view class="cart-item-main">
-                        <view  class="cart-item-checkbox" ontap="toggleSelect" data-id="{{item.goods_id}}" data-guid="{{item.goods_option_id}}" data-index="{{index}}" data-status="{{item.isChecked}}">
-                            <image wx:if="{{item.isChecked}}" src="../../imgs/icon/circle@selected.png"></image>
+                        <view  class="cart-item-checkbox" ontap="toggleSelect" data-id="{{item.goods_id}}" data-guid="{{item.goods_option_id}}">
+                            <image wx:if="{{item.isChecked==1}}" src="../../imgs/icon/circle@selected.png"></image>
                             <image wx:else src="../../imgs/icon/circle@noselected.png"></image>
                         </view>
                         <view class="cart-item-img" bindtap="onProductsItemTap" data-id="{{item.goods_id}}">

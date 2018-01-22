@@ -148,9 +148,21 @@
     pointer-events: auto;
 }
 
-.product-youh{
+.product-promotion{
+    display: flex;
+    justify-content:space-between;
+}
+.product-promotion>view{
     color: #6D6D6D;
-    border-bottom: 1rpx solid #E9E9E9;
-    padding:20rpx;
-    text-align: right;
+    padding:10rpx 20rpx 0;
+}
+.product-promotion .jian{
+    color: red;
+}
+.product-promotionzj{
+  color: #6D6D6D;
+  text-align: right;
+  padding:20rpx;
+  margin-top: 10rpx;
+  border-top: 1rpx solid #E9E9E9;
 }
