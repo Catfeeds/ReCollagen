@@ -24,6 +24,7 @@ Callback: 编码一律utf-8
               "image": "http://wxadmin.edeapp.com/public/uploads/images/osc1/fruit/product-cake@1.png",
               "price": 7.04,
               "stock": 976,
+              "weight": 200.00,
               "promotion1_id": 30,
               "promotion2_id": 26,
               "promotion3_id": 27,

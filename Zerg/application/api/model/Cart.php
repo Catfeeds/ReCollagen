@@ -48,7 +48,7 @@ class Cart extends BaseModel{
             $where['c.isChecked'] = $checked;
         }
         $data['goodsList'] = self::alias('c')
-            ->field('c.goods_id,c.goods_option_id,c.count,c.isChecked,g.name,g.isMainGoods,g.image,g.price,g.stock,g.promotion1_id,g.promotion2_id,g.promotion3_id,g.promotion4_id,o.option_name,o.option_price,o.stock AS option_stock')
+            ->field('c.goods_id,c.goods_option_id,c.count,c.isChecked,g.name,g.isMainGoods,g.image,g.price,g.stock,g.weight,g.promotion1_id,g.promotion2_id,g.promotion3_id,g.promotion4_id,o.option_name,o.option_price,o.stock AS option_stock')
             ->join('__GOODS__ g','g.goods_id = c.goods_id','left')
             ->join('__GOODS_OPTION__ o','o.goods_option_id = c.goods_option_id','left')
             ->where($where)
@@ -70,7 +70,9 @@ class Cart extends BaseModel{
                 if ($dis) {
                     foreach ($dis as $key2 => $v2) {
                         if ($v['count'] >= $v2['quantity']) {
-                            $data['goodsList'][$key]['price'] = $v['price']*$v2['discount']/100;
+                            $price = $v['price']*$v2['discount']/100;
+                            $data['goodsList'][$key]['price'] = $price;
+                            $data['goodsList'][$key]['totalPrice'] = $v['count'] * $price;
                             break;
                         }
                     }
