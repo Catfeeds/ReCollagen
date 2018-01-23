@@ -60,6 +60,7 @@ class OrderBackend extends AdminBase {
                 $this->error('编辑失败');
             }
         }
+
         $info = osc_order()->order_info(input('param.id/d'));
 
         $info['order']['transportInfo'] = '';
@@ -69,6 +70,7 @@ class OrderBackend extends AdminBase {
             //查询物流进度
             $info['order']['transportInfo'] = getTransInfo($shippingCode, $info['order']['shipping_num']);
         }
+
         $info['order']['promotion'] = json_decode($info['order']['promotion'], true);
 
         $this->assign('data', $info);
@@ -140,7 +142,7 @@ class OrderBackend extends AdminBase {
     public function update_shipping() {
 
         $data = input('');
-        $res = Db::name('order')->where(['order_id' => $data['id']])->update(['order_status' => 3, 'shipping_num' => $data['shipping_num'], 'update_time' => time()]);
+        $res = Db::name('order')->where(['order_id' => $data['id']])->update(['order_status' => 3, 'shipping_num' => $data['shipping_num'], 'deliver_time' => date('Y-m-d H:i:s'), 'update_time' => time()]);
 
         if ($res) {
             storage_user_action(UID, session('user_auth.username'), config('BACKEND_USER'), '更新了物流单号');

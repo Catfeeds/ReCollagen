@@ -14,13 +14,13 @@
     <thead>
 
     <th><input name="condition" type="text" style="width: 80%;" placeholder="请输入姓名/联系电话/微信号" value="{:input('param.condition')}" /></th>
-    <th>
-        <select name="rectype">
-            <option {if condition="$rectype eq null"} selected="selected"{/if}value="">全部账户类型</option>
-            <option {if condition="$rectype eq 1"} selected="selected"{/if}value="1">主账户</option>
-            <option {if condition="$rectype === 2"} selected="selected"{/if} value="2">小金库</option>
-        </select>
-    </th>
+    <!--<th>-->
+        <!--<select name="rectype">-->
+            <!--<option {if condition="$rectype eq null"} selected="selected"{/if}value="">全部账户类型</option>-->
+            <!--<option {if condition="$rectype eq 1"} selected="selected"{/if}value="1">主账户</option>-->
+            <!--<option {if condition="$rectype === 2"} selected="selected"{/if} value="2">小金库</option>-->
+        <!--</select>-->
+    <!--</th>-->
     <th>
         <a class="btn btn-primary" href="javascript:;" id="search" url="{:url('MemberBackend/finance_list')}">查询</a>
     </th>
@@ -40,8 +40,8 @@
                         <th class="hidden-xs">微信号</th>
                         <th class="hidden-xs">操作时间</th>
                         <th class="hidden-xs">操作说明</th>
-                        <th class="hidden-xs">操作金额</th>
                         <th class="hidden-xs">账户类型</th>
+                        <th class="hidden-xs">操作金额</th>
                         <th class="hidden-xs">余额</th>
                     </tr>
                 </thead>
@@ -55,14 +55,13 @@
                         <td class="hidden-xs">{$v.uwecat}</td>
                         <td class="hidden-xs">{if condition="$v['addtime'] neq 0"}{$v.addtime|date="Y-m-d H:i:s",###}{else/}无{/if}</td>
                         <td class="hidden-xs">{$v.reason}</td>
-
-                        <td class="hidden-xs">{$v.amount}</td>
                         <td class="hidden-xs">
                             {switch name="v.rectype"}
                             {case value="1"}主账户{/case}
                             {case value="2"}小金库{/case}
                             {/switch}
                         </td>
+                        <td class="hidden-xs">{$v.amount}</td>
                         <td class="hidden-xs">{$v.balance}</td>
                     </tr>
                     {/volist}	

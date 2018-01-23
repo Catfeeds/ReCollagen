@@ -10,7 +10,7 @@ Params:
     "goodsArrInfo":[{
         "goods_id"          :  "商品id", 
         "quantity"          :  "商品数量", 
-        "option_id"         :  "商品选项id，无则返回-1", 
+        "option_id"         :  "商品选项id，无则为零", 
     }]
 
     "mainGoodsPrice"        :  "主商品价格", 
@@ -18,9 +18,12 @@ Params:
     "shippingPrice"         :  "运费", 
     "transId"               :  "匹配到的物流公司ID", 
 
-    "promotionId" :[{
-        "id"    :   "当前促销活动的id，无则返回空"
-    }]
+    "promotion":[   
+        {"name":"满200送精美礼品","type":3,"free":"梨花带雨*1|||夏日芒果*2"},      赠送商品活动返回：促销名称，促销类型，商品名称*赠送数量（多种商品以"|||"隔开）
+        {"name":"满100打8折","type":1,"free":"59.4"},                              其他活动返回：促销名称，促销类型，优惠金额
+        {"name":"满200返现30","type":2,"free":"60"},
+        {"name":"满200第3件8折","type":4,"free":"21.5"}
+    ]
 
 
 

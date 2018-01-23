@@ -7,7 +7,6 @@ use think\Model;
 class FinanceRecord extends BaseModel
 {
     protected $table = 'osc_finance_record';
-    protected $autoWriteTimestamp = true;
 
     protected $hidden = [
         'uid','bank', 'editor', 'del', 'itemid'

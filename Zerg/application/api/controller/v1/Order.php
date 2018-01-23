@@ -160,6 +160,7 @@ class Order extends BaseController
     {
         (new IDMustBePositiveInt())->goCheck();
         $uid = Token::getCurrentUid();
+//        $uid = 2;
 
         $order   = new OrderService();
         $success = $order->receive($id, $uid);
