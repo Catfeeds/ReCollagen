@@ -56,6 +56,31 @@ class User extends BaseController {
         return new SuccessMessage();
     }
     /**
+     * 上传视频
+     */
+    public function uploadUserPic() {
+        halt($_FILES);
+        if($_SERVER['REQUEST_METHOD'] == "POST"){
+            $upload = new \Think\Upload();// 实例化上传类
+            $upload->rootPath  =     'Uploads/video/file/'; // 设置附件上传根目录
+            $upload->savePath  =     ''; // 设置附件上传（子）目录+
+            // 上传文件
+            $info   =   $upload->upload();
+            if(!$info) {// 上传错误提示错误信息
+                $this->error('上传失败！');
+            }else{// 上传成功
+                $url  = $info['file']['savepath'].$info['file']['savename'];
+
+                $data['code']   = 0;
+                $data['msg']    = '上传成功';
+                $data['uploadFileName'] = $info['file']['name'];
+                $data['uploadFileUrl']  = $upload->rootPath.$url;
+                return  json_encode($data);
+                // $this->success(['uploadFileName'=>$info['file']['name'],'uploadFileSize'=>$size,'uploadFileUrl'=>$upload->rootPath.$url]);
+            }
+        }
+    }
+    /**
      * 分页获取用户财务流水
      * @param int $page
      * @param int $size
