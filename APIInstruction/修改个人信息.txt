@@ -7,7 +7,7 @@ Method:
 Params:
     "uname"           :   "姓名"
     "uwecat"          :   "微信号"
-    "usex"            :   "性别，0男，1女"
+    "usex"            :   "性别，-1男，1女"
     "utel"            :   "电话"
     "uemail"          :   "邮箱"
     "IDcode"          :   "身份证"
