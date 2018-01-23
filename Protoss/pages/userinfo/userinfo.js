@@ -157,15 +157,26 @@ Page({
       sizeType: ['original', 'compressed'],
       sourceType: [type],
       success: function (res) {
-        console.log(res);
+        var tempFilePaths = res.tempFilePaths
 
-        _this.setData({
-          logo: res.tempFilePaths[0],
+        wx.uploadFile({
+          url: 'https://wx.edesoft.cn/api/v1/user/upload',
+          filePath: tempFilePaths[0],
+          name: 'file',
+          formData: {
+            'user': 'test'
+          },
+          success: function (res) {
+           
+            var data = res.data
+            console.log(data)
+          }
         })
-
       }
     })
   },
+
+
 
   /*
   * 提示窗口

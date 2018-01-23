@@ -23,9 +23,9 @@ class UserInfo extends Base{
     }
 
     /*上传图片*/
-    _updateUserInfo(data, callback) {
+    _updateUploadImage(data, callback) {
       var param = {
-        url: 'user/update',
+        url: 'user/upload',
         type: 'post',
         data: data,
         sCallback: function (res) {

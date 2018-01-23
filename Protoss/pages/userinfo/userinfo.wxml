@@ -23,17 +23,8 @@
           <input name="IDcode" value="{{userData.IDcode}}" placeholder="身份证" bindinput="bindIDcode" />
         </view>
         <view class="section IDcode_pic">
-          <image wx:if="{{userData.IDcode_pic!=''}}" catchtap="chooseImageTap" src="{{userData.IDcode_pic}}"></image>
+         <image catchtap="chooseImageTap" src="../../imgs/icon/IDcode_pic.png"></image>
 
-          <image wx:if="{{product.image!=''}}" class="item-image" src="{{product.image}}" mode="aspectFill" />
-              <image wx:else src="../../imgs/icon/default_img.png" mode="aspectFill"></image>
-
-        </view>
-        <view class="section IDcode_pic">
-          <image catchtap="chooseImageTap" src="../../imgs/icon/IDcode_pic_b.png"></image>
-        </view>
-        <view class="section IDcode_pic" style='padding-bottom: 23rpx;'>
-          <image catchtap="chooseImageTap" src="../../imgs/icon/IDcode_pic_h.png"></image>
         </view>
         <view class="section">
           <input name="up_name" value="{{userData.up_name}}" placeholder="推荐人" bindinput="bindUpName" />
