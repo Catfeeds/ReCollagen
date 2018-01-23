@@ -2,6 +2,7 @@
 
 namespace app\api\service;
 
+use app\api\model\Cart;
 use app\api\model\OrderProduct;
 use app\api\model\Product;
 use app\api\model\Order as OrderModel;
@@ -71,7 +72,7 @@ class Order
         $user = UserModel::get($this->uid);
         if ($user['checked'] != 1) {
             throw new UserException([
-                'msg' => '账号已被禁用'
+                'msg' => '账号未通过审核'
                 ]);
         }
 
@@ -103,8 +104,8 @@ class Order
 
         $pIndex = -1;
         $pStatus = [
-            'goods_id'   => null,
-            'goods_id'   => -1,
+            'goods_id'   => 0,
+            'option_id'   => 0,
             'haveStock'  => false,
             'quantity'   => 0,
             'name'       => '',
@@ -126,7 +127,7 @@ class Order
         } else {
             $product = $products[$pIndex];
             $pStatus['goods_id']   = $product['goods_id'];
-            $pStatus['option_id']  = isset($product['option_id']) ? $product['option_id'] : -1;
+            $pStatus['option_id']  = isset($product['option_id']) ? $product['option_id'] : 0;
             $pStatus['name']       = $product['name'];
             $pStatus['quantity']   = $oCount;
             $pStatus['totalPrice'] = $product['price'] * $oCount;
@@ -135,6 +136,7 @@ class Order
                 $pStatus['haveStock'] = true;
             }
         }
+
         return $pStatus;
     }
     /**
@@ -194,14 +196,9 @@ class Order
             $order->otherGoodsPrice = $this->postData['otherGoodsPrice'];     //辅销品价格
             $order->shippingPrice   = $this->postData['shippingPrice'];     //运费
             $order->total           = $order->mainGoodsPrice + $order->otherGoodsPrice + $order->shippingPrice;     //总计
-
             //促销活动
-            if (!empty($this->postData['promotionId'])) {
-                $promotionIds = [];
-                foreach ($this->postData['promotionId'] as $item) {
-                    array_push($promotionIds, $item['id']);
-                }
-                $order->promotion = Promotion::all($promotionIds)->hidden(['id'])->toJson();
+            if (!empty($this->postData['promotion'])) {
+                $order->promotion = json_encode($this->postData['promotion']);
             }
 
             $order->save();
@@ -212,10 +209,15 @@ class Order
             foreach ($snap['pStatus'] as &$p) {
                 $p['order_id'] = $orderID;
             }
-
             $orderProduct = new OrderProduct();
             $orderProduct->saveAll($snap['pStatus']);
-            
+
+            //删除购物车商品
+            $cartModel = new Cart();
+            foreach ($snap['pStatus'] as $v) {
+                $cartModel->where(['uid'=>$this->uid,'goods_id'=>$v['goods_id'],'goods_option_id'=>$v['option_id']])->delete();
+            }
+
             Db::commit();
             return [
                 'order_no'    => $orderNo,
@@ -265,7 +267,7 @@ class Order
             'isMainGoods'  => null,
             'image'        => null,
             'name'         => null,
-            'option_id'    => -1,
+            'option_id'    => 0,
             'option_name'  => null,
             'quantity'     => $oCount,
             'price'        => 0,
@@ -276,7 +278,7 @@ class Order
         $pStatus['isMainGoods']  = $product['isMainGoods'];
         $pStatus['image']        = $product['image'];
         $pStatus['name']         = $product['name'];
-        $pStatus['option_id']    = isset($product['option_id']) ? $product['option_id'] : -1;
+        $pStatus['option_id']    = isset($product['option_id']) ? $product['option_id'] : 0;
         $pStatus['option_name']  = isset($product['option_name']) ? $product['option_name'] :'';
         $pStatus['quantity']     = $oCount;
         $pStatus['price']        = $product['price'];

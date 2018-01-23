@@ -16,11 +16,11 @@ use think\Controller;
 
 class Order extends BaseController
 {
-    protected $beforeActionList = [
-        'checkExclusiveScope' => ['only' => 'createOrder,cancelOrder,receiveOrder'],
-        'checkPrimaryScope'   => ['only' => 'getDetail,getSummaryByUser'],
-        'checkSuperScope'     => ['only' => 'delivery,getSummary']
-    ];
+//    protected $beforeActionList = [
+//        'checkExclusiveScope' => ['only' => 'createOrder,cancelOrder,receiveOrder'],
+//        'checkPrimaryScope'   => ['only' => 'getDetail,getSummaryByUser'],
+//        'checkSuperScope'     => ['only' => 'delivery,getSummary']
+//    ];
 
     /**
      * 下单
