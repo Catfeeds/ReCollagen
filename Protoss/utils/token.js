@@ -39,7 +39,6 @@ class Token {
   }
 
   getTokenFromServer(callBack) {
-    
     var that = this;
     wx.login({
       success: function (res) {

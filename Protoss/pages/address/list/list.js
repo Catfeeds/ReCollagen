@@ -90,9 +90,9 @@ Page({
   edit: function (event) {
     var that = this,
       id = adrList.getDataSet(event, 'id');
-    wx.navigateTo({
-      url: '../edit/edit?type=edit&id=' + id
-    });
+      wx.navigateTo({
+        url: '../edit/edit?type=edit&id=' + id
+      });
   },
 
   /*删除收获地址*/

@@ -2,25 +2,36 @@
     <view class="form-box">
         <form bindsubmit="formSubmit">
         <view class="section">
-          <input name="name" value="{{addressInfo.name}}" auto-focus placeholder="姓名" bindinput="bindName" />
+          <input name="uname" value="{{userData.uname}}" auto-focus placeholder="姓名" bindinput="bindName" />
         </view>
         <view class="section">
-          <input type="number" value="{{addressInfo.telephone}}" name="mobile" placeholder="手机号码" bindinput="bindPhone" />
+          <input name="uwecat" value="{{userData.uwecat}}" placeholder="微信号" bindinput="bindUwecat" />
         </view>
         <view class="section">
-          <text class='title-box'>地区:</text>
-          <picker class='view-box' mode="region" bindchange="bindRegionChange" value="{{region}}" range="{{customItem}}" >
-            <view>{{region}}</view>
+          <text class='title-box'>性别:</text>
+          <picker  class='view-box' bindchange="bindUsexChange" value="{{index}}" range="{{sexArray}}">
+            <view>{{sexArray[index]}}</view>
           </picker>
         </view>
         <view class="section">
-          <input name="detail" value="{{addressInfo.address}}" placeholder="详细地址、如街道、楼牌号等" bindinput="bindDetail" />
+          <input type="number" name="utel" value="{{userData.utel}}" placeholder="电话" bindinput="bindUtel" />
         </view>
-        <view class="set-default" bindtap="setDefault">
-				<icon type="{{addressInfo.is_default == 1 ? 'success_circle' : 'circle'}}"/>
-				<text>默认地址</text>
+        <view class="section">
+          <input name="uemail" value="{{userData.uemail}}" placeholder="邮箱" bindinput="bindUemail" />
         </view>
-        <button  class="submit-btn" formType="submit">保存</button>
+        <view class="section">
+          <input name="IDcode" value="{{userData.IDcode}}" placeholder="身份证" bindinput="bindIDcode" />
+        </view>
+        <view class="section">
+          <input name="up_name" value="{{userData.up_name}}" placeholder="推荐人" bindinput="bindUpName" />
+        </view>
+        <view class="section">
+          <input name="up_wecat" value="{{userData.up_wecat}}" placeholder="推荐人微信号" bindinput="bindUpWecat" />
+        </view>
+        <button  class="submit-btn {{userData.checked==1?'disabled':''}}" formType="submit">提交</button>
       </form>
     </view>
 </view>
+<loading hidden="{{loadingHidden}}">
+  加载中...
+</loading>

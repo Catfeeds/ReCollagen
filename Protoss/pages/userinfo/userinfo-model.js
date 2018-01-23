@@ -1,32 +1,15 @@
 
 import { Base } from '../../utils/base.js'
 
-class AdrEdit extends Base{
+class UserInfo extends Base{
     constructor() {
         super();
     }
 
-    /*保存保存地址*/
-    createAddress(data,callback){
-        var param={
-            url: 'address/create',
-            type:'post',
-            data:data,
-            sCallback:function(res){
-                callback && callback(res);
-            },
-            eCallback(res){
-                callback && callback(res);
-            }
-        };
-        this.request(param);
-    }
-
-    /*更新保存地址*/
-    updateAddress(data, callback) {
-      console.log(data)
+    /*更新注册账号*/
+    _updateUserInfo(data, callback) {
       var param = {
-        url: 'address/update',
+        url: 'user/update',
         type: 'post',
         data: data,
         sCallback: function (res) {
@@ -39,21 +22,16 @@ class AdrEdit extends Base{
       this.request(param);
     }
 
-    /*删除地址*/
-    delAddress(id, callback) {
+    /*获取我的账户所有信息*/
+    getUserAccount(callback) {
       var param = {
-        url: 'address/del',
-        type: 'post',
-        data: { id: id },
-        sCallback: function (res) {
-          callback && callback(res);
-        },
-        eCallback(res) {
-          callback && callback(res);
+        url: 'account',
+        sCallback: function (data) {
+          callback && callback(data);
         }
       };
       this.request(param);
     }
 }
 
-export { AdrEdit }
+export { UserInfo }

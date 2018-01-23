@@ -1,11 +1,13 @@
 import {Address} from '../../utils/address.js';
 import { Cart } from '../cart/cart-model.js';
 import {Order} from '../order/order-model.js';
+import { UserInfo } from '../userinfo/userinfo-model.js';
 import {My} from '../my/my-model.js';
 
 var address=new Address();
 var cart = new Cart();
 var order=new Order();
+var userInfo = new UserInfo();
 var my=new My();
 
 Page({
@@ -29,7 +31,7 @@ Page({
             });
         });
 
-        my.getUserAccount((data) => {
+        userInfo.getUserAccount((data) => {
           that.setData({
             UserAccount: data
           });
@@ -161,8 +163,11 @@ Page({
         });
     },
     
+    /*完善用户资料*/
     userinfo:function(event) {
-        
+      wx.navigateTo({
+        url: '../userinfo/userinfo?type=my'
+      });
     },
 
     /*显示订单的具体信息*/

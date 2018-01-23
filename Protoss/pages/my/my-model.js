@@ -16,12 +16,6 @@ class My extends Base{
                 wx.getUserInfo({
                     success: function (res) {
                         typeof cb == "function" && cb(res.userInfo);
-
-                        //将用户昵称 提交到服务器
-                        if(!that.onPay) {
-                            that._updateUserInfo(res.userInfo);
-                        }
-
                     },
                     fail:function(res){
                         typeof cb == "function" && cb({
@@ -33,36 +27,6 @@ class My extends Base{
             },
         })
     }
-
-    /*更新用户信息到服务器*/
-    _updateUserInfo(res){
-        var nickName=res.nickName;
-        delete res.avatarUrl;  //将昵称去除
-        delete res.nickName;  //将昵称去除
-        var allParams = {
-            url: 'user/wx_info',
-            data:{nickname:nickName,extend:JSON.stringify(res)},
-            type:'post',
-            sCallback: function (data) {
-            }
-        };
-        this.request(allParams);
-
-    }
-
-    
-    /*获取我的账户金额*/
-    getUserAccount(callback) {
-      var param = {
-        url: 'account',
-        sCallback: function (data) {
-          callback && callback(data);
-        }
-      };
-      this.request(param);
-    }
 }
-
-
 
 export {My}

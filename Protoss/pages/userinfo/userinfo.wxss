@@ -14,7 +14,7 @@ form{
 .section input{
     flex: 1;
     font-size: 28rpx;
-    color:#7C7C7C;
+    color:#333;
     padding: 20rpx 0;
 }
 .title-box{
@@ -28,23 +28,16 @@ form{
     font-size: 28rpx;
     padding: 20rpx 0;
     color:#7C7C7C;
+    text-align: right;
+    padding-right: 10px;
 }
-
-/*设为默认地址*/
-.set-default {
-	display: flex;
-	align-items: center;
-  margin-left:30rpx;
-  margin-right:30rpx;
-  margin-top:20rpx; 
-}
-.set-default text {
-	font-size: 27rpx;
-	margin-left: 6rpx;
-}
-
 .submit-btn{
-    margin: 30rpx;
+    color: #fff;
     line-height:3;
     font-size:28rpx;
+    margin: 30rpx;
+    background-color: #00a1e9;
+}
+.submit-btn.disabled{
+    background-color: #dedede;
 }
