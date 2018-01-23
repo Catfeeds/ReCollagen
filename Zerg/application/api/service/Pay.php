@@ -2,6 +2,7 @@
 
 namespace app\api\service;
 
+use app\api\model\FinanceRecord;
 use app\api\model\Order as OrderModel;
 use app\api\service\Order as OrderService;
 use app\api\model\User as UserModel;
@@ -117,6 +118,7 @@ class Pay
         {
             throw new OrderException();
         }
+
 //        $currentUid = Token::getCurrentUid();
         if(!Token::isValidOperate($order->uid))
         {
@@ -148,7 +150,7 @@ class Pay
         $status = $service->checkOrderStock($this->orderID);
 
         $uid  = Token::getCurrentUid();
-        // $uid  = 2;
+//         $uid  = 2;
         $user = UserModel::get($uid);
         $order = OrderModel::get($this->orderID);
         $mainAccountNeedPay   = $order['mainGoodsPrice'];
@@ -160,12 +162,12 @@ class Pay
         Db::startTrans();
         try {
             //修改订单状态
-            OrderModel::where('order_id', '=', $this->orderID)->update(['order_status'=>2,'pay_time'=>2,'mainPay'=>$mainAccountNeedPay,'secondPay'=>$secondAccountNeedPay]);
+            OrderModel::where('order_id', '=', $this->orderID)->update(['order_status'=>2,'pay_time'=>date('Y-m-d H:i:s'),'mainPay'=>$mainAccountNeedPay,'secondPay'=>$secondAccountNeedPay]);
             //减库存
             foreach ($status['pStatusArray'] as $singlePStatus) {
                 if ($singlePStatus['option_id'] > 0) {
                     //商品有多选项，减对应选项的商品库存
-                    ProductOption::where('goods_id', '=', $singlePStatus['goods_id'])->setDec('stock', $singlePStatus['quantity']);
+                    ProductOption::where(['goods_option_id'=>$singlePStatus['option_id'],'goods_id'=>$singlePStatus['goods_id']])->setDec('stock', $singlePStatus['quantity']);
                 }else{
                     //商品无选项，直接减
                     ProductModel::where('goods_id', '=', $singlePStatus['goods_id'])->setDec('stock', $singlePStatus['quantity']);
@@ -174,6 +176,11 @@ class Pay
             //减账户金额
             UserModel::where(['uid'=>$uid])->setDec('mainAccount',$mainAccountNeedPay);
             UserModel::where(['uid'=>$uid])->setDec('secondAccount',$secondAccountNeedPay);
+
+            //扣减金额写入财务流水
+            $recordModel = new FinanceRecord();
+            $mainAccountNeedPay > 0 && $recordModel->insert(['uid' => $uid,'amount' => '-'.$mainAccountNeedPay,'balance' => $user['mainAccount']-$mainAccountNeedPay,'addtime' => time(),'reason' => '订单扣减（订单号：'.$order['order_num_alias'].'）','rectype' => 1]);
+            $secondAccountNeedPay > 0 && $recordModel->insert(['uid' => $uid,'amount' => '-'.$secondAccountNeedPay,'balance' => $user['secondAccount']-$secondAccountNeedPay,'addtime' => time(),'reason' => '订单扣减（订单号：'.$order['order_num_alias'].'）','rectype' => 2]);
 
             Db::commit();
             return ['errorCode' => 0,'msg'=>'支付成功'];

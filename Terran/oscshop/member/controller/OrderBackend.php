@@ -60,6 +60,7 @@ class OrderBackend extends AdminBase {
                 $this->error('编辑失败');
             }
         }
+
         $info = osc_order()->order_info(input('param.id/d'));
 
         $info['order']['transportInfo'] = '';
@@ -69,6 +70,7 @@ class OrderBackend extends AdminBase {
             //查询物流进度
             $info['order']['transportInfo'] = getTransInfo($shippingCode, $info['order']['shipping_num']);
         }
+
         $info['order']['promotion'] = json_decode($info['order']['promotion'], true);
 
         $this->assign('data', $info);

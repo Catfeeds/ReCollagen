@@ -138,7 +138,7 @@
                         <td colspan="3" class="right">促销活动</td>
                         <td class="right">
                             {volist name="data['order']['promotion']" id="vo"}
-                            <font color="red">{$vo.name}</font><br/>
+                            <font color="red">{$vo.name}（{if $vo['type'] == 2}返现金额{elseif $vo['type'] == 3}赠送商品{else /}优惠金额{/if}:{$vo.free}）</font><br/>
                             {/volist}
                         </td>
                     </tr>
