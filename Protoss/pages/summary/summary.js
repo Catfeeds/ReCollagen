@@ -18,7 +18,7 @@ Page({
 
     /*获金额消费记录*/
     var that = this;
-    summary.getSummary(10, this.data.pageIndex, (res) => {
+    summary.getSummary(this.data.pageIndex, (res) => {
       var data = res.data;
       that.setData({
         loadingHidden: true
@@ -36,9 +36,6 @@ Page({
       callback && callback();
     });
   },
-
-   
-
 
   /*下拉刷新页面*/
   onReachBottom: function () {

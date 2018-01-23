@@ -41,8 +41,8 @@
         <view class="item-middle">
           <view>{{item.name}}</view>
           <view>￥{{item.price}}</view>
-          <view wx:if="{{item.option_name}}">规格：
-             {{item.option_name}}
+          <view wx:if="{{item.option_name}}">
+          规格：{{item.option_name}}
           </view>
         </view>
         <view class="item-right">
@@ -73,7 +73,7 @@
     <view class="product-promotionzj">
       <view>主商品价格：{{mainGoodsPrice}}元</view>
       <view>辅销品价格：{{otherGoodsPrice}}元</view>
-      <view wx:if="{{shippingtransId}}">运费：{{shippingPrice}}元</view>
+      <view>运费：{{shippingPrice}}元</view>
     </view>
   </view>
 
@@ -82,6 +82,6 @@
     <view class="total-account">
       实付:￥{{total}}
     </view>
-    <view wx:if="{{orderStatus<=1}}" class="pay {{!addressInfo?'disabled':''}}" ontap="pay">去付款</view>
+    <view class="pay {{!addressInfo?'disabled':''}}" ontap="pay">去付款</view>
   </view>
 </view>

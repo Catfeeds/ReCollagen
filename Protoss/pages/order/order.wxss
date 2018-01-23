@@ -150,6 +150,7 @@
 
 .product-promotion{
     display: flex;
+    align-items: center;
     justify-content:space-between;
 }
 .product-promotion>view{

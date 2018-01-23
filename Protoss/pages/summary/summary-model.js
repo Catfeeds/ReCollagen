@@ -9,9 +9,9 @@ class Summary extends Base{
     }
     
     /*获取消费记录*/
-    getSummary(page, pageIndex, callback) {
+    getSummary(pageIndex, callback) {
       var param = {
-        url: 'finance_record/getSummary/' + page + '/' + pageIndex,
+        url: 'user/record/' + pageIndex,
         sCallback: function (data) {
           callback && callback(data);
         }
@@ -19,7 +19,5 @@ class Summary extends Base{
       this.request(param);
     }
 }
-
-
 
 export { Summary }

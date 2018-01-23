@@ -8,52 +8,41 @@ var adrList = new AdrList();
 
 Page({
         data: {
-            addressInfo:null,
-            shippingPrice:0
+            addressInfo:null
         },
 
         onLoad: function (options) {
-          var that = this;
-          cart.getCartDataFromLocal(1,(data) => {
-            that.setData({
-              productsArr: data,
-              mainGoodsPrice: (this._calcTotalMainAndCounts(data.goodsList, 1).account - data.promotion1.free - data.promotion4.free).toFixed(2),
-              otherGoodsPrice: this._calcTotalMainAndCounts(data.goodsList, 0).account,
-              orderStatus: 0
-            });
-          })
           adrList.execSetStorageSync(0);
         },
 
         onShow:function(){
           var that = this;
-
-          /*显示收获地址*/
-          adrList.getAddressDataFromLocal((id) => {
-            that._addressInfo(id);
-
-            /*获取商品重量*/
-            var weight = that.getResultweight(that.data.productsArr);
-            /*获取运费信息*/
-            order.getTransFee(weight, id, (res) => {
-              /*设置总参数*/
-              that.setData({
-                shippingPrice: res.fee,
-                shippingtransId: res.transId,
-              });
-
-              /*获取商品总价格*/
-              var ResultTotal = that.getResultTotal(that.data.mainGoodsPrice, that.data.otherGoodsPrice, that.data.shippingPrice);
-              that.setData({
-                total: ResultTotal
-              });
-
-
+          cart.getCartDataFromLocal(1, (data) => {
+            that.setData({
+              productsArr: data,
+              mainGoodsPrice: (that._calcTotalMainAndCounts(data.goodsList, 1).account - data.promotion1.free - data.promotion4.free).toFixed(2),
+              otherGoodsPrice: that._calcTotalMainAndCounts(data.goodsList, 0).account,
+              orderStatus:0
             });
+
+            /*显示收获地址*/
+            adrList.getAddressDataFromLocal((id) => {
+              that._addressInfo(id);
+              /*获取商品重量*/
+              var weight = that.getResultweight(data.goodsList).weight;
+              /*获取运费信息*/
+              order.getTransFee(weight, id, (res) => {
+                /*设置总参数*/
+                that.setData({
+                  shippingPrice: res.fee,
+                  transId: res.transId,
+                  total: (parseFloat(that.data.mainGoodsPrice) + parseFloat(that.data.otherGoodsPrice) + parseFloat(res.fee)).toFixed(2)
+                });
+              });
+            })
+
           })
-
         },
-
 
         /*
         * 计算主、辅商品总金额
@@ -93,6 +82,17 @@ Page({
           });
         },
 
+        /*计算商品总重量*/
+        getResultweight: function (data) {
+          var len = data.length,
+            weight = 0;
+          for (let i = 0; i < len; i++) {
+            weight += parseInt(data[i].weight) * data[i].count / 1000;
+          }
+          return {
+            weight: (weight).toFixed(2)
+          }
+        },
 
         /*下单和付款*/
         pay:function(){
@@ -100,11 +100,7 @@ Page({
                 this.showTips('下单提示','请填写您的收货地址');
                 return;
             }
-            if(this.data.orderStatus==0){
-                this._firstTimePay();
-            }else{
-                this._oneMoresTimePay();
-            }
+            this._firstTimePay();
         },
 
         /*第一次支付*/
@@ -112,14 +108,14 @@ Page({
           var orderInfo = {},
               goodsArr=[],
               PromoArr = [],
-              procuctInfo=this.data.productsArr,
+              procuctInfo = this.data.productsArr.goodsList,
               PromotionInfo=this.data.PromotionInfo,
               order=new Order();
               for(let i=0;i<procuctInfo.length;i++){
                 goodsArr.push({
                     goods_id: procuctInfo[i].goods_id,
-                    quantity:procuctInfo[i].counts,
-                    option_id: procuctInfo[i].option_id
+                    quantity: procuctInfo[i].count,
+                    option_id: procuctInfo[i].goods_option_id
                 })
               }
               if (PromotionInfo){
@@ -195,11 +191,6 @@ Page({
           });
         },
 
-        /* 再次次支付*/
-        _oneMoresTimePay:function(){
-            this._execPay(this.data.id);
-        },
-
         /*
         *开始支付
         * params:
@@ -212,7 +203,6 @@ Page({
                 that.showTips('支付提示', statusCode.msg);
                 return;
               }
-              that.deleteProducts(); //将已经下单的商品从购物车删除
               wx.navigateTo({
                   url: '../pay-result/pay-result?id=' + id + '&from=order'
               });
