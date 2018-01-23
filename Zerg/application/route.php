@@ -43,6 +43,7 @@ Route::group('api/:version/theme',function(){
 //User
 Route::get('api/:version/account','api/:version.User/getUserData');          //获取用户账户信息
 Route::post('api/:version/user/update','api/:version.User/editUserData');       //修改用户信息
+Route::post('api/:version/user/upload','api/:version.User/uploadUserPic');       //修改用户信息
 Route::get('api/:version/user/record/:page','api/:version.User/getAccountRecord');    //分页获取用户财务流水
 
 //Product
