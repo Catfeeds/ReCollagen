@@ -32,8 +32,8 @@ class Order extends BaseController
         (new OrderPlace())->goCheck();
         $postData = input('post.');
         $products = input('post.goodsArrInfo/a');
-//        $uid      = Token::getCurrentUid();
-         $uid      = 2;
+        $uid      = Token::getCurrentUid();
+//         $uid      = 2;
 
         $order  = new OrderService();
         $status = $order->place($uid, $products, $postData);
@@ -160,6 +160,7 @@ class Order extends BaseController
     {
         (new IDMustBePositiveInt())->goCheck();
         $uid = Token::getCurrentUid();
+//        $uid = 2;
 
         $order   = new OrderService();
         $success = $order->receive($id, $uid);
