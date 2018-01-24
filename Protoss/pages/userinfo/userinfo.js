@@ -11,9 +11,9 @@ Page({
       IDcode: '',
       up_name: '',
       up_wecat: '',
-      IDcode_pic:'../../imgs/icon/IDcode_pic_b.png',
-      IDcode_pic_b: null,
-      IDcode_pic_h: null,
+      IDcode_pic: '',
+      IDcode_pic_b: '',
+      IDcode_pic_h: '',
     },
     loadingHidden: false,
     sexArray: ['男', '女'],
@@ -134,41 +134,54 @@ Page({
     })
   },
 
-  chooseImageTap: function () {
-    let _this = this;
+  chooseImageTap: function (event) {
+    let _this = this,
+      index = userInfo.getDataSet(event, 'index');
     wx.showActionSheet({
       itemList: ['从相册中选择', '拍照'],
       itemColor: "#f7982a",
       success: function (res) {
         if (!res.cancel) {
           if (res.tapIndex == 0) {
-            _this.chooseWxImage('album')
+            _this.chooseWxImage('album', index)
           } else if (res.tapIndex == 1) {
-            _this.chooseWxImage('camera')
+            _this.chooseWxImage('camera', index)
           }
         }
       }
     })
-
   },
-  chooseWxImage: function (type) {
+  chooseWxImage: function (type, index) {
     let _this = this;
     wx.chooseImage({
       sizeType: ['original', 'compressed'],
       sourceType: [type],
       success: function (res) {
-        var tempFilePaths = res.tempFilePaths
+        var tempFilePaths = res.tempFilePaths[0];
         wx.uploadFile({
           url: 'https://wx.edesoft.cn/api/v1/user/upload',
-          filePath: tempFilePaths[0],
+          filePath: tempFilePaths,
           name: 'file',
           formData: {
             'user': 'test'
           },
           success: function (res) {
-           
             var data = res.data
-            console.log(data)
+            if (index==1){
+              _this.setData({
+                'userData.IDcode_pic': tempFilePaths
+              })
+            }
+            if (index == 2) {
+              _this.setData({
+                'userData.IDcode_pic_b': tempFilePaths
+              })
+            }
+            if (index == 3) {
+              _this.setData({
+                'userData.IDcode_pic_h': tempFilePaths
+              })
+            }
           }
         })
       }

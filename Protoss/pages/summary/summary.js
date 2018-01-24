@@ -6,7 +6,8 @@ Page({
   data: {
     pageIndex: 1,
     isLoadedAll: false,
-    loadingHidden: false
+    loadingHidden: false,
+    summaryData: [],
   },
   onLoad: function () {
     this._loadData();
@@ -14,8 +15,6 @@ Page({
 
   /*加载所有数据*/
   _loadData: function (callback) {
-    var that = this;
-
     /*获金额消费记录*/
     var that = this;
     summary.getSummary(this.data.pageIndex, (res) => {
@@ -23,11 +22,12 @@ Page({
       that.setData({
         loadingHidden: true
       });
+      console.log(data)
       if (data.length > 0) {
-        that.data.push.apply(that.data, data);  //数组合并                
+        that.data.summaryData.push.apply(that.data.summaryData, data);  //数组合并                
         that.setData({
           pageIndex: res.current_page,
-          summaryData: res.data
+          summaryData: that.data.summaryData
         });
       } else {
         that.data.isLoadedAll = true;  //已经全部加载完毕

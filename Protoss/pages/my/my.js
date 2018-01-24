@@ -1,10 +1,10 @@
 import { Cart } from '../cart/cart-model.js';
-import { Order } from '../order-details/order-details-model.js';
+import { OrderDetails } from '../order-details/order-details-model.js';
 import { UserInfo } from '../userinfo/userinfo-model.js';
 import {My} from '../my/my-model.js';
 
 var cart = new Cart();
-var order=new Order();
+var order = new OrderDetails();
 var userInfo = new UserInfo();
 var my=new My();
 
@@ -121,6 +121,8 @@ Page({
         url: '../transinfo/transinfo?id=' + id
       });
     },
+
+    
 
     /*取消订单*/
     cancel: function (event) {

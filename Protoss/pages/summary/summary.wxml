@@ -2,16 +2,18 @@
     <view class="summary-main" >
       <block wx:for="{{summaryData}}">
       <view class='item-summary'>
-        <view>时间:{{item.addtime}}</view>
+        <view>时间:{{time.formatTime(item.addtime,'Y/M/D h:m:s')}}</view>
         <view> 
           <view style='padding-right:40rpx;'>金额:<text style='color:red;'>{{item.amount}}</text></view>
           <view>余额:{{item.balance}}</view>
         </view>
-        <view>款项类型:{{item.rectype}}</view>
+        <view>款项类型:
+          <block wx:if="{{item.rectype==1}}">主账户</block>
+          <block wx:else>小金库</block>
+        </view>
         <view style='align-items: inherit;'>
          <view style='white-space:nowrap;'>操作说明:</view>
-         <view wx:if="{{item.reason==1}}">主账户</view>
-         <view wx:else>小金库</view>
+         <view>{{item.reason}}</view>
         </view>
       </view>
      </block>
