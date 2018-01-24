@@ -19,6 +19,12 @@ class FinanceRecord extends BaseModel
         $pagingData = self::where(['uid' => $uid])->order('itemid desc')
             ->paginate($size, false, ['page' => $page]);
 
+        if ($pagingData) {
+            foreach ($pagingData as $key => $v) {
+                $pagingData[$key]['addtime'] = date('Y-m-d H:i:s',$v['addtime']);
+            }
+        }
+
         return $pagingData;
     }
 }
