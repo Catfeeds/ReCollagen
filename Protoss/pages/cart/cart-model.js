@@ -25,6 +25,26 @@ class Cart extends Base{
       this.request(param);
     }
 
+    /*添加商品到购物车*/
+    add(goods_id, option_id, count, callback) {
+      var allParams = {
+        url: 'cart/add',
+        type: 'post',
+        data: {
+          goods_id: goods_id,
+          goods_option_id: option_id,
+          count: count
+        },
+        sCallback: function (data) {
+          callback && callback(data);
+        },
+        eCallback: function () {
+          callback && callback(data);
+        }
+      };
+      this.request(allParams);
+    }
+
     /*点击增加或减少购物车商品数量*/
     addCutCounts(goods_id, option_id, type, callback) {
       var allParams = {

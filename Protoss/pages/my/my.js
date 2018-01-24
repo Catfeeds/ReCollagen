@@ -122,6 +122,74 @@ Page({
       });
     },
 
+    /*重新购买订单里的商品*/
+    addCart: function (event) {
+      var that = this,
+        id = order.getDataSet(event, 'id'),
+        index = order.getDataSet(event, 'index');
+      this.showTipsReturn('提示', '你确定要重新购买吗？', (statusConfirm) => {
+        if (statusConfirm) {
+          cart.getCartDataFromLocal('all', (data) => {
+            if (data.goodsList == "") {
+              that.addToCart(id, index);
+            }
+            else 
+            {
+              that.showTipsReturn('提示', '购物车里已有商品，需清空之后才能再次购买？', (statusConfirm) => {
+                if (statusConfirm) {
+                  
+                  if (cartData.length < 1) {
+                    that.addToCart(id, index);
+                  }
+                  else
+                  {
+                    that.showTips('提示', '清空购物车失败');
+                  }
+                }
+              })
+            }
+          })
+        }
+      })
+    },
+
+    /*将商品添加到购物车*/
+    addToCart: function (id,index) {
+      var that = this;
+      order.getOrderInfo(id, (data) => {
+        var item,
+          arr = data.products;
+        for (let i = 0; i < arr.length; i++) {
+          item = arr[i];
+          cart.add(item.goods_id, item.option_id, item.counts, (data) => {
+            if ((i + 1) == arr.length) {
+              // order.cancel(id, (statusCode) => {
+              //   if (statusCode.errorCode != 0) {
+              //     that.showTips('订单提示', statusCode.msg);
+              //     return;
+              //   }
+                that.data.orderArr[index].order_status = 5;
+                that.data.orderArr.splice(index, 1);
+                that.setData({
+                  orderArr: that.data.orderArr
+                });
+                wx.showModal({
+                  title: '',
+                  content: '已加入到购物车',
+                  showCancel: false,
+                  success: function (res) {
+                    wx.switchTab({
+                      url: '/pages/cart/cart'
+                    });
+                  }
+                });
+              // });
+            }
+          });
+        }
+      });
+    },
+
     
 
     /*取消订单*/
