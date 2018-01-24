@@ -26,6 +26,31 @@ Callback: 编码一律utf-8
         "otherGoodsPrice"       :  "辅销品价格", 
         "shippingPrice"         :  "运费价格", 
         "total"                 :  "总计", 
+        ["promotion"] =&gt; array(4) {
+            [0] =&gt; array(3) {
+              ["name"] =&gt; string(21) "满200送精美礼品"
+              ["type"] =&gt; int(3)
+              ["free"] =&gt; array(2) {
+                [0] =&gt; string(14) "梨花带雨*1"
+                [1] =&gt; string(14) "夏日芒果*2"
+              }
+            }
+            [1] =&gt; array(3) {
+              ["name"] =&gt; string(13) "满100打8折"
+              ["type"] =&gt; int(1)
+              ["free"] =&gt; string(4) "59.4"
+            }
+            [2] =&gt; array(3) {
+              ["name"] =&gt; string(14) "满200返现30"
+              ["type"] =&gt; int(2)
+              ["free"] =&gt; string(2) "60"
+            }
+            [3] =&gt; array(3) {
+              ["name"] =&gt; string(17) "满200第3件8折"
+              ["type"] =&gt; int(4)
+              ["free"] =&gt; string(4) "21.5"
+            }
+        }
         "create_time"           :  "下单时间", 
 
         "products" : {       
@@ -52,12 +77,7 @@ Callback: 编码一律utf-8
                 "discount":66
             }]
 
-        },
-
-        "promotionName" :  {
-            "促销活动名称(空则无促销活动)"
         }
-
 
     }
 

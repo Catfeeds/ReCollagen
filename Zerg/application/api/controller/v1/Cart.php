@@ -61,6 +61,23 @@ class Cart extends BaseController
         }
         return new SuccessMessage();
     }
+    /**
+     * 清空购物车
+     * @return SuccessMessage
+     * @throws \app\lib\exception\ParameterException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function delAllByUserId(){
+
+        $currentUid = TokenService::getCurrentUid();
+//        $currentUid = 3;
+
+        CartModel::where(['uid'=>$currentUid])->delete();
+
+        return new SuccessMessage();
+    }
 
     /**
      * 点击增加或减少商品数量
