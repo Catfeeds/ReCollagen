@@ -56,7 +56,6 @@ class Order extends BaseModel
      */
     public static function getDetail($id)
     {
-
         $orderDetail = self::with('products')->find($id);
         if ($orderDetail) {
             foreach ($orderDetail['products'] as $key => $product ) {
@@ -71,9 +70,17 @@ class Order extends BaseModel
                 $orderDetail['products'][$key]['options'] = $productDetail['options']; 
                 $orderDetail['products'][$key]['discounts'] = $productDetail['discounts']; 
             }
+
             if (!empty($orderDetail['promotion'])) {
-                $promotion                    = json_decode($orderDetail['promotion'], true);
-                $orderDetail['promotionName'] = array_column($promotion, 'name');
+                $promotion = json_decode($orderDetail['promotion'], true);
+                if ($promotion) {
+                    foreach ($promotion as $key => $v) {
+                        if ($v['type'] == 3) {
+                            $promotion[$key]['free'] = explode('|||',$v['free']);
+                        }
+                    }
+                }
+                $orderDetail['promotion'] = $promotion;
             }
         }
 

@@ -57,7 +57,7 @@ class Order extends BaseController
             throw new OrderException();
         }
         $orderDetail = $orderDetail
-            ->hidden(['pay_subject_img', 'pay_subject', 'mainPay', 'secondPay', 'promotion'])->toArray();
+            ->hidden(['pay_subject_img', 'pay_subject', 'mainPay', 'secondPay'])->toArray();
 
         return $orderDetail;
     }

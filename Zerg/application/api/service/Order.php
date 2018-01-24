@@ -186,12 +186,12 @@ class Order
             $order->pay_subject     = $snap['snapName'];    //快照商品名称
             $order->uid             = $this->uid;
             //收货人信息
-            $userAddress = $this->getUserAddress();
+            $userAddress = $this->getUserAddress($this->postData['address_id']);
             $order->shipping_name   = $userAddress['name'];
             $order->shipping_tel    = $userAddress['telephone'];
             $order->shipping_addr   = $userAddress['province'].$userAddress['city'].$userAddress['country'].$userAddress['address'];
 
-            $order->dispatch_id     = $this->getDispatchIdByAddr();     //发货仓id
+            $order->dispatch_id     = $this->getDispatchIdByAddr($this->postData['address_id']);     //发货仓id
             $order->shipping_method = Db::name('transport')->getFieldById($this->postData['transId'],'title'); //物流公司
             $order->mainGoodsPrice  = $this->postData['mainGoodsPrice'];     //主商品价格
             $order->otherGoodsPrice = $this->postData['otherGoodsPrice'];     //辅销品价格
@@ -289,8 +289,8 @@ class Order
     /**
      * 获取用户的收货地址
      */
-    private function getUserAddress(){
-        $userAddress = UserAddress::get($this->postData['address_id']);
+    private function getUserAddress($address_id){
+        $userAddress = UserAddress::get($address_id);
         if (!$userAddress) {
             throw new UserException(
                 [
@@ -303,13 +303,13 @@ class Order
     /**
      * 根据用户地址匹配发货仓id
      */
-    private function getDispatchIdByAddr(){
-        $userAddress = $this->getUserAddress();
+    private function getDispatchIdByAddr($address_id){
+        $userAddress = $this->getUserAddress($address_id);
         $dispatchs = Dispatch::all()->toArray();
 
         $dispath_id = '';
         foreach ($dispatchs as $key => $v) {
-            if (strpos($v['top_area_id'],",".$userAddress['province_id'].",") !== false){
+            if (strpos($v['area_id'],",".$userAddress['city_id'].",") !== false){
                 $dispath_id = $v['id'];
             }
         }
@@ -445,6 +445,7 @@ class Order
      * 根据商品重量匹配物流公司和运费
      */
     public function getTransFee($data){
+
         $rule = [
             ['weight','require|float','商品重量不能为空|商品重量必须是数字'],
             ['address_id','require|number','地址id不能为空|地址id必须是数字']
@@ -481,13 +482,13 @@ class Order
         }
 
         //计算匹配到的物流公司需要的运费和对应的物流公司id
-        $feeArr = $transIdArr = [];
+        $feeArr = $transIdArr = $transTitleArr = [];
         $fee = $transId = 0;
 
         if (!empty($supportTrans)) {
             foreach ($supportTrans as $key => $v) {
-
                 $transIdArr[] = $v['transport_id'];
+                $transTitleArr[] = $v['transport_title'];
 
                 if ($data['weight'] <= $v['snum']){
                     //在首重数量范围内
@@ -499,13 +500,13 @@ class Order
             }
             $fee     = min($feeArr);
             $transId = $transIdArr[array_keys($feeArr,min($feeArr))[0]];
-
+            $transTitle = $transTitleArr[array_keys($feeArr,min($feeArr))[0]];
         }else{
             //如果没有设置配送到用户地址的物流公司，选择默认的全国运费
             $transports2 = Transport::all(['is_default'=>1])->toArray();
             foreach ($transports2 as $key => $v) {
-
                 $transIdArr[] = $v['transport_id'];
+                $transTitleArr[] = $v['transport_title'];
 
                 if ($data['weight'] <= $v['snum']){
                     //在首重数量范围内
@@ -517,13 +518,21 @@ class Order
             }
             $fee     = min($feeArr);
             $transId = $transIdArr[array_keys($feeArr,min($feeArr))[0]];
-
+            $transTitle = $transTitleArr[array_keys($feeArr,min($feeArr))[0]];
         }
+
         $trans['fee'] = $fee;
         $trans['transId'] = $transId;
+        $trans['transTitle'] = $transTitle;
+        //计算发货仓
+        $trans['dispatchId'] = $this->getDispatchIdByAddr($data['address_id']);
+        $trans['dispatchTitle'] = '';
+        if ($trans['dispatchId']) {
+            $dispatch = Dispatch::get($trans['dispatchId']);
+            $trans['dispatchTitle'] = $dispatch['dispatch_title'];
+        }
 
         return $trans;
-        // halt('费用：'.$fee.'物流公司id：'.$transId);
 
     }
 }
