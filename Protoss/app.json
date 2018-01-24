@@ -2,10 +2,13 @@
   "pages":[
     "pages/userinfo/userinfo",
     "pages/my/my",
+    "pages/cart/cart",
+    
+    
     
     
     "pages/order-details/order-details",
-    "pages/cart/cart",
+    
     
     
     "pages/home/home",

@@ -2,7 +2,7 @@
     <view class="summary-main" >
       <block wx:for="{{summaryData}}">
       <view class='item-summary'>
-        <view>时间:{{time.formatTime(item.addtime,'Y/M/D h:m:s')}}</view>
+        <view>时间:{{item.addtime}}</view>
         <view> 
           <view style='padding-right:40rpx;'>金额:<text style='color:red;'>{{item.amount}}</text></view>
           <view>余额:{{item.balance}}</view>

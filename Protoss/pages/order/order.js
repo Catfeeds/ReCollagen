@@ -43,6 +43,7 @@ Page({
 
             /*显示收获地址*/
             adrList.getAddressDataFromLocal((id) => {
+
               /*获取商品重量*/
               var weight = that.getResultweight(data.goodsList).weight;
               /*获取运费信息*/
@@ -55,6 +56,7 @@ Page({
                 });
               });
               that._addressInfo(id);
+              
             })
 
           })

@@ -38,7 +38,7 @@ class Cart extends Base{
         sCallback: function (data) {
           callback && callback(data);
         },
-        eCallback: function () {
+        eCallback: function (data) {
           callback && callback(data);
         }
       };
@@ -58,7 +58,7 @@ class Cart extends Base{
         sCallback: function (data) {
           callback && callback(data);
         },
-        eCallback: function () {
+        eCallback: function (data) {
           callback && callback(data);
         }
       };
@@ -78,7 +78,7 @@ class Cart extends Base{
         sCallback: function (data) {
           callback && callback(data);
         },
-        eCallback: function () {
+        eCallback: function (data) {
           callback && callback(data);
         }
       };
@@ -98,7 +98,7 @@ class Cart extends Base{
         sCallback: function (data) {
           callback && callback(data);
         },
-        eCallback: function () {
+        eCallback: function (data) {
           callback && callback(data);
         }
       };
@@ -117,7 +117,7 @@ class Cart extends Base{
         sCallback: function (data) {
           callback && callback(data);
         },
-        eCallback: function () {
+        eCallback: function (data) {
           callback && callback(data);
         }
       };
@@ -136,12 +136,28 @@ class Cart extends Base{
         sCallback: function (data) {
           callback && callback(data);
         },
-        eCallback: function () {
+        eCallback: function (data) {
           callback && callback(data);
         }
       };
       this.request(allParams);
     }
+
+    /*清空购物车*/
+    delAll(callback) {
+      var allParams = {
+        url: 'cart/delAll',
+        type: 'post',
+        sCallback: function (data) {
+          callback && callback(data);
+        },
+        eCallback: function (data) {
+          callback && callback(data);
+        }
+      };
+      this.request(allParams);
+    }
+    
 }
 
 export {Cart};

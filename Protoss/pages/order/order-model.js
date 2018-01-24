@@ -34,6 +34,8 @@ class Order extends Base{
     * weight - 商品总重量(单位：kg)
     * */
     getTransFee(weight,id, callback) {
+      console.log(weight)
+      console.log(id)
       var allParams = {
         url: 'order/transfee',
         type: 'post',

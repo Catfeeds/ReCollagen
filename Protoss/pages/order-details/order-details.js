@@ -20,6 +20,7 @@ Page({
             if(this.data.id) {
                 var id = this.data.id;
                 order.getOrderInfo(id, (data)=> {
+                  console.log(data)
                     that.setData({
                         orderStatus: data.order_status,
                         productsArr: data.products,
@@ -36,7 +37,7 @@ Page({
                           telephone: data.shipping_tel,
                           address: data.shipping_addr,
                         },
-                        PromotionInfo: data.promotionName,
+                        promotion: data.promotion,
                         mainGoodsPrice: data.mainGoodsPrice,
                         otherGoodsPrice: data.otherGoodsPrice,
                         shippingPrice: data.shippingPrice,
