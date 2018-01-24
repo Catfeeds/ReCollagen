@@ -137,55 +137,52 @@ Page({
   chooseImageTap: function (event) {
     let _this = this,
       index = userInfo.getDataSet(event, 'index');
-    wx.showActionSheet({
-      itemList: ['从相册中选择', '拍照'],
-      itemColor: "#f7982a",
-      success: function (res) {
-        if (!res.cancel) {
-          if (res.tapIndex == 0) {
-            _this.chooseWxImage('album', index)
-          } else if (res.tapIndex == 1) {
-            _this.chooseWxImage('camera', index)
-          }
+      wx.chooseImage({
+        count: 1, // 默认9
+        sizeType: ['original', 'compressed'],
+        sourceType: ['album', 'camera'],
+        success: function (res) {
+          var tempFilePaths = res.tempFilePaths
+          wx.showToast({
+            icon: "loading",
+            title: "正在上传"
+          }),
+            console.log(userInfo.token)
+            return;
+          wx.uploadFile({
+            url: 'https://wx.edesoft.cn/api/v1/user/upload',
+            filePath: tempFilePaths[0],
+            name: 'file',
+            header: { "Content-Type": "multipart/form-data" },
+            formData: {
+              'session_token':"f8d2d38b58690a7f885a1f65b408282e"
+            },
+            success: function (res) {
+              if (res.statusCode != 200) {
+                wx.showModal({
+                  title: '提示',
+                  content: '上传失败',
+                  showCancel: false
+                })
+                return;
+              }
+              var data = res.data
+            },
+            fail: function (e) {
+              wx.showModal({
+                title: '提示',
+                content: '上传失败',
+                showCancel: false
+              })
+            },
+            complete: function () {
+              wx.hideToast();
+            }
+          })
+
         }
-      }
-    })
-  },
-  chooseWxImage: function (type, index) {
-    let _this = this;
-    wx.chooseImage({
-      sizeType: ['original', 'compressed'],
-      sourceType: [type],
-      success: function (res) {
-        var tempFilePaths = res.tempFilePaths[0];
-        wx.uploadFile({
-          url: 'https://wx.edesoft.cn/api/v1/user/upload',
-          filePath: tempFilePaths,
-          name: 'file',
-          formData: {
-            'user': 'test'
-          },
-          success: function (res) {
-            var data = res.data
-            if (index==1){
-              _this.setData({
-                'userData.IDcode_pic': tempFilePaths
-              })
-            }
-            if (index == 2) {
-              _this.setData({
-                'userData.IDcode_pic_b': tempFilePaths
-              })
-            }
-            if (index == 3) {
-              _this.setData({
-                'userData.IDcode_pic_h': tempFilePaths
-              })
-            }
-          }
-        })
-      }
-    })
+      })
+
   },
 
 

@@ -24,20 +24,8 @@ class UserInfo extends Base{
 
     /*上传图片*/
     _updateUploadImage(data, callback) {
-      var param = {
-        url: 'user/upload',
-        type: 'post',
-        data: data,
-        sCallback: function (res) {
-          callback && callback(res);
-        },
-        eCallback(res) {
-          callback && callback(res);
-        }
-      };
-      this.request(param);
+
     }
-    
 
 
     /*获取我的账户所有信息*/

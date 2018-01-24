@@ -1,7 +1,8 @@
 {
   "pages":[
-    "pages/my/my",
     "pages/userinfo/userinfo",
+    "pages/my/my",
+    
     
     "pages/order-details/order-details",
     "pages/cart/cart",
