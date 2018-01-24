@@ -1,10 +1,8 @@
-import {Address} from '../../utils/address.js';
 import { Cart } from '../cart/cart-model.js';
-import {Order} from '../order/order-model.js';
+import { Order } from '../order-details/order-details-model.js';
 import { UserInfo } from '../userinfo/userinfo-model.js';
 import {My} from '../my/my-model.js';
 
-var address=new Address();
 var cart = new Cart();
 var order=new Order();
 var userInfo = new UserInfo();
@@ -46,82 +44,6 @@ Page({
       wx.navigateTo({
         url: '../address/list/list?type=my'
       });
-    },
-
-    /*重新购买订单里的商品*/
-    addCart: function (event) {
-      var that = this,
-        id = order.getDataSet(event, 'id'),
-        index = order.getDataSet(event, 'index');
-      this.showTipsReturn('提示', '你确定要重新购买吗？', (statusConfirm) => {
-        if (statusConfirm) {
-          order.cancel(id, (statusCode) => {
-            if (statusCode.errorCode != 0) {
-              that.showTips('订单提示', statusCode.msg);
-              return;
-            }
-            var cartData = cart.getCartDataFromLocal();
-            if (cartData.length < 1) 
-            {
-              that.addToCart(id);
-              that.data.orderArr[index].order_status = 5;
-              that.data.orderArr.splice(index, 1);
-              that.setData({
-                orderArr: that.data.orderArr
-              });
-            }
-            else 
-            {
-              that.showTipsReturn('提示', '购物车里已有商品，需清空之后才能再次购买？', (statusConfirm) => {
-                if (statusConfirm) {
-                  cartData = [];
-                  cart.execSetStorageSync(cartData);
-                  if (cartData.length < 1) {
-                    that.addToCart(id);
-                    that.data.orderArr[index].order_status = 5;
-                    that.data.orderArr.splice(index, 1);
-                    that.setData({
-                      orderArr: that.data.orderArr
-                    });
-                  }
-                  else {
-                    that.showTips('提示', '清空购物车失败');
-                  }
-                }
-              })
-            }
-          });
-        }
-      })
-    },
-
-    /*将商品数据添加到内存中*/
-    addToCart: function (id) {
-      order.getOrderInfoById(id, (data) => {
-        var item,
-          tempObj = {},
-          keys = ['goods_id', 'name', 'image', 'price', 'isMainGoods', 'options', 'discounts', 'weight'],
-          arr = data.products;
-        for (let i = 0; i < arr.length; i++) {
-          item = arr[i];
-          for (var key in item) {
-            if (keys.indexOf(key) >= 0) {
-              tempObj[key] = item[key];
-            }
-          }
-          cart.add(tempObj, item.counts, item.currentPrice, item.option_id);
-          wx.switchTab({
-            url: '/pages/cart/cart'
-          });
-        }
-      });
-    },
-
-    /*绑定地址信息*/ 
-    _bindAddressInfo:function(addressInfo){
-        this.setData({
-            addressInfo: addressInfo
-        });
     },
 
     /*切换订单面板*/
@@ -174,7 +96,7 @@ Page({
     showOrderDetailInfo:function(event){
         var id=order.getDataSet(event,'id');
         wx.navigateTo({
-            url:'../order/order?from=order&id='+id
+          url:'../order-details/order-details?from=order&id='+id
         });
     },
 

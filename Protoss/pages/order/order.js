@@ -8,7 +8,12 @@ var adrList = new AdrList();
 
 Page({
         data: {
-            addressInfo:null
+            addressInfo:null,
+            mainGoodsPrice: 0,
+            otherGoodsPrice: 0,
+            shippingPrice: 0,
+            promotion1free:0,
+            promotion4free: 0,
         },
 
         onLoad: function (options) {
@@ -18,16 +23,26 @@ Page({
         onShow:function(){
           var that = this;
           cart.getCartDataFromLocal(1, (data) => {
+
+            if (data.promotion1 != ''){
+              that.setData({
+                promotion1free: data.promotion1.free,
+              });
+            }
+            if (data.promotion4 != '') {
+              that.setData({
+                promotion4free: data.promotion4.free,
+              });
+            }
+
             that.setData({
               productsArr: data,
-              mainGoodsPrice: (that._calcTotalMainAndCounts(data.goodsList, 1).account - data.promotion1.free - data.promotion4.free).toFixed(2),
+              mainGoodsPrice: (that._calcTotalMainAndCounts(data.goodsList, 1).account - that.data.promotion1free - that.data.promotion4free).toFixed(2),
               otherGoodsPrice: that._calcTotalMainAndCounts(data.goodsList, 0).account,
-              orderStatus:0
             });
 
             /*显示收获地址*/
             adrList.getAddressDataFromLocal((id) => {
-              that._addressInfo(id);
               /*获取商品重量*/
               var weight = that.getResultweight(data.goodsList).weight;
               /*获取运费信息*/
@@ -39,6 +54,7 @@ Page({
                   total: (parseFloat(that.data.mainGoodsPrice) + parseFloat(that.data.otherGoodsPrice) + parseFloat(res.fee)).toFixed(2)
                 });
               });
+              that._addressInfo(id);
             })
 
           })
@@ -107,9 +123,12 @@ Page({
         _firstTimePay:function(){
           var orderInfo = {},
               goodsArr=[],
-              PromoArr = [],
+              promotionArr = [],
               procuctInfo = this.data.productsArr.goodsList,
-              PromotionInfo=this.data.PromotionInfo,
+              promotion1 = this.data.productsArr.promotion1,
+              promotion2 = this.data.productsArr.promotion2,
+              promotion3 = this.data.productsArr.promotion3,
+              promotion4 = this.data.productsArr.promotion4,
               order=new Order();
               for(let i=0;i<procuctInfo.length;i++){
                 goodsArr.push({
@@ -118,39 +137,66 @@ Page({
                     option_id: procuctInfo[i].goods_option_id
                 })
               }
-              if (PromotionInfo){
-                for (let i = 0; i < PromotionInfo.length; i++) {
-                  PromoArr.push({
-                      id: PromotionInfo[i].id,
+
+              if (promotion1 != ''){
+                  promotionArr.push({
+                    name: promotion1.name,
+                    type: promotion1.type,
+                    free: promotion1.free,
                   })
-                }
               }
+              if (promotion2 != '') {
+                promotionArr.push({
+                  name: promotion2.name,
+                  type: promotion2.type,
+                  free: promotion2.free,
+                })
+              }
+              if (promotion3 != '') {
+                var shopcount='';
+                var freecount = promotion3.free;
+                for (let i = 0; i < freecount.length; i++) {
+                  if (shopcount==''){
+                     shopcount += freecount[i].name + '*' + promotion3.freeCount;
+                  }else{
+                     shopcount += '|||' + freecount[i].name + '*' + promotion3.freeCount;
+                  }
+                }
+                promotionArr.push({
+                  name: promotion3.name,
+                  type: promotion3.type,
+                  free: shopcount,
+                })
+              }
+              if (promotion4 != '') {
+                promotionArr.push({
+                  name: promotion4.name,
+                  type: promotion4.type,
+                  free: promotion4.free,
+                })
+              }
+              
               orderInfo = {
+                  address_id: this.data.addressInfo.address_id,
                   goodsArrInfo: goodsArr,
                   mainGoodsPrice: this.data.mainGoodsPrice,
                   otherGoodsPrice: this.data.otherGoodsPrice,
                   shippingPrice: this.data.shippingPrice,
-                  address_id: this.data.addressInfo.address_id,
-                  transId: this.data.shippingtransId,
-                  promotionId: PromoArr,
+                  transId: this.data.transId,
+                  promotion: promotionArr,
               };
-              
-              console.log(orderInfo)
+
             var that=this;
             //支付分两步，第一步是生成订单号，然后根据订单号支付
             order.doOrder(orderInfo,(data)=>{
                 //订单生成成功
                 if(data.pass) {
-                    //更新订单状态
-                    var id=data.order_id;
-                    that.data.id=id;
-                    that.data.fromCartFlag=false;
-                    //开始支付
-                    that._execPay(id);
+                  wx.navigateTo({
+                    url: '../pay-result/pay-result?id=' + data.order_id + '&from=order'
+                  });
                 }else{
                     that._orderFail(data);  // 下单失败
                 }
-
             });
         },
 
@@ -192,24 +238,6 @@ Page({
         },
 
         /*
-        *开始支付
-        * params:
-        * id - {int}订单id
-        */
-        _execPay:function(id){
-            var that=this;
-            order.execPay(id,(statusCode)=>{
-              if (statusCode.errorCode != 0) {
-                that.showTips('支付提示', statusCode.msg);
-                return;
-              }
-              wx.navigateTo({
-                  url: '../pay-result/pay-result?id=' + id + '&from=order'
-              });
-            });
-        },
-
-        /*
         * 提示窗口
         * params:
         * title - {string}标题
@@ -227,24 +255,6 @@ Page({
                   url: '/pages/my/my'
                 });
               }
-            }
-          });
-        },
-
-        /*
-        * 提示窗口 - 返回值
-        * params:
-        * title - {string}标题
-        * content - {string}内容
-        * callback - {bool}返回值
-        */
-        showTipsReturn: function (title, content, callback) {
-          wx.showModal({
-            title: title,
-            content: content,
-            showCancel: true,
-            success: function (res) {
-              callback && callback(res.confirm);
             }
           });
         }

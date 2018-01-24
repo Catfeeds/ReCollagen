@@ -3,23 +3,28 @@ Page({
         data: {
 
         },
-        onLoad: function (options){
-            this.setData({
-                id:options.id,
-                from:options.from
-            });
+        onReady: function () {
+          var titleName = this.data.from == 'order' ? '已下订单' : ' 支付结果';
+          wx.setNavigationBarTitle({
+            title: titleName
+          });
         },
+        onLoad: function (options){
+          var titleName = options.from == 'order' ? '已下订单' : ' 支付结果';
+          wx.setNavigationBarTitle({
+            title: titleName
+          });
+          this.setData({
+            id: options.id,
+            title: options.from == 'order' ? '已下订单' : ' 支付结果',
+            from: options.from
+          });
+        },
+
         viewOrder:function(){
-            if(this.data.from=='my'){
-                wx.redirectTo({
-                    url: '../order/order?from=order&id=' + this.data.id
-                });
-            }else{
-                //返回上一级
-                wx.navigateBack({
-                    delta: 1
-                })
-            }
+          wx.redirectTo({
+              url: '../order/order?from=order&id=' + this.data.id
+          });
         }
     }
 )

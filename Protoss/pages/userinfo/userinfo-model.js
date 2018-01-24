@@ -37,6 +37,8 @@ class UserInfo extends Base{
       };
       this.request(param);
     }
+    
+
 
     /*获取我的账户所有信息*/
     getUserAccount(callback) {

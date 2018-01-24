@@ -1,7 +1,7 @@
 <!--订单详情-->
 <view class="container order-container">
   <!--地址-->
-  <view class="order-address-info {{orderStatus!=0?'disabled':''}}" ontap="changAddress">
+  <view class="order-address-info" ontap="changAddress">
     <block wx:if="{{addressInfo}}">
       <view class="contact-box">
         <view>
@@ -17,7 +17,7 @@
           </view>
           <view class="detail">{{addressInfo.address}}</view>
         </view>
-        <view class="contact-icon" wx:if="{{orderStatus==0}}">
+        <view class="contact-icon">
             <image src="../../imgs/icon/arrow@right.png"></image>
         </view>
       </view>
@@ -50,7 +50,7 @@
         </view>
       </view>
     </block>
-     <view class="product-promotion" wx:if="{{productsArr.promotion3}}" >
+     <view class="product-promotion" wx:if="{{productsArr.promotion3!=''}}" >
         <view>{{productsArr.promotion3.name}}</view>
         <view>
           <block wx:for="{{productsArr.promotion3.free}}">
@@ -58,15 +58,15 @@
           </block>
         </view>
     </view>
-    <view class="product-promotion" wx:if="{{productsArr.promotion1}}" >
+    <view class="product-promotion" wx:if="{{productsArr.promotion1!=''}}" >
         <view>{{productsArr.promotion1.name}}</view>
         <view class='jian'>减：￥{{productsArr.promotion1.free}}</view>
     </view>
-    <view class="product-promotion" wx:if="{{productsArr.promotion2}}" >
+    <view class="product-promotion" wx:if="{{productsArr.promotion2!=''}}" >
         <view>{{productsArr.promotion2.name}}</view>
         <view class='jian'>返现：￥{{productsArr.promotion2.free}}</view>
     </view>
-    <view class="product-promotion" wx:if="{{productsArr.promotion4}}" >
+    <view class="product-promotion" wx:if="{{productsArr.promotion4!=''}}" >
         <view>{{productsArr.promotion4.name}}</view>
         <view class='jian'>减：￥{{productsArr.promotion4.free}}</view>
     </view>
@@ -82,6 +82,6 @@
     <view class="total-account">
       实付:￥{{total}}
     </view>
-    <view class="pay {{!addressInfo?'disabled':''}}" ontap="pay">去付款</view>
+    <view class="pay {{!addressInfo?'disabled':''}}" ontap="pay">生成订单</view>
   </view>
 </view>

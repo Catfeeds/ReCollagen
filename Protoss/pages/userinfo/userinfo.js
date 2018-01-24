@@ -158,7 +158,6 @@ Page({
       sourceType: [type],
       success: function (res) {
         var tempFilePaths = res.tempFilePaths
-
         wx.uploadFile({
           url: 'https://wx.edesoft.cn/api/v1/user/upload',
           filePath: tempFilePaths[0],

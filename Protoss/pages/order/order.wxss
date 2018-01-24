@@ -11,39 +11,11 @@
 .order-main{
     padding-bottom:92rpx;
 }
+
 .order-address-info,.order-basic-info{
     padding:20rpx 40rpx;
 }
 
-.order-basic-info{
-    border-bottom: 1rpx solid #E9E9E9;
-    display: flex;
-}
-
-.order-time-no{
-    flex: 1;
-}
-.order-status{
-    display: flex;
-    flex-basis: 110rpx;
-    align-items: center;
-    justify-content: flex-end;
-}
-.order-status{
-    display: flex;
-    flex-basis: 130rpx;
-    align-items: center;
-    justify-content: flex-end;
-}
-.order-time-no view:first-child{
-   margin-bottom:15rpx ;
-}
-.order-time-no view .key{
-    color: #999999;
-}.order-time-no view .val{
-    margin-left: 10rpx;
-    color: #333;
-}
 .order-address-info{
     margin-bottom: 20rpx;
 }
@@ -85,8 +57,6 @@
 .contact-box .detail{
     color:#999999;
 }
-
-
 
 .product-item{
     display: flex;
@@ -155,7 +125,7 @@
 }
 .product-promotion>view{
     color: #6D6D6D;
-    padding:10rpx 20rpx 0;
+    padding:5rpx 20rpx;
 }
 .product-promotion .jian{
     color: red;
@@ -164,6 +134,5 @@
   color: #6D6D6D;
   text-align: right;
   padding:20rpx;
-  margin-top: 10rpx;
   border-top: 1rpx solid #E9E9E9;
 }
