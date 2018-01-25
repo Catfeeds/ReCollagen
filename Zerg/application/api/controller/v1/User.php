@@ -75,7 +75,7 @@ class User extends BaseController {
             }else{
                 throw new UserException(
                 [
-                    'msg' => '上传失败1',
+                    'msg' => '上传失败',
                     'errorCode' => 70001,
                 ]);
             }
