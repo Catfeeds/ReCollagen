@@ -23,16 +23,19 @@
           <input name="IDcode" value="{{userData.IDcode}}" placeholder="身份证" bindinput="bindIDcode" />
         </view>
         <view class="section card_pic">
-         <image wx:if="{{userData.IDcode_pic!=''}}" src="{{userData.IDcode_pic}}" catchtap="chooseImageTap" data-index='1'></image>
-         <image wx:else src="{{IDcode_pic_default}}" catchtap="chooseImageTap" data-index='1'></image>
+         <image wx:if="{{IDcode_pic_default!=''}}" src="{{IDcode_pic_default}}" catchtap="chooseImageTap" data-index='1'></image>
+         <image wx:elif="{{userData.IDcode_pic!=''}}" src="{{userData.IDcode_pic}}" catchtap="chooseImageTap" data-index='1'></image>
+         <image wx:else src="../../imgs/icon/IDcode_pic.png" catchtap="chooseImageTap" data-index='1'></image>
         </view>
         <view class="section card_pic">
-         <image wx:if="{{userData.IDcode_pic_b!=''}}" src="{{userData.IDcode_pic_b}}" catchtap="chooseImageTap" data-index='2'></image>
-         <image wx:else src="{{IDcode_pic_default_b}}" catchtap="chooseImageTap" data-index='2'></image>
+         <image wx:if="{{IDcode_pic_default_b!=''}}" src="{{IDcode_pic_default_b}}" catchtap="chooseImageTap" data-index='2'></image>
+         <image wx:elif="{{userData.IDcode_pic_b!=''}}" src="{{userData.IDcode_pic_b}}" catchtap="chooseImageTap" data-index='2'></image>
+         <image wx:else src="../../imgs/icon/IDcode_pic_b.png" catchtap="chooseImageTap" data-index='2'></image>
         </view>
         <view class="section card_pic" style='padding-bottom: 23rpx;' >
-         <image wx:if="{{userData.IDcode_pic_h!=''}}" src="{{userData.IDcode_pic_h}}" catchtap="chooseImageTap" data-index='3'></image>
-         <image wx:else src="{{IDcode_pic_default_h}}" catchtap="chooseImageTap" data-index='3'></image>
+         <image wx:if="{{IDcode_pic_default_h!=''}}" src="{{IDcode_pic_default_h}}" catchtap="chooseImageTap" data-index='3'></image>
+         <image wx:elif="{{userData.IDcode_pic_h!=''}}" src="{{userData.IDcode_pic_h}}" catchtap="chooseImageTap" data-index='3'></image>
+         <image wx:else src="../../imgs/icon/IDcode_pic_h.png" catchtap="chooseImageTap" data-index='3'></image>
         </view>
         <view class="section">
           <input name="up_name" value="{{userData.up_name}}" placeholder="推荐人" bindinput="bindUpName" />

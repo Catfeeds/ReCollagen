@@ -15,9 +15,9 @@ Page({
       IDcode_pic_b: '',
       IDcode_pic_h: '',
     },
-    IDcode_pic_default: '../../imgs/icon/IDcode_pic.png',
-    IDcode_pic_default_b: '../../imgs/icon/IDcode_pic_b.png',
-    IDcode_pic_default_h: '../../imgs/icon/IDcode_pic_h.png',
+    IDcode_pic_default: '',
+    IDcode_pic_default_b: '',
+    IDcode_pic_default_h: '',
     loadingHidden: false,
     sexArray: ['男', '女'],
     index:0,
@@ -169,11 +169,11 @@ Page({
                 return;
               }
               var data = JSON.parse(res.data);
-              console.log(data.returnFileUrl)
+              _this.showToast(data.msg);
               _this.setData({
-                'userData.IDcode_pic': data.returnFileUrl
+                'userData.IDcode_pic': data.returnFileUrl,
+                 IDcode_pic_default: tempFilePaths[0],
               })
-              
             },
             fail: function (e) {
               wx.showModal({
