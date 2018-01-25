@@ -136,6 +136,7 @@ Page({
 
   chooseImageTap: function (event) {
     let _this = this,
+      token = userInfo.getDatatoken(),
       index = userInfo.getDataSet(event, 'index');
       wx.chooseImage({
         count: 1, // 默认9
@@ -147,15 +148,13 @@ Page({
             icon: "loading",
             title: "正在上传"
           }),
-            console.log(userInfo.token)
-            return;
           wx.uploadFile({
             url: 'https://wx.edesoft.cn/api/v1/user/upload',
             filePath: tempFilePaths[0],
             name: 'file',
             header: { "Content-Type": "multipart/form-data" },
             formData: {
-              'session_token':"f8d2d38b58690a7f885a1f65b408282e"
+              'session_token': token
             },
             success: function (res) {
               if (res.statusCode != 200) {

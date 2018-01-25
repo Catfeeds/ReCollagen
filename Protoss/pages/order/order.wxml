@@ -28,7 +28,19 @@
         <text>添加地址</text></view>
     </block>
   </view>
-
+  <!--物流公司-->
+  <view class="order-basic-info">
+    <view class="order-time-no">
+      <view>
+        <text class="key">发货仓:</text>
+        <text class="val">{{dispatchTitle}}</text>
+      </view>
+      <view>
+        <text class="key">物流公司:</text>
+        <text class="val">{{transTitle}}</text>
+      </view>
+    </view>
+  </view>
   <!--列表-->
   <view class="order-main">
     <block wx:for="{{productsArr.goodsList}}">

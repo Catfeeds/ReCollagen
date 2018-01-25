@@ -12,7 +12,7 @@
     padding-bottom:92rpx;
 }
 .order-address-info,.order-basic-info{
-    padding:20rpx 40rpx;
+    padding:20rpx 30rpx;
 }
 
 .order-basic-info{
@@ -40,7 +40,8 @@
 }
 .order-time-no view .key{
     color: #999999;
-}.order-time-no view .val{
+}
+.order-time-no view .val{
     margin-left: 10rpx;
     color: #333;
 }

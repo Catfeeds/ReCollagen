@@ -137,14 +137,13 @@ Page({
             {
               that.showTipsReturn('提示', '购物车里已有商品，需清空之后才能再次购买？', (statusConfirm) => {
                 if (statusConfirm) {
-                  
-                  if (cartData.length < 1) {
+                  cart.delAll((statusCode) => {
+                    if (statusCode.errorCode != 0) {
+                      that.showTips('提示', statusCode.msg);
+                      return;
+                    }
                     that.addToCart(id, index);
-                  }
-                  else
-                  {
-                    that.showTips('提示', '清空购物车失败');
-                  }
+                  })
                 }
               })
             }
@@ -163,11 +162,11 @@ Page({
           item = arr[i];
           cart.add(item.goods_id, item.option_id, item.counts, (data) => {
             if ((i + 1) == arr.length) {
-              // order.cancel(id, (statusCode) => {
-              //   if (statusCode.errorCode != 0) {
-              //     that.showTips('订单提示', statusCode.msg);
-              //     return;
-              //   }
+              order.cancel(id, (statusCode) => {
+                if (statusCode.errorCode != 0) {
+                  that.showTips('订单提示', statusCode.msg);
+                  return;
+                }
                 that.data.orderArr[index].order_status = 5;
                 that.data.orderArr.splice(index, 1);
                 that.setData({
@@ -183,7 +182,7 @@ Page({
                     });
                   }
                 });
-              // });
+              });
             }
           });
         }

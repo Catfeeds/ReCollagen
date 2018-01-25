@@ -22,7 +22,6 @@ Page({
       that.setData({
         loadingHidden: true
       });
-      console.log(data)
       if (data.length > 0) {
         that.data.summaryData.push.apply(that.data.summaryData, data);  //数组合并                
         that.setData({
