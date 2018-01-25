@@ -59,24 +59,25 @@ class User extends BaseController {
      * 上传视频
      */
     public function uploadUserPic() {
-        halt($_FILES);
-        if($_SERVER['REQUEST_METHOD'] == "POST"){
-            $upload = new \Think\Upload();// 实例化上传类
-            $upload->rootPath  =     'Uploads/video/file/'; // 设置附件上传根目录
-            $upload->savePath  =     ''; // 设置附件上传（子）目录+
-            // 上传文件
-            $info   =   $upload->upload();
-            if(!$info) {// 上传错误提示错误信息
-                $this->error('上传失败！');
-            }else{// 上传成功
-                $url  = $info['file']['savepath'].$info['file']['savename'];
-
+        $file = request()->file('file');
+    
+        if($file){
+            $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads');
+            if($info){
+                // 成功上传后 获取上传信息
                 $data['code']   = 0;
                 $data['msg']    = '上传成功';
-                $data['uploadFileName'] = $info['file']['name'];
-                $data['uploadFileUrl']  = $upload->rootPath.$url;
-                return  json_encode($data);
-                // $this->success(['uploadFileName'=>$info['file']['name'],'uploadFileSize'=>$size,'uploadFileUrl'=>$upload->rootPath.$url]);
+                $data['uploadFileName'] = $info->getFilename(); 
+                $data['returnFileUrl']  = 'uploads/'.$info->getSaveName();
+                $data['uploadFileUrl']  = config('setting.img_prefix').'uploads/'.$info->getSaveName();
+
+                echo json_encode($data);
+            }else{
+                throw new UserException(
+                [
+                    'msg' => '上传失败1',
+                    'errorCode' => 70001,
+                ]);
             }
         }
     }
