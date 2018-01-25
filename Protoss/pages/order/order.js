@@ -12,12 +12,13 @@ Page({
             mainGoodsPrice: 0,
             otherGoodsPrice: 0,
             shippingPrice: 0,
-            promotion1free:0,
+            promotion1free: 0,
             promotion4free: 0,
         },
 
         onLoad: function (options) {
           adrList.execSetStorageSync(0);
+          this._addressInfo(0);
         },
 
         onShow:function(){
@@ -42,23 +43,23 @@ Page({
             });
 
             /*显示收获地址*/
-            adrList.getAddressDataFromLocal((id) => {
-
+            adrList.getAddressDataFromLocal((adrid) => {
               /*获取商品重量*/
               var weight = that.getResultweight(data.goodsList).weight;
               /*获取运费信息*/
-              order.getTransFee(weight, id, (res) => {
+              var tranid = adrid == 0 ? that.data.addressInfo.address_id : adrid;
+              order.getTransFee(weight, tranid, (res) => {
                 /*设置总参数*/
                 that.setData({
                   shippingPrice: res.fee,
                   transId: res.transId,
+                  transTitle: res.transTitle,
+                  dispatchTitle: res.dispatchTitle,
                   total: (parseFloat(that.data.mainGoodsPrice) + parseFloat(that.data.otherGoodsPrice) + parseFloat(res.fee)).toFixed(2)
                 });
               });
-              that._addressInfo(id);
-              
+              that._addressInfo(adrid);
             })
-
           })
         },
 

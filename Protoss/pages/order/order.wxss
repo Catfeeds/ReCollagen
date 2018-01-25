@@ -11,13 +11,28 @@
 .order-main{
     padding-bottom:92rpx;
 }
-
 .order-address-info,.order-basic-info{
-    padding:20rpx 40rpx;
+    padding:20rpx 30rpx;
 }
 
 .order-address-info{
     margin-bottom: 20rpx;
+}
+
+.order-basic-info{
+    border-bottom: 1rpx solid #E9E9E9;
+    display: flex;
+}
+
+.order-time-no{
+    flex: 1;
+    display: flex;
+    justify-content: space-between
+}
+
+.order-time-no view .val{
+    margin-left: 10rpx;
+    color: #333;
 }
 
 .contact-box{
