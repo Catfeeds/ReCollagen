@@ -29,6 +29,7 @@ Page({
             });
         });
 
+        var that = this;
         userInfo.getUserAccount((data) => {
           that.setData({
             UserAccount: data

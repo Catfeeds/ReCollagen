@@ -20,7 +20,6 @@ Page({
             if(this.data.id) {
                 var id = this.data.id;
                 order.getOrderInfo(id, (data)=> {
-                  console.log(data)
                     that.setData({
                         orderStatus: data.order_status,
                         productsArr: data.products,
@@ -125,9 +124,8 @@ Page({
         /*将商品添加到购物车*/
         addToCart: function (id) {
           var that = this;
-          order.getOrderInfo(id, (data) => {
             var item,
-              arr = data.products;
+              arr = that.data.productsArr;
             for (let i = 0; i < arr.length; i++) {
               item = arr[i];
               cart.add(item.goods_id, item.option_id, item.counts, (data) => {
@@ -154,7 +152,6 @@ Page({
                 }
               });
             }
-          });
         },
 
         /**/
@@ -177,7 +174,7 @@ Page({
                 return;
               }
               wx.navigateTo({
-                  url: '../pay-result/pay-result?id=' + id + '&from=order'
+                  url: '../pay-result/pay-result?id=' + id + '&from=my'
               });
             });
         },

@@ -1,5 +1,6 @@
 import { UserInfo } from 'userinfo-model.js';
 var userInfo = new UserInfo();
+var baseRestUrl = userInfo.baseRestUrl.replace('api/v1/', '');
 Page({
   data:{
     userData:{
@@ -15,9 +16,6 @@ Page({
       IDcode_pic_b: '',
       IDcode_pic_h: '',
     },
-    IDcode_pic_default: '',
-    IDcode_pic_default_b: '',
-    IDcode_pic_default_h: '',
     loadingHidden: false,
     sexArray: ['男', '女'],
     index:0,
@@ -73,6 +71,11 @@ Page({
       self.showToast('省份证有误！');
       return;
     }
+    
+    self.data.userData.IDcode_pic = self.data.userData.IDcode_pic.replace(baseRestUrl, '');
+    self.data.userData.IDcode_pic_b = self.data.userData.IDcode_pic_b.replace(baseRestUrl, '');
+    self.data.userData.IDcode_pic_h = self.data.userData.IDcode_pic_h.replace(baseRestUrl, '');
+
     userInfo._updateUserInfo(self.data.userData, (data) => {
       if (data.errorCode != 0) {
         self.showTips('提示', data.msg);
@@ -139,57 +142,43 @@ Page({
 
   chooseImageTap: function (event) {
     let _this = this,
-      token = userInfo.getDatatoken(),
-      index = userInfo.getDataSet(event, 'index');
-      wx.chooseImage({
-        count: 1, // 默认9
-        sizeType: ['original', 'compressed'],
-        sourceType: ['album', 'camera'],
-        success: function (res) {
-          var tempFilePaths = res.tempFilePaths
-          wx.showToast({
-            icon: "loading",
-            title: "正在上传"
-          }),
-          wx.uploadFile({
-            url: 'https://wx.edesoft.cn/api/v1/user/upload',
-            filePath: tempFilePaths[0],
-            name: 'file',
-            header: { "Content-Type": "multipart/form-data" },
-            formData: {
-              'session_token': token
-            },
-            success: function (res) {
-              if (res.statusCode != 200) {
-                wx.showModal({
-                  title: '提示',
-                  content: '上传失败',
-                  showCancel: false
-                })
-                return;
-              }
-              var data = JSON.parse(res.data);
-              _this.showToast(data.msg);
-              _this.setData({
-                'userData.IDcode_pic': data.returnFileUrl,
-                 IDcode_pic_default: tempFilePaths[0],
-              })
-            },
-            fail: function (e) {
-              wx.showModal({
-                title: '提示',
-                content: '上传失败',
-                showCancel: false
-              })
-            },
-            complete: function () {
-              wx.hideToast();
-            }
-          })
-
-        }
-      })
-
+    token = userInfo.getDatatoken(),
+    index = userInfo.getDataSet(event, 'index');
+    wx.chooseImage({
+      count: 1, // 默认9
+      sizeType: ['original', 'compressed'],
+      sourceType: ['album', 'camera'],
+      success: function (res) {
+        var tempFilePaths = res.tempFilePaths;
+        userInfo._updateUploadImage(tempFilePaths, (res) => {
+          if (res.statusCode != 200) {
+            wx.showModal({
+              title: '提示',
+              content: '上传失败',
+              showCancel: false
+            })
+            return;
+          }
+          var data = JSON.parse(res.data);
+          _this.showToast(data.msg);
+          if (1 == index) {
+            _this.setData({
+              'userData.IDcode_pic': baseRestUrl + data.returnFileUrl,
+            })
+          }
+          if (2 == index) {
+            _this.setData({
+              'userData.IDcode_pic_b': baseRestUrl + data.returnFileUrl,
+            })
+          }
+          if (3 == index) {
+            _this.setData({
+              'userData.IDcode_pic_h': baseRestUrl + data.returnFileUrl,
+            })
+          }
+        })
+      }
+    })
   },
 
 
@@ -222,4 +211,13 @@ Page({
       duration: 2000
     })
   },
+
+  //分享效果
+  onShareAppMessage: function () {
+    return {
+      title: '悦蔻霖智',
+      path: 'pages/userinfo/userinfo'
+    }
+  }
+
 })

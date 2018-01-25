@@ -22,9 +22,21 @@ Page({
         },
 
         viewOrder:function(){
-          wx.redirectTo({
-              url: '../order/order?from=order&id=' + this.data.id
-          });
+          if (this.data.from == 'order') {
+            wx.switchTab({
+              url: '../my/my',
+              success: function (e) {
+                var page = getCurrentPages().pop();
+                if (page == undefined || page == null) return;
+                page.onLoad();
+              } 
+            })
+          } else {
+            //返回上一级
+            wx.navigateBack({
+              delta: 1
+            })
+          }
         }
     }
 )

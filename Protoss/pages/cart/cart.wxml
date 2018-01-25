@@ -33,6 +33,14 @@
                     </view>
                 </view>
             </block>
+            <view class="product-promotion" wx:if="{{cartData.promotion3 && cartData.promotion3!=''}}" >
+              <view>{{cartData.promotion3.name}}</view>
+              <view>
+                <block wx:for="{{cartData.promotion3.free}}">
+                <view>{{item.name}}  ×{{cartData.promotion3.freeCount}} </view>
+                </block>
+              </view>
+            </view>
         </view>
         <view class="footer-account-box all-accounts-box">
             <view class="all-select" ontap="toggleSelectAll" data-status="{{selectedTypeCounts==cartData.goodsList.length?'true':'false'}}">

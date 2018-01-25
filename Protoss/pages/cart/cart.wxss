@@ -157,3 +157,12 @@
     width: 32rpx;
 }
 
+.product-promotion{
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+}
+.product-promotion>view{
+    color: #6D6D6D;
+    padding:5rpx 20rpx;
+}

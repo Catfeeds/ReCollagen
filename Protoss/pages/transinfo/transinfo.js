@@ -16,10 +16,9 @@ Page({
     var that = this;
     
     /*获取物流信息*/
-    transinfo.getTransinfo(57,(res) => {
+    transinfo.getTransinfo(this.data.id,(data) => {
       that.setData({
-        transinfoData: res.data,
-        state: res.ischeck,
+        transinfoData: data,
         loadingHidden: true
       });
       callback && callback();
@@ -36,7 +35,7 @@ Page({
   //分享效果
   onShareAppMessage: function () {
     return {
-      title: '悦寇霖智',
+      title: '悦蔻霖智',
       path: 'pages/transinfo/transinfo'
     }
   }

@@ -25,6 +25,39 @@ class Cart extends Base{
       this.request(param);
     }
 
+
+    /*
+    *获得购物车商品总数目,包括分类和不分类和商品总价
+    */
+    getCartTotalCounts(data,flag) {
+      var len = data.length,
+        account = 0,
+        selectedCounts = 0,
+        selectedTypeCounts = 0;
+
+      for (let i = 0; i < len; i++) {
+        if (flag) {
+          if (data[i].isChecked == 1) {
+            account += data[i].totalPrice;
+            selectedCounts += parseInt(data[i].count);
+            selectedTypeCounts++;
+          }
+        }
+        else
+        {
+          account += data[i].totalPrice;
+          selectedCounts += parseInt(data[i].count);
+          selectedTypeCounts++;
+        }
+      }
+      return {
+        selectedCounts: selectedCounts,
+        selectedTypeCounts: selectedTypeCounts,
+        account: (account).toFixed(2)
+      }
+    };
+    
+
     /*添加商品到购物车*/
     add(goods_id, option_id, count, callback) {
       var allParams = {

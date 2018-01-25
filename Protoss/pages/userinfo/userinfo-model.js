@@ -1,6 +1,5 @@
 
 import { Base } from '../../utils/base.js'
-
 class UserInfo extends Base{
     constructor() {
         super();
@@ -21,10 +20,37 @@ class UserInfo extends Base{
       };
       this.request(param);
     }
+    
 
     /*上传图片*/
-    _updateUploadImage(data, callback) {
-
+    _updateUploadImage(tempFilePaths,callback) {
+      var Bases = new Base();
+      wx.showToast({
+        icon: "loading",
+        title: "正在上传"
+      }),
+      wx.uploadFile({
+        url: Bases.baseRestUrl+'user/upload',
+        filePath: tempFilePaths[0],
+        name: 'file',
+        header: { "Content-Type": "multipart/form-data" },
+        formData: {
+          'session_token': wx.getStorageSync('token')
+        },
+        success: function (res) {
+          callback && callback(res);
+        },
+        fail: function (e) {
+          wx.showModal({
+            title: '提示',
+            content: '上传失败',
+            showCancel: false
+          })
+        },
+        complete: function () {
+          wx.hideToast();
+        }
+      })
     }
 
 
@@ -37,7 +63,8 @@ class UserInfo extends Base{
         }
       };
       this.request(param);
-    }
+    } 
+
 }
 
 export { UserInfo }

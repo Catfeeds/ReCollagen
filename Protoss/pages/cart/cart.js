@@ -1,4 +1,3 @@
-// var CartObj = require('cart-model.js');
 
 import {Cart} from 'cart-model.js';
 
@@ -13,7 +12,7 @@ Page({
 
     onShow:function(){
       cart.getCartDataFromLocal('all',(data) => {
-        var newData = this._calcTotalAccountAndCounts(data.goodsList); /*重新计算总金额和商品总数*/
+        var newData = cart.getCartTotalCounts(data.goodsList,true); /*重新计算总金额和商品总数*/
         this.setData({
           loadingHidden: true,
           account: newData.account,
@@ -27,7 +26,7 @@ Page({
     /*更新购物车商品数据*/
     _resetCartData:function(){
       cart.getCartDataFromLocal('all',(data) => {
-        var newData = this._calcTotalAccountAndCounts(data.goodsList); /*重新计算总金额和商品总数*/
+        var newData = cart.getCartTotalCounts(data.goodsList, true); /*重新计算总金额和商品总数*/
         this.setData({
           account: newData.account,
           selectedCounts: newData.selectedCounts,
@@ -36,30 +35,6 @@ Page({
         });
       })
     },
-
-    /*
-    * 计算总金额和选择的商品总数
-    * */
-    _calcTotalAccountAndCounts:function(data){
-        var len=data.length,
-            account=0,
-            selectedCounts=0,
-            selectedTypeCounts=0;
-
-        for(let i=0;i<len;i++){
-          if (data[i].isChecked==1) {  
-                account += data[i].totalPrice;
-                selectedCounts += parseInt(data[i].count);
-                selectedTypeCounts++;
-          }
-        }
-        return{
-            selectedCounts:selectedCounts,
-            selectedTypeCounts:selectedTypeCounts,
-            account: (account).toFixed(2)
-        }
-    },
-
 
     /*调整商品数目*/
     changeCounts: function (event) {

@@ -62,7 +62,7 @@
         </view>
       </view>
     </block>
-     <view class="product-promotion" wx:if="{{productsArr.promotion3!=''}}" >
+     <view class="product-promotion" wx:if="{{productsArr.promotion3 && productsArr.promotion3!=''}}" >
         <view>{{productsArr.promotion3.name}}</view>
         <view>
           <block wx:for="{{productsArr.promotion3.free}}">
@@ -70,15 +70,15 @@
           </block>
         </view>
     </view>
-    <view class="product-promotion" wx:if="{{productsArr.promotion1!=''}}" >
+    <view class="product-promotion" wx:if="{{productsArr.promotion1 && productsArr.promotion1!=''}}" >
         <view>{{productsArr.promotion1.name}}</view>
         <view class='jian'>减：￥{{productsArr.promotion1.free}}</view>
     </view>
-    <view class="product-promotion" wx:if="{{productsArr.promotion2!=''}}" >
+    <view class="product-promotion" wx:if="{{productsArr.promotion2 && productsArr.promotion2!=''}}" >
         <view>{{productsArr.promotion2.name}}</view>
         <view class='jian'>返现：￥{{productsArr.promotion2.free}}</view>
     </view>
-    <view class="product-promotion" wx:if="{{productsArr.promotion4!=''}}" >
+    <view class="product-promotion" wx:if="{{productsArr.promotion4 && productsArr.promotion4!=''}}" >
         <view>{{productsArr.promotion4.name}}</view>
         <view class='jian'>减：￥{{productsArr.promotion4.free}}</view>
     </view>

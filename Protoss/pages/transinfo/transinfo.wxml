@@ -7,8 +7,8 @@
         <view class="transinfo-box">
             <view></view>
             <view class="transinfo-main">
-            <block wx:for="{{transinfoData}}">
-                <view class="transinfo-item {{state==index?'transinfo-item-selected':''}}">
+            <block wx:for="{{transinfoData.data}}">
+                <view class="transinfo-item {{transinfoData.ischeck==index+1?'transinfo-item-selected':''}}">
                   <view class='main-line'></view>
                   <view class='main-context'>
                     <view class='main-yuan'></view>

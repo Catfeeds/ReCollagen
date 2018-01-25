@@ -25,6 +25,12 @@ Page({
     /*加载所有数据*/
     _loadData:function(callback){
         var that = this;
+        cart.getCartDataFromLocal('all', (data) => {
+          var newData = cart.getCartTotalCounts(data.goodsList); /*获取商品总数*/
+          this.setData({
+            cartTotalCounts: newData.selectedCounts,
+          });
+        })
         product.getDetailInfo(this.data.id,(data)=>{
 
             /*判断是否是单商品*/
@@ -75,7 +81,7 @@ Page({
               });
             }
             that.setData({
-              cartTotalCounts: 10,
+              cartTotalCounts: that.data.cartTotalCounts,
               product: data,
               loadingHidden: true
             });
@@ -281,7 +287,7 @@ Page({
     //分享效果
     onShareAppMessage: function () {
         return {
-          title: '悦寇霖智',
+          title: '悦蔻霖智',
             path: 'pages/product/product?id=' + this.data.id
         }
     }

@@ -36,6 +36,7 @@ class OrderDetails extends Base{
     * norderNumber - {int} 订单id
     * */
     cancel(orderNumber, callback) {
+      console.log(orderNumber)
       var allParams = {
         url: 'order/cancel',
         type: 'post',

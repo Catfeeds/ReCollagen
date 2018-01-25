@@ -29,7 +29,7 @@ class Product extends Base {
       sCallback: function (data) {
         callback && callback(data);
       },
-      eCallback: function () {
+      eCallback: function (data) {
         callback && callback(data);
       }
     };

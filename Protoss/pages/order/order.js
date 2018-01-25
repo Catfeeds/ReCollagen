@@ -25,12 +25,12 @@ Page({
           var that = this;
           cart.getCartDataFromLocal(1, (data) => {
 
-            if (data.promotion1 != ''){
+            if (data.promotion1 && data.promotion1 !=''){
               that.setData({
                 promotion1free: data.promotion1.free,
               });
             }
-            if (data.promotion4 != '') {
+            if (data.promotion4 && data.promotion4 != '') {
               that.setData({
                 promotion4free: data.promotion4.free,
               });
@@ -141,21 +141,21 @@ Page({
                 })
               }
 
-              if (promotion1 != ''){
+              if (promotion1 && promotion1 != ''){
                   promotionArr.push({
                     name: promotion1.name,
                     type: promotion1.type,
                     free: promotion1.free,
                   })
               }
-              if (promotion2 != '') {
+              if (promotion2 && promotion2 != '') {
                 promotionArr.push({
                   name: promotion2.name,
                   type: promotion2.type,
                   free: promotion2.free,
                 })
               }
-              if (promotion3 != '') {
+              if (promotion3 && promotion3 != '') {
                 var shopcount='';
                 var freecount = promotion3.free;
                 for (let i = 0; i < freecount.length; i++) {
@@ -171,7 +171,7 @@ Page({
                   free: shopcount,
                 })
               }
-              if (promotion4 != '') {
+              if (promotion4 && promotion4 != '') {
                 promotionArr.push({
                   name: promotion4.name,
                   type: promotion4.type,
