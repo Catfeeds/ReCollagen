@@ -24,15 +24,15 @@
         </view>
         <view class="section card_pic">
          <image wx:if="{{userData.IDcode_pic!=''}}" src="{{userData.IDcode_pic}}" catchtap="chooseImageTap" data-index='1'></image>
-         <image wx:else src="../../imgs/icon/IDcode_pic.png" catchtap="chooseImageTap" data-index='1'></image>
+         <image wx:else src="{{IDcode_pic_default}}" catchtap="chooseImageTap" data-index='1'></image>
         </view>
         <view class="section card_pic">
          <image wx:if="{{userData.IDcode_pic_b!=''}}" src="{{userData.IDcode_pic_b}}" catchtap="chooseImageTap" data-index='2'></image>
-         <image wx:else src="../../imgs/icon/IDcode_pic_b.png" catchtap="chooseImageTap" data-index='2'></image>
+         <image wx:else src="{{IDcode_pic_default_b}}" catchtap="chooseImageTap" data-index='2'></image>
         </view>
         <view class="section card_pic" style='padding-bottom: 23rpx;' >
          <image wx:if="{{userData.IDcode_pic_h!=''}}" src="{{userData.IDcode_pic_h}}" catchtap="chooseImageTap" data-index='3'></image>
-         <image wx:else src="../../imgs/icon/IDcode_pic_h.png" catchtap="chooseImageTap" data-index='3'></image>
+         <image wx:else src="{{IDcode_pic_default_h}}" catchtap="chooseImageTap" data-index='3'></image>
         </view>
         <view class="section">
           <input name="up_name" value="{{userData.up_name}}" placeholder="推荐人" bindinput="bindUpName" />
@@ -40,7 +40,7 @@
         <view class="section">
           <input name="up_wecat" value="{{userData.up_wecat}}" placeholder="推荐人微信号" bindinput="bindUpWecat" />
         </view>
-        <button  class="submit-btn {{userData.checked==1?'disabled':''}}" formType="submit">提交</button>
+        <button  class="submit-btn" formType="submit">提交</button>
       </form>
     </view>
 </view>
