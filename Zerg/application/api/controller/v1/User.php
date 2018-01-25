@@ -28,9 +28,9 @@ class User extends BaseController {
         if (!$user) {
             throw new UserException();
         }
-        $user['IDcode_pic'] = $user['IDcode_pic'] ? config('setting.img_prefix').$user['IDcode_pic'] : '';
-        $user['IDcode_pic_b'] = $user['IDcode_pic_b'] ? config('setting.img_prefix').$user['IDcode_pic_b'] : '';
-        $user['IDcode_pic_h'] = $user['IDcode_pic_h'] ? config('setting.img_prefix').$user['IDcode_pic_h'] : '';
+        $user['IDcode_pic'] = $user['IDcode_pic'] ? config('setting.user_img_prefix').$user['IDcode_pic'] : '';
+        $user['IDcode_pic_b'] = $user['IDcode_pic_b'] ? config('setting.user_img_prefix').$user['IDcode_pic_b'] : '';
+        $user['IDcode_pic_h'] = $user['IDcode_pic_h'] ? config('setting.user_img_prefix').$user['IDcode_pic_h'] : '';
 
         return $user;
     }
@@ -60,7 +60,7 @@ class User extends BaseController {
      */
     public function uploadUserPic() {
         $file = request()->file('file');
-    
+
         if($file){
             $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads');
             if($info){
@@ -69,7 +69,6 @@ class User extends BaseController {
                 $data['msg']    = '上传成功';
                 $data['uploadFileName'] = $info->getFilename(); 
                 $data['returnFileUrl']  = 'uploads/'.$info->getSaveName();
-                $data['uploadFileUrl']  = config('setting.img_prefix').'uploads/'.$info->getSaveName();
 
                 echo json_encode($data);
             }else{
