@@ -62,13 +62,13 @@ class User extends BaseController {
         $file = request()->file('file');
 
         if($file){
-            $info = $file->move(ROOT_PATH . 'public' . DS . 'uploads');
+            $info = $file->move(ROOT_PATH . 'public/user');
             if($info){
                 // 成功上传后 获取上传信息
                 $data['code']   = 0;
                 $data['msg']    = '上传成功';
                 $data['uploadFileName'] = $info->getFilename(); 
-                $data['returnFileUrl']  = 'uploads/'.$info->getSaveName();
+                $data['returnFileUrl']  = str_replace('\\','/','user/'.$info->getSaveName());
 
                 echo json_encode($data);
             }else{
