@@ -68,7 +68,7 @@ class User extends BaseController {
                 $data['code']   = 0;
                 $data['msg']    = '上传成功';
                 $data['uploadFileName'] = $info->getFilename(); 
-                $data['returnFileUrl']  = 'user/'.$info->getFilename();
+                $data['returnFileUrl']  = str_replace('\\','/','user/'.$info->getFilename());
 
                 echo json_encode($data);
             }else{
