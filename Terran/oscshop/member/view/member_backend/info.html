@@ -67,13 +67,13 @@
                     <td>身份证手持照</td>
                     <td>
                         <div class="col-sm-10" id="thumb">
-                            <a id="thumb-image" href="#" data-toggle="image" class="img-thumbnail">
+                            <!--<a id="thumb-image" href="#" data-toggle="image" class="img-thumbnail">-->
                                 {if condition="!empty($data['IDcode_pic_h'])"}
-                                <img src="IMG_ROOT{$data.IDcode_pic_h|resize=100,100}" />
+                                <img src="{:config('API_url')}{$data.IDcode_pic_h}" />
                                 {else /}
                                 <img src="__PUBLIC__/image/no_image_100x100.jpg" />
                                 {/if}
-                            </a>
+                            <!--</a>-->
                             <input type="hidden" name="IDcode_pic_h" value="{$data.IDcode_pic_h|default=''}" id="input-image" />
                         </div>
                     </td>
@@ -82,26 +82,26 @@
                     <td>身份证正面照</td>
                     <td>                
                         <div class="col-sm-10" id="thumb">
-                            <a id="thumb-image1" href="#" data-toggle="image" class="img-thumbnail">
+                            <!--<a id="thumb-image1" href="#" data-toggle="image" class="img-thumbnail">-->
                                 {if condition="!empty($data['IDcode_pic'])"}
-                                <img src="IMG_ROOT{$data.IDcode_pic|resize=100,100}" />
+                                <img src="{:config('API_url')}{$data.IDcode_pic}" />
                                 {else /}
                                 <img src="__PUBLIC__/image/no_image_100x100.jpg" />
                                 {/if}
-                            </a>
+                            <!--</a>-->
                             <input type="hidden" name="IDcode_pic" value="{$data.IDcode_pic|default=''}" id="input-image1" />
                         </div>    
                     </td>
                     <td>身份证反面照</td>
                     <td>                
                         <div class="col-sm-10" id="thumb">
-                            <a id="thumb-image2" href="#" data-toggle="image" class="img-thumbnail">
+                            <!--<a id="thumb-image2" href="#" data-toggle="image" class="img-thumbnail">-->
                                 {if condition="!empty($data['IDcode_pic_b'])"}
-                                <img src="IMG_ROOT{$data.IDcode_pic_b|resize=100,100}" />
+                                <img src="{:config('API_url')}{$data.IDcode_pic_b}" />
                                 {else /}
                                 <img src="__PUBLIC__/image/no_image_100x100.jpg" />
                                 {/if}
-                            </a>
+                            <!--</a>-->
                             <input type="hidden" name="IDcode_pic_b" value="{$data.IDcode_pic_b|default=''}" id="input-image2" />
                         </div>
                     </td>
