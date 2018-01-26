@@ -22,7 +22,7 @@ class Goods extends Model{
 		$goods['create_time'] = date('Y-m-d H:i:s',time());
 		
 		$goods['weight']      = empty($data['weight'])? '100' : $data['weight'];
-		$goods['bulk']        = empty($data['bulk'])? '0.01' : $data['bulk'];
+		$goods['bulk']        = empty($data['bulk'])? '10' : $data['bulk'];
 
 		$goods_id = $this->insert($goods,false,true);
 
