@@ -33,7 +33,7 @@ class MemberBackend extends AdminBase {
                 ->join('__ADDRESS__ a', 'a.uid=m.uid and a.is_default =1', 'left')
                 ->where($map)
                 ->order('m.create_time desc')
-                ->paginate(config('page_num'));
+                ->paginate(15);
 
         $this->assign('list', $list);
         $this->assign('empty', '<tr><td colspan="20">没有数据</td></tr>');
@@ -157,7 +157,7 @@ class MemberBackend extends AdminBase {
                 ->join('__MEMBER__ m', 'm.uid=f.uid', 'left')
                 ->where($map)
                 ->order('f.itemid desc')
-                ->paginate(config('page_num'));
+                ->paginate(15);
 
         $this->assign('list', $list);
         $this->assign('rectype', input('get.rectype/d'));

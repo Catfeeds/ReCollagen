@@ -82,7 +82,7 @@ class Order {
                     ->join('__DISPATCH__ d', 'Order.dispatch_id=d.id')
                     ->join('__MEMBER__ m', 'Order.uid=m.uid')
                     ->where($map)
-                    ->order('Order.shipping_name,Order.create_time desc')
+                    ->order('Order.create_time desc,Order.shipping_name')
                     ->paginate(15);
         } else {
             //默认显示全部待付款，待发货和7天内已发货收货订单
@@ -108,7 +108,7 @@ class Order {
                         ->join('__DISPATCH__ d', 'Order.dispatch_id=d.id')
                         ->join('__MEMBER__ m', 'Order.uid=m.uid')
                         ->where($map2)
-                        ->order('shipping_name,create_time desc');
+                        ->order('create_time desc,shipping_name');
                     })
                     ->select();
             $page = new Page(count($datas), 15);
@@ -138,7 +138,7 @@ class Order {
                         ->join('__MEMBER__ m', 'Order.uid=m.uid')
                         ->where($map2)
                         ->limit(($current_page - 1) * 15, 15)
-                        ->order('shipping_name,create_time desc');
+                        ->order('create_time desc,shipping_name');
                     })
                     ->select();
         }

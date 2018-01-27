@@ -162,7 +162,7 @@ class OrderBackend extends AdminBase {
      * 历史订单列表
      */
     public function history() {
-        $this->assign('list', osc_order()->order_list(input('param.'), 20, 1));
+        $this->assign('list', osc_order()->order_list(input('param.'), 15, 1));
         $this->assign('empty', '<tr><td colspan="20">没有数据</td></tr>');
 
         return $this->fetch();
