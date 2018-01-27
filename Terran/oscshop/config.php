@@ -32,5 +32,6 @@ return [
 	//默认错误跳转对应的模板文件
 	'dispatch_error_tmpl' => APP_PATH.'common/view/public/error.tpl',
 	//默认成功跳转对应的模板文件
-	'dispatch_success_tmpl' => APP_PATH.'common/view/public/success.tpl',	
+	'dispatch_success_tmpl' => APP_PATH.'common/view/public/success.tpl',
+    'API_url' => 'https://wx.edesoft.cn/'
 ];

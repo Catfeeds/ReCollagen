@@ -86,7 +86,7 @@ class Goods extends AdminBase
                 return $this->error($validate);
             }
             $data['weight'] = empty($data['weight']) ? '100' : $data['weight'];
-            $data['bulk']   = empty($data['bulk']) ? '0.01' : $data['bulk'];
+            $data['bulk']   = empty($data['bulk']) ? '10' : $data['bulk'];
 
             $res = $this->goodsModel->update($data, false, true);
             if ($res) {
