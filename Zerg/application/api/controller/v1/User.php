@@ -9,6 +9,7 @@ use app\api\service\Token;
 use app\lib\exception\UserException;
 use app\lib\exception\SuccessMessage;
 use app\api\validate\PagingParameter;
+use think\Db;
 
 class User extends BaseController {
 
@@ -97,6 +98,22 @@ class User extends BaseController {
         $pagingData = FinanceRecord::getAccountRecordByPage($uid, $page, $size);
 
         return $pagingData;
+    }
+
+    /**
+     * @return mixed
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * Author: sai
+     * DateTime: 2018/1/27 13:45
+     * 获取用户注册协议
+     */
+    public function getRegistDeal()
+    {
+        $info = Db::name('config')->where(['name'=>'REGIST_DEAL'])->find();
+
+        return $info['value'];
     }
 
 }

@@ -41,10 +41,11 @@ Route::group('api/:version/theme',function(){
 //Route::delete('api/:version/theme/:t_id/product/:p_id', 'api/:version.Theme/deleteThemeProduct');
 
 //User
-Route::get('api/:version/account','api/:version.User/getUserData');          //获取用户账户信息
+Route::get('api/:version/account','api/:version.User/getUserData');             //获取用户账户信息
 Route::post('api/:version/user/update','api/:version.User/editUserData');       //修改用户信息
 Route::post('api/:version/user/upload','api/:version.User/uploadUserPic');       //修改用户信息
 Route::get('api/:version/user/record/:page','api/:version.User/getAccountRecord');    //分页获取用户财务流水
+Route::get('api/:version/user/deal','api/:version.User/getRegistDeal');         //获取用户注册协议
 
 //Product
 Route::post('api/:version/product', 'api/:version.Product/createOne');

@@ -1,0 +1,57 @@
+{extend name="./oscshop/admin/view/public/base.html" /}
+{block name="content"}
+<div class="page-header">
+	<h1>
+		会员
+		<small>
+			<i class="ace-icon fa fa-angle-double-right"></i>
+			注册协议
+		</small>
+	</h1>
+</div>
+
+<div class="row">
+	<div class="col-xs-12">
+        <form action="{:url('member_backend/registDeal')}" method="post" enctype="multipart/form-data" id="form-goods" class="form-horizontal">
+
+		<div class="form-horizontal">
+
+			<div class="form-group">
+				<label class="col-sm-2 control-label no-padding-left">注册协议 </label>
+				<div class="col-sm-5">
+					<div class="clearfix">
+	                      <textarea name="description" id="description">{$info}</textarea>
+					</div>
+				</div>
+			</div>
+
+			<div class="space-4"></div>
+
+
+			<div class="form-group">
+				<label class="col-sm-1 control-label no-padding-left"> </label>
+				<div class="col-sm-11">
+					<input id="send" name="send" type="submit" value="提交" class="btn btn-primary" />
+				</div>
+			</div>
+		</div>
+		</form>
+	</div>
+</div>
+{/block}
+{block name="javascript"}
+<script src="__PUBLIC__/js/ckeditor/ckeditor.js"></script> 
+<script>
+//CKEDITOR
+CKEDITOR.replace('description', {
+	filebrowserImageUploadUrl: '{:url("FileManager/ckupload")}',
+	height : 350,
+	width : 800 ,
+	toolbar: [
+				[ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ],
+				[ 'FontSize', 'TextColor', 'BGColor' ],
+				[ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock','Format']
+			]	
+});
+</script>
+{/block}

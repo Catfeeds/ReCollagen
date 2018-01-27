@@ -165,6 +165,33 @@ class MemberBackend extends AdminBase {
 
         return $this->fetch();
     }
+
+    /**
+     * @return mixed
+     * @throws \think\Exception
+     * @throws \think\exception\PDOException
+     * Author: sai
+     * DateTime: 2018/1/27 11:50
+     * 注册协议
+     */
+    public function registDeal() {
+        if (request()->isPost()) {
+            $val = input('post.description');
+
+            $result = Db::name('config')->where(['name'=>'REGIST_DEAL'])->update(['value'=>$val]);
+            if ($result) {
+                clear_cache();
+                storage_user_action(UID, session('user_auth.username'), config('BACKEND_USER'), '修改了注册协议');
+                $this->success('修改成功');
+            } else {
+                $this->error('修改失败');
+            }
+        }
+
+        $this->assign('info', config('REGIST_DEAL'));
+        return $this->fetch();
+    }
+
 }
 
 ?>

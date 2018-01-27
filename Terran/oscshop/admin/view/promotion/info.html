@@ -80,7 +80,9 @@ $('#send').click(function(){
 
 //CKEDITOR
 CKEDITOR.replace('description', {
-	filebrowserImageUploadUrl: '{:url("FileManager/ckupload")}',	
+	filebrowserImageUploadUrl: '{:url("FileManager/ckupload")}',
+    height : 350,
+    width : 800 ,
 	toolbar: [
 				[ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ],
 				[ 'FontSize', 'TextColor', 'BGColor' ],
