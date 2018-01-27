@@ -27,13 +27,12 @@ Page({
   
   onLoad: function (options) {
     this.data.fromType = options.type;
-    this.data.id = options.id;
+    this.data.index = options.index;
 
     var titleName = options.type == 'edit' ? '修改地址' :' 添加地址';
     wx.setNavigationBarTitle({
       title: titleName
     });
-
     this._loadData();
   },
 
@@ -42,15 +41,12 @@ Page({
     var that = this;
     /*显示收获地址*/
     adrList.getAddress((res) => {
-      var self = this;
-      if (this.data.id && this.data.fromType == 'edit') {
-        var hasInfo = adrList._isHasThatOne(this.data.id, res);
-        if (hasInfo.index != -1) {
-          self.setData({
-            addressInfo: hasInfo.data,
-            region: [hasInfo.data.province, hasInfo.data.city, hasInfo.data.country]
-          })
-        }
+      if (that.data.fromType == 'edit') {
+        var data = res[that.data.index];
+        that.setData({
+          addressInfo: data,
+          region: [data.province, data.city, data.country]
+        })
       }
     });
   },
@@ -73,7 +69,7 @@ Page({
       {
         adrEdit.updateAddress(self.data.addressInfo, (data) => {
           if (data.errorCode != 0) {
-            self.showTips('提示', '至少有一个默认地址');
+            self.showToast(data.msg);
             return;
           }
           wx.navigateBack();

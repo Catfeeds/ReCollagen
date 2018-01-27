@@ -1,4 +1,3 @@
-<import src="../tpls/category/category-tpl.wxml"/>
 <view class="container category-container">
   <view class="category-box">
     <scroll-view scroll-y="true" class="left-box">
@@ -17,7 +16,25 @@
     </scroll-view>
     <view class="right-box">  
       <scroll-view scroll-y="true" class="foods-type-box">
-          <template is="categorydetail" data="{{categoryInfo:categoryInfo}}"/>
+        <view class="category-detail-box">
+          <view class="category-header">
+            <image src="{{imgUrl}}" mode="aspectFill"></image>
+          </view>
+          <view class="category-title">
+            <text>{{title}}</text>
+          </view>
+          <view class="category-main" hidden="{{!procucts}}">
+            <block wx:for="{{procucts}}">
+              <view class="category-goods-items {{index%3==1?'middle':''}}" data-id="{{item.goods_id}}" bindtap="onProductsItemTap">
+                <view class='products-isMainGoods' wx:if="{{item.isMainGoods==0}}">辅</view>
+                <image wx:if="{{item.image!=''}}" src="{{item.image}}" mode="aspectFill"></image>
+                <image wx:else src="../../imgs/icon/default_img.png" mode="aspectFill"></image>
+                <view>{{item.name}}</view>
+              </view>
+            </block>
+          </view>
+        </view>
+
       </scroll-view>
     </view>
   </view>

@@ -18,7 +18,7 @@
       </view>
       <!-- edit and delete button -->
       <view class="operation">
-        <view class="operation-list" data-id="{{item.address_id}}" bindtap="edit">
+        <view class="operation-list" data-index="{{index}}" bindtap="edit">
           <image src="../../../imgs/icon/icon_edit.png" /><text>编辑</text>
         </view>
         <view class="operation-list" data-id="{{item.address_id}}" data-index="{{index}}" bindtap="delete">

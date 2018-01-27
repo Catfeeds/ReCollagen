@@ -1,18 +1,19 @@
 
 import {Cart} from 'cart-model.js';
-
+import { UserInfo } from '../userinfo/userinfo-model.js';
 var cart=new Cart(); //实例化 购物车
-
+var userInfo = new UserInfo();
 Page({
     data: {
         loadingHidden:false,
         selectedCounts:0, //总的商品数
         selectedTypeCounts:0, //总的商品类型数
     },
-
+    
     onShow:function(){
       cart.getCartDataFromLocal('all',(data) => {
-        var newData = cart.getCartTotalCounts(data.goodsList,true); /*重新计算总金额和商品总数*/
+        this.data.cartData=[];
+        var newData = cart.getCartTotalCounts(data,true); /*重新计算总金额和商品总数*/
         this.setData({
           loadingHidden: true,
           account: newData.account,
@@ -26,7 +27,7 @@ Page({
     /*更新购物车商品数据*/
     _resetCartData:function(){
       cart.getCartDataFromLocal('all',(data) => {
-        var newData = cart.getCartTotalCounts(data.goodsList, true); /*重新计算总金额和商品总数*/
+        var newData = cart.getCartTotalCounts(data, true); /*重新计算总金额和商品总数*/
         this.setData({
           account: newData.account,
           selectedCounts: newData.selectedCounts,
@@ -133,9 +134,22 @@ Page({
 
     /*提交订单*/
     submitOrder:function(){
+      var that = this;
+      userInfo.getUserAccount((data) => {
+        if (data.checked != 1) {
+          that.showTipsReturn('提示', '请完善资料后再进行下单!', (statusConfirm) => {
+            if (statusConfirm) {
+              wx.redirectTo({
+                url: '../userinfo/userinfo?type=cart'
+              });
+            }
+          })
+          return;
+        }
         wx.navigateTo({
-            url:'../order/order'
+          url: '../order/order'
         });
+      });
     },
 
     /*查看商品详情*/
@@ -157,5 +171,22 @@ Page({
       icon: 'success',
       duration: 2000
     })
-  }
+  },
+  /*
+  * 提示窗口 - 返回值
+  * params:
+  * title - {string}标题
+  * content - {string}内容
+  * callback - {bool}返回值
+  */
+  showTipsReturn: function (title, content, callback) {
+    wx.showModal({
+      title: title,
+      content: content,
+      showCancel: true,
+      success: function (res) {
+        callback && callback(res.confirm);
+      }
+    });
+  },
 })

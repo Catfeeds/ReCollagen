@@ -5,6 +5,7 @@
      <image src="../../imgs/icon/pay@success.png"></image>
      <view>{{title}}</view>
      <button type="primary" bindtap="viewOrder"> 查看订单 </button>
+     <button type="primary" ontap="pay" wx:if="{{from == 'order'}}" > 付款 </button>
     </block>
   </view>
 </view>

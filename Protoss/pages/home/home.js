@@ -1,19 +1,10 @@
 import { Home } from 'home-model.js';
-import { UserInfo } from '../userinfo/userinfo-model.js';
 var home = new Home(); //实例化 首页 对象
-var userInfo = new UserInfo();
 Page({
     data: {
         loadingHidden: false
     },
     onLoad: function () {
-      userInfo.getUserAccount((data) => {
-        if (data.checked!=1){
-          wx.redirectTo({
-            url: '../userinfo/userinfo?type=home'
-          });
-        }
-      });
       this._loadData();
     },
 

@@ -10,7 +10,6 @@ var my=new My();
 
 Page({
     data: {
-        pageIndex:1,
         statusId:1,
         currentTabsIndex: 0,
         isLoadedAll:false,
@@ -29,7 +28,6 @@ Page({
             });
         });
 
-        var that = this;
         userInfo.getUserAccount((data) => {
           that.setData({
             UserAccount: data
@@ -38,6 +36,13 @@ Page({
 
         this._getOrders();
     },
+
+    onShow: function () {
+      if (this.data.loadingHidden) {
+        this.onPullDownRefresh();
+      }
+    },
+
 
     /*修改或者添加地址信息*/
     editAddress: function () {
@@ -79,8 +84,11 @@ Page({
                     orderArr: that.data.orderArr
                 });
             }else{
-                that.data.isLoadedAll=true;  //已经全部加载完毕
-                that.data.pageIndex=1;
+                that.setData({
+                  isLoadedAll:true,
+                  pageIndex: 1,
+                  orderArr: that.data.orderArr
+                });
             }
             callback && callback();
         });
@@ -128,7 +136,7 @@ Page({
       var that = this,
         id = order.getDataSet(event, 'id'),
         index = order.getDataSet(event, 'index');
-      this.showTipsReturn('提示', '你确定要重新购买吗？', (statusConfirm) => {
+      this.showTipsReturn('提示', '你确定要修改订单吗？', (statusConfirm) => {
         if (statusConfirm) {
           cart.getCartDataFromLocal('all', (data) => {
             if (data.goodsList == "") {
@@ -257,6 +265,26 @@ Page({
             url: '../pay-result/pay-result?id=' + id + '&from=my'
           });
         });
+    },
+
+    /*下拉刷新页面*/
+    onPullDownRefresh: function () {
+      var that = this;
+      this.data.orderArr = [];  //订单初始化
+      this.data.UserAccount = [];  //余额初始化
+      
+      this._getOrders(() => {
+        that.data.isLoadedAll = false;  //是否加载完全
+        that.data.pageIndex = 1;
+        wx.stopPullDownRefresh();
+      });
+
+      userInfo.getUserAccount((data) => {
+        that.setData({
+          UserAccount: data
+        });
+        wx.stopPullDownRefresh();
+      });
     },
 
     onReachBottom:function(){

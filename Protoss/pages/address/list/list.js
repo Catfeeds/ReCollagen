@@ -19,7 +19,6 @@ Page({
 
   onLoad: function (options) {
     this.data.fromType = options.type;
-
     var titleName = options.type == 'my' ? '地址管理' : ' 选择地址';
     wx.setNavigationBarTitle({
       title: titleName
@@ -44,14 +43,15 @@ Page({
 
   /*选择地址*/
   changeAddress: function (event) {
-    var id = adrList.getDataSet(event, 'id'),
+    var that = this,
+      id = adrList.getDataSet(event, 'id'),
       index = adrList.getDataSet(event, 'index');
-    if (this.data.fromType == 'order')
+    if (that.data.fromType == 'order')
     {
-      this.setData({
+      that.setData({
         currentAddressIndex: index
       });
-      adrList.execSetStorageSync(id);
+      adrList.execSetStorageSync(that.data.addressInfo[index]);
       wx.navigateBack();
     }
   },
@@ -61,23 +61,20 @@ Page({
       id = adrList.getDataSet(event, 'id'),
       index = adrList.getDataSet(event, 'index');
     // 遍历所有地址对象设为非默认
-      var addressObjects = this.data.addressInfo;
-    for (var i = 0; i < addressObjects.length; i++) {
+    var hasInfo = this.data.addressInfo;
+    for (var i = 0; i < hasInfo.length; i++) {
       // 判断是否为当前地址，是则传true
-      addressObjects[i].is_default = i == index
+      hasInfo[i].is_default = i == index
     }
-    var hasInfo = adrList._isHasThatOne(id, addressObjects);
-    if (hasInfo.index != -1) {
-      adrEdit.updateAddress(hasInfo.data, (data) => {
-        if (data.errorCode != 0) {
-          that.showToast(data.msg);
-          return;
-        }
-        that.setData({
-          addressInfo: addressObjects
-        });
+    adrEdit.updateAddress(hasInfo[index], (data) => {
+      if (data.errorCode != 0) {
+        that.showToast(data.msg);
+        return;
+      }
+      that.setData({
+        addressInfo: hasInfo
       });
-    }
+    });
   },
 
   add: function () {
@@ -89,9 +86,9 @@ Page({
   /*修改地址*/
   edit: function (event) {
     var that = this,
-      id = adrList.getDataSet(event, 'id');
+      index = adrList.getDataSet(event, 'index');
       wx.navigateTo({
-        url: '../edit/edit?type=edit&id=' + id
+        url: '../edit/edit?type=edit&index=' + index
       });
   },
 

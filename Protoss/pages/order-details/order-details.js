@@ -20,6 +20,7 @@ Page({
             if(this.data.id) {
                 var id = this.data.id;
                 order.getOrderInfo(id, (data)=> {
+                    that.data.productsArr = [];
                     that.setData({
                         orderStatus: data.order_status,
                         productsArr: data.products,
@@ -96,7 +97,7 @@ Page({
         addCart: function (event) {
           var that = this,
             id = this.data.id;
-          this.showTipsReturn('提示', '你确定要重新购买吗？', (statusConfirm) => {
+          this.showTipsReturn('提示', '你确定要修改订单吗？', (statusConfirm) => {
             if (statusConfirm) {
 
               cart.getCartDataFromLocal('all', (data) => {

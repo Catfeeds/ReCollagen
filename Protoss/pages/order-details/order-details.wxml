@@ -108,7 +108,7 @@
     <view class="total-account">
       实付:￥{{total}}
     </view>
-    <view wx:if="{{orderStatus==1}}" class="pay" ontap="addCart">重新购买</view>
+    <view wx:if="{{orderStatus==1}}" class="pay" ontap="addCart">修改订单</view>
     <view wx:if="{{orderStatus==1}}" class="pay" ontap="pay">去付款</view>
     <view wx:if="{{orderStatus==3}}" class="pay" ontap="receive">确认收货</view>
     <view wx:if="{{orderStatus==1}}" class="pay" ontap="cancel">取消订单</view>

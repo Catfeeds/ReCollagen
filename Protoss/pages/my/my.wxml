@@ -60,7 +60,7 @@
           <view class="order-bottom">
             <text>实付:￥{{item.total}}</text>
             <view class="orde-status">
-              <view class="pay" ontap="addCart" data-id="{{item.order_id}}" data-index="{{index}}" wx:if="{{item.order_status==1}}">重新购买</view>
+              <view class="pay" ontap="addCart" data-id="{{item.order_id}}" data-index="{{index}}" wx:if="{{item.order_status==1}}">修改订单</view>
               <view class="pay" ontap="rePay" data-id="{{item.order_id}}" data-index="{{index}}" wx:if="{{item.order_status==1}}">付款</view>
               <view class="pay" ontap="receive" data-id="{{item.order_id}}" data-index="{{index}}" wx:if="{{item.order_status==3}}">确认收货</view>
               <view class="pay" ontap="cancel" data-id="{{item.order_id}}" data-index="{{index}}"  wx:if="{{item.order_status==1}}">取消订单</view>

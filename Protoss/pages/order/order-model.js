@@ -47,6 +47,26 @@ class Order extends Base{
       };
       this.request(allParams);
     }
+
+    /*获取默认地址或第一个地址*/
+    _isHasThatOne(arr) {
+      var item,
+        result = {
+          index: 0,
+          data: arr[0]
+        };
+      for (let i = 0; i < arr.length; i++) {
+        item = arr[i];
+        if (item.is_default == 1) {
+          result = {
+            index: i,
+            data: item
+          };
+          break;
+        }
+      }
+      return result;
+    };
 }
 
 export {Order};
