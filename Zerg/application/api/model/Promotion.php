@@ -20,13 +20,8 @@ class Promotion extends BaseModel
      */
     public static function getPromotions()
     {
-        $promotions = self::all(['start_time'=>['lt',time()],'end_time'=>['gt',time()]]);
-//        if (!empty($promotions)) {
-//            foreach ($promotions as $key => $promotion) {
-//                $promotionGoods = PromotionGoods::products($promotion['id'])->toArray();
-//                $promotions[$key]['goods'] = $promotionGoods;
-//            }
-//        }
+        $promotions = self::all(['is_show'=>1,'start_time'=>['lt',time()],'end_time'=>['gt',time()]]);
+
         return $promotions;
     }
 
@@ -42,8 +37,7 @@ class Promotion extends BaseModel
     {
         $promotions = [];
         foreach ($data as $key => $v) {
-            $promotions[] = self::where(['id'=>$key,'start_time'=>['lt',time()],'end_time'=>['gt',time()],'money'=>['elt',$v]])->find();
-
+            $promotions[] = self::where(['id'=>$key,'is_show'=>1,'start_time'=>['lt',time()],'end_time'=>['gt',time()],'money'=>['elt',$v]])->find();
         }
         $promotion = [];
         if ($promotions) {

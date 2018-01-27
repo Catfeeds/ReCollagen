@@ -19,7 +19,7 @@ class Promotion extends AdminBase{
 	 * 促销活动列表
 	 */
     public function index(){
-		$list = $this->model->order('id desc')->paginate(config('page_num'));
+		$list = $this->model->where(['is_show'=>1])->order('id desc')->paginate(config('page_num'));
 
 		if (count($list) > 0) {
 			foreach ($list as $key => $v) {
@@ -158,8 +158,9 @@ class Promotion extends AdminBase{
 	public function del(){	
 	    $id = (int)input('param.id');
         $promotion = PromotionModel::get($id);
+        $promotion->is_show = -1;
+        $result = $promotion->save();
 
-        $result = PromotionModel::destroy($id);
 		if(!$result){	
 			$this->error('删除失败');							
 		}else{
