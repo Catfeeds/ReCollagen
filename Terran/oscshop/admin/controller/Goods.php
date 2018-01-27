@@ -149,7 +149,20 @@ class Goods extends AdminBase
     //商品手机端描述
     public function edit_mobile()
     {
-        $this->assign('mobile_images', Db::name('goods_mobile_description_image')->where('goods_id', input('id'))->order('sort_order asc')->select());
+        if (request()->isPost()) {
+            $data['goods_id'] = input('param.id/d');
+            $data['description'] = input('param.description/s');
+
+            $res = $this->goodsModel->update($data, false, true);
+            if ($res) {
+                storage_user_action(UID, session('user_auth.username'), config('BACKEND_USER'), '更新商品详情');
+                $this->success('更新成功！', url('Goods/index'));
+            } else {
+                $this->error('更新失败！');
+            }
+        }
+
+        $this->assign('goods', $this->goodsModel->get(input('param.id/d')));
         $this->assign('crumbs', '详情描述');
         return $this->fetch('mobile');
     }

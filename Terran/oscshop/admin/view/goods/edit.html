@@ -22,7 +22,7 @@
           	<li class="active"><a href="#tab-data" data-toggle="tab">基本信息</a></li>
           	<li><a href="#tab-param" data-toggle="tab">产品参数</a></li> 
             <li><a href="#tab-option" data-toggle="tab">规格选项</a></li>
-            <li><a href="#tab-discount" data-toggle="tab">折扣</a></li>                    
+            <!--<li><a href="#tab-discount" data-toggle="tab">折扣</a></li>                    -->
             <li><a href="#tab-image" data-toggle="tab">商品轮播图</a></li>      
             <li><a href="#tab-mobile" data-toggle="tab">详情描述</a></li>       
           </ul>
@@ -191,20 +191,14 @@
 	          	
 	          	<!-- 手机端描述 START -->
 	          	<div class="tab-pane" id="tab-mobile">
-	          		<div class="table-responsive">
-	                	<table id="mobile_images" class="table table-striped table-bordered table-hover">
-		                  <thead>
-		                    <tr>
-		                      <td class="text-left">详情图片</td>
-		                      <td class="text-left">图片描述</td>
-		                      <td class="text-right">选项排序</td>
-		                      <td></td>
-		                    </tr>
-		                  </thead>
-		                	 <tbody></tbody>
-			              </table>  					          
-		               	  <div><a  onclick="add_mobile_image();" class="add_image btn btn-primary ">添加图片</a></div>
-                  </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label no-padding-left"> </label>
+                        <div class="col-sm-5">
+                            <div class="clearfix">
+                                <textarea name="description" id="description"></textarea>
+                            </div>
+                        </div>
+                    </div>
 	          	</div>
 	          	<!-- 手机端描述 END -->
 	          	
@@ -215,6 +209,7 @@
 </div>
 {/block}
 {block name="javascript"}
+<script src="__PUBLIC__/js/ckeditor/ckeditor.js"></script>
 <script>
     $('#send').click(function(){
     	$.post(
@@ -227,7 +222,7 @@
                         location.href = data.url;
                     },1000); 
                 }else{
-                    return layer.msg(data.msg,{icon:2});
+                    layer.msg(data.msg,{icon:2});
                 }
     		}
     	);
@@ -306,7 +301,18 @@
 		mobile_image_row++;
 	}
 
-	$('#option a:first').tab('show');	
+	$('#option a:first').tab('show');
 
+    //CKEDITOR
+    CKEDITOR.replace('description', {
+        filebrowserImageUploadUrl: '{:url("FileManager/ckupload")}',
+        height : 350,
+        width : 800 ,
+        toolbar: [
+            [ 'Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat' ],
+            [ 'FontSize', 'TextColor', 'BGColor' ],
+            [ 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock','Image','Format']
+        ]
+    });
 </script>
 {/block}

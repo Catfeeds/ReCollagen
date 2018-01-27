@@ -30,12 +30,12 @@ class Product extends BaseModel
     public function imgs(){
         return $this->hasMany('ProductImage', 'goods_id', 'goods_id');
     }
-    /**
-     * 获取商品详情图片
-     */
-    public function detail(){
-        return $this->hasMany('ProductDetail', 'goods_id', 'goods_id');
-    }
+//    /**
+//     * 获取商品详情图片
+//     */
+//    public function detail(){
+//        return $this->hasMany('ProductDetail', 'goods_id', 'goods_id');
+//    }
     /**
      * 修改图片路径
      */
@@ -110,10 +110,6 @@ class Product extends BaseModel
             ->with('discounts')
             ->with(
                 ['imgs' => function ($query){
-                    $query->order('sort_order');
-                }])
-            ->with(
-                ['detail' => function ($query){
                     $query->order('sort_order');
                 }])
             ->with('properties')

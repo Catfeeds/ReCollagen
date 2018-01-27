@@ -23,6 +23,7 @@ Callback: 编码一律utf-8
         "stock"         :  "商品库存（如果设置了商品选项（如下），显示第一个选项的库存）", 
         "weight"        :  "商品重量(g)", 
         "bulk"          :  "商品体积(m³)", 
+        "description"   :  "商品详情", 
         "status"        :  "商品状态(1正常0下架)", 
 
 
@@ -42,12 +43,6 @@ Callback: 编码一律utf-8
 
         "imgs" : {
             "image"      : "商品轮播图(零到多个)"                             
-        },
-
-
-        "detail" : {
-            "image"             : "商品详情拼接图片"    
-            "description"       : "商品详情凭借图片title属性值"                             
         },
 
         "properties" : {    : "产品参数"
