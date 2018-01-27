@@ -26,17 +26,20 @@ class Promotion extends Controller
      * 获取促销信息
      */
     public function getPromotionInfo(){
-
         $promotionInfo = PromotionInfoModel::get()->hidden(['image']);
         $promotionInfo['description'] = htmlspecialchars_decode($promotionInfo['description']);
+
         return $promotionInfo;
     }
     /**
      * 获取促销图片
      */
     public function getPromotionImg(){
-
         $promotionInfo = PromotionInfoModel::get()->hidden(['description']);
+
+        //判断是否有正在进行中的促销活动，没有则不显示
+        $promotions = $this->getPromotions();
+        $promotionInfo['isValid'] = $promotions->isEmpty() ? -1 : 1;
 
         return $promotionInfo;
     }

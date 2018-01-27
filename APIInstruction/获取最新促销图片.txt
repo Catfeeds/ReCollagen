@@ -16,8 +16,8 @@ Callback: 编码一律utf-8
     {  
 
  
-        "image"   : "促销图片"    
-              
+        "image"     : "促销图片"    
+        "isValid"   : "1显示，-1无促销不显示"
 
     }
 
