@@ -30,28 +30,34 @@ class Cart extends Base{
     *获得购物车商品总数目,包括分类和不分类和商品总价
     */
     getCartTotalCounts(data,flag) {
-      var len = data.length,
+      var arr = data.goodsList,
         account = 0,
         selectedCounts = 0,
-        selectedTypeCounts = 0;
+        selectedTypeCounts = 0,
+        selectedPromotionCounts = 0;
 
-      for (let i = 0; i < len; i++) {
+      for (let i = 0; i < arr.length; i++) {
         if (flag) {
-          if (data[i].isChecked == 1) {
-            account += data[i].totalPrice;
-            selectedCounts += parseInt(data[i].count);
+          if (arr[i].isChecked == 1) {
+            account += arr[i].totalPrice;
+            selectedCounts += parseInt(arr[i].count);
             selectedTypeCounts++;
           }
         }
         else
         {
-          account += data[i].totalPrice;
-          selectedCounts += parseInt(data[i].count);
+          account += arr[i].totalPrice;
+          selectedCounts += parseInt(arr[i].count);
           selectedTypeCounts++;
         }
       }
+
+      if (data.promotion3 && data.promotion3 != '') {
+        selectedPromotionCounts = data.promotion3.free.length * data.promotion3.freeCount;
+      }
+
       return {
-        selectedCounts: selectedCounts,
+        selectedCounts: selectedCounts + selectedPromotionCounts,
         selectedTypeCounts: selectedTypeCounts,
         account: (account).toFixed(2)
       }

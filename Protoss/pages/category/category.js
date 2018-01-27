@@ -5,7 +5,7 @@ Page({
     currentMenuId:0,
     currentMenuIndex: 0,
     loadingHidden:false,
-    categoryInfo:[],
+    procucts:[],
   },
   onLoad: function () {
     this._loadData();
@@ -17,12 +17,13 @@ Page({
 
     /*获取分类信息*/
     category.getCategoryType((categoryData)=>{
-
+      console.log(categoryData)
       that.setData({
         categoryTypeArr: categoryData,
         currentMenuId: categoryData[0].id,
         title: categoryData[0].name,
-        imgUrl: categoryData[0].image
+        imgUrl: categoryData[0].image,
+        loadingHidden: true,
       });
   
       /*获取第一个分类下对应的商品*/
@@ -33,17 +34,19 @@ Page({
 
   /*切换分类*/
   changeCategory:function(event){
-
     var id=category.getDataSet(event,'id'),
       index = category.getDataSet(event, 'index'),
       name = category.getDataSet(event, 'name'),
       image = category.getDataSet(event, 'image');
 
+    this.data.procucts = [];
     this.setData({
       currentMenuId: id,
       currentMenuIndex: index,
+      loadingHidden: true,
       title: name,
-      imgUrl: image
+      imgUrl: image,
+      procucts: this.data.procucts
     });
     this.getProductsByCategory(id);
   },
@@ -52,14 +55,8 @@ Page({
   getProductsByCategory: function (id){
     var that = this;
     category.getProductsByCategory(id,(data)=> {
-      var dataObj = {
-        procucts: data,
-        topImgUrl: this.data.imgUrl,
-        title: this.data.title
-      };
       that.setData({
-        loadingHidden: true,
-        categoryInfo: dataObj
+        procucts: data
       });
     });
   },

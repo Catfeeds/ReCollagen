@@ -39,12 +39,16 @@ Page({
 
   formSubmit(){
     var self = this;
-    var phonereg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1})|(17[0-9]{1}))+\d{8})$/;
+    var phonereg = /^((0\d{2,3}-\d{7,8})|(1[35784]\d{9}))$/;
     var emailreg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/;
     var cardreg = /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/;
     
     if (!self.data.userData.uname) {
       self.showToast('姓名不能为空');
+      return;
+    }
+    if (!self.data.userData.uwecat) {
+      self.showToast('微信号不能为空');
       return;
     }
     if (!self.data.userData.utel) {
@@ -55,11 +59,7 @@ Page({
       self.showToast('电话有误！');
       return;
     }
-    if (!self.data.userData.uemail) {
-      self.showToast('邮箱不能为空');
-      return;
-    }
-    if (!emailreg.test(self.data.userData.uemail)) {
+    if (self.data.userData.uemail && !emailreg.test(self.data.userData.uemail)) {
       self.showToast('邮箱有误！');
       return;
     }
@@ -71,10 +71,26 @@ Page({
       self.showToast('省份证有误！');
       return;
     }
-    
-    self.data.userData.IDcode_pic = self.data.userData.IDcode_pic.replace(baseRestUrl, '');
-    self.data.userData.IDcode_pic_b = self.data.userData.IDcode_pic_b.replace(baseRestUrl, '');
-    self.data.userData.IDcode_pic_h = self.data.userData.IDcode_pic_h.replace(baseRestUrl, '');
+    if (!self.data.userData.IDcode_pic) {
+      self.showToast('请上传身份证正面照片');
+      return;
+    }
+    if (!self.data.userData.IDcode_pic_b) {
+      self.showToast('请上传身份证反面照片');
+      return;
+    }
+    if (!self.data.userData.IDcode_pic_h) {
+      self.showToast('请上传手持身份证照片');
+      return;
+    }
+    if (!self.data.userData.up_name) {
+      self.showToast('推荐人不能为空');
+      return;
+    }
+    if (!self.data.userData.up_wecat) {
+      self.showToast('推荐人微信号不能为空');
+      return;
+    }
 
     userInfo._updateUserInfo(self.data.userData, (data) => {
       if (data.errorCode != 0) {
@@ -90,7 +106,7 @@ Page({
             wx.navigateBack();
           }else{
             wx.switchTab({
-              url: '../home/home'
+              url: '../cart/cart'
             })
           }
         }
@@ -142,7 +158,6 @@ Page({
 
   chooseImageTap: function (event) {
     let _this = this,
-    token = userInfo.getDatatoken(),
     index = userInfo.getDataSet(event, 'index');
     wx.chooseImage({
       count: 1, // 默认9

@@ -1,5 +1,6 @@
 
 import { Base } from '../../utils/base.js'
+var Bases = new Base();
 class UserInfo extends Base{
     constructor() {
         super();
@@ -7,10 +8,24 @@ class UserInfo extends Base{
 
     /*更新注册账号*/
     _updateUserInfo(data, callback) {
+      var baseRestUrl = Bases.baseRestUrl.replace('api/v1/', '');
+      var updata = {
+          uname: data.uname,
+            uwecat: data.uwecat,
+              usex: data.usex,
+                utel: data.utel,
+                  uemail: data.uemail,
+                    IDcode: data.IDcode,
+                      up_name: data.up_name,
+                        up_wecat: data.up_wecat,
+                          IDcode_pic: data.IDcode_pic.replace(baseRestUrl, ''),
+                            IDcode_pic_b: data.IDcode_pic_b.replace(baseRestUrl, ''),
+                              IDcode_pic_h: data.IDcode_pic_h.replace(baseRestUrl, ''),
+      }
       var param = {
         url: 'user/update',
         type: 'post',
-        data: data,
+        data: updata,
         sCallback: function (res) {
           callback && callback(res);
         },
@@ -24,7 +39,6 @@ class UserInfo extends Base{
 
     /*上传图片*/
     _updateUploadImage(tempFilePaths,callback) {
-      var Bases = new Base();
       wx.showToast({
         icon: "loading",
         title: "正在上传"

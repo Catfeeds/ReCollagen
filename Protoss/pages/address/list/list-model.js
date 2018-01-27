@@ -38,35 +38,6 @@ class AdrList extends Base {
       data: data
     });
   };
-  
-
-  /*根据ID获取某个地址或默认地址*/
-  _isHasThatOne(id, arr) {
-    var item,
-      result = { index: -1 };
-    for (let i = 0; i < arr.length; i++) {
-      item = arr[i];
-      if (id != 0) {
-        if (item.address_id == id) {
-          result = {
-            index: i,
-            data: item
-          };
-          break;
-        }
-      }
-      else {
-        if (item.is_default == 1) {
-          result = {
-            index: i,
-            data: item
-          };
-          break;
-        }
-      }
-    }
-    return result;
-  };
 
 }
 

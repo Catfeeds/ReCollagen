@@ -26,7 +26,7 @@ Page({
     _loadData:function(callback){
         var that = this;
         cart.getCartDataFromLocal('all', (data) => {
-          var newData = cart.getCartTotalCounts(data.goodsList); /*获取商品总数*/
+          var newData = cart.getCartTotalCounts(data); /*获取商品总数*/
           this.setData({
             cartTotalCounts: newData.selectedCounts,
           });

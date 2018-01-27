@@ -17,14 +17,18 @@ Page({
         },
 
         onLoad: function (options) {
-          adrList.execSetStorageSync(0);
-          this._addressInfo(0);
+          var that = this;
+          adrList.getAddress((res) => {
+            if(res){
+              var hasInfo = order._isHasThatOne(res);
+              adrList.execSetStorageSync(hasInfo.data);
+            }
+          });
         },
 
         onShow:function(){
           var that = this;
           cart.getCartDataFromLocal(1, (data) => {
-
             if (data.promotion1 && data.promotion1 !=''){
               that.setData({
                 promotion1free: data.promotion1.free,
@@ -35,21 +39,25 @@ Page({
                 promotion4free: data.promotion4.free,
               });
             }
-
+            
+            that.data.productsArr=[];
             that.setData({
               productsArr: data,
               mainGoodsPrice: (that._calcTotalMainAndCounts(data.goodsList, 1).account - that.data.promotion1free - that.data.promotion4free).toFixed(2),
               otherGoodsPrice: that._calcTotalMainAndCounts(data.goodsList, 0).account,
             });
 
-            /*显示收获地址*/
-            adrList.getAddressDataFromLocal((adrid) => {
-              /*获取商品重量*/
+            that.setData({
+              total: (parseFloat(that.data.mainGoodsPrice) + parseFloat(that.data.otherGoodsPrice)).toFixed(2)
+            });
+
+            adrList.getAddressDataFromLocal((res) => {
+              res.address = res.province + ',' + res.city + ',' + res.country + ',' + res.address;
+              that.setData({
+                addressInfo: res
+              })
               var weight = that.getResultweight(data.goodsList).weight;
-              /*获取运费信息*/
-              var tranid = adrid == 0 ? that.data.addressInfo.address_id : adrid;
-              order.getTransFee(weight, tranid, (res) => {
-                /*设置总参数*/
+              order.getTransFee(weight, res.address_id, (res) => {
                 that.setData({
                   shippingPrice: res.fee,
                   transId: res.transId,
@@ -58,8 +66,8 @@ Page({
                   total: (parseFloat(that.data.mainGoodsPrice) + parseFloat(that.data.otherGoodsPrice) + parseFloat(res.fee)).toFixed(2)
                 });
               });
-              that._addressInfo(adrid);
             })
+            
           })
         },
 
@@ -77,20 +85,6 @@ Page({
           return {
             account: (account).toFixed(2)
           }
-        },
-
-        /*显示收获地址*/
-        _addressInfo: function (id) {
-          var that = this;
-          adrList.getAddress((res) => {
-            var hasInfo = adrList._isHasThatOne(id, res);
-            if (hasInfo.index != -1) {
-              hasInfo.data.address = hasInfo.data.province + ',' + hasInfo.data.city + ',' + hasInfo.data.country + ',' + hasInfo.data.address;
-              that.setData({
-                addressInfo: hasInfo.data
-              })
-            }
-          });
         },
 
         /*选择地址*/
@@ -194,7 +188,7 @@ Page({
             order.doOrder(orderInfo,(data)=>{
                 //订单生成成功
                 if(data.pass) {
-                  wx.navigateTo({
+                  wx.redirectTo({
                     url: '../pay-result/pay-result?id=' + data.order_id + '&from=order'
                   });
                 }else{

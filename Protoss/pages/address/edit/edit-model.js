@@ -24,7 +24,6 @@ class AdrEdit extends Base{
 
     /*更新保存地址*/
     updateAddress(data, callback) {
-      console.log(data)
       var param = {
         url: 'address/update',
         type: 'post',
