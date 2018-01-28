@@ -14,13 +14,13 @@
     <thead>
 
     <th><input name="condition" type="text" style="width: 80%;" placeholder="请输入姓名/联系电话/微信号" value="{:input('param.condition')}" /></th>
-    <!--<th>-->
-        <!--<select name="rectype">-->
-            <!--<option {if condition="$rectype eq null"} selected="selected"{/if}value="">全部账户类型</option>-->
-            <!--<option {if condition="$rectype eq 1"} selected="selected"{/if}value="1">主账户</option>-->
-            <!--<option {if condition="$rectype === 2"} selected="selected"{/if} value="2">小金库</option>-->
-        <!--</select>-->
-    <!--</th>-->
+    <th>
+        <select name="rectype">
+            <option {if condition="$rectype eq null"} selected="selected"{/if}value="">全部账户类型</option>
+            <option {if condition="$rectype eq 1"} selected="selected"{/if}value="1">主账户</option>
+            <option {if condition="$rectype === 2"} selected="selected"{/if} value="2">小金库</option>
+        </select>
+    </th>
     <th>
         <a class="btn btn-primary" href="javascript:;" id="search" url="{:url('MemberBackend/finance_list')}">查询</a>
     </th>

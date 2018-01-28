@@ -5,7 +5,7 @@ use think\Validate;
 class Promotion extends Validate
 {
     protected $rule = [
-        ['name','require|unique:promotion','请输入促销活动名称|促销活动名称重复'],
+        ['name','require','请输入促销活动名称'],
         ['type','require','请输入促销活动类型'],
         ['money','require','请输入需要满足的金额'],
         ['money','float','金额必须是数字'],

@@ -241,9 +241,8 @@
 			$('#end_time').layDate();
 		})
 
-
 		$('#send').click(function(){
-			$.post(
+            $.post(
 				'{$action}',
 				$('input[type=\'text\'],input[type=\'hidden\'],select'),
 				function(data){
@@ -324,7 +323,9 @@
         });
 		function chooseBox(type){
 		    type = type || 0;
-			$.post("{:url('admin/Promotion/chooseBox')}"+'?type='+type,function(data){
+		    var promotionType = $("#type option:selected").val();
+
+            $.post("{:url('admin/Promotion/chooseBox')}"+'?type='+type+'&promotionType='+promotionType,function(data){
 				var w = openBox({
 					type: 1,
 					title:"选择商品",

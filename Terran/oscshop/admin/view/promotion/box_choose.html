@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="__PUBLIC__/shop.css" />
+<input type="hidden" id="promotionType" value="{$promotionType}">
         <table class='wst-order-list'>
             <thead>
             <tr class='head'>
@@ -69,6 +70,7 @@
         function quotationChoiceByPage(p) {
             var params = {};
             params.page = p;
+            params.promotionType = $('#promotionType').val();
             $.post("{:url('admin/Promotion/getChooseGoods')}", params, function (data, textStatus) {
                 var json = infoToJson(data);
                 $('.j-order-row1').remove();

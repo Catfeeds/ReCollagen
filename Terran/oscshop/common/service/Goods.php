@@ -118,9 +118,9 @@ class Goods{
     /**
      * 获取促销商品列表
      */
-    public function getChooseGoods(){
+    public function getChooseGoods($promotionType){
 
-        $map=['g.isMainGoods'=>1,'g.status'=>1,'g.stock'=>['gt',0]];
+        $map=['g.isMainGoods'=>1,'g.status'=>1,'g.stock'=>['gt',0],'g.promotion'.$promotionType.'_id'=>['eq',0]];
 
         $list = Db::name('goods')->alias('g')->field('g.*,c.name As cat_name')
             ->where($map)

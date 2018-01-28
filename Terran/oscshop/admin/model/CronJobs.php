@@ -47,7 +47,7 @@ class CronJobs extends Model{
                 return $this->success = '操作成功';
 	 		}catch (\Exception $e) {
 	            Db::rollback();
-	            return $this->error = '操作成功';
+	            return $this->error = '操作失败';
 	        }
 	 	}
 	 	return $this->success = '操作成功';

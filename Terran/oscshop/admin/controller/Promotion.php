@@ -52,12 +52,6 @@ class Promotion extends AdminBase{
                     $this->error('请选择赠送商品');
                 }
                 $data['expression'] = implode(',',$data['free_goods_id']);
-
-//                $free_arr = [];
-//                foreach ($data['free_goods_id'] as $key => $v) {
-//                    $free_arr[$key]['goods_id'] = $v;
-//                }
-//                $data['expression'] = json_encode($free_arr);
                 unset($data['free_goods_id']);
             }elseif($data['type'] == 4){
                 $data['expression'] = $data['expression'].','.$data['expression2'];
@@ -71,6 +65,13 @@ class Promotion extends AdminBase{
 			if($data['start_time']>=$data['end_time']){
 				$this->error('开始时间不得大于结束时间');
             }
+            //判断打折和返现优惠力度是否与现有同类型活动冲突
+            if ($data['type'] == 1 || $data['type'] == 2) {
+                $ifConflict = $this->model->ifConflict($data,1);
+                if (!$ifConflict) {
+                    return $this->error($this->model->getError());
+                }
+            }
 
 			$id = Db::name('promotion')->insertGetId($data);
             if(!$id){
@@ -80,7 +81,6 @@ class Promotion extends AdminBase{
 				storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'新增了促销管理');	
 				$this->success('新增成功',url('Admin/Promotion/index'));
 			}
-			
 		}
 
 		$this->assign('action',url('Promotion/add'));
@@ -91,7 +91,7 @@ class Promotion extends AdminBase{
 	 * 编辑促销
 	 */
 	public function edit(){
-		
+
 		if(request()->isPost()){
 			$data = input('post.');
             if (isset($data['expression']) && $data['expression'] == '') {
@@ -121,7 +121,15 @@ class Promotion extends AdminBase{
             if($data['start_time']>=$data['end_time']){
                 $this->error('开始时间不得大于结束时间');
             }
-            $result = Db::name('promotion')->update($data);
+            //判断打折和返现优惠力度是否与现有同类型活动冲突
+            if ($data['type'] == 1 || $data['type'] == 2) {
+                $ifConflict = $this->model->ifConflict($data);
+                if (!$ifConflict) {
+                    return $this->error($this->model->getError());
+                }
+            }
+
+            $result = $this->model->update($data);
 
             if($result !== false){
                 model('Goods')->save(['promotion'.$data['type'].'_id'=>0],['promotion'.$data['type'].'_id'=>$data['id']]);
@@ -132,7 +140,6 @@ class Promotion extends AdminBase{
 			}else{
                 $this->error('修改失败');
 			}
-			
 		}else{
 			$promotion = $this->model->find((int)input('param.id'));
 			$promotion['goods'] = model('Goods')->getPromotionGoods($promotion['id'],$promotion['type']);
@@ -201,13 +208,14 @@ class Promotion extends AdminBase{
             return $this->fetch('free_box_choose');
         }
         //选择促销商品范围
+        $this->assign('promotionType', input('promotionType/d'));
         return $this->fetch('box_choose');
     }
     /**
      * 返回弹窗需要显示的商品
      */
     public function getChooseGoods(){
-        $data = osc_goods()->getChooseGoods();
+        $data = osc_goods()->getChooseGoods(input('promotionType/d'));
 
         return $data;
     }
