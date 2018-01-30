@@ -1,3 +1,4 @@
+<import src="../../wxParse/wxParse.wxml"/>
 <view class="container detail-container" hidden="{{!loadingHidden}}">
     <view class="detail-header-box">
         <view class="fixed-btns-box" bindtap="onCartTap">
@@ -28,7 +29,6 @@
             </view>
             <view class="product-counts">
                 <picker class="{{stockCount<1?'disabled':''}}" bindchange="bindPickerChange" value="{{index}}" range="{{countsArray}}">
-                    <!--因为picker对flex支持不好，所以加了一层view-->
                     <view>
                         <text class="counts-tips">数量</text>
                         <text class="counts-data">{{productCounts}}</text>
@@ -48,21 +48,12 @@
             <view class="stock" wx:if="{{stockCount>0}}">有货</view>
             <view class="stock no" wx:else>缺货</view>
             <view class="name">{{product.name}} <view class='products-isMainGood-ful' wx:if="{{product.isMainGoods==0}}">辅</view></view>
-            <view class="price">￥{{price}}
-            <text class='cuxiao' wx:if="{{product.discounts.length>0 && product.options.length<1}}">促销</text></view>
+            <view class="price">￥{{price}}</view>
             <view class="attr_list" wx:if="{{product.options.length>0}}">
               <view class='options-title'>规格：</view>
               <view>
                 <block wx:for="{{product.options}}">
                 <text class="attr_list_li {{currentAttrIndex==index?'on':''}} {{item.stock==0?'disabled':''}}" data-index="{{index}}" data-id="{{item.goods_option_id}}" data-price="{{item.option_price}}" data-stock="{{item.stock}}" bindtap='onClickAttr'>{{item.option_name}}</text>
-                </block>
-              </view>
-            </view>
-            <view class="discounts" wx:if="{{product.discounts.length>0 && product.options.length<1}}">
-              <view class='discounts-title'>促销：</view>
-              <view>
-                <block wx:for="{{discountsArray}}">
-                <text class='discounts_list_li'> 数量：{{item.quantity}} 价格：{{item.discount}} </text>
                 </block>
               </view>
             </view>
@@ -77,10 +68,8 @@
             </block>
         </view>
         <view class="product-detail-box">
-            <view class="product-detail-imgs" hidden="{{currentTabsIndex!=0}}">
-                <block wx:for="{{product.detail}}">
-                    <image src="{{item.image}}" alt="{{item.description}}" mode="aspectFill"></image>
-                </block>
+            <view class="product-detail" hidden="{{currentTabsIndex!=0}}">
+                 <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
             </view>
             <view class="product-detail-properties" hidden="{{currentTabsIndex!=1}}">
                 <block wx:for="{{product.properties}}">

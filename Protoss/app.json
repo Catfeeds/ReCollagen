@@ -14,7 +14,8 @@
     "pages/transinfo/transinfo",
     "pages/promotion/promotion",
     "pages/address/list/list",
-    "pages/address/edit/edit"
+    "pages/address/edit/edit",
+    "pages/legalrules/legalrules"
   ],
   "window":{
     "navigationBarTitleText": "",

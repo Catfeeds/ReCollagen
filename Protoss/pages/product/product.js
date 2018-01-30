@@ -5,6 +5,7 @@ import {Cart} from '../cart/cart-model.js';
 
 var product=new Product();  //实例化 商品详情 对象
 var cart=new Cart();
+var WxParse = require('../../wxParse/wxParse.js');
 Page({
     data: {
         loadingHidden:false,
@@ -32,6 +33,7 @@ Page({
           });
         })
         product.getDetailInfo(this.data.id,(data)=>{
+          console.log(data)
 
             /*判断是否是单商品*/
           var optionsCount = data.options;
@@ -44,20 +46,8 @@ Page({
                 stockArray.push(i);
               }
 
-              /*单商品优惠信息*/
-              var discountsArray = [],
-                discountsCount = data.discounts;
-              for (var key in discountsCount) {
-                var discount = (data.price * discountsCount[key].discount / 100).toFixed(2);
-                  discountsArray.push({
-                    discount: discount,
-                    quantity: discountsCount[key].quantity
-                  });
-              }
-
               that.setData({
                   countsArray: stockArray,
-                  discountsArray: discountsArray,
                   price: data.price,
                   stockCount: stockCount,
               });
@@ -80,12 +70,14 @@ Page({
                 stockCount: stockCount,
               });
             }
+          if (data.description && data.description!=''){
+              WxParse.wxParse('article', 'html', data.description, that, 5)
+            }
             that.setData({
               cartTotalCounts: that.data.cartTotalCounts,
               product: data,
               loadingHidden: true
             });
-
             callback&& callback();
         });
     },
@@ -118,28 +110,9 @@ Page({
     bindPickerChange: function(e) {
       var tempPrice,
         float=false,
-        counts = this.data.countsArray[e.detail.value],
-        discounts = this.data.product.discounts,
-        optionsCount = this.data.product.options;
+        counts = this.data.countsArray[e.detail.value];
 
-      if (optionsCount.length > 0) {
-          tempPrice = this.data.price;
-        }
-        else
-        {
-          discounts.sort(function (a, b) {
-            return a.quantity - b.quantity;
-          });
-          for (var key in discounts) {
-            if (counts >= discounts[key].quantity) {
-              tempPrice = (this.data.product.price * discounts[key].discount / 100).toFixed(2);
-              float = true;
-            }
-          }
-          tempPrice = float == true ? tempPrice : this.data.product.price;
-        }
         this.setData({
-          price: tempPrice,
           productCounts: counts,
         })
     },
@@ -163,22 +136,19 @@ Page({
       });
     },
 
-    /*根据商品id得到 商品所在下标*/
-    _getProductIndexById: function (data,id) {
-      var len = data.length;
-      for (let i = 0; i < len; i++) {
-        if (data[i].goods_id == id) {
-          return i;
-        }
-      }
-    },
-
     //切换详情面板
     onTabsItemTap:function(event){
         var index=product.getDataSet(event,'index');
         this.setData({
             currentTabsIndex:index
         });
+    },
+
+    /*跳转到购物车*/
+    onCartTap: function () {
+      wx.switchTab({
+        url: '/pages/cart/cart'
+      });
     },
 
     /*添加到收藏*/
@@ -254,12 +224,12 @@ Page({
     },
 
     /*
-        * 提示窗口
-        * params:
-        * title - {string}标题
-        * content - {string}内容
-        * flag - {bool}是否跳转到 "我的页面"
-        */
+    * 提示窗口
+    * params:
+    * title - {string}标题
+    * content - {string}内容
+    * flag - {bool}是否跳转到 "我的页面"
+    */
     showTips: function (title, content) {
       wx.showModal({
         title: title,
@@ -268,13 +238,6 @@ Page({
         success: function (res) {
         }
       });
-    },
-
-    /*跳转到购物车*/
-    onCartTap:function(){
-        wx.switchTab({
-            url: '/pages/cart/cart'
-        });
     },
 
     /*下拉刷新页面*/

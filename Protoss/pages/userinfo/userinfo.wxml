@@ -40,6 +40,10 @@
         <view class="section">
           <input class="{{userData.checked==1?'disabled':''}}" name="up_wecat" value="{{userData.up_wecat}}" placeholder="推荐人微信号" bindinput="bindUpWecat" />
         </view>
+        <view class="set-legalrules" bindtap="legalrules">
+				<icon type="success_circle"/>
+				<text>法律法规交易规则</text>
+        </view>
         <button class="submit-btn" formType="submit">提交</button>
       </form>
     </view>

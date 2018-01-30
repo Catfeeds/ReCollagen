@@ -1,3 +1,4 @@
+@import "../../wxParse/wxParse.wxss"; 
 @import "../tpls/base.wxss";
 .detail-container {
   background-color:#F9F9F9
@@ -105,7 +106,7 @@
 }
 
 .small-top-img{
-  height: 160rpx;
+  height: 100%;
   width: 160rpx;
   right:6rpx;
   position: absolute;
@@ -273,7 +274,10 @@
 .product-detail-box{
   padding-bottom: 20rpx;
 }
-.product-detail-imgs image{
+.product-detail{
+  font-size:28rpx;
+}
+.product-detail image{
   width: 100%;
   height:400rpx;
   float: left;

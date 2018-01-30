@@ -12,9 +12,10 @@ Page({
     _loadData:function(){
         var that=this;
         promotion.getPromotionTxt((data) => {
-          console.log(data.description)
+          if (data.description && data.description!=""){
+            WxParse.wxParse('article', 'html', data.description, that, 5);
+          }
           that.setData({
-            detiel: WxParse.wxParse('article', 'html', data.description, that, 5),
             loadingHidden: true
           });
         });

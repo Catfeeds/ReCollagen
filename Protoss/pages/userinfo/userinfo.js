@@ -196,7 +196,12 @@ Page({
     })
   },
 
-
+  /*法律法规交易规则*/
+  legalrules: function() {
+    wx.navigateTo({
+      url: '../legalrules/legalrules'
+    });
+  },
 
   /*
   * 提示窗口
