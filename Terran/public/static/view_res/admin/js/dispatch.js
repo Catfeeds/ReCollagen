@@ -4,6 +4,19 @@ $(function(){
 	TransTpl += "<div class=\"ncsu-trans-type\" data-delivery=\"TRANSTYPE\">\n";
 	TransTpl += "<div class=\"entity\">\n";
 	TransTpl += "<div class=\"default J_DefaultSet\">\n";
+    TransTpl += "<div class=\"row\">\n";
+    TransTpl += "<div class=\"col-xs-5\">\n";
+    TransTpl += "最低发货重量(千克)：\n";
+    TransTpl += "<input style=\"width: 60%;\" class=\"text\" type=\"text\" maxlength=\"6\" autocomplete=\"off\" value=\"\" name=\"default[TRANSTYPE][postage]\" data-field=\"postage\">";
+    TransTpl += "</div>\n";
+    TransTpl += "<div class=\"col-xs-4\">\n";
+    TransTpl += "最高发货重量(千克)：\n";
+    TransTpl += "<input style=\"width: 60%;\" class=\"ml5 text\" type=\"text\" maxlength=\"6\" autocomplete=\"off\" value=\"\" data-field=\"postageplus\" name=\"default[TRANSTYPE][postageplus]\">";
+    TransTpl += "<i class=\"icon-renminbi\"><\/i>";
+    TransTpl += "<\/em>\n";
+    TransTpl += "<div class=\"J_DefaultMessage\"><\/div>\n";
+    TransTpl += "<\/div>\n";
+
 	TransTpl += "发货范围：\n";
 	TransTpl += "<div class=\"J_DefaultMessage\"><\/div>\n";
 	TransTpl += "<\/div>\n";
@@ -436,9 +449,9 @@ $(function(){
 	/*	首费离开校验*/
 	$('.trans-line').on('blur','input[data-field="postage"]',function (){
 		var oNum = new Number($(this).val());
-		oNum = oNum.toFixed(2);
-		if (oNum > 999.99) oNum = 999.99;
-		if (oNum=='NaN') oNum = '0.00'; 
+		// oNum = oNum.toFixed(2);
+		// if (oNum > 30) oNum = 30;
+		// if (oNum=='NaN') oNum = '0';
 		$(this).val(oNum);
 		if($(this)[0].className=='w50 mr5 text input-error') $(this).removeClass('input-error');
 		if($(this)[0].className=='w50 ml5 mr5 text input-error') $(this).removeClass('input-error');
@@ -464,9 +477,9 @@ $(function(){
 	/*	续费离开校验*/
 	$('.trans-line').on('blur','input[data-field="postageplus"]',function (){
 		var oNum = new Number($(this).val());
-		oNum = oNum.toFixed(2);
-		if (oNum > 999.99) oNum = 999.99;
-		if (oNum=='NaN') oNum = '0.00';
+		// oNum = oNum.toFixed(2);
+		// if (oNum > 30) oNum = 30;
+		// if (oNum=='NaN') oNum = '0';
 		$(this).val(oNum);
 		if($(this)[0].className=='w50 mr5 text input-error') $(this).removeClass('input-error');
 		if($(this)[0].className=='w50 ml5 mr5 text input-error') $(this).removeClass('input-error');

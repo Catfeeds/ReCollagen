@@ -43,8 +43,10 @@
 			<table class="table table-striped table-bordered table-hover">
 				<thead>
 					<tr>											
-						<th class="hidden-xs">货仓名称</th>
-						<th>发货范围</th> 			
+						<th class="hidden-xs" width="150px">货仓名称</th>
+						<th>发货范围</th>
+						<th width="150px">最低发货重量(千克)</th>
+						<th width="150px">最高发货重量(千克)</th>
 					</tr>
 				</thead>
 				 
@@ -64,6 +66,8 @@
 				    <tr>
 				      <td class="bdl hidden-xs"></td>
 				      <td class="cell-area tl"><?php echo $v['area_name'];?></td>
+						<td><?php echo $v['min_weight'];?></td>
+						<td class="bdr"><?php echo $v['max_weight'];?></td>
 				    </tr>
 				</tbody>
 				  

@@ -69,7 +69,6 @@
 {/block}
 
 {block name="javascript"}
-
 <script src="__PUBLIC__/js/dialog/dialog.js" id="dialog_js" charset="utf-8"></script>
 <link rel="stylesheet" href="__PUBLIC__/js/dialog/dialog.css" />	
 <script src="__RES__/admin/js/dispatch.js"></script>
@@ -84,6 +83,9 @@ $(function(){
 
         $(cur_tr).find('.area-group>p').html('<?php echo $dispatch['area_name'];?>');
         $(cur_tr).find('input[type="hidden"]').val('<?php echo trim($dispatch['area_id'],',');?>|||<?php echo $dispatch['area_name'];?>');
+
+        $('.ncsu-trans-type').find('input[data-field="postage"]').val('<?php echo $dispatch['min_weight'];?>');
+        $('.ncsu-trans-type').find('input[data-field="postageplus"]').val('<?php echo $dispatch['max_weight'];?>');
     <?php }?>
 
 });
