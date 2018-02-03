@@ -109,7 +109,16 @@ function getShippingCode($shipping_method){
 
     return $shippingCode;
 }
-//对多维数组进行排序
+
+/**
+ * @param $array    需要排序的数组
+ * @param $field    根据哪个字段进行排序
+ * @param bool $desc    false正序;true倒叙
+ * @return bool
+ * Author: sai
+ * DateTime: 2018/2/2 20:05
+ * 对多维数组进行排序
+ */
 function sortArrByField(&$array, $field, $desc = false){
     $fieldArr = array();
     foreach ($array as $k => $v) {

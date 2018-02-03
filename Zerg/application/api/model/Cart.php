@@ -64,20 +64,6 @@ class Cart extends BaseModel{
                     $data['goodsList'][$key]['totalPrice'] = $v['count'] * $v['price'];
                 }
             }
-            //统计单个商品第几件几折
-            foreach ($data['goodsList'] as $key => $v) {
-                $dis = ProductDiscount::where(['goods_id'=>$v['goods_id']])->order('quantity desc')->select();
-                if ($dis) {
-                    foreach ($dis as $key2 => $v2) {
-                        if ($v['count'] >= $v2['quantity']) {
-                            $price = $v['price']*$v2['discount']/100;
-                            $data['goodsList'][$key]['price'] = $price;
-                            $data['goodsList'][$key]['totalPrice'] = $v['count'] * $price;
-                            break;
-                        }
-                    }
-                }
-            }
 
             //统计满额打折活动(促销一)
             $condition1 = self::getPreOrderPromotionsCondition($data['goodsList'],'promotion1_id');
@@ -88,6 +74,7 @@ class Cart extends BaseModel{
             //统计满额赠送商品活动(促销三)
             $condition3 = self::getPreOrderPromotionsCondition($data['goodsList'],'promotion3_id');
             $data['promotion3'] = Promotion::getPreOrderPromotions($condition3);
+
             //统计第X件商品X折(促销四)
             $condition4 = self::getPreOrderPromotionsCondition($data['goodsList'],'promotion4_id');
             $data['promotion4'] = Promotion::getPreOrderPromotions($condition4);
@@ -98,24 +85,31 @@ class Cart extends BaseModel{
                     }
                 }
                 //按单价降序排列
-                sortArrByField($pro4Goods, 'price', $desc = true);
+                sortArrByField($pro4Goods, 'price', true);
                 $expression = explode(',',$data['promotion4']['expression']);
                 $discount = $expression[0];
                 $piece = (int)$expression[1];
 
-                if (count($pro4Goods) >= $piece) {
-                    //如果商品件数达到促销的件数要求
+                $promotion4 = [];
+                $data['promotion4']['free'] = 0;    //第X件商品X折活动优惠金额
+                foreach ($pro4Goods as $key => $v) {
+                    if ($v['count'] >= $piece) {
+                        $promotion4['goods_id'] = $v['goods_id'];
+                        $free = $v['price'] - $v['price']*$discount/100;    //第X件商品X折活动优惠金额
+                        $promotion4['totalPrice'] = $v['totalPrice'] - $free;
+                        $data['promotion4']['free'] = $free;
+                        break;
+                    }else{
+                        $piece = $piece - $v['count'];
+                    }
+                }
+                if ($promotion4) {
                     foreach ($data['goodsList'] as $key => $v) {
-                        if ($v['goods_id'] == $pro4Goods[$piece-1]['goods_id'] && $v['goods_option_id'] == $pro4Goods[$piece-1]['goods_option_id']) {
-                            $data['goodsList'][$key]['price'] = $v['price']*$discount/100;      //将满足第X件商品X折活动的该商品修改为活动价
-                            $data['goodsList'][$key]['totalPrice'] = $v['price']*$discount/100 * $v['count'];
-                            $data['promotion4']['free'] = ($v['price'] - $v['price']*$discount/100) * $v['count'];  //第X件商品X折活动优惠金额
+                        if ($v['goods_id'] == $promotion4['goods_id']) {
+                            $data['goodsList'][$key]['totalPrice'] = $promotion4['totalPrice']; //将满足第X件商品X折活动的该商品修改为活动价
                         }
                     }
-                }else{
-                    $data['promotion4']['free'] = 0;
                 }
-
             }
         }
 

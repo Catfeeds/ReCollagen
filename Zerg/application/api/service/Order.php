@@ -190,6 +190,7 @@ class Order
             $order->shipping_name   = $userAddress['name'];
             $order->shipping_tel    = $userAddress['telephone'];
             $order->shipping_addr   = $userAddress['province'].$userAddress['city'].$userAddress['country'].$userAddress['address'];
+            $order->userRemarks     = $this->postData['userRemarks'];
 
             $order->dispatch_id     = $this->postData['dispatchId'];            //发货仓id
             $order->shipping_method = Db::name('transport')->getFieldById($this->postData['transId'],'title'); //物流公司

@@ -18,6 +18,7 @@ Params:
     "shippingPrice"         :  "运费", 
     "transId"               :  "匹配到的物流公司ID", 
     "dispatchId"            :  "发货仓ID", 
+    "userRemarks"           :  "买家留言", 
 
     "promotion":[   
         {"name":"满200送精美礼品","type":3,"free":"梨花带雨*1|||夏日芒果*2"},      赠送商品活动返回：促销名称，促销类型，商品名称*赠送数量（多种商品以"|||"隔开）
