@@ -17,7 +17,7 @@ Callback: 编码一律utf-8
       "goodsList": [{           :   "商品清单"
               "goods_id": 30,
               "goods_option_id": 9,
-              "count": 10,
+              "count": 10,              :   "商品数量" 
               "isChecked": 1,           :   "1选中，-1未选中" 
               "name": "李大爷的妙脆角",
               "isMainGoods": 1,
@@ -31,7 +31,7 @@ Callback: 编码一律utf-8
               "promotion4_id": 28,
               "option_name": "1000g",
               "option_price": "8.80",
-              "totalPrice": 70.4
+              "totalPrice": 70.4        :   "单件商品总价" 
         }],
       "promotion1": {           :   "满额打折"
         "id": 25,

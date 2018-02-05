@@ -44,10 +44,16 @@ class Dispatch extends AdminBase{
 			$info['dispatch_title'] = $post['title'];
 			$info['sort'] 			= $post['sort'];	
 			$info['update_time']    = time();
-			
-			$area = explode('|||', $post['areas']['kd'][1]);
-			$info['area_id'] 	= ','.$area[0].',';
-			$info['area_name'] 		= $area[1];
+            //重量范围
+			$info['min_weight'] = $post['default']['kd']['postage'];
+			$info['max_weight'] = $post['default']['kd']['postageplus'];
+			if ($info['max_weight'] <= $info['min_weight']) {
+                return $this->error('最高发货重量需大于最低发货重量');
+			}
+            //发货范围
+            $area = explode('|||', $post['areas']['kd'][1]);
+            $info['area_id'] 	= ','.$area[0].',';
+            $info['area_name'] 	= $area[1];
 
             //计算省份ID
             $province = array();

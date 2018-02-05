@@ -1,6 +1,6 @@
 {extend name="./oscshop/admin/view/public/base.html" /}
 {block name="content"}
-<link rel="stylesheet" href="__RES__/admin/css/transport.css" />	
+<link rel="stylesheet" href="__RES__/admin/css/transport.css" />
 
 <div class="page-header">
 		<h1>
@@ -12,7 +12,7 @@
 		</h1>
 	</div>
 <div class="row">
-	<div class="col-xs-11">	
+	<div class="col-xs-11">
 	<div id="append_parent"></div>
 	<div class="ncsc-form-default">
   <form method="post" id="tpl_form" name="tpl_form" action='{:url("Transport/save")}'>
@@ -48,7 +48,7 @@
       <div class="title">选择区域<a class="ks-ext-close" href="javascript:void(0)">X</a></div>
       <form method="post">
         <ul id="J_CityList">
-          
+
           {include file="transport:transport_area"/}
         </ul>
         <div class="bottom"> <a href="javascript:void(0);" class="J_Submit ncsc-btn ncsc-btn-green">确定</a> <a href="javascript:void(0);" class="J_Cancel ncsc-btn">取消</a> </div>
@@ -81,7 +81,7 @@
     </div>
 
 </div>
-		
+
 	</div>
 </div>
 {/block}
@@ -89,14 +89,12 @@
 {block name="javascript"}
 
 <script src="__PUBLIC__/js/dialog/dialog.js" id="dialog_js" charset="utf-8"></script>
-<link rel="stylesheet" href="__PUBLIC__/js/dialog/dialog.css" />	
+<link rel="stylesheet" href="__PUBLIC__/js/dialog/dialog.css" />
 <script src="__RES__/admin/js/transport.js"></script>
 
 
 <script>
-
-
-
+var unit ='千克';
 $(function(){
 	$('.trans-line').append(TransTpl.replace(/TRANSTYPE/g,'kd'));
 	$('.tbl-except').append(RuleHead);
@@ -109,12 +107,12 @@ $(function(){
 			$(cur_tr).find('input[data-field="start"]').val('<?php echo $value['snum'];?>');
 			$(cur_tr).find('input[data-field="postage"]').val('<?php echo $value['sprice'];?>');
 			$(cur_tr).find('input[data-field="plus"]').val('<?php echo $value['xnum'];?>');
-			$(cur_tr).find('input[data-field="postageplus"]').val('<?php echo $value['xprice'];?>');							
+			$(cur_tr).find('input[data-field="postageplus"]').val('<?php echo $value['xprice'];?>');
 
 		<?php }else{?>
 
 			StartNum +=1;
-			cell = RuleCell.replace(/CurNum/g,StartNum); 
+			cell = RuleCell.replace(/CurNum/g,StartNum);
 			cell = cell.replace(/TRANSTYPE/g,'kd');
 			$('.tbl-except').find('table').append(cell);
 			$('.tbl-attach').find('.J_ToggleBatch').css('display','').html('批量操作');

@@ -190,12 +190,13 @@ class Order
             $order->shipping_name   = $userAddress['name'];
             $order->shipping_tel    = $userAddress['telephone'];
             $order->shipping_addr   = $userAddress['province'].$userAddress['city'].$userAddress['country'].$userAddress['address'];
+            $order->userRemarks     = $this->postData['userRemarks'];
 
-            $order->dispatch_id     = $this->getDispatchIdByAddr($this->postData['address_id']);     //发货仓id
+            $order->dispatch_id     = $this->postData['dispatchId'];            //发货仓id
             $order->shipping_method = Db::name('transport')->getFieldById($this->postData['transId'],'title'); //物流公司
-            $order->mainGoodsPrice  = $this->postData['mainGoodsPrice'];     //主商品价格
-            $order->otherGoodsPrice = $this->postData['otherGoodsPrice'];     //辅销品价格
-            $order->shippingPrice   = $this->postData['shippingPrice'];     //运费
+            $order->mainGoodsPrice  = $this->postData['mainGoodsPrice'];        //主商品价格
+            $order->otherGoodsPrice = $this->postData['otherGoodsPrice'];       //辅销品价格
+            $order->shippingPrice   = $this->postData['shippingPrice'];         //运费
             $order->total           = $order->mainGoodsPrice + $order->otherGoodsPrice + $order->shippingPrice;     //总计
             //促销活动
             if (!empty($this->postData['promotion'])) {
@@ -300,17 +301,27 @@ class Order
         }
         return $userAddress->toArray();
     }
+
     /**
-     * 根据用户地址匹配发货仓id
+     * @param $address_id
+     * @param $weight
+     * @return string
+     * @throws UserException
+     * @throws \think\exception\DbException
+     * Author: sai
+     * DateTime: 2018/2/1 19:32
+     * 根据用户地址和发货重量匹配发货仓id
      */
-    private function getDispatchIdByAddr($address_id){
+    private function getDispatchIdByAddr($address_id,$weight){
         $userAddress = $this->getUserAddress($address_id);
-        $dispatchs = Dispatch::all()->toArray();
+        $dispatchs = Dispatch::all();
 
         $dispath_id = '';
         foreach ($dispatchs as $key => $v) {
             if (strpos($v['area_id'],",".$userAddress['city_id'].",") !== false){
-                $dispath_id = $v['id'];
+                if ($weight >= $v['min_weight'] && $weight <= $v['max_weight'] ) {
+                    $dispath_id = $v['id'];
+                }
             }
         }
         if ($dispath_id == '') {
@@ -473,7 +484,7 @@ class Order
         }
 
         //匹配设置了配送区域的物流公司
-        $transports = Transport::all(['is_default'=>2])->toArray();
+        $transports = Transport::all(['is_default'=>2]);
         $supportTrans = []; //支持配送到用户地址的物流公司
         foreach ($transports as $key => $v) {
             if (strpos($v['area_id'],",".$userAddress['city_id'].",") !== false){
@@ -525,7 +536,7 @@ class Order
         $trans['transId'] = $transId;
         $trans['transTitle'] = $transTitle;
         //计算发货仓
-        $trans['dispatchId'] = $this->getDispatchIdByAddr($data['address_id']);
+        $trans['dispatchId'] = $this->getDispatchIdByAddr($data['address_id'],$data['weight']);
         $trans['dispatchTitle'] = '';
         if ($trans['dispatchId']) {
             $dispatch = Dispatch::get($trans['dispatchId']);

@@ -121,15 +121,17 @@ class Transport extends AdminBase{
 			}
 			//保存默认运费
 			if (is_array($post['default']['kd'])){
-				$a = $post['default']['kd'];
-				$trans_list[0]['area_id']         = '';
-				$trans_list[0]['area_name']       = '全国';
-				$trans_list[0]['sprice']          = $a['postage'];
-				$trans_list[0]['xprice']          = $a['postageplus'];
-				$trans_list[0]['is_default']      = 1;
-				$trans_list[0]['transport_id']    = $transport_id;
-				$trans_list[0]['transport_title'] = $post['title'];
-				$trans_list[0]['top_area_id']     = '';
+                $a = $post['default']['kd'];
+                $trans_list[0]['area_id']         = '';
+                $trans_list[0]['area_name']       = '全国';
+                $trans_list[0]['snum']            = $a['start'];
+                $trans_list[0]['sprice']          = $a['postage'];
+                $trans_list[0]['xnum']            = $a['plus'];
+                $trans_list[0]['xprice']          = $a['postageplus'];
+                $trans_list[0]['is_default']      = 1;
+                $trans_list[0]['transport_id']    = $transport_id;
+                $trans_list[0]['transport_title'] = $post['title'];
+                $trans_list[0]['top_area_id']     = '';
 			}
 			//保存自定义地区的运费设置
 			$areas   = isset($post['areas']['kd'])?$post['areas']['kd']:'';
@@ -141,8 +143,10 @@ class Transport extends AdminBase{
 					$areas[$key] = explode('|||',$areas[$key]);
 					$trans_list[$key+1]['area_id'] = ','.$areas[$key][0].',';
 					$trans_list[$key+1]['area_name'] = $areas[$key][1];
-					$trans_list[$key+1]['sprice'] = $value['postage'];
-					$trans_list[$key+1]['xprice'] = $value['postageplus'];
+                    $trans_list[$key+1]['snum'] = $value['start'];
+                    $trans_list[$key+1]['sprice'] = $value['postage'];
+                    $trans_list[$key+1]['xnum'] = $value['plus'];
+                    $trans_list[$key+1]['xprice'] = $value['postageplus'];
 					$trans_list[$key+1]['is_default'] = 2;
 					$trans_list[$key+1]['transport_id'] = $transport_id;
 					$trans_list[$key+1]['transport_title'] = $post['title'];

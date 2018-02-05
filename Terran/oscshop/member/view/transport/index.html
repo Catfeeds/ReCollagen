@@ -44,9 +44,11 @@
 				<thead>
 					<tr>											
 						<th class="hidden-xs">物流公司</th>
-						<th>运送到</th> 
-						<th>首重运费(元)</th>	
-						<th>续费运费(元)</th>				
+						<th>运送到</th>
+						<th>首重(千克)</th>
+						<th>首重运费(元)</th>
+						<th>续重(千克)</th>
+						<th>续费运费(元)</th>
 					</tr>
 				</thead>
 				 
@@ -71,9 +73,9 @@
 				    <tr>
 				      <td class="bdl hidden-xs"></td>
 				      <td class="cell-area tl"><?php echo $value['area_name'];?></td>
-				      <!-- <td><?php echo $value['snum'];?></td> -->
+				       <td><?php echo $value['snum'];?></td>
 				      <td><?php echo $value['sprice'];?></td>
-				      <!-- <td><?php echo $value['xnum'];?></td> -->
+				       <td><?php echo $value['xnum'];?></td>
 				      <td class="bdr"><?php echo $value['xprice'];?></td>
 				    </tr>
 				    <?php }?>
