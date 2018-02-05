@@ -93,7 +93,7 @@ Page({
           });
         },
 
-        /*重新购买订单里的商品*/
+        /*修改订单*/
         addCart: function (event) {
           var that = this,
             id = this.data.id;
@@ -131,24 +131,15 @@ Page({
               item = arr[i];
               cart.add(item.goods_id, item.option_id, item.counts, (data) => {
                 if ((i + 1) == arr.length) {
-                  order.cancel(id, (statusCode) => {
-                    if (statusCode.errorCode != 0) {
-                      that.showTips('订单提示', statusCode.msg);
-                      return;
+                  wx.showModal({
+                    title: '',
+                    content: '已加入到购物车',
+                    showCancel: false,
+                    success: function (res) {
+                      wx.switchTab({
+                        url: '/pages/cart/cart'
+                      });
                     }
-                    that.setData({
-                      orderStatus: 5
-                    });
-                    wx.showModal({
-                      title: '',
-                      content: '已加入到购物车',
-                      showCancel: false,
-                      success: function (res) {
-                        wx.switchTab({
-                          url: '/pages/cart/cart'
-                        });
-                      }
-                    });
                   });
                 }
               });
