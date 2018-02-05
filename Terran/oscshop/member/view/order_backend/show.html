@@ -55,7 +55,18 @@
             <tr>
                 <td>订单状态</td>
                 <td id="order-status">{$data.order.order_status|getOrderStatus}</td>
-            </tr> 
+            </tr>
+            <tr>
+                <td>买家留言</td>
+                <td>{$data.order.userRemarks}</td>
+            </tr>
+            <tr>
+                <td>卖家备注</td>
+                <td><input type="text" name="shopRemarks" value="{$data.order.shopRemarks}" style="width: 90%"></td>
+            </tr>
+            <tr>
+                <td colspan="2" class="right"><input type="button" id="submitRemarks" value="提交备注" class="btn btn-primary" /></td>
+            </tr>
         </table>
     </div>
 
@@ -113,45 +124,45 @@
                     </tr>
                     <?php } ?>
 
-                <tbody>
-                    <tr>
-                        <td colspan="3" class="right">主商品价格</td>
-                        <td class="right">￥{$data.order.mainGoodsPrice}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" class="right">辅销品价格</td>
-                        <td class="right">￥{$data.order.otherGoodsPrice}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="3" class="right">运费</td>
-                        <td class="right">￥
-                            <?php if($data['order']['order_status']<2){ ?>
-                            <input name="shippingPrice" type="text" style="width:200px;" value="{$data.order.shippingPrice}" />
-                            <?php }else{ ?>
-                            {$data.order.shippingPrice}
-                            <?php } ?>
-                        </td>
-                    </tr>
+                    <tbody>
+                        <tr>
+                            <td colspan="3" class="right">主商品价格</td>
+                            <td class="right">￥{$data.order.mainGoodsPrice}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="right">辅销品价格</td>
+                            <td class="right">￥{$data.order.otherGoodsPrice}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="right">运费</td>
+                            <td class="right">￥
+                                <?php if($data['order']['order_status']<2){ ?>
+                                <input name="shippingPrice" type="text" style="width:200px;" value="{$data.order.shippingPrice}" />
+                                <?php }else{ ?>
+                                {$data.order.shippingPrice}
+                                <?php } ?>
+                            </td>
+                        </tr>
 
-                    {if $data['order']['promotion']}
-                    <tr>
-                        <td colspan="3" class="right">促销活动</td>
-                        <td class="right">
-                            {volist name="data['order']['promotion']" id="vo"}
-                            <font color="red">{$vo.name}（{if $vo['type'] == 2}返现金额{elseif $vo['type'] == 3}赠送商品{else /}优惠金额{/if}:{$vo.free}）</font><br/>
-                            {/volist}
-                        </td>
-                    </tr>
-                    {/if}
+                        {if $data['order']['promotion']}
+                        <tr>
+                            <td colspan="3" class="right">促销活动</td>
+                            <td class="right">
+                                {volist name="data['order']['promotion']" id="vo"}
+                                <font color="red">{$vo.name}（{if $vo['type'] == 2}返现金额{elseif $vo['type'] == 3}赠送商品{else /}优惠金额{/if}:{$vo.free}）</font><br/>
+                                {/volist}
+                            </td>
+                        </tr>
+                        {/if}
 
-                    <tr>
-                        <td colspan="3" class="right">总价</td>
-                        <td class="right">￥{$data.order.total}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="4" class="right"><input type="submit" id="send" value="确认修改价格" class="btn btn-primary" /></td>
-                    </tr>
-                </tbody>
+                        <tr>
+                            <td colspan="3" class="right">总价</td>
+                            <td class="right">￥{$data.order.total}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" class="right"><input type="submit" id="send" value="确认修改价格" class="btn btn-primary" /></td>
+                        </tr>
+                    </tbody>
                 </tbody>
                 <?php } ?>	
 
@@ -206,6 +217,29 @@
 {/block}
 {block name="javascript"}
 <script>
+    //提交备注
+    $('#submitRemarks').live('click', function () {
+        var shopRemarks = $('input[name=\'shopRemarks\']').val();
+
+        if (shopRemarks == '') {
+            return layer.msg('请填写卖家备注', {icon: 2});
+        }
+        $.ajax({
+            url: '<?php echo url("OrderBackend/updateShopRemarks",array("id"=>input("param.id"))); ?>',
+            type: 'post',
+            dataType: 'html',
+            data: 'shopRemarks=' + encodeURIComponent(shopRemarks),
+            success: function (res) {
+                if (res == 'true') {
+                    layer.msg('提交成功', {icon: 1});
+                } else {
+                    layer.msg('提交失败', {icon: 2});
+                }
+            }
+        });
+    });
+
+    //录入物流单号
     $('#button-dispatch').live('click', function () {
         var shipping_num = $('input[name=\'shipping_num\']').val();
         if (isNaN(shipping_num)) {
@@ -225,5 +259,6 @@
             }
         });
     });
+
 </script>
 {/block}
