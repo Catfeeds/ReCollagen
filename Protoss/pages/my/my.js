@@ -14,6 +14,7 @@ Page({
         currentTabsIndex: 0,
         isLoadedAll:false,
         loadingHidden:false,
+        orderHidden: true,
         orderArr:[],
     },
     onLoad:function(){
@@ -235,6 +236,9 @@ Page({
     rePay:function(event){
         var id=order.getDataSet(event,'id'),
             index=order.getDataSet(event,'index');
+        this.setData({
+          orderHidden: false,
+        });
         this._execPay(id,index);
     },
 
@@ -242,6 +246,9 @@ Page({
     _execPay:function(id,index){
         var that=this;
         order.execPay(id,(statusCode)=>{
+          that.setData({
+            orderHidden: true,
+          });
           if (statusCode.errorCode != 0) {
             that.showTips('支付提示', statusCode.msg);
             return;

@@ -1,5 +1,5 @@
 <!--订单详情-->
-<view class="container order-container">
+<view class="container order-container" hidden="{{!loadingHidden}}">
   <!--地址-->
   <view class="order-address-info" ontap="changAddress">
     <block wx:if="{{addressInfo}}">
@@ -62,6 +62,9 @@
         </view>
       </view>
     </block>
+    <view class='userRemarks'>
+      <textarea bindinput="bindTextAreaBlur" auto-height placeholder="输入留言..." value='{{userRemarks}}' />
+    </view>
      <view class="product-promotion" wx:if="{{productsArr.promotion3 && productsArr.promotion3!=''}}" >
         <view>{{productsArr.promotion3.name}}</view>
         <view>
@@ -97,3 +100,9 @@
     <view class="pay {{!addressInfo?'disabled':''}}" ontap="pay">生成订单</view>
   </view>
 </view>
+<loading hidden="{{loadingHidden}}">
+    加载中...
+</loading>
+<loading hidden="{{orderHidden}}">
+    正在付款...
+</loading>

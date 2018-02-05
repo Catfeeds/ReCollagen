@@ -8,6 +8,8 @@ var adrList = new AdrList();
 
 Page({
         data: {
+            loadingHidden: false,
+            orderHidden: true,
             addressInfo:null
         },
 
@@ -22,6 +24,7 @@ Page({
                 order.getOrderInfo(id, (data)=> {
                     that.data.productsArr = [];
                     that.setData({
+                        loadingHidden: true,
                         orderStatus: data.order_status,
                         productsArr: data.products,
                         basicInfo: {
@@ -150,6 +153,9 @@ Page({
 
         /*付款*/
         pay:function(){
+            this.setData({
+              orderHidden: false,
+            });
             this._execPay(this.data.id);
         },
 
@@ -161,6 +167,9 @@ Page({
         _execPay:function(id){
             var that=this;
             order.execPay(id,(statusCode)=>{
+              that.setData({
+                orderHidden: true,
+              });
               if (statusCode.errorCode != 0) {
                 that.showTips('支付提示', statusCode.msg);
                 return;

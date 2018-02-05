@@ -1,5 +1,5 @@
 <!--订单详情-->
-<view class="container order-container">
+<view class="container order-container" hidden="{{!loadingHidden}}">
   <!--订单编号和下单时间-->
   <view class="order-basic-info" wx:if="{{basicInfo}}">
     <view class="order-time-no">
@@ -114,3 +114,9 @@
     <view wx:if="{{orderStatus==1}}" class="pay" ontap="cancel">取消订单</view>
   </view>
 </view>
+<loading hidden="{{loadingHidden}}">
+    加载中...
+</loading>
+<loading hidden="{{orderHidden}}">
+    下单中...
+</loading>
