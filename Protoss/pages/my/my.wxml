@@ -74,3 +74,6 @@
 <loading hidden="{{loadingHidden}}">
   加载中...
 </loading>
+<loading hidden="{{orderHidden}}">
+    正在付款...
+</loading>

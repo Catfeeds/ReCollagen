@@ -15,6 +15,7 @@ Page({
       IDcode_pic: '',
       IDcode_pic_b: '',
       IDcode_pic_h: '',
+      legalrules:0,
     },
     loadingHidden: false,
     sexArray: ['男', '女'],
@@ -32,6 +33,7 @@ Page({
       this.setData({
         index: data.usex == -1 ? 0 : 1,
         userData: data,
+        'userData.legalrules': data.checked,
         loadingHidden: true
       })
     });
@@ -89,6 +91,10 @@ Page({
     }
     if (!self.data.userData.up_wecat) {
       self.showToast('推荐人微信号不能为空');
+      return;
+    }
+    if (self.data.userData.legalrules==0) {
+      self.showToast('请选择代理协议');
       return;
     }
 
@@ -196,8 +202,16 @@ Page({
     })
   },
 
-  /*法律法规交易规则*/
-  legalrules: function() {
+  /*是否同意悦蔻霖智微商代理协议*/
+  setLegalrules: function (e) {
+    var legalrules = this.data.userData.legalrules;
+    this.setData({
+      'userData.legalrules': !legalrules,
+    })
+  },
+
+  /*悦蔻霖智微商代理协议*/
+  legalrules: function (e) {
     wx.navigateTo({
       url: '../legalrules/legalrules'
     });
