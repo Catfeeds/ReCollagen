@@ -70,6 +70,7 @@ class Order extends BaseController
     public function getSummaryByUser($status=1, $page = 1)
     {
         $uid = Token::getCurrentUid();
+//        $uid = 2;
         $pagingOrders = OrderModel::getSummaryByUser($uid, $status, $page);
         if ($pagingOrders->isEmpty()) {
             return [

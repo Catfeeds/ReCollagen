@@ -159,9 +159,11 @@
                             <td colspan="3" class="right">总价</td>
                             <td class="right">￥{$data.order.total}</td>
                         </tr>
+                        <?php if($data['order']['order_status']<2){ ?>
                         <tr>
                             <td colspan="4" class="right"><input type="submit" id="send" value="确认修改价格" class="btn btn-primary" /></td>
                         </tr>
+                        <?php } ?>
                     </tbody>
                 </tbody>
                 <?php } ?>	
@@ -193,7 +195,7 @@
             </tr>
             <tr>
                 <td>跟踪信息</td>
-                <td><iframe src="{$data.order.transportInfo}" width="100%" height="380"><br/></iframe></td>
+                <td><iframe src="{$data.order.transportInfo}" width="80%" height="380"><br/></iframe></td>
             </tr>
 
             <?php if($data['order']['order_status'] == 2 || $data['order']['order_status'] == 3){ ?>
@@ -253,6 +255,7 @@
             success: function (res) {
                 if (res == 'true') {
                     layer.msg('录入成功', {icon: 1});
+                    location.reload();
                 } else {
                     layer.msg('录入失败', {icon: 2});
                 }
