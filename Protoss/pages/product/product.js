@@ -41,7 +41,7 @@ Page({
 
               /*获取数量*/
               var stockArray = [],
-                stockCount = data.stock<52?data.stock:52;
+                stockCount = data.stock;
               for (let i = 1; i <= stockCount; i++) {
                 stockArray.push(i);
               }
@@ -58,7 +58,7 @@ Page({
               /*默认商品选项数量、价格、ID*/
               var stockArray = [], 
               options = this._getProductOptions(optionsCount),
-                stockCount = options.stock < 52 ? options.stock : 52;
+                stockCount = options.stock;
               for (let i = 1; i <= stockCount; i++) {
                 stockArray.push(i);
               }
@@ -124,7 +124,7 @@ Page({
       var price = product.getDataSet(event, 'price');
       var stock = product.getDataSet(event, 'stock');
       var stockArray = [],
-          stockArr = stock < 52 ? stock : 52;
+          stockArr = stock;
       for (let i = 1; i <= stockArr; i++) {
         stockArray.push(i);
       }

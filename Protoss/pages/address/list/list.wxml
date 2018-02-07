@@ -1,13 +1,15 @@
 <view class="address-list">
   <block wx:for="{{addressInfo}}">
-	<view class="item {{currentAddressIndex==index?'selected':''}}" data-id="{{item.address_id}}" data-index="{{index}}" bindtap="changeAddress">
-    <!-- first row -->
-    <view class="header">
-      <text style="width:100px" class="realname">{{item.name}}</text>
-      <text style="margin-left:40rpx" class="mobile">电话:{{item.telephone}}</text>
+	<view class="item {{currentAddressIndex==index?'selected':''}}">
+    <view data-id="{{item.address_id}}" data-index="{{index}}" bindtap="changeAddress">
+      <!-- first row -->
+      <view class="header">
+        <text style="width:100px" class="realname">{{item.name}}</text>
+        <text style="margin-left:40rpx" class="mobile">电话:{{item.telephone}}</text>
+      </view>
+      <!-- second row -->
+      <view class="summary">{{item.province +','+ item.city +','+ item.country +','+ item.address}}</view>
     </view>
-    <!-- second row -->
-    <view class="summary">{{item.province +','+ item.city +','+ item.country +','+ item.address}}</view>
     <!-- third row -->
     <view class="footer">
       <!-- is default switch -->

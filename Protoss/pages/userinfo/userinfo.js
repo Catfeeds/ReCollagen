@@ -18,7 +18,7 @@ Page({
       legalrules:0,
     },
     loadingHidden: false,
-    sexArray: ['男', '女'],
+    sexArray: ['女', '男'],
     index:0,
   },
   onLoad: function (options) {
@@ -31,7 +31,7 @@ Page({
     var that = this;
     userInfo.getUserAccount((data) => {
       this.setData({
-        index: data.usex == -1 ? 0 : 1,
+        index: data.usex == -1 ? 1 : 0,
         userData: data,
         'userData.legalrules': data.checked,
         loadingHidden: true
@@ -66,11 +66,11 @@ Page({
       return;
     }
     if (!self.data.userData.IDcode) {
-      self.showToast('省份证不能为空');
+      self.showToast('身份证不能为空');
       return;
     }
     if (!cardreg.test(self.data.userData.IDcode)) {
-      self.showToast('省份证有误！');
+      self.showToast('身份证有误！');
       return;
     }
     if (!self.data.userData.IDcode_pic) {
@@ -132,7 +132,7 @@ Page({
   },
   bindUsexChange: function (e) {
     this.setData({
-      'userData.usex': e.detail.value == 0 ? -1 : 1,
+      'userData.usex': e.detail.value == 0 ? 1 : -1,
       index: e.detail.value,
     })
   },

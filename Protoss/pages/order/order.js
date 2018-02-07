@@ -56,6 +56,10 @@ Page({
               })
               var weight = that.getResultweight(data.goodsList).weight;
               order.getTransFee(weight, res.address_id, (res) => {
+                if (res.error_code) {
+                  that.showTips('提示', res.msg);
+                  return;
+                }
                 that.setData({
                   shippingPrice: res.fee,
                   transId: res.transId,
