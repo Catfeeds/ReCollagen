@@ -21,6 +21,7 @@ class UserInfo extends Base{
                           IDcode_pic: data.IDcode_pic.replace(baseRestUrl, ''),
                             IDcode_pic_b: data.IDcode_pic_b.replace(baseRestUrl, ''),
                               IDcode_pic_h: data.IDcode_pic_h.replace(baseRestUrl, ''),
+                                checked: 1
       }
       var param = {
         url: 'user/update',

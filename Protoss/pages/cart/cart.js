@@ -137,7 +137,7 @@ Page({
       var that = this;
       userInfo.getUserAccount((data) => {
         if (data.checked != 1) {
-          that.showTipsReturn('提示', '请完善资料后再进行下单!', (statusConfirm) => {
+          that.showTipsReturn('提示', '账号审核不通过，请填写完成后,再下单!', (statusConfirm) => {
             if (statusConfirm) {
               wx.redirectTo({
                 url: '../userinfo/userinfo?type=cart'

@@ -2,24 +2,29 @@
     <view class="form-box">
         <form bindsubmit="formSubmit">
         <view class="section">
+          <text class='title-box'>姓名:</text>
           <input name="uname" class="{{userData.checked==1?'disabled':''}}" value="{{userData.uname}}" auto-focus placeholder="姓名" bindinput="bindName" />
         </view>
         <view class="section">
+          <text class='title-box'>微信号:</text>
           <input name="uwecat" class="{{userData.checked==1?'disabled':''}}" value="{{userData.uwecat}}" placeholder="微信号" bindinput="bindUwecat" />
         </view>
         <view class="section">
           <text class='title-box'>性别:</text>
-          <picker  class="view-box {{userData.checked==1?'disabled':''}}" bindchange="bindUsexChange" value="{{index}}" range="{{sexArray}}">
+          <picker  class="view-box " bindchange="bindUsexChange" value="{{index}}" range="{{sexArray}}">
             <view>{{sexArray[index]}}</view>
           </picker>
         </view>
         <view class="section">
+          <text class='title-box'>电话:</text>
           <input type="number" class="{{userData.checked==1?'disabled':''}}" name="utel" value="{{userData.utel}}" placeholder="电话" bindinput="bindUtel" />
         </view>
         <view class="section">
+          <text class='title-box'>邮箱:</text>
           <input name="uemail" class="{{userData.checked==1?'disabled':''}}" value="{{userData.uemail}}" placeholder="邮箱" bindinput="bindUemail" />
         </view>
         <view class="section">
+          <text class='title-box'>身份证号:</text>
           <input name="IDcode" class="{{userData.checked==1?'disabled':''}}" value="{{userData.IDcode}}" placeholder="身份证" bindinput="bindIDcode" />
         </view>
         <view class="section card_pic">
@@ -35,9 +40,11 @@
          <image class="{{userData.checked==1?'disabled':''}}" wx:else src="../../imgs/icon/IDcode_pic_h.png" catchtap="chooseImageTap" data-index='3'></image>
         </view>
         <view class="section">
+          <text class='title-box'>推荐人:</text>
           <input class="{{userData.checked==1?'disabled':''}}" name="up_name" value="{{userData.up_name}}" placeholder="推荐人" bindinput="bindUpName" />
         </view>
         <view class="section">
+          <text class='title-box'>推荐人微信号:</text>
           <input class="{{userData.checked==1?'disabled':''}}" name="up_wecat" value="{{userData.up_wecat}}" placeholder="推荐人微信号" bindinput="bindUpWecat" />
         </view>
         <view class="set-legalrules">
