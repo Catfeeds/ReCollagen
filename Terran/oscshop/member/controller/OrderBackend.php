@@ -29,7 +29,7 @@ class OrderBackend extends AdminBase {
     public function show_order() {
         if (request()->isPost()) {
             $data = input('post.');
-
+//halt($data);
             $mainGoodsPrice = 0;
             $otherGoodsPrice = 0;
             $shippingPrice = $data['shippingPrice'];
@@ -52,7 +52,7 @@ class OrderBackend extends AdminBase {
 
             $total = $mainGoodsPrice + $otherGoodsPrice + $shippingPrice;
             $data2 = ['mainGoodsPrice' => $mainGoodsPrice, 'otherGoodsPrice' => $otherGoodsPrice, 'shippingPrice' => $shippingPrice, 'total' => $total];
-            //print_r($data2);
+
             if (Db::name('order')->where('order_id', $data['order_id'])->update($data2)) {
                 storage_user_action(UID, session('user_auth.username'), config('BACKEND_USER'), '编辑了订单价格');
                 $this->success('编辑成功', url('OrderBackend/show_order',array("id"=>$data['order_id'])));
@@ -134,6 +134,20 @@ class OrderBackend extends AdminBase {
 
             return true;
         }
+    }
+    /**
+     * 修改卖家备注
+     */
+    public function updateShopRemarks() {
+
+        $data = input('');
+        $res = Db::name('order')->where(['order_id' => $data['id']])->update(['shopRemarks' => $data['shopRemarks']]);
+
+        if ($res) {
+            storage_user_action(UID, session('user_auth.username'), config('BACKEND_USER'), '更新了卖家备注');
+            return true;
+        }
+        return false;
     }
 
     /**
