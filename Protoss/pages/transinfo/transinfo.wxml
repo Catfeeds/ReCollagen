@@ -2,7 +2,7 @@
     <block wx:if="{{transinfoData}}">
         <view class='transinfo-title'>
           <view>订单跟踪</view>
-          <view>订单号：222213131020</view>
+          <view>订单号：{{transinfoData.nu}}</view>
         </view>
         <view class="transinfo-box">
             <view></view>
