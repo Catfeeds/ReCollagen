@@ -244,8 +244,8 @@
     //录入物流单号
     $('#button-dispatch').live('click', function () {
         var shipping_num = $('input[name=\'shipping_num\']').val();
-        if (isNaN(shipping_num)) {
-            return layer.msg('请输入正确的物流单号', {icon: 2});
+        if (shipping_num == '') {
+            return layer.msg('请输入物流单号', {icon: 2});
         }
         $.ajax({
             url: '<?php echo url("OrderBackend/update_shipping",array("id"=>input("param.id"))); ?>',
@@ -255,7 +255,9 @@
             success: function (res) {
                 if (res == 'true') {
                     layer.msg('录入成功', {icon: 1});
-                    location.reload();
+                    setTimeout(function(){
+                        location.reload();
+                    },2000);
                 } else {
                     layer.msg('录入失败', {icon: 2});
                 }

@@ -565,7 +565,7 @@ function isMainGoods($isMainGoods) {
  * 获取快递公司代码
  */
 function getShippingCode($shipping_method) {
-    $code = ['圆通' => 'yuantong', '申通' => 'shentong', '中通' => 'zhongtong', '邮政' => 'youzhengguonei', '顺丰' => 'shunfeng', '韵达' => 'yunda', '天天' => 'tiantian', '德邦' => 'debangwuliu'];
+    $code = ['京东' => 'jd','圆通' => 'yuantong', '申通' => 'shentong', '中通' => 'zhongtong', '邮政' => 'youzhengguonei', '顺丰' => 'shunfeng', '韵达' => 'yunda', '天天' => 'tiantian', '德邦' => 'debangwuliu'];
 
     $shippingCode = '';
     foreach ($code as $k => $v) {
@@ -586,7 +586,7 @@ function getShippingCode($shipping_method) {
 function getTransInfo($shipping_method, $shipping_num) {
     if (isset($shipping_method) && isset($shipping_num)) {
         $AppKey = 'f0306948c9ecf939';
-        $url = 'http://www.kuaidi100.com/applyurl?key=' . $AppKey . '&com=' . $shipping_method . '&nu=' . $shipping_num; //生成完整的请求URL
+        $url = 'http://www.kuaidi100.com/applyurl?key=' . $AppKey . '&com=' . $shipping_method . '&nu=' . $shipping_num; //生成完整的请求URL(不支持京东？)
         //优先使用curl模式发送数据（以下一大段都是在PHP语言下向$url发送请求并获得返回结果的代码）
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $url);
@@ -599,7 +599,7 @@ function getTransInfo($shipping_method, $shipping_num) {
 
         return $get_content;
         // //注释：第二步：将上面获得的返回结果传入iframe的src值，并将iframe显示出来，代码参考：
-        // print_r('<iframe src="'.$get_content.'" width="580"height="380"><br/>');
+//         print_r('<iframe src="'.$get_content.'" width="580"height="380"><br/>');
     } else {
         return '';
     }

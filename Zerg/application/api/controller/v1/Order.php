@@ -128,9 +128,7 @@ class Order extends BaseController
     /**
      * 根据订单id查询物流进度
      */
-    public function getTransInfo($id)
-    {
-
+    public function getTransInfo($id){
         $orderDetail  = $this->getDetail($id);
         $shippingCode = getShippingCode($orderDetail['shipping_method']);
         $url          = 'https://m.kuaidi100.com/query?type=' . $shippingCode . '&postid=' . $orderDetail['shipping_num'];
@@ -142,8 +140,7 @@ class Order extends BaseController
     /**
      * 取消订单
      */
-    public function cancelOrder($id)
-    {
+    public function cancelOrder($id){
         (new IDMustBePositiveInt())->goCheck();
         $uid = Token::getCurrentUid();
 

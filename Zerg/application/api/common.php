@@ -97,7 +97,7 @@ function fromArrayToModel($m , $array)
  * 获取快递公司代码
  */
 function getShippingCode($shipping_method){
-    $code = ['圆通'=>'yuantong','申通'=>'shentong','中通'=>'zhongtong','邮政'=>'youzhengguonei','顺丰'=>'shunfeng','韵达'=>'yunda','天天'=>'tiantian','德邦'=>'debangwuliu'];
+    $code = ['京东' => 'jd','圆通'=>'yuantong','申通'=>'shentong','中通'=>'zhongtong','邮政'=>'youzhengguonei','顺丰'=>'shunfeng','韵达'=>'yunda','天天'=>'tiantian','德邦'=>'debangwuliu'];
     
     $shippingCode = '';
     foreach ($code as $k => $v) {
