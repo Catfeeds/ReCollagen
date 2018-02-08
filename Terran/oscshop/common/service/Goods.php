@@ -119,8 +119,11 @@ class Goods{
      * 获取促销商品列表
      */
     public function getChooseGoods($promotionType){
-
-        $map=['g.isMainGoods'=>1,'g.status'=>1,'g.stock'=>['gt',0],'g.promotion'.$promotionType.'_id'=>['eq',0]];
+        if ($promotionType) {
+            $map=['g.isMainGoods'=>1,'g.status'=>1,'g.stock'=>['gt',0],'g.promotion'.$promotionType.'_id'=>['eq',0]];   //促销商品数据
+        }else{
+            $map=['g.isMainGoods'=>1,'g.status'=>1,'g.stock'=>['gt',0]];    //赠送商品数据
+        }
 
         $list = Db::name('goods')->alias('g')->field('g.*,c.name As cat_name')
             ->where($map)
