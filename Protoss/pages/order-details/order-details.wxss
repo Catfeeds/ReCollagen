@@ -87,6 +87,11 @@
     color:#999999;
 }
 
+.userRemarks{
+  display: flex;
+  padding:15rpx;
+}
+
 .product-item{
     display: flex;
     justify-content: space-around;
