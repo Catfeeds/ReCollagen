@@ -33,7 +33,24 @@ class Order extends BaseModel
             ->paginate(10, true, ['page' => $page]);
         if (!empty($data)) {
             foreach ($data as $key => $v) {
-                $data[$key]['productCount'] = count($v['products']);
+                $data[$key]['productCount'] = 0;
+                //商品数量
+                foreach ($v['products'] as $key2 => $v2) {
+                    $data[$key]['productCount'] += $v2['quantity'];
+                }
+                //赠品数量
+                if ($v['promotion']) {
+                    $promotion = json_decode($v['promotion'],true);
+                    foreach ($promotion as $key2 => $v2) {
+                        if ($v2['type'] == 3) {
+                            $free = explode('|||',$v2['free']);
+                            foreach ($free as $key3 => $v3) {
+                                $count = substr($v3,strpos($v3, '*')+1);
+                                $data[$key]['productCount'] += $count;
+                            }
+                        }
+                    }
+                }
             }
         }
         return $data;
