@@ -63,15 +63,18 @@ class Order {
     public function order_list($param = array(), $page_num = 15, $history = 0) {
 
         $map['Order.order_status'] = ['in', [1, 2]];
-
+        $query=[];  //分页参数
         if (isset($param['order_num'])) {
             $map['Order.order_num_alias'] = ['eq', $param['order_num']];
+            $query['order_num']=urlencode($param['order_num']);
         }
         if (isset($param['user_name'])) {
-            $map['Order.shipping_name|m.uname|m.uwecat'] = ['like', "%" . $param['user_name'] . "%"];
+            $map['m.uname|m.uwecat|Order.shipping_name|Order.shipping_addr'] = ['like', "%" . $param['user_name'] . "%"];
+            $query['user_name']=urlencode($param['user_name']);
         }
         if (isset($param['status'])) {
             $map['Order.order_status'] = ['eq', $param['status']];
+            $query['status']=urlencode($param['status']);
         }
         if ($history == 1) {
             //显示历史已发货收货订单，大于等于7天
@@ -83,7 +86,7 @@ class Order {
                     ->join('__MEMBER__ m', 'Order.uid=m.uid')
                     ->where($map)
                     ->order('Order.create_time desc,Order.shipping_name')
-                    ->paginate(15);
+                    ->paginate(15,false,['query'=>$query]);
         } else {
             //默认显示全部待付款，待发货和7天内已发货收货订单
             //分页
@@ -471,7 +474,7 @@ class Order {
             $page = Db::view('Order', '*')
                     ->view('Dispatch', 'dispatch_title', 'Order.dispatch_id=Dispatch.id')
                     ->where($map)
-                    ->order('Order.shipping_name,Order.create_time desc')
+                    ->order('Order.create_time desc,Order.shipping_name')
                     ->select();
         } else {
             //默认会员订单，7天内
@@ -486,7 +489,7 @@ class Order {
                         $query->table('__ORDER__')->alias('Order')->field('*,d.dispatch_title')
                         ->join('__DISPATCH__ d', 'Order.dispatch_id=d.id')
                         ->where($map2)
-                        ->order('shipping_name,create_time desc');
+                        ->order('create_time desc,shipping_name');
                     })
                     ->select();
         }
