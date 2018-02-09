@@ -76,6 +76,14 @@
         </view>
       </view>
     </block>
+    <view class='userRemarks' wx:if="{{userRemarks}}">
+      留言内容：
+      {{userRemarks}}
+    </view>
+    <view class='userRemarks' wx:if="{{shopRemarks}}">
+      回复留言：
+      {{shopRemarks}}
+    </view>
     <view class="product-promotion"  wx:for="{{promotion}}" wx:if="{{item.type==3}}">
       <view>{{item.name}}</view>
       <view>

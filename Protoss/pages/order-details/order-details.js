@@ -40,6 +40,8 @@ Page({
                           telephone: data.shipping_tel,
                           address: data.shipping_addr,
                         },
+                        userRemarks: data.userRemarks,
+                        shopRemarks: data.shopRemarks,
                         promotion: data.promotion,
                         mainGoodsPrice: data.mainGoodsPrice,
                         otherGoodsPrice: data.otherGoodsPrice,
