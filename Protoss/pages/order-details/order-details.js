@@ -136,16 +136,22 @@ Page({
               item = arr[i];
               cart.add(item.goods_id, item.option_id, item.counts, (data) => {
                 if ((i + 1) == arr.length) {
-                  wx.showModal({
-                    title: '',
-                    content: '已加入到购物车',
-                    showCancel: false,
-                    success: function (res) {
-                      wx.switchTab({
-                        url: '/pages/cart/cart'
-                      });
-                    }
-                  });
+                  // order.cancel(id, (statusCode) => {
+                  //   if (statusCode.errorCode != 0) {
+                  //     that.showTips('订单提示', statusCode.msg);
+                  //     return;
+                  //   }
+                    wx.showModal({
+                      title: '',
+                      content: '已加入到购物车',
+                      showCancel: false,
+                      success: function (res) {
+                        wx.switchTab({
+                          url: '/pages/cart/cart'
+                        });
+                      }
+                    });
+                  // });
                 }
               });
             }

@@ -177,10 +177,10 @@ Page({
               //     that.showTips('订单提示', statusCode.msg);
               //     return;
               //   }
-              //   that.data.orderArr.splice(index, 1);
-              //   that.setData({
-              //     orderArr: that.data.orderArr
-              //   });
+                that.data.orderArr.splice(index, 1);
+                that.setData({
+                  orderArr: that.data.orderArr
+                });
                 wx.showModal({
                   title: '',
                   content: '已加入到购物车',
