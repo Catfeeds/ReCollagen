@@ -409,6 +409,17 @@ class Order
         return $order->save();
     }
     /**
+     * 删除订单
+     */
+    public function del($orderID,$uid){
+        $order = OrderModel::where(['order_id'=>$orderID,'uid'=>$uid])
+            ->find();
+        if (!$order) {
+            throw new OrderException();
+        }
+        return $order->delete();
+    }
+    /**
      * 确认收货
      */
     public function receive($orderID,$uid){

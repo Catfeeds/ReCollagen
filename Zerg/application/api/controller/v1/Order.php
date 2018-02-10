@@ -150,6 +150,19 @@ class Order extends BaseController
             return new SuccessMessage();
         }
     }
+    /**
+     * 删除订单
+     */
+    public function delOrder($id){
+        (new IDMustBePositiveInt())->goCheck();
+        $uid = Token::getCurrentUid();
+
+        $order   = new OrderService();
+        $success = $order->del($id, $uid);
+        if ($success) {
+            return new SuccessMessage();
+        }
+    }
 
     /**
      * 确认收货
