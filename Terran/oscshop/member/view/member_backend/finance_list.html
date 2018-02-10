@@ -40,7 +40,7 @@
                         <th class="hidden-xs">微信号</th>
                         <th>操作时间</th>
                         <th>操作说明</th>
-                        <th>账户类型</th>
+                        <th class="hidden-xs">账户类型</th>
                         <th>操作金额</th>
                         <th>余额</th>
                     </tr>
@@ -49,20 +49,20 @@
                     {volist name="list" id="v" empty="$empty"}
                     <tr>						
                         <td class="hidden-xs">{$v.itemid}</td>
-                        <td >{$v.uname}</td>
+                        <td style="white-space: nowrap;">{$v.uname}</td>
                         <td class="hidden-xs">{$v.utel}</td>
                         <td class="hidden-xs">{$v.uemail}</td>
                         <td class="hidden-xs">{$v.uwecat}</td>
                         <td>{if condition="$v['addtime'] neq 0"}{$v.addtime|date="Y-m-d H:i:s",###}{else/}无{/if}</td>
                         <td>{$v.reason}</td>
-                        <td>
+                        <td class="hidden-xs">
                             {switch name="v.rectype"}
                             {case value="1"}主账户{/case}
                             {case value="2"}小金库{/case}
                             {/switch}
                         </td>
-                        <td>{$v.amount}</td>
-                        <td>{$v.balance}</td>
+                        <td style="white-space: nowrap;">{$v.amount}</td>
+                        <td style="white-space: nowrap;">{$v.balance}</td>
                     </tr>
                     {/volist}	
 

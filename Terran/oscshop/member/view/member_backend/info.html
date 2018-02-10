@@ -31,47 +31,47 @@
                 <tr>
                     <td>姓名</td>
                     <td>				
-                        <input name="uname" type="text" style="width:60%;" value="{$data.uname}" />
+                        <input name="uname" type="text" style="width:60%;min-width: 58px;" value="{$data.uname}" />
                     </td>
                     <td>性别</td>
                     <td>				
                         <label class="radio-inline">
-                            <input type="radio" {if condition="$data.usex eq -1"} checked="checked"{/if} value="-1" name="usex">男</label>
-                        <label class="radio-inline">
+                            <input type="radio" {if condition="$data.usex eq -1"} checked="checked"{/if} value="-1" name="usex">男</label>&nbsp;
+                        <label class="radio-inline" style="margin-left: 0;">
                             <input type="radio" {if condition="$data.usex eq 1"} checked="checked"{/if} value="1" name="usex">女</label>				
                     </td>
                 </tr>
                 <tr>
                     <td>微信号</td>
-                    <td><input name="uwecat" type="text" style="width:60%;" value="{$data.uwecat}" /></td>
+                    <td><input name="uwecat" type="text" style="width:60%;min-width: 58px;" value="{$data.uwecat}" /></td>
                     <td>微信openId</td>
-                    <td>				
+                    <td style="word-wrap: break-word;word-break: break-all;white-space: normal;">				
                         {$data.openId}					
                     </td>
                 </tr>
                 <tr>
                     <td>联系电话</td>
                     <td>				
-                        <input name="utel" type="text" style="width:60%;" value="{$data.utel}" />
+                        <input name="utel" type="text" style="width:60%;min-width: 58px;" value="{$data.utel}" />
                     </td>
                     <td>邮箱</td>
                     <td>				
-                        <input name="uemail" type="text" style="width:60%;" value="{$data.uemail}" />
+                        <input name="uemail" type="text" style="width:60%;min-width: 58px;" value="{$data.uemail}" />
                     </td>
                 </tr>
                 <tr>
                     <td>身份证号</td>
                     <td>                
-                        <input name="IDcode" type="text" style="width:60%;" value="{$data.IDcode}" />
+                        <input name="IDcode" type="text" style="width:60%;min-width: 58px;" value="{$data.IDcode}" />
                     </td>
                     <td>身份证手持照</td>
                     <td>
-                        <div class="col-sm-10" id="thumb">
+                        <div id="thumb">
                             <!--<a id="thumb-image" href="#" data-toggle="image" class="img-thumbnail">-->
                                 {if condition="!empty($data['IDcode_pic_h'])"}
-                                <img src="{:config('API_url')}{$data.IDcode_pic_h}" height="300px"/>
+                                <img src="{:config('API_url')}{$data.IDcode_pic_h}" style="max-width: 100%; max-height: 300px;"/>
                                 {else /}
-                                <img src="__PUBLIC__/image/no_image_100x100.jpg" />
+                                <img src="__PUBLIC__/image/no_image_100x100.jpg" style="max-width: 100%; max-height: 300px;" />
                                 {/if}
                             <!--</a>-->
                             <input type="hidden" name="IDcode_pic_h" value="{$data.IDcode_pic_h|default=''}" id="input-image" />
@@ -81,12 +81,12 @@
                 <tr>
                     <td>身份证正面照</td>
                     <td>                
-                        <div class="col-sm-10" id="thumb">
+                        <div id="thumb">
                             <!--<a id="thumb-image1" href="#" data-toggle="image" class="img-thumbnail">-->
                                 {if condition="!empty($data['IDcode_pic'])"}
-                                <img src="{:config('API_url')}{$data.IDcode_pic}" height="300px"/>
+                                <img src="{:config('API_url')}{$data.IDcode_pic}" style="max-width: 100%; max-height: 300px;"/>
                                 {else /}
-                                <img src="__PUBLIC__/image/no_image_100x100.jpg" />
+                                <img src="__PUBLIC__/image/no_image_100x100.jpg" style="max-width: 100%; max-height: 300px;" />
                                 {/if}
                             <!--</a>-->
                             <input type="hidden" name="IDcode_pic" value="{$data.IDcode_pic|default=''}" id="input-image1" />
@@ -94,12 +94,12 @@
                     </td>
                     <td>身份证反面照</td>
                     <td>                
-                        <div class="col-sm-10" id="thumb">
+                        <div id="thumb">
                             <!--<a id="thumb-image2" href="#" data-toggle="image" class="img-thumbnail">-->
                                 {if condition="!empty($data['IDcode_pic_b'])"}
-                                <img src="{:config('API_url')}{$data.IDcode_pic_b}" height="300px" />
+                                <img src="{:config('API_url')}{$data.IDcode_pic_b}" style="max-width: 100%; max-height: 300px;" />
                                 {else /}
-                                <img src="__PUBLIC__/image/no_image_100x100.jpg" />
+                                <img src="__PUBLIC__/image/no_image_100x100.jpg" style="max-width: 100%; max-height: 300px;" />
                                 {/if}
                             <!--</a>-->
                             <input type="hidden" name="IDcode_pic_b" value="{$data.IDcode_pic_b|default=''}" id="input-image2" />
@@ -108,10 +108,10 @@
                 </tr>
                 <tr>
                     <td>推荐人</td>
-                    <td><input name="up_name" type="text" style="width:60%;" value="{$data.up_name}" /></td>
+                    <td><input name="up_name" type="text" style="width:60%;min-width: 58px;" value="{$data.up_name}" /></td>
                     <td>推荐人微信号</td>
                     <td>				
-                        <input name="up_wecat" type="text" style="width:60%;" value="{$data.up_wecat}" />			
+                        <input name="up_wecat" type="text" style="width:60%;min-width: 58px;" value="{$data.up_wecat}" />			
                     </td>
                 </tr>
                 <tr>
@@ -131,7 +131,7 @@
                             <option value="1">增加</option>
                             <option value="2">扣除</option>
                         </select>
-                        <input name="mainAccount" type="text" style="width:20%;" value="0.00" />
+                        <input name="mainAccount" type="text" style="width:20%; min-width: 58px;" value="0.00" />
                     </td>
                     <td>小金库金额（元）</td>
                     <td>￥{$data.secondAccount}元
@@ -139,19 +139,32 @@
                             <option value="1">增加</option>
                             <option value="2">扣除</option>
                         </select>
-                        <input name="secondAccount" type="text" style="width:20%;" value="0.00" />
+                        <input name="secondAccount" type="text" style="width:20%; min-width: 58px;" value="0.00" />
                     </td>
                 </tr>
-                <tr>
+                <tr class="hidden-xs">
                     <td>创建时间</td>
                     <td>{$data.create_time|date="Y-m-d H:i:s",###}</td>
                     <td>状态</td>
                     <td>	
                         <label class="radio-inline">
-                            <input type="radio" {if condition="$data.checked eq 1"} checked="checked"{/if} value="1" name="checked">审核通过</label>
-                        <label class="radio-inline">
+                            <input type="radio" {if condition="$data.checked eq 1"} checked="checked"{/if} value="1" name="checked">审核通过</label>&nbsp;
+                        <label class="radio-inline" style="margin-left: 0;">
                             <input type="radio" {if condition="$data.checked eq 0"} checked="checked"{/if} value="0" name="checked">审核不通过</label>
                     </td>
+                </tr>
+                <tr class="hidden-sm hidden-md hidden-lg">
+                    <td colspan="2">状态</td>
+                    <td colspan="2">	
+                        <label class="radio-inline">
+                            <input type="radio" {if condition="$data.checked eq 1"} checked="checked"{/if} value="1" name="checked">审核通过</label>&nbsp;
+                        <label class="radio-inline" style="margin-left: 0;">
+                            <input type="radio" {if condition="$data.checked eq 0"} checked="checked"{/if} value="0" name="checked">审核不通过</label>
+                    </td>
+                </tr>
+                <tr class="hidden-sm hidden-md hidden-lg">
+                    <td colspan="2">创建时间</td>
+                    <td colspan="2">{$data.create_time|date="Y-m-d H:i:s",###}</td>
                 </tr>
             </table>
             <div class="form-group">
