@@ -4,7 +4,7 @@
             <block wx:for="{{cartData.goodsList}}">
                 <view class="cart-item {{deleteFlag&&index==currentIndex?'showDeleteBtn':'hideDeleteBtn'}}">
                     <view class="cart-item-main">
-                        <view  class="cart-item-checkbox" ontap="toggleSelect" data-id="{{item.goods_id}}" data-guid="{{item.goods_option_id}}">
+                        <view  class="cart-item-checkbox" ontap="toggleSelect" data-id="{{item.goods_id}}" data-guid="{{item.goods_option_id}}" data-index="{{index}}" >
                             <image wx:if="{{item.isChecked==1}}" src="../../imgs/icon/circle@selected.png"></image>
                             <image wx:else src="../../imgs/icon/circle@noselected.png"></image>
                         </view>
@@ -24,7 +24,7 @@
                                     <view class="counts"><input bindchange="changeInput" value='{{item.count}}' data-id="{{item.goods_id}}" data-guid="{{item.goods_option_id}}" data-index="{{index}}" /></view>
                                     <view class="btns {{item.count>=item.stock?'disabled':''}}" bindtap="changeCounts" data-id="{{item.goods_id}}"  data-guid="{{item.goods_option_id}}" data-index="{{index}}" data-type="inc">+</view>
                                 </view>
-                                <view class="delete" data-id="{{item.goods_id}}"  data-guid="{{item.goods_option_id}}" bindtap="delete">×</view>
+                                <view class="delete" data-id="{{item.goods_id}}"  data-guid="{{item.goods_option_id}}" data-index="{{index}}" bindtap="delete">×</view>
                             </view>
                             <view class="bottom-box" wx:if="{{item.option_name}}">规格：
                                 {{item.option_name}}

@@ -152,7 +152,7 @@ class Goods extends AdminBase
         if (request()->isPost()) {
             $data['goods_id'] = input('param.id/d');
             $data['description'] = input('param.description/s');
-
+            
             $res = $this->goodsModel->update($data, false, true);
             if ($res) {
                 storage_user_action(UID, session('user_auth.username'), config('BACKEND_USER'), '更新商品详情');
