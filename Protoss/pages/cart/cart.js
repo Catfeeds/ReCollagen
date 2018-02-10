@@ -43,9 +43,12 @@ Page({
         guid = cart.getDataSet(event, 'guid'),
         index = cart.getDataSet(event, 'index'),
         type = cart.getDataSet(event, 'type');
-      var counts = this.data.cartData.goodsList[index].count;
       if (type == 'inc') {
-        if (counts >= this.data.cartData.goodsList[index].stock) return;
+        this.data.cartData.goodsList[index].count++;
+        this.setData({
+          cartData: this.data.cartData
+        });
+        if (this.data.cartData.goodsList[index].count >= this.data.cartData.goodsList[index].stock) return;
         cart.addCutCounts(id, guid, type, (data) => {
           if (data.errorCode != 0) {
             this.showToast(data.msg);
@@ -56,7 +59,11 @@ Page({
       }
       else 
       {
-        if (counts <=1) return;
+        this.data.cartData.goodsList[index].count--;
+        this.setData({
+          cartData: this.data.cartData
+        });
+        if (this.data.cartData.goodsList[index].count <=1) return;
         cart.addCutCounts(id, guid, type, (data) => {
           if (data.errorCode != 0) {
             this.showToast(data.msg);
@@ -94,8 +101,12 @@ Page({
     /*删除商品*/
     delete:function(event){
       var id=cart.getDataSet(event,'id'),
-        guid = cart.getDataSet(event, 'guid');
-
+        guid = cart.getDataSet(event, 'guid'),
+        index = cart.getDataSet(event, 'index');
+        this.data.cartData.goodsList.splice(index, 1);
+        this.setData({
+          cartData: this.data.cartData
+        });
         cart.delete(id, guid, (data) => {
           if (data.errorCode != 0) {
             this.showToast(data.msg);
@@ -107,9 +118,14 @@ Page({
 
     /*选择商品*/
     toggleSelect:function(event){
-        var id=cart.getDataSet(event,'id'),
-          guid = cart.getDataSet(event, 'guid');
-
+      var id=cart.getDataSet(event,'id'),
+        guid = cart.getDataSet(event, 'guid'),
+        index = cart.getDataSet(event, 'index'),
+        isChecked = this.data.cartData.goodsList[index].isChecked;
+        this.data.cartData.goodsList[index].isChecked = isChecked == 1 ? -1 : 1;
+        this.setData({
+          cartData: this.data.cartData
+        });
         cart.selectStatus(id, guid, (data) => {
           if (data.errorCode != 0) {
             this.showToast(data.msg);
@@ -121,9 +137,21 @@ Page({
 
     /*全选*/
     toggleSelectAll:function(event){
-       var status=cart.getDataSet(event,'status')=='true',
-         selectstatus = !status==true?1:-1;
-       cart.selectAllStatus(selectstatus, (data) => {
+      var status = cart.getDataSet(event, 'status') == 'true',
+        selectstatus = !status == true ? 1 : -1;
+      var data = this.data.cartData,
+        len = data.goodsList.length;
+      for (let i = 0; i < len; i++) {
+        data.goodsList[i].isChecked = selectstatus;
+      }
+      var newData = cart.getCartTotalCounts(data, true);
+      this.setData({
+        account: newData.account,
+        selectedCounts: newData.selectedCounts,
+        selectedTypeCounts: newData.selectedTypeCounts,
+        cartData: data
+      });
+      cart.selectAllStatus(selectstatus, (data) => {
         if (data.errorCode != 0) {
           this.showToast(data.msg);
           return;

@@ -152,6 +152,9 @@ class Goods extends AdminBase
         if (request()->isPost()) {
             $data['goods_id'] = input('param.id/d');
             $data['description'] = input('param.description/s');
+            
+            print $data;
+            exit;
 
             $res = $this->goodsModel->update($data, false, true);
             if ($res) {
