@@ -136,11 +136,11 @@ Page({
               item = arr[i];
               cart.add(item.goods_id, item.option_id, item.counts, (data) => {
                 if ((i + 1) == arr.length) {
-                  // order.cancel(id, (statusCode) => {
-                  //   if (statusCode.errorCode != 0) {
-                  //     that.showTips('订单提示', statusCode.msg);
-                  //     return;
-                  //   }
+                  order.orderDel(id, (statusCode) => {
+                    if (statusCode.errorCode != 0) {
+                      that.showTips('订单提示', statusCode.msg);
+                      return;
+                    }
                     wx.showModal({
                       title: '',
                       content: '已加入到购物车',
@@ -151,7 +151,7 @@ Page({
                         });
                       }
                     });
-                  // });
+                  });
                 }
               });
             }
