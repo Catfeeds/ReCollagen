@@ -27,13 +27,14 @@ class MemberBackend extends AdminBase {
         $map = $query = [];
         if (isset($param['condition'])) {
             $map['m.uname|m.utel|m.uwecat|a.name'] = ['like', "%" . trim($param['condition']) . "%"];
+            $query['condition']=urlencode($param['condition']);
         }
 
         $list = Db::name('member')->alias('m')->field('m.*,a.name,a.telephone')
                 ->join('__ADDRESS__ a', 'a.uid=m.uid and a.is_default =1', 'left')
                 ->where($map)
                 ->order('m.create_time desc')
-                ->paginate(15);
+                ->paginate(15,false,['query'=>$query]);
 
         $this->assign('list', $list);
         $this->assign('empty', '<tr><td colspan="20">没有数据</td></tr>');
@@ -148,16 +149,18 @@ class MemberBackend extends AdminBase {
         $map = $query = [];
         if (isset($param['condition'])) {
             $map['m.uname|m.utel|m.uwecat'] = ['like', "%" . trim($param['condition']) . "%"];
+            $query['condition']=urlencode($param['condition']);
         }
         if (isset($param['rectype'])) {
             $map['f.rectype'] = ['=', trim($param['rectype'])];
+            $query['rectype']=urlencode($param['rectype']);
         }
 
         $list = Db::name('finance_record')->alias('f')->field('f.*,m.uname,m.utel,m.uemail,m.uwecat')
                 ->join('__MEMBER__ m', 'm.uid=f.uid', 'left')
                 ->where($map)
                 ->order('f.itemid desc')
-                ->paginate(15);
+                ->paginate(15,false,['query'=>$query]);
 
         $this->assign('list', $list);
         $this->assign('rectype', input('get.rectype/d'));
