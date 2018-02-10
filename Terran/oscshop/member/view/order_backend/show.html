@@ -5,15 +5,13 @@
 <div class="page-header">
     <h1>{$breadcrumb2}<small><i class="ace-icon fa fa-angle-double-right"></i>{$crumbs}</small></h1>
 </div>	
-<ul class="nav nav-tabs">
-
-    <li class="active"><a href="#tab-order" data-toggle="tab">订单详情</a></li>
-    <li><a href="#tab-shipping" data-toggle="tab">收货地址</a></li>
-    <li><a href="#tab-product" data-toggle="tab">商品清单</a></li>
-    <li><a href="#tab-history" data-toggle="tab">物流信息</a></li>          
-
-</ul>
 <div class="tab-content">
+	<ul class="nav nav-tabs">
+	    <li class="active"><a href="#tab-order" data-toggle="tab">订单详情</a></li>
+	    <!--<li><a href="#tab-shipping" data-toggle="tab">收货地址</a></li>
+	    <li><a href="#tab-product" data-toggle="tab">商品清单</a></li>
+	    <li><a href="#tab-history" data-toggle="tab">物流信息</a></li>          -->
+	</ul>
     <div class="tab-pane active" id="tab-order">
         <table class="table table-bordered">
             <tr>
@@ -26,7 +24,7 @@
             </tr>
             <tr>
                 <td>会员微信openId</td>
-                <td>{$data.order.openId}</td>
+                <td style="word-wrap: break-word;word-break: break-all;white-space: normal;">{$data.order.openId}</td>
             </tr>
             <tr>
                 <td>会员姓名</td>
@@ -34,7 +32,7 @@
             </tr>
             <tr>
                 <td>微信号</td>
-                <td>{$data.order.uwecat}</td>
+                <td style="word-wrap: break-word;word-break: break-all;white-space: normal;">{$data.order.uwecat}</td>
             </tr>
             <tr>
                 <td>下单时间</td>
@@ -69,8 +67,10 @@
             </tr>
         </table>
     </div>
-
-    <div class="tab-pane" id="tab-shipping">
+	<ul class="nav nav-tabs">
+	    <li class="active"><a href="#tab-shipping" data-toggle="tab">收货地址</a></li>      
+	</ul>
+    <div class="tab-pane active" id="tab-shipping">
         <table class="table table-bordered">
             <tr>
                 <td>收货人姓名</td>
@@ -86,9 +86,10 @@
             </tr>
         </table>        
     </div>
-
-
-    <div id="tab-product" class="tab-pane">
+	<ul class="nav nav-tabs">
+	    <li class="active"><a href="#tab-product" data-toggle="tab">商品清单</a></li>     
+	</ul>
+    <div id="tab-product" class="tab-pane active">
         <form class="form-horizontal" method="post" name="form">
             <input name="order_id" type="hidden" value="{$Request.param.id}" />
             <table class="table table-bordered">
@@ -112,10 +113,10 @@
                             <br />&nbsp;<small>({$product['option_name']})</small>
                             {/if}
                         </td>
-                        <td class="right">{$product['quantity']}<input name="quantity{$product.order_goods_id}" type="hidden" style="width:200px;" value="{$product.quantity}" /></td>
+                        <td class="right">{$product['quantity']}<input name="quantity{$product.order_goods_id}" type="hidden" value="{$product.quantity}" /></td>
                         <td class="right">￥
                             <?php if($data['order']['order_status']<2){ ?>
-                            <input name="price{$product.order_goods_id}" type="text" style="width:200px;" value="{$product.price}" />
+                            <input name="price{$product.order_goods_id}" type="text" style="width:45%; min-width: 45px;" value="{$product.price}" />
                             <?php }else{ ?>
                             {$product['price']}
                             <?php } ?>
@@ -137,7 +138,7 @@
                             <td colspan="3" class="right">运费</td>
                             <td class="right">￥
                                 <?php if($data['order']['order_status']<2){ ?>
-                                <input name="shippingPrice" type="text" style="width:200px;" value="{$data.order.shippingPrice}" />
+                                <input name="shippingPrice" type="text" style="width:45%; min-width: 45px;" value="{$data.order.shippingPrice}" />
                                 <?php }else{ ?>
                                 {$data.order.shippingPrice}
                                 <?php } ?>
@@ -171,10 +172,10 @@
             </table>
         </form>
     </div>
-
-
-
-    <div id="tab-history" class="tab-pane">
+	<ul class="nav nav-tabs">
+	    <li class="active"><a href="#tab-history" data-toggle="tab">物流信息</a></li>          
+	</ul>
+    <div id="tab-history" class="tab-pane active">
         <div id="history"></div>
         <table class="table table-bordered">
             <tr>
@@ -195,7 +196,7 @@
             </tr>
             <tr>
                 <td>跟踪信息</td>
-                <td><iframe src="{$data.order.transportInfo}" width="80%" height="380"><br/></iframe></td>
+                <td><iframe id="iframeName" name="iframeName" src="{$data.order.transportInfo}" width="100%" height="380" ></iframe></td>
             </tr>
 
             <?php if($data['order']['order_status'] == 2 || $data['order']['order_status'] == 3){ ?>
@@ -219,6 +220,14 @@
 {/block}
 {block name="javascript"}
 <script>
+
+	window.onload = (function () {
+		var iObj = document.getElementById('iframeName').contentWindow;
+		
+		alert(iObj.document.getElementById('divbgs').innerHTML);
+	});
+        
+
     //提交备注
     $('#submitRemarks').live('click', function () {
         var shopRemarks = $('input[name=\'shopRemarks\']').val();
