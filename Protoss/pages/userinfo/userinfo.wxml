@@ -3,7 +3,7 @@
         <form bindsubmit="formSubmit">
         <view class="section">
           <text class='title-box'>姓名:</text>
-          <input name="uname" class="{{userData.checked==1?'disabled':''}}" value="{{userData.uname}}" auto-focus placeholder="姓名" bindinput="bindName" />
+          <input name="uname" class="{{userData.checked==1?'disabled':''}}" value="{{userData.uname}}" placeholder="姓名" bindinput="bindName" />
         </view>
         <view class="section">
           <text class='title-box'>微信号:</text>
