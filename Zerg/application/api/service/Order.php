@@ -441,19 +441,19 @@ class Order
             $order->order_status = 4;
             $order->receive_time = date('Y-m-d H:i:s');
             $order->save();
-            //如果符合返现，返现金额增加到用户账户
-            $promotion = json_decode($order['promotion']);
-            if ($promotion) {
-                foreach ($promotion as $v) {
-                    if ($v->type == 2) {
-                        UserModel::where(['uid'=>$uid])->setInc('mainAccount',$v->free);
-                        //写入财务流水
-                        $user = UserModel::get($uid);
-                        $recordModel = new FinanceRecord();
-                        $recordModel->insert(['uid' => $uid,'amount' => $v->free,'balance' => $user['mainAccount'],'addtime' => time(),'reason' => '订单返现（订单号：'.$order['order_num_alias'].'）','rectype' => 1]);
-                    }
-                }
-            }
+//            //如果符合返现，返现金额增加到用户账户
+//            $promotion = json_decode($order['promotion']);
+//            if ($promotion) {
+//                foreach ($promotion as $v) {
+//                    if ($v->type == 2) {
+//                        UserModel::where(['uid'=>$uid])->setInc('mainAccount',$v->free);
+//                        //写入财务流水
+//                        $user = UserModel::get($uid);
+//                        $recordModel = new FinanceRecord();
+//                        $recordModel->insert(['uid' => $uid,'amount' => $v->free,'balance' => $user['mainAccount'],'addtime' => time(),'reason' => '订单返现（订单号：'.$order['order_num_alias'].'）','rectype' => 1]);
+//                    }
+//                }
+//            }
 
             Db::commit();
             return true;

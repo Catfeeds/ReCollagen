@@ -5,7 +5,7 @@
     <input name="order_num" type="text" placeholder="输入订单号" value="{:input('param.order_num')}" />
   </div>
   <div class="search-form-li col-xs-6 col-md-3">
-    <input name="user_name" type="text" placeholder="输入会员姓名/微信号/收货人" value="{:input('param.user_name')}" />
+    <input name="user_name" type="text" placeholder="输入会员姓名/微信号/收货人/收货地址" value="{:input('param.user_name')}" style="width: 260px;"/>
   </div>
   <div class="search-form-li col-xs-6 col-md-3">
     <a class="btn btn-primary" href="javascript:;" id="search" url="{:url('OrderBackend/history')}">查询</a>&nbsp;
@@ -55,8 +55,8 @@
           <td>
             <a class="btn btn-xs btn-info" href='{:url("OrderBackend/show_order",array("id"=>$v["order_id"]))}'><i class="fa fa-eye bigger-120"></i></a>
             <a class="btn btn-xs btn-info" href='{:url("OrderBackend/print_order",array("id"=>$v["order_id"]))}' target="_blank"><i class="fa fa-print bigger-120"></i></a>
-            {eq name="v['order_status']" value="5"}
-            <a class="delete btn btn-xs btn-danger" href='{:url("OrderBackend/del",array("id"=>$v["order_id"]))}' ><i class="fa fa-trash bigger-120"></i></a>
+            {eq name="v['order_status']" value="2"}
+            <a class="delete btn btn-xs btn-danger" href='{:url("OrderBackend/del",array("id"=>$v["order_id"]))}' title="取消订单" ><i class="fa fa-trash bigger-120"></i></a>
             {/eq}
           </td>
         </tr>

@@ -24,6 +24,14 @@ class OrderBackend extends AdminBase {
     }
 
     /**
+     * 导出订单
+     */
+    public function toExport($history) {
+//        halt(input(''));
+        osc_order()->toExport($history);
+    }
+
+    /**
      * 订单详情
      */
     public function show_order() {
@@ -72,6 +80,8 @@ class OrderBackend extends AdminBase {
         }
 
         $info['order']['promotion'] = json_decode($info['order']['promotion'], true);
+        //快递公司
+        $info['trans'] = Db::name('transport')->select();
 
         $this->assign('data', $info);
         $this->assign('crumbs', '订单详情');
@@ -97,6 +107,14 @@ class OrderBackend extends AdminBase {
         osc_order()->del_order((int) input('param.id'));
         storage_user_action(UID, session('user_auth.username'), config('BACKEND_USER'), '删除了订单');
         $this->redirect('OrderBackend/index');
+    }
+    /**
+     * 取消订单
+     */
+    function cancel(){
+        osc_order()->cancel_order((int)input('param.id'));
+        storage_user_action(UID,session('user_auth.username'),config('BACKEND_USER'),'取消了订单');
+        $this->success('取消成功');
     }
 
     public function update_order() {
@@ -151,25 +169,17 @@ class OrderBackend extends AdminBase {
     }
 
     /**
-     * 修改物流单号
+     * 更新物流信息
      */
     public function update_shipping() {
-
         $data = input('');
-        $res = Db::name('order')->where(['order_id' => $data['id']])->update(['order_status' => 3, 'shipping_num' => $data['shipping_num'], 'deliver_time' => date('Y-m-d H:i:s'), 'update_time' => time()]);
-
+        $res = Db::name('order')->where(['order_id' => $data['id']])
+            ->update(['order_status' => 3, 'shipping_num' => $data['shipping_num'],'shipping_method' => $data['shipping_method'], 'deliver_time' => date('Y-m-d H:i:s'), 'update_time' => time()]);
         if ($res) {
             storage_user_action(UID, session('user_auth.username'), config('BACKEND_USER'), '更新了物流单号');
             return true;
         }
         return false;
-    }
-
-    /**
-     * 导出订单
-     */
-    public function toExport($history) {
-        osc_order()->toExport($history);
     }
 
     /**
