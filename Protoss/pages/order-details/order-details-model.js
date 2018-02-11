@@ -36,9 +36,28 @@ class OrderDetails extends Base{
     * norderNumber - {int} 订单id
     * */
     cancel(orderNumber, callback) {
-      console.log(orderNumber)
       var allParams = {
         url: 'order/cancel',
+        type: 'post',
+        data: { id: orderNumber },
+        sCallback: function (data) {
+          callback && callback(data);
+        },
+        eCallback: function (data) {
+          callback && callback(data);
+        }
+      };
+      this.request(allParams);
+    }
+
+    /*
+    * 删除订单
+    * params:
+    * norderNumber - {int} 订单id
+    * */
+    orderDel(orderNumber, callback) {
+      var allParams = {
+        url: 'order/del',
         type: 'post',
         data: { id: orderNumber },
         sCallback: function (data) {
@@ -57,7 +76,6 @@ class OrderDetails extends Base{
     * norderNumber - {int} 订单id
     * */
     receive(orderNumber, callback) {
-      console.log(orderNumber)
       var allParams = {
         url: 'order/receive',
         type: 'post',
