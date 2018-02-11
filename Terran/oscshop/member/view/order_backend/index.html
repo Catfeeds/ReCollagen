@@ -1,11 +1,30 @@
 {extend name="./oscshop/admin/view/public/base.html" /}
 {block name="content"}	
 <div class="row search-form search-form-group">
-    <div class="search-form-li col-xs-6 col-md-3">
+    <div class="search-form-li col-xs-6 col-md-1">
         <input name="order_num" type="text" placeholder="输入订单号" value="{:input('param.order_num')}" />
     </div>
     <div class="search-form-li col-xs-6 col-md-3">
         <input name="user_name" type="text" placeholder="输入会员姓名/微信号/收货人/收货地址" value="{:input('param.user_name')}" style="width: 260px;"/>
+    </div>
+    <div class="search-form-li col-xs-6 col-md-1">
+        <select name="sort">
+            <?php $sort=input('param.sort'); ?>
+            <option <?php if($sort==1){echo ' selected="selected"';} ?> value="1">按下单时间正序</option>
+            <option <?php if($sort==2){echo ' selected="selected"';} ?> value="2">按下单时间逆序</option>
+            <option <?php if($sort==3){echo ' selected="selected"';} ?> value="3">按收货人正序</option>
+            <option <?php if($sort==4){echo ' selected="selected"';} ?> value="4">按收货人逆序</option>
+            <option <?php if($sort==5){echo ' selected="selected"';} ?> value="5">按姓名正序</option>
+            <option <?php if($sort==6){echo ' selected="selected"';} ?> value="6">按姓名逆序</option>
+            <option <?php if($sort==7){echo ' selected="selected"';} ?> value="7">按状态正序</option>
+            <option <?php if($sort==8){echo ' selected="selected"';} ?> value="8">按状态逆序</option>
+        </select>
+    </div>
+    <div class="search-form-li col-xs-6 col-md-2">
+        <input type="text" id="start_time" name="start_time" class="col-xs-10"  value="{:input('param.start_time')}" placeholder="时间范围">
+    </div>
+    <div class="search-form-li col-xs-6 col-md-2">
+        <input type="text" id="end_time" name="end_time" class="col-xs-10"  value="{:input('param.end_time')}" placeholder="时间范围">
     </div>
     <!--<div class="search-form-li col-xs-6 col-md-3">-->
     <!--<select name="status">-->
@@ -31,9 +50,9 @@
                     <tr>											
                         <th class="hidden-xs">ID</th>
                         <th class="hidden-xs">订单号</th>
-                        <th>姓名</th>  
+                        <th>姓名</th>
                         <th class="hidden-xs">微信号</th>
-                        <th>收货人</th>	
+                        <th>收货人</th>
                         <th class="hidden-xs">联系电话</th>	
                         <th class="hidden-xs">收货地址</th>	
                         <th class="hidden-xs">下单时间</th>	
@@ -65,8 +84,8 @@
                         <td>
                             <a class="btn btn-xs btn-info" href='{:url("OrderBackend/show_order",array("id"=>$v["order_id"]))}'><i class="fa fa-eye bigger-120"></i></a>
                             <a class="btn btn-xs btn-info" href='{:url("OrderBackend/print_order",array("id"=>$v["order_id"]))}' target="_blank"><i class="fa fa-print bigger-120"></i></a> 
-                            {eq name="v['order_status']" value="5"}
-                            <a class="delete btn btn-xs btn-danger" href='{:url("OrderBackend/del",array("id"=>$v["order_id"]))}' ><i class="fa fa-trash bigger-120"></i></a>
+                            {eq name="v['order_status']" value="2"}
+                            <a class="delete btn btn-xs btn-danger" href='{:url("OrderBackend/cancel",array("id"=>$v["order_id"]))}' title="取消订单"><i class="fa fa-trash bigger-120"></i></a>
                             {/eq}
                         </td>
                     </tr>
@@ -87,7 +106,13 @@
 </div>
 {/block}
 {block name="javascript"}
+<script type="text/javascript" src="__PUBLIC__/js/layer/laydate/laydate.js"></script>
 <script>
+    $(document).ready(function(){
+        $('#start_time').layDate();
+        $('#end_time').layDate();
+    })
+
     $(function () {
         $("#search").click(function () {
             var url = $(this).attr('url');

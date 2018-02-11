@@ -184,7 +184,14 @@
             </tr>
             <tr>
                 <td>物流公司</td>
-                <td>{$data.order.shipping_method}</td>
+                <!--<td>{$data.order.shipping_method}</td>-->
+                <td>
+                    <select name="shipping_method" id="shipping_method">
+                        {volist name="data['trans']" id="vo"}
+                        <option value="{$vo.title}" {if $data['order']['shipping_method'] == $vo.title}selected{/if}>{$vo.title}</option>
+                        {/volist}
+                    </select>
+                </td>
             </tr>
 
             <?php if($data['order']['order_status'] == 2 || $data['order']['order_status'] == 3 || $data['order']['order_status'] == 4){ ?>
@@ -245,15 +252,17 @@
 
     //录入物流单号
     $('#button-dispatch').live('click', function () {
-        var shipping_num = $('input[name=\'shipping_num\']').val();
-        if (shipping_num == '') {
+        var params = {};
+        params.shipping_num = $('input[name=\'shipping_num\']').val();
+        params.shipping_method = $("#shipping_method option:selected").val();
+        if (params.shipping_num == '') {
             return layer.msg('请输入物流单号', {icon: 2});
         }
         $.ajax({
             url: '<?php echo url("OrderBackend/update_shipping",array("id"=>input("param.id"))); ?>',
             type: 'post',
             dataType: 'html',
-            data: 'shipping_num=' + encodeURIComponent(shipping_num),
+            data: params,
             success: function (res) {
                 if (res == 'true') {
                     layer.msg('录入成功', {icon: 1});

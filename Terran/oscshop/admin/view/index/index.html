@@ -87,7 +87,7 @@
 						{volist name="user_action" id="v" empty="$uc_empty"}
 							<li class="list-group-item">
 							{if condition="empty($v['uname'])"}	
-								<a href="{:url('member/MemberBackend/edit',array('id'=>$v['user_id']))}">{$v.user_id}</a>
+								{$v.user_id}
 							{else/}
 								 {$v.uname}
 							{/if}
@@ -136,8 +136,8 @@
 									<td>
 										<a class="btn btn-xs btn-info" href='{:url("member/OrderBackend/show_order",array("id"=>$v["order_id"]))}'><i class="fa-eye fa"></i></a> 
 										<a class="btn btn-xs btn-info" href='{:url("member/OrderBackend/print_order",array("id"=>$v["order_id"]))}' target="_blank"><i class="fa fa-print bigger-120"></i></a> 
-									{eq name="v['order_status']" value="5"}
-										<a class="delete btn btn-xs btn-danger" href='{:url("member/OrderBackend/del",array("id"=>$v["order_id"]))}' ><i class="fa fa-trash bigger-120"></i></a>
+									{eq name="v['order_status']" value="2"}
+										<a class="delete btn btn-xs btn-danger" href='{:url("member/OrderBackend/cancel",array("id"=>$v["order_id"]))}' title="取消订单" ><i class="fa fa-trash bigger-120"></i></a>
 									{/eq}
 									</td>
 								</tr>
