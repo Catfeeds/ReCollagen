@@ -63,7 +63,7 @@ class OrderMember extends MemberBase{
 			
 			exit($this->fetch());
 	}
-	function cancel(){				
+	function cancel(){
 		osc_order()->cancel_order((int)input('param.id'),UID);
 		storage_user_action(UID,member('username'),config('FRONTEND_USER'),'取消了订单');
 		$this->success('取消成功！！',url('OrderMember/index'));

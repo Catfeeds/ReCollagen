@@ -10,9 +10,9 @@ use think\Controller;
 
 class Pay extends BaseController
 {
-    protected $beforeActionList = [
-        'checkExclusiveScope' => ['only' => 'getPreOrder']
-    ];
+//    protected $beforeActionList = [
+//        'checkExclusiveScope' => ['only' => 'getPreOrder']
+//    ];
     
     public function getPreOrder($id='')
     {

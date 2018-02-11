@@ -176,11 +176,22 @@ class Pay
             //减账户金额
             UserModel::where(['uid'=>$uid])->setDec('mainAccount',$mainAccountNeedPay);
             UserModel::where(['uid'=>$uid])->setDec('secondAccount',$secondAccountNeedPay);
-
             //扣减金额写入财务流水
             $recordModel = new FinanceRecord();
             $mainAccountNeedPay > 0 && $recordModel->insert(['uid' => $uid,'amount' => '-'.$mainAccountNeedPay,'balance' => $user['mainAccount']-$mainAccountNeedPay,'addtime' => time(),'reason' => '订单扣减（订单号：'.$order['order_num_alias'].'）','rectype' => 1]);
             $secondAccountNeedPay > 0 && $recordModel->insert(['uid' => $uid,'amount' => '-'.$secondAccountNeedPay,'balance' => $user['secondAccount']-$secondAccountNeedPay,'addtime' => time(),'reason' => '订单扣减（订单号：'.$order['order_num_alias'].'）','rectype' => 2]);
+
+            //如果满足返现，付款时返现到账号
+            $promotion = json_decode($order['promotion']);
+            if ($promotion) {
+                foreach ($promotion as $v) {
+                    if ($v->type == 2) {
+                        UserModel::where(['uid'=>$uid])->setInc('mainAccount',$v->free);
+                        //写入财务流水
+                        $recordModel->insert(['uid' => $uid,'amount' => $v->free,'balance' => $user['mainAccount']+($v->free)-$mainAccountNeedPay,'addtime' => time(),'reason' => '订单返现（订单号：'.$order['order_num_alias'].'）','rectype' => 1]);
+                    }
+                }
+            }
 
             Db::commit();
             return ['errorCode' => 0,'msg'=>'支付成功'];

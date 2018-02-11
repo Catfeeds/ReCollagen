@@ -641,3 +641,38 @@ function getPromotionStatus($start_time, $end_time) {
         return '已结束';
     }
 }
+/**
+ * 返回订单排序条件
+ */
+function getSortConditionBySort($sort) {
+    switch ($sort) {
+        case '1':
+            return 'create_time desc';
+            break;
+        case '2':
+            return 'create_time asc';
+            break;
+        case '3':
+            return 'shipping_name asc';
+            break;
+        case '4':
+            return 'shipping_name desc';
+            break;
+        case '5':
+            return 'uname asc';
+            break;
+        case '6':
+            return 'uname desc';
+            break;
+        case '7':
+            return 'order_status asc';
+            break;
+        case '8':
+            return 'order_status desc';
+            break;
+
+        default:
+            return 'create_time desc,shipping_name asc';
+            break;
+    }
+}

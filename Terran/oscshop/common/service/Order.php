@@ -17,11 +17,10 @@ class Order {
 
     //取消订单
     public function cancel_order($order_id, $uid = null) {
-
         if ($uid) {
             $map['uid'] = ['eq', $uid];
         }
-        $order['order_status_id'] = config('cancel_order_status_id');
+        $order['order_status'] = 5;
         $map['order_id'] = ['eq', $order_id];
         //设置订单状态
         Db::name('order')->where($map)->update($order);
@@ -76,6 +75,27 @@ class Order {
             $map['Order.order_status'] = ['eq', $param['status']];
             $query['status']=urlencode($param['status']);
         }
+        //时间筛选
+        $startTime = strtotime(input('start_time'));
+        $endTime = strtotime(input('end_time'));
+        if ($startTime && !$endTime) {
+            $map['Order.create_time'] = ['egt', $startTime];
+            $query['start_time']=urlencode($param['start_time']);
+        }elseif (!$startTime && $endTime) {
+            $map['Order.create_time'] = ['elt', $startTime];
+            $query['end_time']=urlencode($param['end_time']);
+        }elseif ($startTime && $endTime) {
+            $map['Order.create_time'] = ['between', [$startTime, $endTime]];
+            $query['start_time'] = urlencode($param['start_time']);
+            $query['end_time'] = urlencode($param['end_time']);
+        }
+
+        //排序
+        $sort = 'create_time desc';
+        if (isset($param['sort'])) {
+            $sort = getSortConditionBySort($param['sort']);
+        }
+
         if ($history == 1) {
             //显示历史已发货收货订单，大于等于7天
             $map['Order.order_status'] = ['in', [3, 4]];
@@ -85,7 +105,7 @@ class Order {
                     ->join('__DISPATCH__ d', 'Order.dispatch_id=d.id')
                     ->join('__MEMBER__ m', 'Order.uid=m.uid')
                     ->where($map)
-                    ->order('Order.create_time desc,Order.shipping_name')
+                    ->order($sort)
                     ->paginate(15,false,['query'=>$query]);
         } else {
             //默认显示全部待付款，待发货和7天内已发货收货订单
@@ -102,21 +122,31 @@ class Order {
                             $map2['Order.order_num_alias'] = ['eq', input('get.order_num/s')];
                         }
                         if (input('get.user_name/s')) {
-                            $map2['Order.shipping_name|m.uname|m.uwecat'] = ['like', "%" . input('get.user_name/s') . "%"];
+                            $map2['m.uname|m.uwecat|Order.shipping_name|Order.shipping_addr'] = ['like', "%" . input('get.user_name/s') . "%"];
                         }
                         if (input('get.status/d')) {
                             $map2['Order.order_status'] = ['eq', input('get.status/d')];
                         }
+                        //时间筛选
+                        $startTime = strtotime(input('start_time'));
+                        $endTime = strtotime(input('end_time'));
+                        if ($startTime && !$endTime) {
+                            $map2['Order.create_time'] = ['egt', $startTime];
+                        }elseif (!$startTime && $endTime) {
+                            $map2['Order.create_time'] = ['elt', $startTime];
+                        }elseif ($startTime && $endTime) {
+                            $map2['Order.create_time'] = ['between', [$startTime, $endTime]];
+                        }
+
                         $query->table('__ORDER__')->alias('Order')->field('Order.*,d.dispatch_title,m.uname,m.uwecat')
                         ->join('__DISPATCH__ d', 'Order.dispatch_id=d.id')
                         ->join('__MEMBER__ m', 'Order.uid=m.uid')
-                        ->where($map2)
-                        ->order('create_time desc,shipping_name');
+                        ->where($map2);
                     })
                     ->select();
             $page = new Page(count($datas), 15);
             $list['page'] = $page->show();
-            //清单
+            //数据
             $list['data'] = Db::name('Order')->alias('Order')->field('Order.*,d.dispatch_title,m.uname,m.uwecat')
                     ->join('__DISPATCH__ d', 'Order.dispatch_id=d.id')
                     ->join('__MEMBER__ m', 'Order.uid=m.uid')
@@ -129,10 +159,25 @@ class Order {
                             $map2['Order.order_num_alias'] = ['eq', input('get.order_num/s')];
                         }
                         if (input('get.user_name/s')) {
-                            $map2['Order.shipping_name|m.uname|m.uwecat'] = ['like', "%" . input('get.user_name/s') . "%"];
+                            $map2['m.uname|m.uwecat|Order.shipping_name|Order.shipping_addr'] = ['like', "%" . input('get.user_name/s') . "%"];
                         }
                         if (input('get.status/d')) {
                             $map2['Order.order_status'] = ['eq', input('get.status/d')];
+                        }
+                        //时间筛选
+                        $startTime = strtotime(input('start_time'));
+                        $endTime = strtotime(input('end_time'));
+                        if ($startTime && !$endTime) {
+                            $map2['Order.create_time'] = ['egt', $startTime];
+                        }elseif (!$startTime && $endTime) {
+                            $map2['Order.create_time'] = ['elt', $startTime];
+                        }elseif ($startTime && $endTime) {
+                            $map2['Order.create_time'] = ['between', [$startTime, $endTime]];
+                        }
+                        //排序
+                        $sort = 'create_time desc';
+                        if (input('get.sort/d')) {
+                            $sort = getSortConditionBySort(input('get.sort/d'));
                         }
                         $current_page = input('p/d') ? input('p/d') : 1;
 
@@ -141,12 +186,131 @@ class Order {
                         ->join('__MEMBER__ m', 'Order.uid=m.uid')
                         ->where($map2)
                         ->limit(($current_page - 1) * 15, 15)
-                        ->order('create_time desc,shipping_name');
+                        ->order($sort);
                     })
                     ->select();
         }
 
         return $list;
+    }
+    /**
+     * 导出订单
+     * @param int $history 是否导出历史订单 （默认0导出7天内订单，1导出历史订单）
+     * @throws \PHPExcel_Exception
+     * @throws \PHPExcel_Reader_Exception
+     * @throws \PHPExcel_Writer_Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function toExport($history = 0) {
+        $name = '会员订单表';
+
+        if ($history == 1) {
+            //显示历史订单，大于等于7天
+            $map['Order.order_status'] = ['in', [3, 4]];
+            $map['Order.create_time'] = ['lt', time() - (7 * 24 * 3600)];
+            $page = Db::view('Order', '*')
+                ->view('Dispatch', 'dispatch_title', 'Order.dispatch_id=Dispatch.id')
+                ->where($map)
+                ->order('Order.create_time desc,Order.shipping_name')
+                ->select();
+        } else {
+            //默认会员订单，7天内
+            $map['Order.order_status'] = ['in', [1, 2]];
+            $page = Db::name('Order')->alias('Order')->field('*,d.dispatch_title')
+                ->join('__DISPATCH__ d', 'Order.dispatch_id=d.id')
+                ->where($map)
+                ->union(function($query) {
+                    $map2['Order.order_status'] = ['in', [3, 4]];
+                    $map2['Order.create_time'] = ['egt', time() - (7 * 24 * 3600)];
+
+                    $query->table('__ORDER__')->alias('Order')->field('*,d.dispatch_title')
+                        ->join('__DISPATCH__ d', 'Order.dispatch_id=d.id')
+                        ->where($map2)
+                        ->order('create_time desc,shipping_name');
+                })
+                ->select();
+        }
+
+        if (count($page) > 0) {
+            foreach ($page as $key => $v) {
+                $page[$key]['order_status'] = getOrderStatus($v['order_status']);
+                $page[$key]['create_time'] = date('Y-m-d H:i:s', $v['create_time']);
+            }
+        }
+
+        Loader::import('phpexcel.PHPExcel.IOFactory');
+        $objPHPExcel = new \PHPExcel();
+
+        // 设置excel文档的属性
+        $objPHPExcel->getProperties()->setCreator("Admin")//创建人
+        ->setLastModifiedBy("Admin")//最后修改人
+        ->setTitle($name)//标题
+        ->setSubject($name)//题目
+        ->setDescription($name)//描述
+        ->setKeywords("订单")//关键字
+        ->setCategory("Test result file"); //种类
+        // 开始操作excel表
+        $objPHPExcel->setActiveSheetIndex(0);
+        // 设置工作薄名称
+        $objPHPExcel->getActiveSheet()->setTitle(iconv('gbk', 'utf-8', 'Sheet'));
+        // 设置默认字体和大小
+        $objPHPExcel->getDefaultStyle()->getFont()->setName(iconv('gbk', 'utf-8', ''));
+        $objPHPExcel->getDefaultStyle()->getFont()->setSize(11);
+        $styleArray = array(
+            'font' => array(
+                'bold' => true,
+                'color' => array(
+                    'argb' => 'ffffffff',
+                )
+            ),
+            'borders' => array(
+                'outline' => array(
+                    'style' => \PHPExcel_Style_Border::BORDER_THIN, //设置border样式
+                    'color' => array('argb' => 'FF000000'), //设置border颜色
+                )
+            )
+        );
+        //设置宽
+        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(8);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(25);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(18);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(50);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(25);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(15);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(15);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(15);
+        $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(15);
+        $objPHPExcel->getActiveSheet()->getStyle('A1:J1')->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID);
+        $objPHPExcel->getActiveSheet()->getStyle('A1:J1')->getFill()->getStartColor()->setARGB('333399');
+
+        $objPHPExcel->getActiveSheet()->setCellValue('A1', '订单ID')->setCellValue('B1', '订单号')->setCellValue('C1', '收货人')->setCellValue('D1', '联系电话')
+            ->setCellValue('E1', '收货地址')->setCellValue('F1', '下单时间')->setCellValue('G1', '主账户消费')->setCellValue('H1', '小金库消费')->setCellValue('I1', '总计')->setCellValue('J1', '状态');
+        $objPHPExcel->getActiveSheet()->getStyle('A1:J1')->applyFromArray($styleArray);
+
+        for ($row = 0; $row < count($page); $row++) {
+            $i = $row + 2;
+            $objPHPExcel->getActiveSheet()->setCellValue('A' . $i, $page[$row]['order_id'])->setCellValue('B' . $i, $page[$row]['order_num_alias'])->setCellValue('C' . $i, $page[$row]['shipping_name'])
+                ->setCellValue('D' . $i, $page[$row]['shipping_tel'])->setCellValue('E' . $i, $page[$row]['shipping_addr'])->setCellValue('F' . $i, $page[$row]['create_time'])->setCellValue('G' . $i, $page[$row]['mainPay'])->setCellValue('H' . $i, $page[$row]['secondPay'])
+                ->setCellValue('I' . $i, $page[$row]['total'])->setCellValue('J' . $i, $page[$row]['order_status']);
+        }
+
+        //输出EXCEL格式
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        // 从浏览器直接输出$filename
+        header('Content-Type:application/csv;charset=UTF-8');
+        header("Pragma: public");
+        header("Expires: 0");
+        header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
+        header("Content-Type:application/force-download");
+        header("Content-Type:application/vnd.ms-excel;");
+        header("Content-Type:application/octet-stream");
+        header("Content-Type:application/download");
+        header('Content-Disposition: attachment;filename="' . $name . '.xls"');
+        header("Content-Transfer-Encoding:binary");
+        $objWriter->save('php://output');
     }
 
     /**
@@ -452,126 +616,6 @@ class Order {
                 return ['error' => $v['name'] . ',数量不足，剩余' . $v['goods_quantity']];
             }
         }
-    }
-
-    /**
-     * 导出订单
-     * @param int $history 是否导出历史订单 （默认0导出7天内订单，1导出历史订单）
-     * @throws \PHPExcel_Exception
-     * @throws \PHPExcel_Reader_Exception
-     * @throws \PHPExcel_Writer_Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     */
-    public function toExport($history = 0) {
-        $name = '会员订单表';
-
-        if ($history == 1) {
-            //显示历史订单，大于等于7天
-            $map['Order.order_status'] = ['in', [3, 4]];
-            $map['Order.create_time'] = ['lt', time() - (7 * 24 * 3600)];
-            $page = Db::view('Order', '*')
-                    ->view('Dispatch', 'dispatch_title', 'Order.dispatch_id=Dispatch.id')
-                    ->where($map)
-                    ->order('Order.create_time desc,Order.shipping_name')
-                    ->select();
-        } else {
-            //默认会员订单，7天内
-            $map['Order.order_status'] = ['in', [1, 2]];
-            $page = Db::name('Order')->alias('Order')->field('*,d.dispatch_title')
-                    ->join('__DISPATCH__ d', 'Order.dispatch_id=d.id')
-                    ->where($map)
-                    ->union(function($query) {
-                        $map2['Order.order_status'] = ['in', [3, 4]];
-                        $map2['Order.create_time'] = ['egt', time() - (7 * 24 * 3600)];
-
-                        $query->table('__ORDER__')->alias('Order')->field('*,d.dispatch_title')
-                        ->join('__DISPATCH__ d', 'Order.dispatch_id=d.id')
-                        ->where($map2)
-                        ->order('create_time desc,shipping_name');
-                    })
-                    ->select();
-        }
-
-        if (count($page) > 0) {
-            foreach ($page as $key => $v) {
-                $page[$key]['order_status'] = getOrderStatus($v['order_status']);
-                $page[$key]['create_time'] = date('Y-m-d H:i:s', $v['create_time']);
-            }
-        }
-
-        Loader::import('phpexcel.PHPExcel.IOFactory');
-        $objPHPExcel = new \PHPExcel();
-
-        // 设置excel文档的属性
-        $objPHPExcel->getProperties()->setCreator("Admin")//创建人
-                ->setLastModifiedBy("Admin")//最后修改人
-                ->setTitle($name)//标题
-                ->setSubject($name)//题目
-                ->setDescription($name)//描述
-                ->setKeywords("订单")//关键字
-                ->setCategory("Test result file"); //种类
-        // 开始操作excel表
-        $objPHPExcel->setActiveSheetIndex(0);
-        // 设置工作薄名称
-        $objPHPExcel->getActiveSheet()->setTitle(iconv('gbk', 'utf-8', 'Sheet'));
-        // 设置默认字体和大小
-        $objPHPExcel->getDefaultStyle()->getFont()->setName(iconv('gbk', 'utf-8', ''));
-        $objPHPExcel->getDefaultStyle()->getFont()->setSize(11);
-        $styleArray = array(
-            'font' => array(
-                'bold' => true,
-                'color' => array(
-                    'argb' => 'ffffffff',
-                )
-            ),
-            'borders' => array(
-                'outline' => array(
-                    'style' => \PHPExcel_Style_Border::BORDER_THIN, //设置border样式
-                    'color' => array('argb' => 'FF000000'), //设置border颜色
-                )
-            )
-        );
-        //设置宽
-        $objPHPExcel->getActiveSheet()->getColumnDimension('A')->setWidth(8);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('B')->setWidth(25);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('C')->setWidth(20);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('D')->setWidth(18);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('E')->setWidth(50);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('F')->setWidth(25);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('G')->setWidth(15);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('H')->setWidth(15);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('I')->setWidth(15);
-        $objPHPExcel->getActiveSheet()->getColumnDimension('J')->setWidth(15);
-        $objPHPExcel->getActiveSheet()->getStyle('A1:J1')->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID);
-        $objPHPExcel->getActiveSheet()->getStyle('A1:J1')->getFill()->getStartColor()->setARGB('333399');
-
-        $objPHPExcel->getActiveSheet()->setCellValue('A1', '订单ID')->setCellValue('B1', '订单号')->setCellValue('C1', '收货人')->setCellValue('D1', '联系电话')
-                ->setCellValue('E1', '收货地址')->setCellValue('F1', '下单时间')->setCellValue('G1', '主账户消费')->setCellValue('H1', '小金库消费')->setCellValue('I1', '总计')->setCellValue('J1', '状态');
-        $objPHPExcel->getActiveSheet()->getStyle('A1:J1')->applyFromArray($styleArray);
-
-        for ($row = 0; $row < count($page); $row++) {
-            $i = $row + 2;
-            $objPHPExcel->getActiveSheet()->setCellValue('A' . $i, $page[$row]['order_id'])->setCellValue('B' . $i, $page[$row]['order_num_alias'])->setCellValue('C' . $i, $page[$row]['shipping_name'])
-                    ->setCellValue('D' . $i, $page[$row]['shipping_tel'])->setCellValue('E' . $i, $page[$row]['shipping_addr'])->setCellValue('F' . $i, $page[$row]['create_time'])->setCellValue('G' . $i, $page[$row]['mainPay'])->setCellValue('H' . $i, $page[$row]['secondPay'])
-                    ->setCellValue('I' . $i, $page[$row]['total'])->setCellValue('J' . $i, $page[$row]['order_status']);
-        }
-
-        //输出EXCEL格式
-        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-        // 从浏览器直接输出$filename
-        header('Content-Type:application/csv;charset=UTF-8');
-        header("Pragma: public");
-        header("Expires: 0");
-        header("Cache-Control:must-revalidate, post-check=0, pre-check=0");
-        header("Content-Type:application/force-download");
-        header("Content-Type:application/vnd.ms-excel;");
-        header("Content-Type:application/octet-stream");
-        header("Content-Type:application/download");
-        header('Content-Disposition: attachment;filename="' . $name . '.xls"');
-        header("Content-Transfer-Encoding:binary");
-        $objWriter->save('php://output');
     }
 
 }
