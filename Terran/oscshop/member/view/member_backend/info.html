@@ -142,11 +142,9 @@
                         <input name="secondAccount" type="text" style="width:20%; min-width: 58px;" value="0.00" />
                     </td>
                 </tr>
-                <tr class="hidden-xs">
-                    <td>创建时间</td>
-                    <td>{$data.create_time|date="Y-m-d H:i:s",###}</td>
-                    <td>状态</td>
-                    <td>	
+                <tr class="hidden-sm hidden-md hidden-lg">
+                    <td colspan="1">状态</td>
+                    <td colspan="3">	
                         <label class="radio-inline">
                             <input type="radio" {if condition="$data.checked eq 1"} checked="checked"{/if} value="1" name="checked">审核通过</label>&nbsp;
                         <label class="radio-inline" style="margin-left: 0;">
@@ -154,17 +152,8 @@
                     </td>
                 </tr>
                 <tr class="hidden-sm hidden-md hidden-lg">
-                    <td colspan="2">状态</td>
-                    <td colspan="2">	
-                        <label class="radio-inline">
-                            <input type="radio" {if condition="$data.checked eq 1"} checked="checked"{/if} value="1" name="checked">审核通过</label>&nbsp;
-                        <label class="radio-inline" style="margin-left: 0;">
-                            <input type="radio" {if condition="$data.checked eq 0"} checked="checked"{/if} value="0" name="checked">审核不通过</label>
-                    </td>
-                </tr>
-                <tr class="hidden-sm hidden-md hidden-lg">
-                    <td colspan="2">创建时间</td>
-                    <td colspan="2">{$data.create_time|date="Y-m-d H:i:s",###}</td>
+                    <td colspan="1">创建时间</td>
+                    <td colspan="3">{$data.create_time|date="Y-m-d H:i:s",###}</td>
                 </tr>
             </table>
             <div class="form-group">
