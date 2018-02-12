@@ -397,16 +397,45 @@ class Order
         if (!$order) {
             throw new OrderException();
         }
-        if ($order->order_status != 1) {
+//        halt($order->toArray());
+        //待付款和待发货需要可以取消
+        if ($order->order_status != 1 && $order->order_status != 2) {
             throw new OrderException([
                 'msg'       => '订单状态异常',
                 'errorCode' => 80003,
                 'code'      => 400
             ]);
         }
-        $order->order_status = 5;
+        Db::startTrans();
+        try {
+            if ($order->order_status == 2) {
+                //如果是待发货订单，并且已经返现的话，退回返现金额
+                $promotion = json_decode($order['promotion']);
+                if ($promotion) {
+                    foreach ($promotion as $v) {
+                        if ($v->type == 2) {
+                            UserModel::where(['uid'=>$uid])->setDec('mainAccount',$v->free);
+                            //写入财务流水
+                            $user = UserModel::get($uid);
+                            $recordModel = new FinanceRecord();
+                            $recordModel->insert(['uid' => $uid,'amount' => $v->free,'balance' => $user['mainAccount'],'addtime' => time(),'reason' => '取消订单，返现退回（订单号：'.$order['order_num_alias'].'）','rectype' => 1]);
+                        }
+                    }
+                }
+            }
 
-        return $order->save();
+            //修改订单状态
+            $order->order_status = 5;
+            $order->save();
+
+
+            Db::commit();
+            return true;
+        } catch (Exception $e) {
+            Db::rollback();
+            throw $e;
+        }
+
     }
     /**
      * 删除订单
