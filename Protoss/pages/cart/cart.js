@@ -164,7 +164,6 @@ Page({
     submitOrder:function(){
       var that = this;
       userInfo.getUserAccount((data) => {
-        console.log(data)
         if (data.checked != 1) {
           that.showTipsReturn('提示', '账号审核不通过，请填写完成后,再下单!', (statusConfirm) => {
             if (statusConfirm) {
