@@ -33,7 +33,7 @@ class OrderBackend extends AdminBase {
         $params = input('param.');
         $params['isHistory'] = 1;
 
-        $this->assign('list', osc_order()->order_list(input('param.'), 15));
+        $this->assign('list', osc_order()->order_list($params, 15));
         $this->assign('empty', '<tr><td colspan="20">没有数据</td></tr>');
         $this->assign('params', $params);
 

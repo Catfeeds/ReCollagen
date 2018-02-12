@@ -397,7 +397,6 @@ class Order
         if (!$order) {
             throw new OrderException();
         }
-//        halt($order->toArray());
         //待付款和待发货需要可以取消
         if ($order->order_status != 1 && $order->order_status != 2) {
             throw new OrderException([
@@ -408,8 +407,15 @@ class Order
         }
         Db::startTrans();
         try {
+            //如果是待发货订单
             if ($order->order_status == 2) {
-                //如果是待发货订单，并且已经返现的话，退回返现金额
+                //订单金额增加到用户账户
+                UserModel::where(['uid'=>$uid])->setInc('mainAccount',$order['total']);
+                $user = UserModel::get($uid);
+                $recordModel = new FinanceRecord();
+                $recordModel->insert(['uid' => $uid,'amount' => $order['total'],'balance' => $user['mainAccount'],'addtime' => time(),'reason' => '取消订单，金额退回用户（订单号：'.$order['order_num_alias'].'）','rectype' => 1]);
+
+                //如果已经返现的话，退回返现金额
                 $promotion = json_decode($order['promotion']);
                 if ($promotion) {
                     foreach ($promotion as $v) {
@@ -417,8 +423,7 @@ class Order
                             UserModel::where(['uid'=>$uid])->setDec('mainAccount',$v->free);
                             //写入财务流水
                             $user = UserModel::get($uid);
-                            $recordModel = new FinanceRecord();
-                            $recordModel->insert(['uid' => $uid,'amount' => '-'.$v->free,'balance' => $user['mainAccount'],'addtime' => time(),'reason' => '取消订单，返现退回（订单号：'.$order['order_num_alias'].'）','rectype' => 1]);
+                            $recordModel->insert(['uid' => $uid,'amount' => '-'.$v->free,'balance' => $user['mainAccount'],'addtime' => time(),'reason' => '取消订单，返现退回系统（订单号：'.$order['order_num_alias'].'）','rectype' => 1]);
                         }
                     }
                 }
@@ -427,7 +432,6 @@ class Order
             //修改订单状态
             $order->order_status = 5;
             $order->save();
-
 
             Db::commit();
             return true;
