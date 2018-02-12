@@ -138,6 +138,7 @@
   padding:20rpx;
 }
 .userRemarks>textarea{
+    width: 100%;
     min-height: 60rpx;
     padding:10rpx;
     border: 1rpx solid #E9E9E9;
