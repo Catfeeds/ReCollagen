@@ -16,14 +16,42 @@ class Order {
     }
 
     //取消订单
-    public function cancel_order($order_id, $uid = null) {
-        if ($uid) {
-            $map['uid'] = ['eq', $uid];
+    public function cancel_order($order_id) {
+        $order = Db::name('order')->where(['order_id'=>$order_id])->find();
+
+        Db::startTrans();
+        try {
+            //如果是待发货订单
+            if ($order['order_status'] == 2) {
+                //订单金额增加到用户账户
+                Db::name('member')->where(['uid'=>$order['uid']])->setInc('mainAccount',$order['total']);
+                $user = Db::name('member')->where(['uid'=>$order['uid']])->find();
+                Db::name('finance_record')->insert(['uid' => $order['uid'],'amount' => $order['total'],'balance' => $user['mainAccount'],'addtime' => time(),'reason' => '取消订单，金额退回用户（订单号：'.$order['order_num_alias'].'）','rectype' => 1]);
+
+                //如果已经返现的话，退回返现金额
+                $promotion = json_decode($order['promotion']);
+                if ($promotion) {
+                    foreach ($promotion as $v) {
+                        if ($v->type == 2) {
+                            Db::name('member')->where(['uid'=>$order['uid']])->setDec('mainAccount',$v->free);
+                            //写入财务流水
+                            $user = Db::name('member')->where(['uid'=>$order['uid']])->find();
+                            Db::name('finance_record')->insert(['uid' => $order['uid'],'amount' => '-'.$v->free,'balance' => $user['mainAccount'],'addtime' => time(),'reason' => '取消订单，返现退回系统（订单号：'.$order['order_num_alias'].'）','rectype' => 1]);
+                        }
+                    }
+                }
+            }
+
+            //设置订单状态
+            Db::name('order')->where(['order_id'=>$order_id])->update(['order_status'=>5]);
+
+            Db::commit();
+            return true;
+        } catch (Exception $e) {
+            Db::rollback();
+            throw $e;
         }
-        $order['order_status'] = 5;
-        $map['order_id'] = ['eq', $order_id];
-        //设置订单状态
-        Db::name('order')->where($map)->update($order);
+
     }
 
     /**
