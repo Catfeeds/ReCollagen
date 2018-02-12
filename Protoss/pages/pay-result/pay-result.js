@@ -6,19 +6,19 @@ Page({
 
         },
         onReady: function () {
-          var titleName = this.data.from == 'order' ? '待付款' : ' 支付结果';
+          var titleName = this.data.from == 'order' ? '待付款' : ' 支付成功';
           wx.setNavigationBarTitle({
             title: titleName
           });
         },
         onLoad: function (options){
-          var titleName = options.from == 'order' ? '待付款' : ' 支付结果';
+          var titleName = options.from == 'order' ? '待付款' : ' 支付成功';
           wx.setNavigationBarTitle({
             title: titleName
           });
           this.setData({
             id: options.id,
-            title: options.from == 'order' ? '待付款' : ' 支付结果',
+            title: options.from == 'order' ? '待付款' : ' 支付成功',
             from: options.from
           });
         },
@@ -67,6 +67,26 @@ Page({
             });
           });
         },
-
+        /*
+        * 提示窗口
+        * params:
+        * title - {string}标题
+        * content - {string}内容
+        * flag - {bool}是否跳转到 "我的页面"
+        */
+        showTips: function (title, content, flag) {
+          wx.showModal({
+            title: title,
+            content: content,
+            showCancel: false,
+            success: function (res) {
+              if (flag) {
+                wx.switchTab({
+                  url: '/pages/my/my'
+                });
+              }
+            }
+          });
+        },
     }
 )

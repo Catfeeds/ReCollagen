@@ -119,7 +119,7 @@
     <view wx:if="{{orderStatus==1}}" class="pay" ontap="addCart">修改订单</view>
     <view wx:if="{{orderStatus==1}}" class="pay" ontap="pay">去付款</view>
     <view wx:if="{{orderStatus==3}}" class="pay" ontap="receive">确认收货</view>
-    <view wx:if="{{orderStatus==1}}" class="pay" ontap="cancel">取消订单</view>
+    <view wx:if="{{orderStatus<=2}}" class="pay" ontap="cancel">取消订单</view>
   </view>
 </view>
 <loading hidden="{{loadingHidden}}">
