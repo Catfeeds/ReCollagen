@@ -23,10 +23,13 @@ class Order {
         try {
             //如果是待发货订单
             if ($order['order_status'] == 2) {
-                //订单金额增加到用户账户
-                Db::name('member')->where(['uid'=>$order['uid']])->setInc('mainAccount',$order['total']);
+                //订单主账户消费金额增加到用户主账户
+                Db::name('member')->where(['uid'=>$order['uid']])->setInc('mainAccount',$order['mainPay']);
                 $user = Db::name('member')->where(['uid'=>$order['uid']])->find();
-                Db::name('finance_record')->insert(['uid' => $order['uid'],'amount' => $order['total'],'balance' => $user['mainAccount'],'addtime' => time(),'reason' => '取消订单，金额退回用户（订单号：'.$order['order_num_alias'].'）','rectype' => 1]);
+                Db::name('finance_record')->insert(['uid' => $order['uid'],'amount' => $order['mainPay'],'balance' => $user['mainAccount'],'addtime' => time(),'reason' => '取消订单，用户主账户金额退回（订单号：'.$order['order_num_alias'].'）','rectype' => 1]);
+                //订单小金库消费金额增加到用户小金库
+                Db::name('member')->where(['uid'=>$order['uid']])->setInc('secondAccount',$order['secondAccount']);
+                Db::name('finance_record')->insert(['uid' => $order['uid'],'amount' => $order['secondPay'],'balance' => $user['secondAccount'],'addtime' => time(),'reason' => '取消订单，用户小金库金额退回（订单号：'.$order['order_num_alias'].'）','rectype' => 2]);
 
                 //如果已经返现的话，退回返现金额
                 $promotion = json_decode($order['promotion']);
