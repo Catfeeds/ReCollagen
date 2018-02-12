@@ -52,11 +52,7 @@ class MemberBackend extends AdminBase {
 //            if ($result !== true) {
 //                $this->error($result);
 //            }
-            if ($data['uname'] == '') {
-                $this->error('请输入姓名');
-            }
             $data['update_time'] = time();
-
             $u = Db::name('member')->where('uid', $data['uid'])->find();
             $omainAccount = $u['mainAccount'];
             if ((float) $data['mainAccount'] != 0) {
