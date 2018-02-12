@@ -17,18 +17,34 @@ class OrderBackend extends AdminBase {
      * 订单列表
      */
     public function index() {
-        $this->assign('list', osc_order()->order_list(input('param.'), 15));
+        $params = input('param.');
+        $params['isHistory'] = 0;
+
+        $this->assign('list', osc_order()->order_list($params, 15));
         $this->assign('empty', '<tr><td colspan="20">没有数据</td></tr>');
+        $this->assign('params', $params);
 
         return $this->fetch();
     }
+    /**
+     * 历史订单列表
+     */
+    public function history() {
+        $params = input('param.');
+        $params['isHistory'] = 1;
 
+        $this->assign('list', osc_order()->order_list(input('param.'), 15));
+        $this->assign('empty', '<tr><td colspan="20">没有数据</td></tr>');
+        $this->assign('params', $params);
+
+        return $this->fetch();
+    }
     /**
      * 导出订单
      */
-    public function toExport($history) {
-//        halt(input(''));
-        osc_order()->toExport($history);
+    public function toExport() {
+        $params = input('');
+        osc_order()->toExport($params);
     }
 
     /**
@@ -180,16 +196,6 @@ class OrderBackend extends AdminBase {
             return true;
         }
         return false;
-    }
-
-    /**
-     * 历史订单列表
-     */
-    public function history() {
-        $this->assign('list', osc_order()->order_list(input('param.'), 15, 1));
-        $this->assign('empty', '<tr><td colspan="20">没有数据</td></tr>');
-
-        return $this->fetch();
     }
 
 }

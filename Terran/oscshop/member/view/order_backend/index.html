@@ -1,5 +1,6 @@
 {extend name="./oscshop/admin/view/public/base.html" /}
-{block name="content"}	
+{block name="content"}
+
 <div class="row search-form search-form-group">
     <div class="search-form-li col-xs-6 col-md-1">
         <input name="order_num" type="text" placeholder="输入订单号" value="{:input('param.order_num')}" />
@@ -38,7 +39,7 @@
     <!--</div>-->
     <div class="search-form-li col-xs-6 col-md-3">
         <a class="btn btn-primary" href="javascript:;" id="search" url="{:url('OrderBackend/index')}">查询</a>&nbsp;
-        <a class="btn btn-primary" href="{:url('OrderBackend/toExport',['history'=>0])}">导出</a>
+        <a class="btn btn-primary" href="{:url('OrderBackend/toExport',$params)}">导出</a>
     </div>
 </div>
 

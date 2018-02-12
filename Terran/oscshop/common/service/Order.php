@@ -53,50 +53,48 @@ class Order {
 
     /**
      * 获取后台所有订单列表
-     * @param array $param 查询参数
-     * @param int $page_num 每页显示条数
-     * @param int $history 是否历史订单（默认显示全部待付款，待发货和7天内已发货，1则显示历史已发货订单）
+     * @param array $params 查询参数
      * @return \think\Paginator
      * @throws \think\exception\DbException
      */
-    public function order_list($param = array(), $page_num = 15, $history = 0) {
+    public function order_list($params) {
 
         $map['Order.order_status'] = ['in', [1, 2]];
         $query=[];  //分页参数
-        if (isset($param['order_num'])) {
-            $map['Order.order_num_alias'] = ['eq', $param['order_num']];
-            $query['order_num']=urlencode($param['order_num']);
+        if (isset($params['order_num'])) {
+            $map['Order.order_num_alias'] = ['eq', $params['order_num']];
+            $query['order_num']=urlencode($params['order_num']);
         }
-        if (isset($param['user_name'])) {
-            $map['m.uname|m.uwecat|Order.shipping_name|Order.shipping_addr'] = ['like', "%" . $param['user_name'] . "%"];
-            $query['user_name']=urlencode($param['user_name']);
+        if (isset($params['user_name'])) {
+            $map['m.uname|m.uwecat|Order.shipping_name|Order.shipping_addr'] = ['like', "%" . $params['user_name'] . "%"];
+            $query['user_name']=urlencode($params['user_name']);
         }
-        if (isset($param['status'])) {
-            $map['Order.order_status'] = ['eq', $param['status']];
-            $query['status']=urlencode($param['status']);
+        if (isset($params['status'])) {
+            $map['Order.order_status'] = ['eq', $params['status']];
+            $query['status']=urlencode($params['status']);
         }
         //时间筛选
         $startTime = strtotime(input('start_time'));
         $endTime = strtotime(input('end_time'));
         if ($startTime && !$endTime) {
             $map['Order.create_time'] = ['egt', $startTime];
-            $query['start_time']=urlencode($param['start_time']);
+            $query['start_time']=urlencode($params['start_time']);
         }elseif (!$startTime && $endTime) {
             $map['Order.create_time'] = ['elt', $startTime];
-            $query['end_time']=urlencode($param['end_time']);
+            $query['end_time']=urlencode($params['end_time']);
         }elseif ($startTime && $endTime) {
             $map['Order.create_time'] = ['between', [$startTime, $endTime]];
-            $query['start_time'] = urlencode($param['start_time']);
-            $query['end_time'] = urlencode($param['end_time']);
+            $query['start_time'] = urlencode($params['start_time']);
+            $query['end_time'] = urlencode($params['end_time']);
         }
 
         //排序
         $sort = 'create_time desc';
-        if (isset($param['sort'])) {
-            $sort = getSortConditionBySort($param['sort']);
+        if (isset($params['sort'])) {
+            $sort = getSortConditionBySort($params['sort']);
         }
 
-        if ($history == 1) {
+        if ($params['isHistory'] == 1) {
             //显示历史已发货收货订单，大于等于7天
             $map['Order.order_status'] = ['in', [3, 4]];
             $map['Order.create_time'] = ['lt', time() - (7 * 24 * 3600)];
@@ -193,42 +191,98 @@ class Order {
 
         return $list;
     }
+
     /**
-     * 导出订单
-     * @param int $history 是否导出历史订单 （默认0导出7天内订单，1导出历史订单）
+     * @param $params
      * @throws \PHPExcel_Exception
      * @throws \PHPExcel_Reader_Exception
      * @throws \PHPExcel_Writer_Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
+     * Author: sai
+     * DateTime: 2018/2/12 10:10
+     * 导出订单
      */
-    public function toExport($history = 0) {
-        $name = '会员订单表';
+    public function toExport($params) {
+        $map['Order.order_status'] = ['in', [1, 2]];
+        if (isset($params['order_num'])) {
+            $map['Order.order_num_alias'] = ['eq', $params['order_num']];
+        }
+        if (isset($params['user_name'])) {
+            $map['m.uname|m.uwecat|Order.shipping_name|Order.shipping_addr'] = ['like', "%" . $params['user_name'] . "%"];
+        }
+        if (isset($params['status'])) {
+            $map['Order.order_status'] = ['eq', $params['status']];
+        }
+        //时间筛选
+        $startTime = strtotime(input('start_time'));
+        $endTime = strtotime(input('end_time'));
+        if ($startTime && !$endTime) {
+            $map['Order.create_time'] = ['egt', $startTime];
+        }elseif (!$startTime && $endTime) {
+            $map['Order.create_time'] = ['elt', $startTime];
+        }elseif ($startTime && $endTime) {
+            $map['Order.create_time'] = ['between', [$startTime, $endTime]];
+        }
 
-        if ($history == 1) {
-            //显示历史订单，大于等于7天
+        //排序
+        $sort = 'create_time desc';
+        if (isset($params['sort'])) {
+            $sort = getSortConditionBySort($params['sort']);
+        }
+
+        if ($params['isHistory'] == 1) {
+            //显示历史已发货收货订单，大于等于7天
             $map['Order.order_status'] = ['in', [3, 4]];
             $map['Order.create_time'] = ['lt', time() - (7 * 24 * 3600)];
-            $page = Db::view('Order', '*')
-                ->view('Dispatch', 'dispatch_title', 'Order.dispatch_id=Dispatch.id')
+            $page = Db::name('Order')->alias('Order')->field('Order.*,d.dispatch_title,m.uname,m.uwecat')
+                ->join('__DISPATCH__ d', 'Order.dispatch_id=d.id')
+                ->join('__MEMBER__ m', 'Order.uid=m.uid')
                 ->where($map)
-                ->order('Order.create_time desc,Order.shipping_name')
+                ->order($sort)
                 ->select();
         } else {
-            //默认会员订单，7天内
+            //默认显示全部待付款，待发货和7天内已发货收货订单
             $map['Order.order_status'] = ['in', [1, 2]];
-            $page = Db::name('Order')->alias('Order')->field('*,d.dispatch_title')
+            $page = Db::name('Order')->alias('Order')->field('Order.*,d.dispatch_title,m.uname,m.uwecat')
                 ->join('__DISPATCH__ d', 'Order.dispatch_id=d.id')
+                ->join('__MEMBER__ m', 'Order.uid=m.uid')
                 ->where($map)
                 ->union(function($query) {
                     $map2['Order.order_status'] = ['in', [3, 4]];
                     $map2['Order.create_time'] = ['egt', time() - (7 * 24 * 3600)];
 
-                    $query->table('__ORDER__')->alias('Order')->field('*,d.dispatch_title')
+                    if (input('order_num/s')) {
+                        $map2['Order.order_num_alias'] = ['eq', input('order_num/s')];
+                    }
+                    if (input('user_name/s')) {
+                        $map2['m.uname|m.uwecat|Order.shipping_name|Order.shipping_addr'] = ['like', "%" . input('user_name/s') . "%"];
+                    }
+                    if (input('get.status/d')) {
+                        $map2['Order.order_status'] = ['eq', input('status/d')];
+                    }
+                    //时间筛选
+                    $startTime = strtotime(input('start_time'));
+                    $endTime = strtotime(input('end_time'));
+                    if ($startTime && !$endTime) {
+                        $map2['Order.create_time'] = ['egt', $startTime];
+                    }elseif (!$startTime && $endTime) {
+                        $map2['Order.create_time'] = ['elt', $startTime];
+                    }elseif ($startTime && $endTime) {
+                        $map2['Order.create_time'] = ['between', [$startTime, $endTime]];
+                    }
+                    //排序
+                    $sort = 'create_time desc';
+                    if (input('sort')) {
+                        $sort = getSortConditionBySort(input('sort/d'));
+                    }
+
+                    $query->table('__ORDER__')->alias('Order')->field('Order.*,d.dispatch_title,m.uname,m.uwecat')
                         ->join('__DISPATCH__ d', 'Order.dispatch_id=d.id')
+                        ->join('__MEMBER__ m', 'Order.uid=m.uid')
                         ->where($map2)
-                        ->order('create_time desc,shipping_name');
+                        ->order($sort);
                 })
                 ->select();
         }
@@ -242,7 +296,7 @@ class Order {
 
         Loader::import('phpexcel.PHPExcel.IOFactory');
         $objPHPExcel = new \PHPExcel();
-
+        $name = '会员订单表';
         // 设置excel文档的属性
         $objPHPExcel->getProperties()->setCreator("Admin")//创建人
         ->setLastModifiedBy("Admin")//最后修改人
