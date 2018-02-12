@@ -55,40 +55,45 @@ Page({
   formSubmit(){
     var self = this;
     var phone = self.data.addressInfo.telephone;
-    var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1})|(17[0-9]{1}))+\d{8})$/;
-    if (!myreg.test(phone)) {
-      if (phone.length != 11) {
-        self.showToast('手机号有误！');
-        return;
-      }
-    }
-    if (self.data.addressInfo.name && self.data.addressInfo.telephone && self.data.addressInfo.address){
+    var phonereg = /^((0\d{2,3}-\d{7,8})|(1[357894]\d{9}))$/;
 
-      /*保存收货地址*/
-      if (this.data.fromType == 'edit')
-      {
-        adrEdit.updateAddress(self.data.addressInfo, (data) => {
-          if (data.errorCode != 0) {
-            self.showToast(data.msg);
-            return;
-          }
-          wx.navigateBack();
-        });
-      }
-      else if (this.data.fromType == 'add')
-      {
-        adrEdit.createAddress(self.data.addressInfo, (data) => {
-          if (data.errorCode != 0) {
-            self.showToast(data.msg);
-            return;
-          }
-          wx.navigateBack();
-        });
-      }
+    if (!self.data.addressInfo.name) {
+      self.showToast('姓名不能为空');
+      return;
     }
-    else
+    if (!phone) {
+      self.showToast('手机号不能为空');
+      return;
+    }
+    if (!phonereg.test(phone)) {
+      self.showToast('手机号有误！');
+      return;
+    }
+    if (!self.data.addressInfo.address) {
+      self.showToast('地址不能为空');
+      return;
+    }
+
+    /*保存收货地址*/
+    if (this.data.fromType == 'edit')
     {
-      self.showToast('请填写完整资料');
+      adrEdit.updateAddress(self.data.addressInfo, (data) => {
+        if (data.errorCode != 0) {
+          self.showToast(data.msg);
+          return;
+        }
+        wx.navigateBack();
+      });
+    }
+    else if (this.data.fromType == 'add')
+    {
+      adrEdit.createAddress(self.data.addressInfo, (data) => {
+        if (data.errorCode != 0) {
+          self.showToast(data.msg);
+          return;
+        }
+        wx.navigateBack();
+      });
     }
   },
 

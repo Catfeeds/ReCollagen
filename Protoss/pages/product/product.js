@@ -33,7 +33,6 @@ Page({
           });
         })
         product.getDetailInfo(this.data.id,(data)=>{
-          console.log(data)
 
             /*判断是否是单商品*/
           var optionsCount = data.options;

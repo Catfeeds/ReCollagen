@@ -17,7 +17,6 @@ Page({
 
     /*获取分类信息*/
     category.getCategoryType((categoryData)=>{
-      console.log(categoryData)
       that.setData({
         categoryTypeArr: categoryData,
         currentMenuId: categoryData[0].id,
