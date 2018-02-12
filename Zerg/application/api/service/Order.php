@@ -418,7 +418,7 @@ class Order
                             //写入财务流水
                             $user = UserModel::get($uid);
                             $recordModel = new FinanceRecord();
-                            $recordModel->insert(['uid' => $uid,'amount' => $v->free,'balance' => $user['mainAccount'],'addtime' => time(),'reason' => '取消订单，返现退回（订单号：'.$order['order_num_alias'].'）','rectype' => 1]);
+                            $recordModel->insert(['uid' => $uid,'amount' => '-'.$v->free,'balance' => $user['mainAccount'],'addtime' => time(),'reason' => '取消订单，返现退回（订单号：'.$order['order_num_alias'].'）','rectype' => 1]);
                         }
                     }
                 }
